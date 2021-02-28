@@ -1,0 +1,10 @@
+ADIF Export from LogHX
+Copyright 1998-2020 by Alexei Chernobai (RX4HX)
+Logs generated on 14-12-2020 16:28
+
+<PROGRAMID:5>LOGHX
+<PROGRAMVERSION:13>3.0 build 580
+<ADIF_VER:5>3.0.4>
+<EOH>
+
+<CALL:5>M6VMS <QSO_DATE:8>20201214 <TIME_ON:6>162800 <FREQ:2>14 <BAND:3>20M <MODE:2>CW <RST_RCVD:3>599 <RST_SENT:3>599 <NAME:4>Mark <QTH:10>Windermere <NOTES:19>This is information <USER2:20>My user 2 field data <USER3:20>My user 3 field data <USER4:20>My user 4 field data <USER5:20>My user 5 field data <USER6:20>My user 6 field data <USER7:20>MY user 7 field data <USER8:21>MY user 8 field datsa <OPERATOR:7>M0NOM <MY_GRIDSQUARE:6>IO64NI <PFX:2>M6 <A_INDEX:1>4 <K_INDEX:1>0 <SFI:2>81 <DISTANCE:3>397 <CQZ:2>14 <ITUZ:2>27 <DXCC:3>223 <CONT:2>EU <EOR>

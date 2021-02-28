@@ -1,0 +1,4672 @@
+QRZLogbook download for m0nom
+    Date: Sat Jan 16 18:33:12 2021
+    Bookid: 204681
+    Records: 4567
+    <ADIF_VER:5>3.0.4
+    <PROGRAMID:10>QRZLogbook
+    <PROGRAMVERSION:3>2.0
+    <eoh>
+<app_qrzlog_logid:9>353909896
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:7>OT70TWS
+<cont:2>Eu
+<country:7>Belgium
+<cqz:2>14
+<distance:4>6052
+<dxcc:3>209
+<freq:5>14.16
+<freq_rx:5>14.16
+<gridsquare:6>JJ00aa
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:21>Club Station ON4TWS .
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:20>QSL Manager is ON7SS
+<qso_date:8>20180516
+<qso_date_off:8>20180516
+<qth:6>Zichem
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>1155
+<time_on:4>1155
+<eor>
+
+<app_qrzlog_logid:9>353909897
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:7>OT70MCL
+<cont:2>Eu
+<country:7>Belgium
+<distance:4>6052
+<dxcc:3>209
+<freq:5>14.18
+<freq_rx:5>14.18
+<gridsquare:6>JJ00aa
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_rcvd:1>N
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:27>UBA MCL Division MCL Of UBA
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180516
+<qso_date_off:8>20180516
+<qth:8>Mechelen
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>1156
+<time_on:4>1156
+<eor>
+
+<app_qrzlog_logid:9>353909898
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:9>MM0VIK/MM
+<comment:43>Euan, Pilot Boat Engineer, Shetland, FT-817
+<cont:2>EU
+<country:8>Scotland
+<cqz:2>14
+<dxcc:3>279
+<freq:5>7.172
+<freq_rx:5>7.172
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180516
+<qso_date_off:8>20180516
+<rst_rcvd:2>57
+<rst_sent:2>56
+<station_callsign:7>M0NOM/P
+<time_off:4>1208
+<time_on:4>1208
+<eor>
+
+<app_qrzlog_logid:9>353909899
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:6>II1HKK
+<cont:2>EU
+<country:5>Italy
+<cqz:2>15
+<distance:4>1406
+<dxcc:3>248
+<freq:4>14.2
+<freq_rx:4>14.2
+<gridsquare:6>JN33us
+<ituz:2>28
+<lat:11>N043 46.200
+<lon:11>E007 42.400
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:40>Memorial Ciro Oliviero IZ1HKK Silent Key
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:19>via bureau to IQ1DZ
+<qso_date:8>20180516
+<qso_date_off:8>20180516
+<qth:40>From the 01 may 2018 to the 30 june 2018
+<rst_rcvd:2>57
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>1201
+<time_on:4>1201
+<eor>
+
+<app_qrzlog_logid:9>353909900
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:6>OV1CDX
+<comment:27>Frank, Lunddy, IC-7600 500w
+<cont:2>EU
+<country:7>Denmark
+<cqz:2>14
+<distance:3>945
+<dxcc:3>221
+<freq:5>7.188
+<freq_rx:5>7.188
+<gridsquare:6>JO55vc
+<ituz:2>28
+<lat:11>N055 06.200
+<lon:11>E011 47.400
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:13>Frank Fendahl
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180515
+<qso_date_off:8>20180515
+<qth:23>Sjaelland island EU 029
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>1205
+<time_on:4>1205
+<eor>
+
+<app_qrzlog_logid:9>353909901
+<app_qrzlog_qsldate:8>20180520
+<app_qrzlog_status:1>C
+<band:3>20M
+<band_rx:3>20M
+<call:7>F/ON4UP
+<cont:2>EU
+<country:6>France
+<cqz:2>14
+<dxcc:3>227
+<freq:6>14.275
+<freq_rx:6>14.275
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_rcvd:1>Y
+<lotw_qsl_sent:1>Y
+<lotw_qslrdate:8>20180519
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180515
+<qso_date_off:8>20180515
+<station_callsign:7>M0NOM/P
+<time_off:4>1141
+<time_on:4>1141
+<eor>
+
+<app_qrzlog_logid:9>353909902
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:8>F/DL3RBF
+<comment:14>sota fl/vo-005
+<cont:2>EU
+<country:6>France
+<cqz:2>14
+<dxcc:3>227
+<freq:5>7.185
+<freq_rx:5>7.185
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180515
+<qso_date_off:8>20180515
+<rst_rcvd:2>51
+<rst_sent:2>55
+<sota_ref:9>FL/VO-005
+<station_callsign:7>M0NOM/P
+<time_off:4>1129
+<time_on:4>1129
+<eor>
+
+<app_qrzlog_logid:9>353909903
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:7>DL1CR/P
+<comment:19>sota dm/ns-163, 10w
+<cont:2>EU
+<country:7>Germany
+<cqz:2>14
+<dxcc:3>230
+<freq:5>7.191
+<freq_rx:5>7.191
+<ituz:2>28
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180515
+<qso_date_off:8>20180515
+<rst_rcvd:2>58
+<rst_sent:2>56
+<sota_ref:9>DM/NS-163
+<station_callsign:7>M0NOM/P
+<time_off:4>1136
+<time_on:4>1136
+<eor>
+
+<app_qrzlog_logid:9>353909904
+<app_qrzlog_status:1>N
+<band:3>10m
+<band_rx:3>10m
+<call:5>EA4DE
+<comment:7>Estella
+<cont:2>EU
+<country:5>Spain
+<distance:4>1573
+<dxcc:3>281
+<gridsquare:6>IN80cf
+<lat:11>N040 14.070
+<lon:11>W003 46.647
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:29>Estela Mary Arbolella Beltran
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180514
+<qso_date_off:8>20180514
+<qth:6>IN80LL
+<rst_rcvd:2>55
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>1942
+<time_on:4>1942
+<eor>
+
+<app_qrzlog_logid:9>353909905
+<app_qrzlog_status:1>N
+<band:3>10m
+<band_rx:3>10m
+<call:6>2E0TUE
+<comment:5>Nigel
+<cont:2>EU
+<country:7>England
+<distance:2>16
+<dxcc:3>223
+<email:21>m5tue@haygarth.org.uk
+<freq:5>28.46
+<freq_rx:5>28.46
+<gridsquare:6>IO84qi
+<lat:11>N054 20.683
+<lon:11>W002 39.785
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:15>Nigel Wadsworth
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180514
+<qso_date_off:8>20180514
+<qth:15>Kendal, Cumbria
+<rst_rcvd:2>53
+<rst_sent:2>56
+<station_callsign:7>M0NOM/P
+<time_off:4>1955
+<time_on:4>1955
+<eor>
+
+<app_qrzlog_logid:9>353909906
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:8>WS5UUD/P
+<comment:14>wwff spff-0931
+<cont:2>NA
+<country:13>United States
+<dxcc:3>291
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180509
+<qso_date_off:8>20180509
+<rst_rcvd:2>57
+<rst_sent:2>57
+<sig:4>WWFF
+<sig_info:9>SPFF-0931
+<station_callsign:7>M0NOM/P
+<time_off:4>1201
+<time_on:4>1201
+<eor>
+
+<app_qrzlog_logid:9>353909907
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:8>ON4WRC/P
+<comment:14>wwff onff-0200
+<cont:2>Eu
+<country:7>Belgium
+<cqz:2>14
+<dxcc:3>209
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180509
+<qso_date_off:8>20180509
+<rst_rcvd:2>59
+<rst_sent:2>57
+<sig:4>WWFF
+<sig_info:9>ONFF-0200
+<station_callsign:7>M0NOM/P
+<time_off:4>1146
+<time_on:4>1146
+<eor>
+
+<app_qrzlog_logid:9>353909908
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:8>OE5UAL/P
+<comment:14>sota oe/kt-400
+<cont:2>EU
+<country:7>Austria
+<cqz:2>15
+<dxcc:3>206
+<freq:6>14.285
+<freq_rx:6>14.285
+<ituz:2>28
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180509
+<qso_date_off:8>20180509
+<rst_rcvd:2>54
+<rst_sent:2>54
+<sota_ref:9>OE/KT-400
+<station_callsign:7>M0NOM/P
+<time_off:4>1227
+<time_on:4>1227
+<eor>
+
+<app_qrzlog_logid:9>353909909
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:7>LM90NRR
+<cont:2>EU
+<country:6>Norway
+<cqz:2>14
+<dxcc:3>266
+<freq:6>14.225
+<freq_rx:6>14.225
+<ituz:2>18
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180509
+<qso_date_off:8>20180509
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>1218
+<time_on:4>1218
+<eor>
+
+<app_qrzlog_logid:9>353909910
+<app_qrzlog_qsldate:8>20180612
+<app_qrzlog_status:1>C
+<band:3>20M
+<band_rx:3>20M
+<call:4>9A7Z
+<cont:2>EU
+<country:7>Croatia
+<cqz:2>15
+<distance:4>2010
+<dxcc:3>497
+<email:16>xxxlux@gmail.com
+<gridsquare:6>JN92BP
+<ituz:2>28
+<lat:11>N042 38.635
+<lon:11>E018 06.713
+<lotw_qsl_rcvd:1>Y
+<lotw_qsl_sent:1>Y
+<lotw_qslrdate:8>20180516
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:12>LUKA TOMOVIC
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180509
+<qso_date_off:8>20180509
+<qth:9>DUBROVNIK
+<station_callsign:7>M0NOM/P
+<time_off:4>1212
+<time_on:4>1212
+<eor>
+
+<app_qrzlog_logid:9>353909911
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:6>SQ9NOT
+<cont:2>EU
+<country:6>Poland
+<distance:4>6052
+<dxcc:3>269
+<freq:6>14.278
+<freq_rx:6>14.278
+<gridsquare:6>JJ00aa
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:9>WIOLETTA 
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:18>sorry, only direct
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:9>zawiercie
+<rst_rcvd:2>59
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0745
+<time_on:4>0745
+<eor>
+
+<app_qrzlog_logid:9>353909912
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:6>SQ9MDF
+<cont:2>EU
+<country:6>Poland
+<cqz:2>15
+<distance:4>1569
+<dxcc:3>269
+<email:12>aloiw3@wp.pl
+<freq:6>14.278
+<freq_rx:6>14.278
+<gridsquare:8>JO90RL55
+<ituz:2>28
+<lat:11>N050 28.750
+<lon:11>E019 27.500
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:7>Leszek 
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:10>via bureau
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:9>zawiercie
+<rst_rcvd:2>59
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0745
+<time_on:4>0745
+<eor>
+
+<app_qrzlog_logid:9>353909913
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:5>SG6FO
+<cont:2>EU
+<country:6>Sweden
+<cqz:2>14
+<distance:3>985
+<dxcc:3>284
+<email:17>ulfhansson@me.com
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>JO57wq
+<ituz:2>18
+<lat:11>N057 40.491
+<lon:11>E011 51.131
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:11>Ulf Hansson
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:13>Oscar II Fort
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0815
+<time_on:4>0815
+<eor>
+
+<app_qrzlog_logid:9>353909914
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:6>S57ILF
+<cont:2>EU
+<country:8>Slovenia
+<distance:4>6052
+<dxcc:3>499
+<freq:6>14.278
+<freq_rx:6>14.278
+<gridsquare:6>JJ00aa
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:12>FRANCI LOGAR
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:14>JESENICE--4270
+<rst_rcvd:2>57
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0749
+<time_on:4>0749
+<eor>
+
+<app_qrzlog_logid:9>353909915
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:6>PA3VTC
+<comment:5>Henri
+<cont:2>EU
+<country:11>Netherlands
+<distance:4>6052
+<dxcc:3>263
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>JJ00aa
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:6>Harry 
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0814
+<time_on:4>0814
+<eor>
+
+<app_qrzlog_logid:9>353909916
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:6>PA0SKP
+<cont:2>EU
+<country:11>Netherlands
+<cqz:2>14
+<distance:4>6052
+<dxcc:3>263
+<email:15>pa0skp@ziggo.nl
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>JJ00aa
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:15>SAKE REINDERSMA
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:6>PA0SKP
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:16>5305BH ZUILICHEM
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0807
+<time_on:4>0807
+<eor>
+
+<app_qrzlog_logid:9>353909917
+<app_qrzlog_qsldate:8>20180516
+<app_qrzlog_status:1>C
+<band:3>40M
+<band_rx:3>40M
+<call:8>OK8CDX/P
+<cont:2>EU
+<country:14>Czech Republic
+<cqz:2>15
+<dxcc:3>503
+<freq:5>7.127
+<freq_rx:5>7.127
+<ituz:2>28
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_rcvd:1>Y
+<lotw_qsl_sent:1>Y
+<lotw_qslrdate:8>20180514
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<station_callsign:7>M0NOM/P
+<time_off:4>0833
+<time_on:4>0833
+<eor>
+
+<app_qrzlog_logid:9>353909918
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:6>OK1SDE
+<cont:2>EU
+<country:14>Czech Republic
+<cqz:2>28
+<distance:4>6052
+<dxcc:3>503
+<freq:6>14.278
+<freq_rx:6>14.278
+<gridsquare:6>JO70ms
+<ituz:2>15
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:24>Dalibor ( Borek ) Wagner
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:6>DIRECT
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:18>Liberec 14, 460 14
+<rst_rcvd:2>55
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0749
+<time_on:4>0749
+<eor>
+
+<app_qrzlog_logid:9>353909919
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:6>OH6GAZ
+<cont:2>EU
+<country:7>Finland
+<cqz:2>15
+<distance:4>1840
+<dxcc:3>224
+<email:16>oh6gaz@yahoo.com
+<freq:6>14.278
+<freq_rx:6>14.278
+<gridsquare:6>KP22og
+<ituz:2>18
+<lat:11>N062 15.169
+<lon:11>E025 11.895
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:12>Juha Siiteri
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:9>VIA W3HNK
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:18>41900 Petäjävesi
+<rst_rcvd:2>55
+<rst_sent:2>56
+<station_callsign:7>M0NOM/P
+<time_off:4>0744
+<time_on:4>0744
+<eor>
+
+<app_qrzlog_logid:9>353909920
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:6>MW0ISC
+<cont:2>EU
+<country:5>Wales
+<cqz:2>14
+<distance:3>135
+<dxcc:3>294
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:8>IO83JE50
+<ituz:2>27
+<lat:11>N053 10.064
+<lon:11>W003 12.250
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:5>Steve
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:46>Ger y Twr, Pantymwyn, Mold, Flintshire CH7 5HY
+<rst_rcvd:2>33
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0811
+<time_on:4>0811
+<eor>
+
+<app_qrzlog_logid:9>353909921
+<app_qrzlog_status:1>N
+<band:3>80m
+<band_rx:3>80m
+<call:8>MM3PDM/P
+<cont:2>EU
+<country:8>Scotland
+<cqz:2>14
+<dxcc:3>279
+<freq:5>3.662
+<freq_rx:5>3.662
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<rst_rcvd:2>58
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0828
+<time_on:4>0828
+<eor>
+
+<app_qrzlog_logid:9>353909922
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:5>M6XBN
+<comment:14>Ben from MBARS
+<cont:2>EU
+<country:7>England
+<distance:2>21
+<dxcc:3>223
+<freq:7>145.475
+<freq_rx:7>145.475
+<gridsquare:6>IO84oe
+<lat:11>N054 11.200
+<lon:11>W002 47.600
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:15>Ben J Griffiths
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:9>Silverdal
+<rst_rcvd:2>53
+<rst_sent:2>55
+<station_callsign:7>M0NOM/P
+<time_off:4>0847
+<time_on:4>0847
+<eor>
+
+<app_qrzlog_logid:9>353909923
+<app_qrzlog_qsldate:8>20180516
+<app_qrzlog_status:1>C
+<band:3>40M
+<band_rx:3>40M
+<call:5>M3FEH
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:3>449
+<dxcc:3>223
+<email:20>freebirds658@aol.com
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>IO70vj
+<iota:6>EU-005
+<ituz:2>27
+<lat:11>N050 24.518
+<lon:11>W004 13.325
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:11>Karl Kruger
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:14>OWN CALL/ eQSL
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:17>Saltash, Cornwall
+<station_callsign:7>M0NOM/P
+<time_off:4>0806
+<time_on:4>0806
+<eor>
+
+<app_qrzlog_logid:9>353909924
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:5>M0IML
+<cont:2>EU
+<country:7>England
+<distance:4>6052
+<dxcc:3>223
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>JJ00aa
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:10>Barry Vile
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:11>DOVER, KENT
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0813
+<time_on:4>0813
+<eor>
+
+<app_qrzlog_logid:9>353909925
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:5>M0ELS
+<comment:14>John, Basildon
+<cont:2>EU
+<country:7>England
+<distance:3>386
+<dxcc:3>223
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>JO01gn
+<lat:11>N051 34.472
+<lon:11>E000 31.450
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:6>John R
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:14>East Of London
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0812
+<time_on:4>0812
+<eor>
+
+<app_qrzlog_logid:9>353909926
+<app_qrzlog_qsldate:8>20200523
+<app_qrzlog_status:1>C
+<band:3>40M
+<band_rx:3>40M
+<call:5>M0BKV
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:3>417
+<dxcc:3>223
+<email:21>M0BKV@btopenworld.com
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>IO70RR
+<iota:6>EU-005
+<ituz:2>27
+<lat:11>N050 44.474
+<lon:11>W004 30.161
+<lotw_qsl_rcvd:1>Y
+<lotw_qsl_sent:1>Y
+<lotw_qslrdate:8>20180509
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:11>DAMIAN KAMM
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:5>M0BKV
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:22>WEEK ST MARY, Cornwall
+<station_callsign:7>M0NOM/P
+<time_off:4>0805
+<time_on:4>0805
+<eor>
+
+<app_qrzlog_logid:9>353909927
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:7>M0BKQ/P
+<comment:8>Alistair
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<dxcc:3>223
+<freq:7>145.475
+<freq_rx:7>145.475
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<rst_rcvd:2>59
+<rst_sent:2>59
+<sota_ref:8>G/NP-008
+<station_callsign:7>M0NOM/P
+<time_off:4>0842
+<time_on:4>0842
+<eor>
+
+<app_qrzlog_logid:9>353909928
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:6>IW3AGO
+<cont:2>EU
+<country:5>Italy
+<cqz:2>15
+<distance:4>1305
+<dxcc:3>248
+<email:15>heini@pixner.bz
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>JN56ps
+<ituz:2>28
+<lat:11>N046 46.432
+<lon:11>E011 15.458
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:15>HEINRICH PIXNER
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:24>39010 ST. MARTIN Pas. BZ
+<rst_rcvd:2>33
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0801
+<time_on:4>0801
+<eor>
+
+<app_qrzlog_logid:9>353909929
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:6>HB9MKV
+<cont:2>EU
+<country:11>Switzerland
+<cqz:2>14
+<distance:4>1065
+<dxcc:3>287
+<email:14>hb9mkv@uska.ch
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>JN37sj
+<ituz:2>28
+<lat:11>N047 23.748
+<lon:11>E007 32.940
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:26>RUDOLF (Rudi) WARTLSTEINER
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:41>ONLY VIA BUREAU OR DIRECT PLEASE NO E-QSL
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:18>CH-4227 BUESSERACH
+<rst_rcvd:2>55
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0809
+<time_on:4>0809
+<eor>
+
+<app_qrzlog_logid:9>353909930
+<app_qrzlog_status:1>N
+<band:2>2M
+<band_rx:2>2M
+<call:8>GM4WHA/M
+<cont:2>EU
+<country:8>Scotland
+<cqz:2>14
+<dxcc:3>279
+<freq:7>144.613
+<freq_rx:7>144.613
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:4>DATA
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<station_callsign:7>M0NOM/P
+<time_off:4>0855
+<time_on:4>0855
+<eor>
+
+<app_qrzlog_logid:9>353909931
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:6>GM4WHA
+<cont:2>EU
+<country:8>Scotland
+<distance:4>6052
+<dxcc:3>279
+<email:24>geoff.harper50@gmail.com
+<freq:7>145.475
+<freq_rx:7>145.475
+<gridsquare:6>JJ00aa
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:12>GEOFF HARPER
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:5>ANNAN
+<rst_rcvd:2>52
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0843
+<time_on:4>0843
+<eor>
+
+<app_qrzlog_logid:9>353909932
+<app_qrzlog_qsldate:8>20180516
+<app_qrzlog_status:1>C
+<band:3>80M
+<band_rx:3>80M
+<call:6>GI0AZA
+<cont:2>EU
+<country:16>Northern Ireland
+<cqz:2>14
+<distance:3>269
+<dxcc:3>265
+<email:21>gi0aza@btinternet.com
+<freq:5>3.662
+<freq_rx:5>3.662
+<gridsquare:8>IO64MW12
+<iota:6>EU-115
+<ituz:2>27
+<lat:11>N054 55.613
+<lon:11>W006 59.214
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:16>Esther JM Harper
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:24>Dungiven, Co Londonderry
+<station_callsign:7>M0NOM/P
+<time_off:4>0825
+<time_on:4>0825
+<eor>
+
+<app_qrzlog_logid:9>353909933
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:5>G7OEM
+<comment:15>Tony, Blackpool
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:2>87
+<dxcc:3>223
+<email:24>a.hulme66@btinternet.com
+<freq:7>145.475
+<freq_rx:7>145.475
+<gridsquare:4>IO83
+<ituz:2>27
+<lat:11>N053 42.855
+<lon:11>W003 38.140
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:10>Tony Hulme
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:10>QSL DIRECT
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:14>FY4 Lancashire
+<rst_rcvd:2>57
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0838
+<time_on:4>0838
+<eor>
+
+<app_qrzlog_logid:9>353909934
+<app_qrzlog_status:1>N
+<band:2>2M
+<band_rx:2>2M
+<call:5>G7CDA
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:2>63
+<dxcc:3>223
+<email:17>hedgidj@gmail.com
+<freq:7>144.613
+<freq_rx:7>144.613
+<gridsquare:6>IO83qt
+<ituz:2>27
+<lat:11>N053 49.879
+<lon:11>W002 35.890
+<lotw_qsl_sent:1>Y
+<mode:4>DATA
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:13>Douggie G7CDA
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:9>EQSL.NET,
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:12>Near Preston
+<station_callsign:7>M0NOM/P
+<time_off:4>0849
+<time_on:4>0849
+<eor>
+
+<app_qrzlog_logid:9>353909935
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:5>G7CDA
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:2>63
+<dxcc:3>223
+<email:17>hedgidj@gmail.com
+<freq:7>145.475
+<freq_rx:7>145.475
+<gridsquare:6>IO83qt
+<ituz:2>27
+<lat:11>N053 49.879
+<lon:11>W002 35.890
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:13>Douggie G7CDA
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:9>EQSL.NET,
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:12>Near Preston
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0837
+<time_on:4>0837
+<eor>
+
+<app_qrzlog_logid:9>353909936
+<app_qrzlog_status:1>N
+<band:3>80m
+<band_rx:3>80m
+<call:5>G7AFM
+<comment:14>Phil, Hereford
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:3>262
+<dxcc:3>223
+<email:25>phil_moses@btinternet.com
+<freq:5>3.662
+<freq_rx:5>3.662
+<gridsquare:6>IO82ra
+<iota:6>EU-005
+<ituz:2>27
+<lat:11>N052 01.366
+<lon:11>W002 33.262
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:10>Phil Moses
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:28>Woolhope, Hereford, HR1 4RG,
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0820
+<time_on:4>0820
+<eor>
+
+<app_qrzlog_logid:9>353909937
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:7>G4WWS/P
+<comment:24>John, Pendle Hill Ascent
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<dxcc:3>223
+<freq:7>145.475
+<freq_rx:7>145.475
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<rst_rcvd:2>57
+<rst_sent:2>53
+<station_callsign:7>M0NOM/P
+<time_off:4>0840
+<time_on:4>0840
+<eor>
+
+<app_qrzlog_logid:9>353909938
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:5>G4WSB
+<comment:13>Phil, Swindon
+<cont:2>EU
+<country:7>England
+<distance:4>6052
+<dxcc:3>223
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>JJ00aa
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:13>Bill Bowditch
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:6>No qsl
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:9>Wiltshire
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0802
+<time_on:4>0802
+<eor>
+
+<app_qrzlog_logid:9>353909939
+<app_qrzlog_status:1>N
+<band:3>80m
+<band_rx:3>80m
+<call:5>G3RMD
+<comment:5>Frank
+<cont:2>EU
+<country:7>England
+<distance:4>6052
+<dxcc:3>223
+<freq:5>3.662
+<freq_rx:5>3.662
+<gridsquare:6>JJ00aa
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:11>Frank Regan
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:10>Cheltenham
+<rst_rcvd:2>57
+<rst_sent:2>58
+<state:2>GL
+<station_callsign:7>M0NOM/P
+<time_off:4>0830
+<time_on:4>0830
+<eor>
+
+<app_qrzlog_logid:9>353909940
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:5>G3RDQ
+<cont:2>EU
+<country:7>England
+<distance:4>6052
+<dxcc:3>223
+<email:17>g3rdq@yahoo.co.uk
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>JJ00aa
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:17>DAVID C GRIFFITHS
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:9>HAMPSHIRE
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0808
+<time_on:4>0808
+<eor>
+
+<app_qrzlog_logid:9>353909941
+<app_qrzlog_status:1>N
+<band:2>2M
+<band_rx:2>2M
+<call:5>G1OHH
+<cont:2>EU
+<country:7>England
+<distance:2>35
+<dxcc:3>223
+<email:26>sgriffin46@virginmedia.com
+<freq:7>144.613
+<freq_rx:7>144.613
+<gridsquare:6>IO84ob
+<lat:11>N054 03.700
+<lon:11>W002 47.600
+<lotw_qsl_sent:1>Y
+<mode:4>DATA
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:15>Susan M Griffin
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:9>Lancaster
+<station_callsign:7>M0NOM/P
+<time_off:4>0852
+<time_on:4>0852
+<eor>
+
+<app_qrzlog_logid:9>353909942
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:5>G1OHH
+<cont:2>EU
+<country:7>England
+<distance:2>35
+<dxcc:3>223
+<email:26>sgriffin46@virginmedia.com
+<freq:7>145.475
+<freq_rx:7>145.475
+<gridsquare:6>IO84ob
+<lat:11>N054 03.700
+<lon:11>W002 47.600
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:15>Susan M Griffin
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:9>Lancaster
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0845
+<time_on:4>0845
+<eor>
+
+<app_qrzlog_logid:9>353909943
+<app_qrzlog_status:1>N
+<band:3>80m
+<band_rx:3>80m
+<call:5>G0VWP
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:3>126
+<dxcc:3>223
+<email:21>t.sayner@ntlworld.com
+<freq:5>3.662
+<freq_rx:5>3.662
+<gridsquare:6>IO93kx
+<iota:6>EU-005
+<ituz:2>27
+<lat:11>N053 58.421
+<lon:11>W001 05.364
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:12>Terry Sayner
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:37>RSGB BUREAU OR DIRECT E-QSL & CLUBLOG
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:21>York, N.E. Yorkshire,
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0823
+<time_on:4>0823
+<eor>
+
+<app_qrzlog_logid:9>353909944
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:5>G0VWP
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:3>126
+<dxcc:3>223
+<email:21>t.sayner@ntlworld.com
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>IO93kx
+<iota:6>EU-005
+<ituz:2>27
+<lat:11>N053 58.421
+<lon:11>W001 05.364
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:12>Terry Sayner
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:37>RSGB BUREAU OR DIRECT E-QSL & CLUBLOG
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:21>York, N.E. Yorkshire,
+<rst_rcvd:2>59
+<rst_sent:2>55
+<station_callsign:7>M0NOM/P
+<time_off:4>0810
+<time_on:4>0810
+<eor>
+
+<app_qrzlog_logid:9>353909945
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:5>G0UOO
+<cont:2>EU
+<country:7>England
+<distance:4>6052
+<dxcc:3>223
+<email:20>g0uoo@btinternet.com
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>JJ00aa
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:11>ROB - G0UOO
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:30>FOLKESTONE/DOVER in South Kent
+<rst_rcvd:2>55
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0809
+<time_on:4>0809
+<eor>
+
+<app_qrzlog_logid:9>353909946
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:5>G0TDM
+<cont:2>EU
+<country:7>England
+<distance:4>6052
+<dxcc:3>223
+<email:19>G0TDM@hotmail.co.uk
+<freq:7>145.475
+<freq_rx:7>145.475
+<gridsquare:6>IO84oq
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:11>John Sutton
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:7>PENRITH
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0837
+<time_on:4>0837
+<eor>
+
+<app_qrzlog_logid:9>353909947
+<app_qrzlog_status:1>N
+<band:3>80m
+<band_rx:3>80m
+<call:5>G0TDM
+<cont:2>EU
+<country:7>England
+<distance:4>6052
+<dxcc:3>223
+<email:19>G0TDM@hotmail.co.uk
+<freq:5>3.662
+<freq_rx:5>3.662
+<gridsquare:6>IO84oq
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:11>John Sutton
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:7>PENRITH
+<rst_rcvd:2>42
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0829
+<time_on:4>0829
+<eor>
+
+<app_qrzlog_logid:9>353909948
+<app_qrzlog_qsldate:8>20190318
+<app_qrzlog_status:1>C
+<band:3>80m
+<band_rx:3>80m
+<call:5>G0RQL
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:3>399
+<dxcc:3>223
+<email:19>g0rql.don@gmail.com
+<freq:5>3.662
+<freq_rx:5>3.662
+<gridsquare:6>IO70uv
+<iota:6>EU-005
+<ituz:2>27
+<lat:11>N050 52.931
+<lon:11>W004 17.624
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:10>DON ROOMES
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:32>LOTW ONLY.NO LONGER RSGB MEMBER.
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:33>MILTON DAMEREL. HOLSWORTHY.DEVON.
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0827
+<time_on:4>0827
+<eor>
+
+<app_qrzlog_logid:9>353909949
+<app_qrzlog_qsldate:8>20190318
+<app_qrzlog_status:1>C
+<band:3>40m
+<band_rx:3>40m
+<call:5>G0RQL
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:3>399
+<dxcc:3>223
+<email:19>g0rql.don@gmail.com
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>IO70uv
+<iota:6>EU-005
+<ituz:2>27
+<lat:11>N050 52.931
+<lon:11>W004 17.624
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:10>DON ROOMES
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:32>LOTW ONLY.NO LONGER RSGB MEMBER.
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:33>MILTON DAMEREL. HOLSWORTHY.DEVON.
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0803
+<time_on:4>0803
+<eor>
+
+<app_qrzlog_logid:9>353909950
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:5>G0NVW
+<cont:2>EU
+<country:7>England
+<distance:3>238
+<dxcc:3>223
+<email:22>stevecantfly@gmail.com
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>IO82wg
+<lat:11>N052 16.216
+<lon:11>W002 09.148
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:12>Steve Harvey
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:36>Will return qsls sent to my address.
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:19>Melksham, Wiltshire
+<rst_rcvd:2>57
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0806
+<time_on:4>0806
+<eor>
+
+<app_qrzlog_logid:9>353909951
+<app_qrzlog_status:1>N
+<band:3>80m
+<band_rx:3>80m
+<call:5>G0HIO
+<comment:21>Mike, Burton-on-Trent
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:3>192
+<dxcc:3>223
+<freq:5>3.662
+<freq_rx:5>3.662
+<gridsquare:6>IO92et
+<iota:6>EU-005
+<ituz:2>27
+<lat:11>N052 48.700
+<lon:11>W001 37.600
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:18>Michael Warrington
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:23>LOTW OR DIRECT. NO BURO
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:32>Burton upon Trent, Staffordshire
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0824
+<time_on:4>0824
+<eor>
+
+<app_qrzlog_logid:9>353909952
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:6>EB1IFK
+<cont:2>EU
+<country:5>Spain
+<cqz:2>14
+<distance:4>1359
+<dxcc:3>281
+<email:16>eb1ifk@gmail.com
+<freq:6>14.278
+<freq_rx:6>14.278
+<gridsquare:6>IN52ns
+<ituz:2>37
+<lat:11>N042 47.262
+<lon:11>W008 52.216
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:21>Santiago Creo Batalla
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:24>VIA BUREAU, Direct, eQSL
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:15>Noia, A Coruña
+<rst_rcvd:2>55
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0746
+<time_on:4>0746
+<eor>
+
+<app_qrzlog_logid:9>353909953
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:6>EA2CKX
+<cont:2>EU
+<country:5>Spain
+<cqz:2>14
+<distance:4>1261
+<dxcc:3>281
+<email:17>ea2ckx@outlook.es
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>IN83ta
+<ituz:2>37
+<lat:11>N043 02.130
+<lon:11>W002 24.621
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:31>PEDRO CHINCHURRETA JAUREGUIALZO
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:20>VIA BUREAU OR DIRECT
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:15>OÑATI GIPUZKOA
+<rst_rcvd:2>52
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0805
+<time_on:4>0805
+<eor>
+
+<app_qrzlog_logid:9>353909954
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:6>DL3SKY
+<cont:2>EU
+<country:7>Germany
+<cqz:2>14
+<distance:3>995
+<dxcc:3>230
+<email:14>DL3SKY@darc.de
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>JN48gv
+<ituz:2>28
+<lat:11>N048 53.700
+<lon:11>E008 32.400
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:22>Juergen Thomas Mueller
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:20>VIA BUREAU OR DIRECT
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:13>75210 Keltern
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0804
+<time_on:4>0804
+<eor>
+
+<app_qrzlog_logid:9>353909955
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:6>DL2HWI
+<cont:2>EU
+<country:7>Germany
+<cqz:2>14
+<distance:4>1070
+<dxcc:3>230
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>JO61hu
+<ituz:2>28
+<lat:11>N051 52.106
+<lon:11>E012 36.718
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:18>Dietmar Falkenberg
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:20>VIA BUREAU OR DIRECT
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:16>06878 Wittenberg
+<rst_rcvd:2>57
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0808
+<time_on:4>0808
+<eor>
+
+<app_qrzlog_logid:9>353909956
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:6>DL1ASA
+<cont:2>EU
+<country:7>Germany
+<cqz:2>14
+<distance:3>939
+<dxcc:3>230
+<email:14>DL1ASA@darc.de
+<freq:6>14.278
+<freq_rx:6>14.278
+<gridsquare:6>JN49hs
+<ituz:2>28
+<lat:11>N049 46.201
+<lon:11>E008 38.354
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:12>Thomas Marek
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:10>VIA BUERAU
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:23>64342 Seeheim-Jugenheim
+<rst_rcvd:2>57
+<rst_sent:2>58
+<station_callsign:7>M0NOM/P
+<time_off:4>0746
+<time_on:4>0746
+<eor>
+
+<app_qrzlog_logid:9>353909957
+<app_qrzlog_qsldate:8>20180516
+<app_qrzlog_status:1>C
+<band:3>40M
+<band_rx:3>40M
+<call:5>DJ9BX
+<cont:2>EU
+<country:7>Germany
+<cqz:2>14
+<distance:3>993
+<dxcc:3>230
+<email:17>dj9bx@t-online.de
+<freq:5>7.181
+<freq_rx:5>7.181
+<gridsquare:6>JO63DP
+<ituz:2>28
+<lat:11>N053 39.199
+<lon:11>E012 16.136
+<lotw_qsl_rcvd:1>Y
+<lotw_qsl_sent:1>Y
+<lotw_qslrdate:8>20180509
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:16>MICHAEL AHLGRIMM
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:30>VIA BUREAU, DIRECT, LOTW, EQSL
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:19>18292 KRAKOW AM SEE
+<station_callsign:7>M0NOM/P
+<time_off:4>0804
+<time_on:4>0804
+<eor>
+
+<app_qrzlog_logid:9>353909958
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:5>DJ2MX
+<cont:2>EU
+<country:7>Germany
+<cqz:2>14
+<distance:4>1224
+<dxcc:3>230
+<email:14>mario@dj2mx.de
+<freq:6>14.278
+<freq_rx:6>14.278
+<gridsquare:6>JN58tc
+<ituz:2>28
+<lat:11>N048 07.134
+<lon:11>E011 37.992
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:12>Mario Lovric
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:26>VIA BUREAU / DIRECT / LOTW
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:14>81671 Muenchen
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0747
+<time_on:4>0747
+<eor>
+
+<app_qrzlog_logid:9>353909959
+<app_qrzlog_qsldate:8>20180516
+<app_qrzlog_status:1>C
+<band:3>20M
+<band_rx:3>20M
+<call:6>SA4BLM
+<cont:2>EU
+<country:6>Sweden
+<cqz:2>14
+<distance:4>1274
+<dxcc:3>284
+<email:16>sa4blm@telia.com
+<freq:6>14.278
+<freq_rx:6>14.278
+<gridsquare:6>JP70LT
+<ituz:2>18
+<lat:11>N060 47.806
+<lon:11>E014 55.027
+<lotw_qsl_rcvd:1>Y
+<lotw_qsl_sent:1>Y
+<lotw_qslrdate:8>20180509
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:11>Lars Markus
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:12>SILJANSN�S
+<station_callsign:7>M0NOM/P
+<time_off:4>0742
+<time_on:4>0742
+<eor>
+
+<app_qrzlog_logid:9>353909960
+<app_qrzlog_qsldate:8>20190408
+<app_qrzlog_status:1>C
+<band:3>20m
+<band_rx:3>20m
+<call:6>OE5HDN
+<cont:2>EU
+<country:7>Austria
+<cqz:2>15
+<distance:4>1369
+<dxcc:3>206
+<email:15>oe5hdn@oevsv.at
+<freq:6>14.278
+<freq_rx:6>14.278
+<gridsquare:6>JN78dg
+<ituz:2>28
+<lat:11>N048 16.250
+<lon:11>E014 17.500
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:20>Heinz - Dieter HUBER
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:38>VIA BUREAU (OEVSV - ADL 510) OR DIRECT
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:11>A-4020 LINZ
+<rst_rcvd:2>57
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0740
+<time_on:4>0740
+<eor>
+
+<app_qrzlog_logid:9>353909961
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:6>IK2LEY
+<cont:2>EU
+<country:5>Italy
+<distance:4>1300
+<dxcc:3>248
+<freq:6>14.278
+<freq_rx:6>14.278
+<gridsquare:6>JN45nn
+<lat:11>N045 34.168
+<lon:11>E009 07.948
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:16>FABIO PELLIZZONI
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:15>20030 SENAGO MI
+<rst_rcvd:2>57
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0740
+<time_on:4>0740
+<eor>
+
+<app_qrzlog_logid:9>353909962
+<app_qrzlog_status:1>N
+<band:3>20m
+<band_rx:3>20m
+<call:5>EA2DT
+<cont:2>EU
+<country:5>Spain
+<cqz:2>14
+<distance:4>1288
+<dxcc:3>281
+<email:12>ea2dt@ure.es
+<freq:6>14.278
+<freq_rx:6>14.278
+<gridsquare:6>IN92et
+<ituz:2>37
+<lat:11>N042 49.024
+<lon:11>W001 39.907
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-011
+<name:7>Manuel 
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:22>BUREAU - DIRECT - EQSL
+<qso_date:8>20180505
+<qso_date_off:8>20180505
+<qth:26>31080 - Pamplona - Navarra
+<rst_rcvd:2>52
+<rst_sent:2>55
+<station_callsign:7>M0NOM/P
+<time_off:4>0741
+<time_on:4>0741
+<eor>
+
+<app_qrzlog_logid:9>353909963
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:7>OTZ0CRD
+<cont:2>Eu
+<country:7>Belgium
+<cqz:2>14
+<dxcc:3>209
+<freq:5>7.115
+<freq_rx:5>7.115
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0433
+<time_on:4>0433
+<eor>
+
+<app_qrzlog_logid:9>353909964
+<app_qrzlog_qsldate:8>20180516
+<app_qrzlog_status:1>C
+<band:3>80M
+<band_rx:3>80M
+<call:5>ON4VT
+<cont:2>Eu
+<country:7>Belgium
+<cqz:2>14
+<distance:3>634
+<dxcc:3>209
+<email:14>danny@on4vt.be
+<freq:4>3.77
+<freq_rx:4>3.77
+<gridsquare:6>JO21JB
+<ituz:2>27
+<lat:11>N051 04.176
+<lon:11>E004 47.166
+<lotw_qsl_rcvd:1>Y
+<lotw_qsl_sent:1>Y
+<lotw_qslrdate:8>20180508
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:16>Danny Van Tricht
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:36>BURO . DIRECT AND ALL DIGITAL WAYS .
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:8>HULSHOUT
+<station_callsign:7>M0NOM/P
+<time_off:4>0437
+<time_on:4>0437
+<eor>
+
+<app_qrzlog_logid:9>353909965
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:7>ON4RO/P
+<comment:54>WWFF ONFF-0508 Beneden Nete - Anderstad Nature Reserve
+<cont:2>Eu
+<country:7>Belgium
+<cqz:2>14
+<dxcc:3>209
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<rst_rcvd:2>59
+<rst_sent:2>57
+<sig:4>WWFF
+<sig_info:9>ONFF-0508
+<station_callsign:7>M0NOM/P
+<time_off:4>0751
+<time_on:4>0751
+<eor>
+
+<app_qrzlog_logid:9>353909966
+<app_qrzlog_qsldate:8>20180516
+<app_qrzlog_status:1>C
+<band:3>40M
+<band_rx:3>40M
+<call:8>OK8CDX/P
+<cont:2>EU
+<country:14>Czech Republic
+<cqz:2>15
+<dxcc:3>503
+<freq:5>7.125
+<freq_rx:5>7.125
+<ituz:2>28
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_rcvd:1>Y
+<lotw_qsl_sent:1>Y
+<lotw_qslrdate:8>20180514
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<station_callsign:7>M0NOM/P
+<time_off:4>0636
+<time_on:4>0636
+<eor>
+
+<app_qrzlog_logid:9>353909967
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:6>MW0TTK
+<cont:2>EU
+<country:5>Wales
+<distance:3>126
+<dxcc:3>294
+<email:16>mw0ttk@gmail.com
+<gridsquare:6>IO83jf
+<lat:11>N053 14.535
+<lon:11>W003 12.045
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<name:11>Mark Buxton
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:10>Flintshire
+<rst_rcvd:2>53
+<rst_sent:2>55
+<station_callsign:7>M0NOM/P
+<time_off:4>0804
+<time_on:4>0804
+<eor>
+
+<app_qrzlog_logid:9>353909968
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:5>M1AVV
+<cont:2>EU
+<country:7>England
+<distance:2>36
+<dxcc:3>223
+<freq:5>145.4
+<freq_rx:5>145.4
+<gridsquare:6>IO84ic
+<iota:6>EU-005
+<lat:11>N054 06.766
+<lon:11>W003 15.755
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<name:12>Simon Linney
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:17>Barrow-in-Furness
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0701
+<time_on:4>0701
+<eor>
+
+<app_qrzlog_logid:9>353909969
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:5>M0WBG
+<comment:16>Neil, The Wirral
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:3>109
+<dxcc:3>223
+<email:27>neil.challis@btinternet.com
+<freq:5>145.4
+<freq_rx:5>145.4
+<gridsquare:6>IO83kj
+<iota:6>EU-005
+<ituz:2>27
+<lat:11>N053 23.691
+<lon:11>W003 07.681
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<name:14>NEIL F CHALLIS
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:20>DIRECT OR VIA BUREAU
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:14>MORETON WIRRAL
+<rst_rcvd:2>52
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0738
+<time_on:4>0738
+<eor>
+
+<app_qrzlog_logid:9>353909970
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:5>M0VXT
+<comment:15>Gareth, Preston
+<cont:2>EU
+<country:7>England
+<distance:2>68
+<dxcc:3>223
+<email:15>GBC2009@AOL.COM
+<freq:5>145.4
+<freq_rx:5>145.4
+<gridsquare:6>IO83ps
+<lat:11>N053 45.994
+<lon:11>W002 41.993
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<name:15>Gareth Clements
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:7>Preston
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0720
+<time_on:4>0720
+<eor>
+
+<app_qrzlog_logid:9>353909971
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:5>M0HZP
+<comment:19>David, N. Blackpool
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:4>6052
+<dxcc:3>223
+<email:30>daveandpatmorrow@hotmail.co.uk
+<freq:5>145.4
+<freq_rx:5>145.4
+<gridsquare:6>JJ00aa
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<name:14>DAVID C MORROW
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:10>ELECTRONIC
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:9>FLEETWOOD
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0705
+<time_on:4>0705
+<eor>
+
+<app_qrzlog_logid:9>353909972
+<app_qrzlog_qsldate:8>20200523
+<app_qrzlog_status:1>C
+<band:3>80M
+<band_rx:3>80M
+<call:5>M0BKV
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:3>417
+<dxcc:3>223
+<email:21>M0BKV@btopenworld.com
+<freq:5>3.792
+<freq_rx:5>3.792
+<gridsquare:6>IO70RR
+<iota:6>EU-005
+<ituz:2>27
+<lat:11>N050 44.474
+<lon:11>W004 30.161
+<lotw_qsl_rcvd:1>Y
+<lotw_qsl_sent:1>Y
+<lotw_qslrdate:8>20180509
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:11>DAMIAN KAMM
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:5>M0BKV
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:22>WEEK ST MARY, Cornwall
+<station_callsign:7>M0NOM/P
+<time_off:4>0615
+<time_on:4>0615
+<eor>
+
+<app_qrzlog_logid:9>353909973
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:6>IV3WTJ
+<comment:39>N. Italy, 500w, IC-7600, 1 Ele Monoband
+<cont:2>EU
+<country:5>Italy
+<cqz:1>3
+<distance:4>1452
+<dxcc:3>248
+<freq:5>7.141
+<freq_rx:5>7.141
+<gridsquare:6>JN66ne
+<ituz:1>3
+<lat:11>N046 11.200
+<lon:11>E013 07.400
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<name:10>ALBERTO A.
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:5>UDINE
+<rst_rcvd:2>58
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0518
+<time_on:4>0518
+<eor>
+
+<app_qrzlog_logid:9>353909974
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:6>IK2LEY
+<cont:2>EU
+<country:5>Italy
+<distance:4>1300
+<dxcc:3>248
+<freq:5>7.131
+<freq_rx:5>7.131
+<gridsquare:6>JN45nn
+<lat:11>N045 34.168
+<lon:11>E009 07.948
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<name:16>FABIO PELLIZZONI
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:15>20030 SENAGO MI
+<rst_rcvd:2>55
+<rst_sent:2>57
+<station_callsign:7>M0NOM/P
+<time_off:4>0641
+<time_on:4>0641
+<eor>
+
+<app_qrzlog_logid:9>353909975
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:5>I5ZSS
+<comment:13>Pat, Florence
+<cont:2>EU
+<country:5>Italy
+<cqz:2>15
+<distance:4>1537
+<dxcc:3>248
+<email:31>patrizio.storai.i5zss@gmail.com
+<freq:5>7.155
+<freq_rx:5>7.155
+<gridsquare:6>JN53ku
+<lat:11>N043 50.932
+<lon:11>E010 54.362
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<name:15>PATRIZIO STORAI
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:17>51036 LARCIANO PT
+<rst_rcvd:2>57
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0517
+<time_on:4>0517
+<eor>
+
+<app_qrzlog_logid:9>353909976
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:5>I5ZSS
+<cont:2>EU
+<country:5>Italy
+<cqz:2>15
+<distance:4>1537
+<dxcc:3>248
+<email:31>patrizio.storai.i5zss@gmail.com
+<freq:5>7.115
+<freq_rx:5>7.115
+<gridsquare:6>JN53ku
+<lat:11>N043 50.932
+<lon:11>E010 54.362
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<name:15>PATRIZIO STORAI
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:17>51036 LARCIANO PT
+<rst_rcvd:2>57
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0430
+<time_on:4>0430
+<eor>
+
+<app_qrzlog_logid:9>353909977
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:6>GW4ZPL
+<cont:2>EU
+<country:5>Wales
+<distance:3>158
+<dxcc:3>294
+<email:24>colinbarwell@hotmail.com
+<freq:5>145.4
+<freq_rx:5>145.4
+<gridsquare:6>IO73wd
+<lat:11>N053 09.139
+<lon:11>W004 09.997
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<name:18>Colin John Barwell
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:11>www.eqsl.cc
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:22>Penisarwaun Caernarfon
+<rst_rcvd:2>53
+<rst_sent:2>54
+<station_callsign:7>M0NOM/P
+<time_off:4>0700
+<time_on:4>0700
+<eor>
+
+<app_qrzlog_logid:9>353909978
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:5>G3ZZP
+<comment:14>Horizontal Net
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:3>178
+<dxcc:3>223
+<email:17>g3zzp@outlook.com
+<freq:5>7.141
+<freq_rx:5>7.141
+<gridsquare:8>IO93TS78
+<ituz:2>27
+<lat:11>N053 47.172
+<lon:11>W000 21.427
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<name:14>David MATTHEWS
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:18>Haworth Park, HULL
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0555
+<time_on:4>0555
+<eor>
+
+<app_qrzlog_logid:9>353909979
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:5>G0VWP
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:3>126
+<dxcc:3>223
+<email:21>t.sayner@ntlworld.com
+<freq:5>7.131
+<freq_rx:5>7.131
+<gridsquare:6>IO93kx
+<iota:6>EU-005
+<ituz:2>27
+<lat:11>N053 58.421
+<lon:11>W001 05.364
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<name:12>Terry Sayner
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:37>RSGB BUREAU OR DIRECT E-QSL & CLUBLOG
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:21>York, N.E. Yorkshire,
+<rst_rcvd:2>44
+<rst_sent:2>54
+<station_callsign:7>M0NOM/P
+<time_off:4>0646
+<time_on:4>0646
+<eor>
+
+<app_qrzlog_logid:9>353909980
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:6>EA3BOX
+<comment:33>1kw OMPOWER, FTDX-3000, Catalonia
+<cont:2>EU
+<country:5>Spain
+<cqz:2>14
+<distance:4>1466
+<dxcc:3>281
+<email:16>ea3box@gmail.com
+<freq:5>7.155
+<freq_rx:5>7.155
+<gridsquare:6>JN11ms
+<ituz:2>37
+<lat:11>N041 46.915
+<lon:11>E003 01.738
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<my_sota_ref:8>G/LD-050
+<name:20>JOAN SOL� VILASECA
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:61>VIA MANAGER EA6DB. ( VIA BUREAU OR DIRECT) , AND LOTW, E-QSL.
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:38>17220 SANT FELIU DE GUIXOLS. Catalunya
+<rst_rcvd:2>57
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>0507
+<time_on:4>0507
+<eor>
+
+<app_qrzlog_logid:9>353909981
+<app_qrzlog_qsldate:8>20180707
+<app_qrzlog_status:1>C
+<band:3>80M
+<band_rx:3>80M
+<call:5>DJ5AV
+<cont:2>EU
+<country:7>Germany
+<cqz:2>14
+<distance:4>1119
+<dxcc:3>230
+<email:13>DJ5AV@darc.de
+<freq:5>3.792
+<freq_rx:5>3.792
+<gridsquare:6>JN47PT
+<ituz:2>28
+<lat:11>N047 49.453
+<lon:11>E009 19.087
+<lotw_qsl_rcvd:1>Y
+<lotw_qsl_sent:1>Y
+<lotw_qslrdate:8>20180514
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:14>Michael Oerter
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:16>VIA BURO OR LOTW
+<qso_date:8>20180507
+<qso_date_off:8>20180507
+<qth:18>88633 Heiligenberg
+<station_callsign:7>M0NOM/P
+<time_off:4>0614
+<time_on:4>0614
+<eor>
+
+<app_qrzlog_logid:9>353909982
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:7>OT70NBT
+<cont:2>Eu
+<country:7>Belgium
+<distance:4>6052
+<dxcc:3>209
+<email:9>70@uba.be
+<gridsquare:6>JJ00aa
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:23>UBA 70 Birthday Evening
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180503
+<qso_date_off:8>20180503
+<qth:10>Grimbergen
+<rst_rcvd:2>57
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>1218
+<time_on:4>1218
+<eor>
+
+<app_qrzlog_logid:9>353909983
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:8>MM6BWA/P
+<cont:2>EU
+<country:8>Scotland
+<cqz:2>14
+<dxcc:3>279
+<freq:5>7.165
+<freq_rx:5>7.165
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180503
+<qso_date_off:8>20180503
+<rst_rcvd:2>57
+<rst_sent:2>51
+<sota_ref:9>GM/SI-211
+<station_callsign:7>M0NOM/P
+<time_off:4>1144
+<time_on:4>1144
+<eor>
+
+<app_qrzlog_logid:9>353909984
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:6>MM0VIK
+<comment:49>Euan, E. Shetland, FT-450D, Full Delta Loop, 100w
+<cont:2>EU
+<country:8>Scotland
+<cqz:2>14
+<distance:3>632
+<dxcc:3>279
+<email:18>mm0vik@hotmail.com
+<freq:5>7.148
+<freq_rx:5>7.148
+<gridsquare:6>IO99jx
+<iota:6>EU-012
+<ituz:2>27
+<lat:11>N059 59.094
+<lon:11>W001 14.158
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:13>Euan crawford
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:49>Sorry, No QSL's at the moment please. Thank you. 
+<qso_date:8>20180503
+<qso_date_off:8>20180503
+<qth:38>cumliewick, sandwick, Shetland islands
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>1222
+<time_on:4>1222
+<eor>
+
+<app_qrzlog_logid:9>353909985
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:8>MM0JLA/P
+<cont:2>EU
+<country:8>Scotland
+<cqz:2>14
+<dxcc:3>279
+<freq:5>7.165
+<freq_rx:5>7.165
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180503
+<qso_date_off:8>20180503
+<rst_rcvd:2>57
+<rst_sent:2>57
+<sota_ref:9>GM/SI-211
+<station_callsign:7>M0NOM/P
+<time_off:4>1145
+<time_on:4>1145
+<eor>
+
+<app_qrzlog_logid:9>353909986
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:8>GW4TQE/P
+<cont:2>EU
+<country:5>Wales
+<cqz:2>14
+<dxcc:3>294
+<freq:5>7.147
+<freq_rx:5>7.147
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180503
+<qso_date_off:8>20180503
+<rst_rcvd:2>33
+<rst_sent:2>45
+<sota_ref:9>GW/MW-040
+<station_callsign:7>M0NOM/P
+<time_off:4>1124
+<time_on:4>1124
+<eor>
+
+<app_qrzlog_logid:9>353909987
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:6>GM0WED
+<comment:26>Ed, 2km S. Orkney Kirkwall
+<cont:2>EU
+<country:8>Scotland
+<distance:3>509
+<dxcc:3>279
+<email:15>ed@gm0wed.co.uk
+<freq:5>7.165
+<freq_rx:5>7.165
+<gridsquare:6>IO88mw
+<iota:6>EU-009
+<lat:11>N058 57.173
+<lon:11>W002 57.613
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:7>Ed Holt
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:22>QSL DIRECT ONLY PLEASE
+<qso_date:8>20180503
+<qso_date_off:8>20180503
+<qth:16>KIRKWALL, Orkney
+<rst_rcvd:2>56
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>1143
+<time_on:4>1143
+<eor>
+
+<app_qrzlog_logid:9>353909988
+<app_qrzlog_status:1>N
+<band:3>60m
+<band_rx:3>60m
+<call:7>G6WRW/P
+<comment:13>First 60m QSO
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<dxcc:3>223
+<freq:5>5.398
+<freq_rx:5>5.398
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180503
+<qso_date_off:8>20180503
+<rst_rcvd:2>55
+<rst_sent:2>59
+<sota_ref:8>G/LD-030
+<station_callsign:7>M0NOM/P
+<time_off:4>1202
+<time_on:4>1202
+<eor>
+
+<app_qrzlog_logid:9>353909989
+<app_qrzlog_status:1>N
+<band:3>40m
+<band_rx:3>40m
+<call:7>G6WRW/P
+<comment:8>Caroline
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<dxcc:3>223
+<freq:4>7.12
+<freq_rx:4>7.12
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180503
+<qso_date_off:8>20180503
+<rst_rcvd:2>51
+<rst_sent:2>57
+<sota_ref:8>G/LD-030
+<station_callsign:7>M0NOM/P
+<time_off:4>1128
+<time_on:4>1128
+<eor>
+
+<app_qrzlog_logid:9>353909990
+<app_qrzlog_status:1>N
+<band:2>2M
+<band_rx:2>2M
+<call:7>G4VPX/P
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<dxcc:3>223
+<freq:7>144.613
+<freq_rx:7>144.613
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:4>DATA
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180503
+<qso_date_off:8>20180503
+<station_callsign:7>M0NOM/P
+<time_off:4>1142
+<time_on:4>1142
+<eor>
+
+<app_qrzlog_logid:9>353909991
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:7>G4VPX/P
+<comment:5>Allan
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<dxcc:3>223
+<freq:5>145.4
+<freq_rx:5>145.4
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180503
+<qso_date_off:8>20180503
+<rst_rcvd:2>59
+<rst_sent:2>57
+<sota_ref:8>G/LD-010
+<station_callsign:7>M0NOM/P
+<time_off:4>1132
+<time_on:4>1132
+<eor>
+
+<app_qrzlog_logid:9>353909992
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:7>M0IML/P
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<dxcc:3>223
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180430
+<qso_date_off:8>20180430
+<rst_rcvd:2>59
+<rst_sent:2>53
+<sota_ref:8>G/LD-011
+<station_callsign:7>M0NOM/P
+<time_off:4>1153
+<time_on:4>1153
+<eor>
+
+<app_qrzlog_logid:9>353909993
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:5>G6LKB
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:2>24
+<dxcc:3>223
+<email:19>dmlakes@hotmail.com
+<gridsquare:8>IO84KE83
+<iota:6>EU-005
+<ituz:2>27
+<lat:11>N054 10.786
+<lon:11>W003 05.766
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:15>David WARBURTON
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180430
+<qso_date_off:8>20180430
+<qth:7>CUMBRIA
+<rst_rcvd:2>59
+<rst_sent:2>59
+<station_callsign:7>M0NOM/P
+<time_off:4>1154
+<time_on:4>1154
+<eor>
+
+<app_qrzlog_logid:9>353909994
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:7>G4WHA/M
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<dxcc:3>223
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180430
+<qso_date_off:8>20180430
+<rst_rcvd:2>51
+<rst_sent:2>53
+<station_callsign:7>M0NOM/P
+<time_off:4>1148
+<time_on:4>1148
+<eor>
+
+<app_qrzlog_logid:9>353909995
+<app_qrzlog_status:1>N
+<band:2>2M
+<band_rx:2>2M
+<call:5>G1OHH
+<cont:2>EU
+<country:7>England
+<distance:2>35
+<dxcc:3>223
+<email:26>sgriffin46@virginmedia.com
+<gridsquare:6>IO84ob
+<lat:11>N054 03.700
+<lon:11>W002 47.600
+<lotw_qsl_sent:1>Y
+<mode:4>DATA
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:15>Susan M Griffin
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180430
+<qso_date_off:8>20180430
+<qth:9>Lancaster
+<station_callsign:7>M0NOM/P
+<time_off:4>1142
+<time_on:4>1142
+<eor>
+
+<app_qrzlog_logid:9>353909996
+<app_qrzlog_status:1>N
+<band:2>2m
+<band_rx:2>2m
+<call:5>G0TDM
+<cont:2>EU
+<country:7>England
+<distance:4>6052
+<dxcc:3>223
+<email:19>G0TDM@hotmail.co.uk
+<gridsquare:6>IO84oq
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:11>John Sutton
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180430
+<qso_date_off:8>20180430
+<qth:7>PENRITH
+<rst_rcvd:2>53
+<rst_sent:2>53
+<station_callsign:7>M0NOM/P
+<time_off:4>1150
+<time_on:4>1150
+<eor>
+
+<app_qrzlog_logid:9>353909997
+<app_qrzlog_status:1>N
+<band:2>2M
+<band_rx:2>2M
+<call:5>C7CDA
+<cont:2>EU
+<country:11>Switzerland
+<cqz:2>14
+<dxcc:3>287
+<ituz:2>28
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:4>DATA
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180430
+<qso_date_off:8>20180430
+<station_callsign:7>M0NOM/P
+<time_off:4>1145
+<time_on:4>1145
+<eor>
+
+<app_qrzlog_logid:9>353909998
+<app_qrzlog_status:1>N
+<band:3>20M
+<band_rx:3>20M
+<call:8>YO8SSH/P
+<cont:2>EU
+<country:7>Romania
+<cqz:2>20
+<dxcc:3>275
+<freq:5>14.29
+<freq_rx:5>14.29
+<ituz:2>28
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180421
+<qso_date_off:8>20180421
+<station_callsign:7>M0NOM/P
+<time_off:4>1656
+<time_on:4>1656
+<eor>
+
+<app_qrzlog_logid:9>353909999
+<app_qrzlog_status:1>N
+<band:3>20M
+<band_rx:3>20M
+<call:8>GW0WPO/P
+<cont:2>EU
+<country:5>Wales
+<cqz:2>14
+<dxcc:3>294
+<freq:6>14.325
+<freq_rx:6>14.325
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180421
+<qso_date_off:8>20180421
+<station_callsign:7>M0NOM/P
+<time_off:4>1713
+<time_on:4>1713
+<eor>
+
+<app_qrzlog_logid:9>353910000
+<app_qrzlog_status:1>N
+<band:3>20M
+<band_rx:3>20M
+<call:5>G0TDM
+<cont:2>EU
+<country:7>England
+<distance:4>6052
+<dxcc:3>223
+<email:19>G0TDM@hotmail.co.uk
+<freq:5>14.29
+<freq_rx:5>14.29
+<gridsquare:6>IO84oq
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:11>John Sutton
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180421
+<qso_date_off:8>20180421
+<qth:7>PENRITH
+<station_callsign:7>M0NOM/P
+<time_off:4>1651
+<time_on:4>1651
+<eor>
+
+<app_qrzlog_logid:9>353910001
+<app_qrzlog_status:1>N
+<band:3>20M
+<band_rx:3>20M
+<call:5>EA9KB
+<cont:2>AF
+<country:17>Ceuta and Melilla
+<distance:4>6052
+<dxcc:2>32
+<email:19>ebellidog@gmail.com
+<freq:6>14.219
+<freq_rx:6>14.219
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:24>ENRIQUE BELLIDO GARCIOLO
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:6>EA7FTR
+<qso_date:8>20180421
+<qso_date_off:8>20180421
+<qth:5>CEUTA
+<station_callsign:7>M0NOM/P
+<time_off:4>1703
+<time_on:4>1703
+<eor>
+
+<app_qrzlog_logid:9>353910002
+<app_qrzlog_status:1>N
+<band:2>2M
+<band_rx:2>2M
+<call:8>MW0WBG/P
+<cont:2>EU
+<country:5>Wales
+<cqz:2>14
+<dxcc:3>294
+<freq:6>145.45
+<freq_rx:6>145.45
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180421
+<qso_date_off:8>20180421
+<station_callsign:7>M0NOM/P
+<time_off:4>1540
+<time_on:4>1540
+<eor>
+
+<app_qrzlog_logid:9>353910003
+<app_qrzlog_status:1>N
+<band:2>2M
+<band_rx:2>2M
+<call:8>MW0VCF/P
+<cont:2>EU
+<country:5>Wales
+<cqz:2>14
+<dxcc:3>294
+<freq:6>145.45
+<freq_rx:6>145.45
+<ituz:2>27
+<lat:11>S000 00.000
+<lon:11>W000 00.000
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180421
+<qso_date_off:8>20180421
+<station_callsign:7>M0NOM/P
+<time_off:4>1527
+<time_on:4>1527
+<eor>
+
+<app_qrzlog_logid:9>353910004
+<app_qrzlog_status:1>N
+<band:2>2M
+<band_rx:2>2M
+<call:6>MW0ISC
+<cont:2>EU
+<country:5>Wales
+<cqz:2>14
+<distance:3>135
+<dxcc:3>294
+<freq:6>145.45
+<freq_rx:6>145.45
+<gridsquare:8>IO83JE50
+<ituz:2>27
+<lat:11>N053 10.064
+<lon:11>W003 12.250
+<lotw_qsl_sent:1>Y
+<mode:2>FM
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:5>Steve
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180421
+<qso_date_off:8>20180421
+<qth:46>Ger y Twr, Pantymwyn, Mold, Flintshire CH7 5HY
+<station_callsign:7>M0NOM/P
+<time_off:4>1533
+<time_on:4>1533
+<eor>
+
+<app_qrzlog_logid:9>353910005
+<app_qrzlog_qsldate:8>20180516
+<app_qrzlog_status:1>C
+<band:3>80M
+<band_rx:3>80M
+<call:7>M3FEH/P
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:3>368
+<dxcc:3>223
+<freq:5>3.764
+<freq_rx:5>3.764
+<gridsquare:6>IO91vl
+<iota:6>EU-005
+<ituz:2>27
+<lat:11>N051 29.704
+<lon:11>W000 10.547
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:11>Karl Kruger
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:14>OWN CALL/ eQSL
+<qso_date:8>20180421
+<qso_date_off:8>20180421
+<qth:17>Saltash, Cornwall
+<station_callsign:7>M0NOM/P
+<time_off:4>1639
+<time_on:4>1639
+<eor>
+
+<app_qrzlog_logid:9>353910006
+<app_qrzlog_qsldate:8>20180516
+<app_qrzlog_status:1>C
+<band:3>40M
+<band_rx:3>40M
+<call:7>M3FEH/P
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:3>368
+<dxcc:3>223
+<freq:5>7.152
+<freq_rx:5>7.152
+<gridsquare:6>IO91vl
+<iota:6>EU-005
+<ituz:2>27
+<lat:11>N051 29.704
+<lon:11>W000 10.547
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:11>Karl Kruger
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:14>OWN CALL/ eQSL
+<qso_date:8>20180421
+<qso_date_off:8>20180421
+<qth:17>Saltash, Cornwall
+<station_callsign:7>M0NOM/P
+<time_off:4>1623
+<time_on:4>1623
+<eor>
+
+<app_qrzlog_logid:9>353910007
+<app_qrzlog_status:1>N
+<band:3>80M
+<band_rx:3>80M
+<call:5>M0JLA
+<cont:2>EU
+<country:7>England
+<distance:3>257
+<dxcc:3>223
+<freq:5>3.764
+<freq_rx:5>3.764
+<gridsquare:6>IO82pb
+<lat:11>N052 03.700
+<lon:11>W002 42.600
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:9>Rod M0JLA
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qso_date:8>20180421
+<qso_date_off:8>20180421
+<qth:13>Hereford City
+<station_callsign:7>M0NOM/P
+<time_off:4>1637
+<time_on:4>1637
+<eor>
+
+<app_qrzlog_logid:9>353910008
+<app_qrzlog_status:1>N
+<band:3>80M
+<band_rx:3>80M
+<call:6>GW4VPX
+<cont:2>EU
+<country:5>Wales
+<cqz:2>14
+<distance:3>275
+<dxcc:3>294
+<email:16>gw4vpx@gmail.com
+<freq:5>3.764
+<freq_rx:5>3.764
+<gridsquare:6>IO72va
+<ituz:2>27
+<lat:11>N052 01.200
+<lon:11>W004 12.600
+<lotw_qsl_sent:1>Y
+<mode:3>SSB
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:11>ALLAN JONES
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:19>QSL VIA RSGB BUREAU
+<qso_date:8>20180421
+<qso_date_off:8>20180421
+<qth:8>PENCADER
+<station_callsign:7>M0NOM/P
+<time_off:4>1638
+<time_on:4>1638
+<eor>
+
+<app_qrzlog_logid:9>353910009
+<app_qrzlog_status:1>N
+<band:2>2M
+<band_rx:2>2M
+<call:5>G7CDA
+<cont:2>EU
+<country:7>England
+<cqz:2>14
+<distance:2>63
+<dxcc:3>223
+<email:17>hedgidj@gmail.com
+<freq:7>144.682
+<freq_rx:7>144.682
+<gridsquare:6>IO83qt
+<ituz:2>27
+<lat:11>N053 49.879
+<lon:11>W002 35.890
+<lotw_qsl_sent:1>Y
+<mode:4>DATA
+<my_city:10>Windermere
+<my_country:7>England
+<my_cq_zone:2>14
+<my_gridsquare:8>IO84NI09
+<my_itu_zone:2>27
+<my_lat:11>N054 22.259
+<my_lon:11>W002 54.595
+<my_name:12>Mark Wickens
+<name:13>Douggie G7CDA
+<qrzcom_qso_upload_date:8>20180516
+<qrzcom_qso_upload_status:1>Y
+<qsl_rcvd:1>N
+<qsl_sent:1>N
+<qsl_via:9>EQSL.NET,
+<qso_date:8>20180421
+<qso_date_off:8>20180421
+<qth:12>Near Preston
+<station_callsign:7>M0NOM/P
+<time_off:4>1550
+<time_on:4>1550
+<eor>
