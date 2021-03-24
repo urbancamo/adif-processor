@@ -308,6 +308,20 @@ public class Adif3PrintFormatter {
                     value = String.format(column.getFormat(), dist);
                 }
                 break;
+            case "SRX" :
+                if (rec.getSrx() != null) {
+                    value = String.format(column.getFormat(), rec.getSrx());
+                } else if (rec.getSrxString() != null) {
+                    value = rec.getSrxString();
+                }
+                break;
+            case "STX" :
+                if (rec.getStx() != null) {
+                    value = String.format(column.getFormat(), rec.getStx());
+                } else if (rec.getStxString() != null) {
+                    value = rec.getStxString();
+                }
+                break;
         }
         return value;
     }

@@ -35,12 +35,14 @@ public class PrintFormatApp implements Runnable
     @Override
     public void run() {
         BufferedWriter writer = null;
-        String in = args[0];
-        String out = String.format("%s.%s", FilenameUtils.removeExtension(in.toString()), "prn");
+        String in = "<unspecified>";
+        String out = "<unspecified>";
         try {
             if (args.length != 2) {
                 System.err.println(String.format("Usage: %s <inputFile>.adi <config-file>.yaml", this.getClass().getName()));
             } else {
+                in = args[0];
+                out = String.format("%s.%s", FilenameUtils.removeExtension(in.toString()), "prn");
                 formatter.configure(args[1]);
                 Adif3 log = readerWriter.read(in, formatter.getPrintJobConfig().getInEncoding());
                 StringBuilder sb = formatter.format(log);

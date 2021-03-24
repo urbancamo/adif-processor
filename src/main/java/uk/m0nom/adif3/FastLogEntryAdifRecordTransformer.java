@@ -4,9 +4,12 @@ import com.amihaiemil.eoyaml.YamlMapping;
 import com.amihaiemil.eoyaml.YamlNode;
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
+import org.marsik.ham.adif.enums.QslSent;
+import org.marsik.ham.adif.enums.QslVia;
 import org.marsik.ham.adif.types.Iota;
 import org.marsik.ham.adif.types.Sota;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer {
@@ -100,10 +103,8 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                         // We also add the Sota reference as-is to the comment field
                         unmapped.put(key, value);
                         break;
-                    case "SerialTX":
+                    case "SerialTx":
                         // Determine if this is a serial number of string based contest exchange
-                        String serialTx = "";
-                        Integer serialTxInt = -1;
                         try {
                             rec.setStx(Integer.parseInt(value));
                         } catch (NumberFormatException nfe) {
@@ -113,8 +114,6 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                         break;
                     case "SerialRx":
                         // Determine if this is a serial number of string based contest exchange
-                        String serialRx = "";
-                        Integer serialRxInt = -1;
                         try {
                             rec.setSrx(Integer.parseInt(value));
                         } catch (NumberFormatException nfe) {
@@ -122,9 +121,19 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                             rec.setSrxString(value);
                         }
                         break;
-//                    default:
-//                        unmapped.put(key, value);
-//                        break;
+                    case "Qsl":
+                        rec.setQslSDate(LocalDate.now());
+                        rec.setQslSent(QslSent.SENT);
+                        // This could either be a bureau or direct QSL depending on value
+                        switch (value) {
+                            case "D":
+                                rec.setQslSentVia(QslVia.DIRECT);
+                                break;
+                            case "B":
+                                rec.setQslSentVia(QslVia.BUREAU);
+                                break;
+                        }
+                        break;
                 }
             } else {
                 unmapped.put(key, value);

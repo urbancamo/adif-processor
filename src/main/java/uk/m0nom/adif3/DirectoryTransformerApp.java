@@ -8,10 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-/**
- * Hello world!
- *
- */
 public class DirectoryTransformerApp implements Runnable
 {
     private static DirectoryTransformerApp instance;

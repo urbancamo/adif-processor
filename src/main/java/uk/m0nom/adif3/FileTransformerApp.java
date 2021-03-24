@@ -5,10 +5,6 @@ import org.marsik.ham.adif.Adif3;
 
 import java.io.IOException;
 
-/**
- * Hello world!
- *
- */
 public class FileTransformerApp implements Runnable
 {
 
@@ -17,7 +13,7 @@ public class FileTransformerApp implements Runnable
     private Adif3Transformer transformer;
     private Adif3FileReaderWriter readerWriter;
 
-    private final static String configFilePath = "./src/main/resources/adif-processor.yaml";
+    private final static String configFilePath = "adif-processor.yaml";
 
     private String args[];
 
