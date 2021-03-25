@@ -4,13 +4,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-// Copyright (c) 2011, Yves Goergen, http://unclassified.software/source/maidenheadlocator
-//
-// Copying and distribution of this file, with or without modification, are permitted provided the
-// copyright notice and this notice are preserved. This file is offered as-is, without any warranty.
-// This class is based on a Perl module by Dirk Koopman, G1TLH, from 2002-11-07.
-// Source: http://www.koders.com/perl/fidDAB6FD208AC4F5C0306CA344485FD0899BD2F328.aspx
-
+/**
+ * Converted from C# source code by Mark Wickens M0NOM, credits and license below
+ *
+ * Copyright (c) 2011, Yves Goergen, http://unclassified.software/source/maidenheadlocator
+ * Copying and distribution of this file, with or without modification, are permitted provided the
+ * copyright notice and this notice are preserved. This file is offered as-is, without any warranty.
+ * This class is based on a Perl module by Dirk Koopman, G1TLH, from 2002-11-07.
+ * Source: http://www.koders.com/perl/fidDAB6FD208AC4F5C0306CA344485FD0899BD2F328.aspx
+ */
 public class MaidenheadLocatorConversion {
 
     private final static Pattern LOC_4CHAR = Pattern.compile("^[A-R]{2}[0-9]{2}$");
@@ -25,7 +27,7 @@ public class MaidenheadLocatorConversion {
         Matcher matcher8Char = LOC_8CHAR.matcher(locatorTrimmed);
         Matcher matcher10Char = LOC_10CHAR.matcher(locatorTrimmed);
 
-        char locator[] = locatorTrimmed.toCharArray();
+        char[] locator = locatorTrimmed.toCharArray();
 
         if (matcher4Char.matches()) {
             LatLng ll = new LatLng();
@@ -53,42 +55,47 @@ public class MaidenheadLocatorConversion {
     }
 
 
-    /// <summary>
-    /// Convert latitude and longitude in degrees to a locator
-    /// </summary>
-    /// <param name="ll">LatLng structure to convert</param>
-    /// <returns>Locator string</returns>
+    
+    /**
+     * Converts latitude and longitude in degrees to a locator
+     *
+     * @param ll LatLng structure to convert
+     * @return Locator string
+     */
     public static String latLngToLocator(LatLng ll) {
         return latLngToLocator(ll.latitude, ll.longitude, 0);
     }
 
-    /// <summary>
-    /// Convert latitude and longitude in degrees to a locator
-    /// </summary>
-    /// <param name="ll">LatLng structure to convert</param>
-    /// <param name="Ext">Extra precision (0, 1, 2)</param>
-    /// <returns>Locator string</returns>
-    public static String latLngToLocator(LatLng ll, int Ext) {
-        return latLngToLocator(ll.latitude, ll.longitude, Ext);
+    
+    /** Convert latitude and longitude in degrees to a locator
+    *
+    * @param ll structure to convert
+    * @param ext precision (0, 1, 2)
+    * @return ocator string</returns>
+     */
+    public static String latLngToLocator(LatLng ll, int ext) {
+        return latLngToLocator(ll.latitude, ll.longitude, ext);
     }
 
-    /// <summary>
-    /// Convert latitude and longitude in degrees to a locator
-    /// </summary>
-    /// <param name="Lat">Latitude to convert</param>
-    /// <param name="Long">Longitude to convert</param>
-    /// <returns>Locator string</returns>
+    
+    /** Convert latitude and longitude in degrees to a locator
+    *
+    * @param latitude Latitude to convert
+    * @param longitude Longitude to convert
+    * @return locator string
+     */
     public static String latLngToLocator(double latitude, double longitude) {
         return latLngToLocator(latitude, longitude, 0);
     }
 
-    /// <summary>
-    /// Convert latitude and longitude in degrees to a locator
-    /// </summary>
-    /// <param name="Lat">Latitude to convert</param>
-    /// <param name="Long">Longitude to convert</param>
-    /// <param name="Ext">Extra precision (0, 1, 2)</param>
-    /// <returns>Locator string</returns>
+    
+    /** Convert latitude and longitude in degrees to a locator
+    *
+    * @param latitudeIn Latitude to convert
+    * @param longitudeIn Longitude to convert
+    * @param ext Extra precision (0, 1, 2)
+    * @return Locator string
+     */
     public static String latLngToLocator(double latitudeIn, double longitudeIn, int ext) {
         int v;
         String locator = "";
@@ -105,7 +112,7 @@ public class MaidenheadLocatorConversion {
         if (latitude < 0) latitude += 10;
 
         locator += (char) ('0' + Math.floor(longitude / 2));
-        locator += (char) ('0' + Math.floor(latitude / 1));
+        locator += (char) ('0' + Math.floor(latitude));
         longitude = Math.IEEEremainder(longitude, 2);
         if (longitude < 0) longitude += 2;
         latitude = Math.IEEEremainder(latitude, 1);
@@ -130,10 +137,6 @@ public class MaidenheadLocatorConversion {
         if (ext >= 2) {
             locator += (char) ('A' + Math.floor(longitude * 120 * 24));
             locator += (char) ('A' + Math.floor(latitude * 240 * 24));
-            longitude = Math.IEEEremainder(longitude, (double) 1 / 120 / 24);
-            if (longitude < 0) longitude += (double) 1 / 120 / 24;
-            latitude = Math.IEEEremainder(latitude, (double) 1 / 240 / 24);
-            if (latitude < 0) latitude += (double) 1 / 240 / 24;
         }
 
         return locator;
@@ -155,79 +158,62 @@ public class MaidenheadLocatorConversion {
         //return locator;
     }
 
-    /// <summary>
-    /// Convert radians to degrees
-    /// </summary>
-    /// <param name="rad"></param>
-    /// <returns></returns>
-    public static double radToDeg(double rad) {
-        return rad / Math.PI * 180;
-    }
-
-    /// <summary>
-    /// Convert degrees to radians
-    /// </summary>
-    /// <param name="deg"></param>
-    /// <returns></returns>
-    public static double degToRad(double deg) {
-        return deg / 180 * Math.PI;
-    }
-
-    /// <summary>
-    /// Calculate the distance in km between two locators
-    /// </summary>
-    /// <param name="A">Start locator string</param>
-    /// <param name="B">End locator string</param>
-    /// <returns>Distance in km</returns>
+    /**
+     * Calculate the distance in km between two locators
+     * @param a Start locator string
+     * @param b End locator string
+     * @return Distance in km<
+     */
     public static double distance(String a, String b) {
         return distance(locatorToLatLng(a), locatorToLatLng(b));
     }
 
-    /// <summary>
-    /// Calculate the distance in km between two locators
-    /// </summary>
-    /// <param name="A">Start LatLng structure</param>
-    /// <param name="B">End LatLng structure</param>
-    /// <returns>Distance in km</returns>
+    
+    /** Calculate the distance in km between two locators
+    *
+    * @param a Start LatLng structure
+    * @param b End LatLng structure
+    * @return Distance in km
+     */
     public static double distance(LatLng a, LatLng b) {
         if (a.compareTo(b) == 0) return 0;
 
-        double hn = degToRad(a.latitude);
-        double he = degToRad(a.longitude);
-        double n = degToRad(b.latitude);
-        double e = degToRad(b.longitude);
+        double hn = Math.toRadians(a.latitude);
+        double he = Math.toRadians(a.longitude);
+        double n = Math.toRadians(b.latitude);
+        double e = Math.toRadians(b.longitude);
 
         double co = Math.cos(he - e) * Math.cos(hn) * Math.cos(n) + Math.sin(hn) * Math.sin(n);
         double ca = Math.atan(Math.abs(Math.sqrt(1 - co * co) / co));
         if (co < 0) ca = Math.PI - ca;
-        double dx = 6367 * ca;
-
-        return dx;
+        return 6367 * ca;
     }
 
-    /// <summary>
-    /// Calculate the azimuth in degrees between two locators
-    /// </summary>
-    /// <param name="A">Start locator string</param>
-    /// <param name="B">End locator string</param>
-    /// <returns>Azimuth in degrees</returns>
+    
+    /** Calculate the azimuth in degrees between two locators
+    *
+    * @param a Start locator string
+    * @param b End locator string
+    * @return Azimuth in degrees
+     */
     public static double azimuth(String a, String b) {
         return azimuth(locatorToLatLng(a), locatorToLatLng(b));
     }
 
-    /// <summary>
-    /// Calculate the azimuth in degrees between two locators
-    /// </summary>
-    /// <param name="A">Start LatLng structure</param>
-    /// <param name="B">End LatLng structure</param>
-    /// <returns>Azimuth in degrees</returns>
+    
+    /** Calculate the azimuth in degrees between two locators
+    *
+    * @param a Start LatLng structure
+    * @param b End LatLng structure
+    * @return azimuth in degrees
+     */
     public static double azimuth(LatLng a, LatLng b) {
         if (a.compareTo(b) == 0) return 0;
 
-        double hn = degToRad(a.latitude);
-        double he = degToRad(a.longitude);
-        double n = degToRad(b.latitude);
-        double e = degToRad(b.longitude);
+        double hn = Math.toRadians(a.latitude);
+        double he = Math.toRadians(a.longitude);
+        double n = Math.toRadians(b.latitude);
+        double e = Math.toRadians(b.longitude);
 
         double co = Math.cos(he - e) * Math.cos(hn) * Math.cos(n) + Math.sin(hn) * Math.sin(n);
         double ca = Math.atan(Math.abs(Math.sqrt(1 - co * co) / co));
@@ -240,6 +226,6 @@ public class MaidenheadLocatorConversion {
         if (si < 0) az = -az;
         if (az < 0) az = az + 2 * Math.PI;
 
-        return radToDeg(az);
+        return Math.toDegrees(az);
     }
 }
