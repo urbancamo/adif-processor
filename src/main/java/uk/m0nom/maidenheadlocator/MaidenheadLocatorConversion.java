@@ -68,7 +68,7 @@ public class MaidenheadLocatorConversion {
     /// <param name="ll">LatLng structure to convert</param>
     /// <param name="Ext">Extra precision (0, 1, 2)</param>
     /// <returns>Locator string</returns>
-    public static String LatLngToLocator(LatLng ll, int Ext) {
+    public static String latLngToLocator(LatLng ll, int Ext) {
         return latLngToLocator(ll.latitude, ll.longitude, Ext);
     }
 
@@ -78,7 +78,7 @@ public class MaidenheadLocatorConversion {
     /// <param name="Lat">Latitude to convert</param>
     /// <param name="Long">Longitude to convert</param>
     /// <returns>Locator string</returns>
-    public static String LatLngToLocator(double latitude, double longitude) {
+    public static String latLngToLocator(double latitude, double longitude) {
         return latLngToLocator(latitude, longitude, 0);
     }
 
@@ -180,7 +180,7 @@ public class MaidenheadLocatorConversion {
     /// <param name="B">End locator string</param>
     /// <returns>Distance in km</returns>
     public static double distance(String a, String b) {
-        return Distance(locatorToLatLng(a), locatorToLatLng(b));
+        return distance(locatorToLatLng(a), locatorToLatLng(b));
     }
 
     /// <summary>
@@ -189,7 +189,7 @@ public class MaidenheadLocatorConversion {
     /// <param name="A">Start LatLng structure</param>
     /// <param name="B">End LatLng structure</param>
     /// <returns>Distance in km</returns>
-    public static double Distance(LatLng a, LatLng b) {
+    public static double distance(LatLng a, LatLng b) {
         if (a.compareTo(b) == 0) return 0;
 
         double hn = degToRad(a.latitude);
@@ -211,8 +211,8 @@ public class MaidenheadLocatorConversion {
     /// <param name="A">Start locator string</param>
     /// <param name="B">End locator string</param>
     /// <returns>Azimuth in degrees</returns>
-    public static double Azimuth(String a, String b) {
-        return Azimuth(locatorToLatLng(a), locatorToLatLng(b));
+    public static double azimuth(String a, String b) {
+        return azimuth(locatorToLatLng(a), locatorToLatLng(b));
     }
 
     /// <summary>
@@ -221,7 +221,7 @@ public class MaidenheadLocatorConversion {
     /// <param name="A">Start LatLng structure</param>
     /// <param name="B">End LatLng structure</param>
     /// <returns>Azimuth in degrees</returns>
-    public static double Azimuth(LatLng a, LatLng b) {
+    public static double azimuth(LatLng a, LatLng b) {
         if (a.compareTo(b) == 0) return 0;
 
         double hn = degToRad(a.latitude);
