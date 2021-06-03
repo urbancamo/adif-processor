@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="uk.m0nom.adif3.FileTransformerAppTest" time="0" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="uk.m0nom.adif3.FileTransformerAppTest" time="0.004" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -7,7 +7,7 @@
     <property name="file.encoding.pkg" value="sun.io"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.class.path" value="C:\Projects\adif-processor\adif-processor\target\test-classes;C:\Projects\adif-processor\adif-processor\target\classes;C:\Users\mark\.m2\repository\org\marsik\ham\adif\1.2-SNAPSHOT\adif-1.2-SNAPSHOT.jar;C:\Users\mark\.m2\repository\org\gavaghan\geodesy\1.1.3\geodesy-1.1.3.jar;C:\Users\mark\.m2\repository\org\apache\commons\commons-lang3\3.1\commons-lang3-3.1.jar;C:\Users\mark\.m2\repository\commons-io\commons-io\1.3.2\commons-io-1.3.2.jar;C:\Users\mark\.m2\repository\com\amihaiemil\web\eo-yaml\5.1.7\eo-yaml-5.1.7.jar;C:\Users\mark\.m2\repository\org\projectlombok\lombok\1.18.16\lombok-1.18.16.jar;C:\Users\mark\.m2\repository\junit\junit\4.12\junit-4.12.jar;C:\Users\mark\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\mark\.m2\repository\org\mockito\mockito-all\1.10.19\mockito-all-1.10.19.jar;C:\Users\mark\.m2\repository\org\assertj\assertj-core\3.4.1\assertj-core-3.4.1.jar;"/>
+    <property name="java.class.path" value="C:\Projects\github\adif-processor\target\test-classes;C:\Projects\github\adif-processor\target\classes;C:\Users\mark\.m2\repository\org\marsik\ham\adif\1.2-SNAPSHOT\adif-1.2-SNAPSHOT.jar;C:\Users\mark\.m2\repository\org\gavaghan\geodesy\1.1.3\geodesy-1.1.3.jar;C:\Users\mark\.m2\repository\org\apache\commons\commons-lang3\3.1\commons-lang3-3.1.jar;C:\Users\mark\.m2\repository\commons-io\commons-io\1.3.2\commons-io-1.3.2.jar;C:\Users\mark\.m2\repository\com\amihaiemil\web\eo-yaml\5.1.7\eo-yaml-5.1.7.jar;C:\Users\mark\.m2\repository\org\projectlombok\lombok\1.18.20\lombok-1.18.20.jar;C:\Users\mark\.m2\repository\junit\junit\4.12\junit-4.12.jar;C:\Users\mark\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\mark\.m2\repository\org\mockito\mockito-all\1.10.19\mockito-all-1.10.19.jar;C:\Users\mark\.m2\repository\org\assertj\assertj-core\3.4.1\assertj-core-3.4.1.jar;"/>
     <property name="java.vm.vendor" value="&quot;Oracle Corporation&quot;"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="user.variant" value=""/>
@@ -18,9 +18,9 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="GB"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-10\bin"/>
-    <property name="sun.java.command" value="C:\Users\mark\AppData\Local\Temp\surefire15195216056672732664\surefirebooter6061525358374945979.jar C:\Users\mark\AppData\Local\Temp\surefire15195216056672732664 2021-01-16T20-28-27_654-jvmRun1 surefire1566592431167306897tmp surefire_06333186074438046201tmp"/>
+    <property name="sun.java.command" value="C:\Users\mark\AppData\Local\Temp\surefire8538891176626731479\surefirebooter13679799293108506450.jar C:\Users\mark\AppData\Local\Temp\surefire8538891176626731479 2021-06-03T20-56-18_859-jvmRun1 surefire6303955841676864054tmp surefire_09540325020036818401tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="C:\Projects\adif-processor\adif-processor\target\test-classes;C:\Projects\adif-processor\adif-processor\target\classes;C:\Users\mark\.m2\repository\org\marsik\ham\adif\1.2-SNAPSHOT\adif-1.2-SNAPSHOT.jar;C:\Users\mark\.m2\repository\org\gavaghan\geodesy\1.1.3\geodesy-1.1.3.jar;C:\Users\mark\.m2\repository\org\apache\commons\commons-lang3\3.1\commons-lang3-3.1.jar;C:\Users\mark\.m2\repository\commons-io\commons-io\1.3.2\commons-io-1.3.2.jar;C:\Users\mark\.m2\repository\com\amihaiemil\web\eo-yaml\5.1.7\eo-yaml-5.1.7.jar;C:\Users\mark\.m2\repository\org\projectlombok\lombok\1.18.16\lombok-1.18.16.jar;C:\Users\mark\.m2\repository\junit\junit\4.12\junit-4.12.jar;C:\Users\mark\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\mark\.m2\repository\org\mockito\mockito-all\1.10.19\mockito-all-1.10.19.jar;C:\Users\mark\.m2\repository\org\assertj\assertj-core\3.4.1\assertj-core-3.4.1.jar;"/>
+    <property name="surefire.test.class.path" value="C:\Projects\github\adif-processor\target\test-classes;C:\Projects\github\adif-processor\target\classes;C:\Users\mark\.m2\repository\org\marsik\ham\adif\1.2-SNAPSHOT\adif-1.2-SNAPSHOT.jar;C:\Users\mark\.m2\repository\org\gavaghan\geodesy\1.1.3\geodesy-1.1.3.jar;C:\Users\mark\.m2\repository\org\apache\commons\commons-lang3\3.1\commons-lang3-3.1.jar;C:\Users\mark\.m2\repository\commons-io\commons-io\1.3.2\commons-io-1.3.2.jar;C:\Users\mark\.m2\repository\com\amihaiemil\web\eo-yaml\5.1.7\eo-yaml-5.1.7.jar;C:\Users\mark\.m2\repository\org\projectlombok\lombok\1.18.20\lombok-1.18.20.jar;C:\Users\mark\.m2\repository\junit\junit\4.12\junit-4.12.jar;C:\Users\mark\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\mark\.m2\repository\org\mockito\mockito-all\1.10.19\mockito-all-1.10.19.jar;C:\Users\mark\.m2\repository\org\assertj\assertj-core\3.4.1\assertj-core-3.4.1.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\mark"/>
     <property name="user.language" value="en"/>
@@ -28,13 +28,13 @@
     <property name="java.version.date" value="2018-03-20"/>
     <property name="java.home" value="C:\Program Files\Java\jdk-10"/>
     <property name="file.separator" value="\"/>
-    <property name="basedir" value="C:\Projects\adif-processor\adif-processor"/>
+    <property name="basedir" value="C:\Projects\github\adif-processor"/>
     <property name="java.vm.compressedOopsMode" value="32-bit"/>
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="C:\Users\mark\AppData\Local\Temp\surefire15195216056672732664\surefirebooter6061525358374945979.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\mark\AppData\Local\Temp\surefire8538891176626731479\surefirebooter13679799293108506450.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="10+46"/>
@@ -48,19 +48,19 @@
     <property name="localRepository" value="C:\Users\mark\.m2\repository"/>
     <property name="java.vendor.url.bug" value="http://bugreport.java.com/bugreport/"/>
     <property name="java.io.tmpdir" value="C:\Users\mark\AppData\Local\Temp\"/>
-    <property name="idea.version" value="2020.3.1"/>
+    <property name="idea.version" value="2021.1.2"/>
     <property name="java.version" value="10"/>
-    <property name="user.dir" value="C:\Projects\adif-processor\adif-processor"/>
+    <property name="user.dir" value="C:\Projects\github\adif-processor"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
     <property name="sun.os.patch.level" value=""/>
-    <property name="java.library.path" value="C:\Program Files\Java\jdk-10\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Hummingbird\Connectivity\11.00\Accessories\;;C:\Program Files\PuTTY\;C:\Go\bin;C:\Program Files\Git\cmd;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;c:\jEdit;C:\Program Files\nodejs\;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\Program Files (x86)\Calibre2\;C:\Users\mark\AppData\Local\Microsoft\WindowsApps;C:\Users\mark\AppData\Roaming\npm;."/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-10\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Hummingbird\Connectivity\11.00\Accessories\;;C:\Program Files\PuTTY\;C:\Go\bin;C:\Program Files\Git\cmd;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;c:\jEdit;C:\Program Files\nodejs\;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\Program Files (x86)\Calibre2\;C:\ham\wsjtx\bin;C:\Users\mark\AppData\Local\Microsoft\WindowsApps;C:\Users\mark\AppData\Roaming\npm;."/>
     <property name="java.vendor" value="Oracle Corporation"/>
     <property name="java.vm.info" value="mixed mode"/>
     <property name="java.vm.version" value="10+46"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="54.0"/>
   </properties>
-  <testcase name="testApp" classname="uk.m0nom.adif3.FileTransformerAppTest" time="0"/>
+  <testcase name="testApp" classname="uk.m0nom.adif3.FileTransformerAppTest" time="0.003"/>
 </testsuite>

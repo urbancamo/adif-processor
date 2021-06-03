@@ -26,7 +26,12 @@ public class Adif3FileReaderWriter {
             if (dateCompare != 0) {
                 return dateCompare;
             }
-            return timeCompare;
+            if (timeCompare != 0) {
+                return timeCompare;
+            } else {
+                return o1.getCall().compareTo(o2.getCall());
+            }
+
         }
     }
     public Adif3 read(String filename, String encoding) throws IOException {
@@ -37,12 +42,14 @@ public class Adif3FileReaderWriter {
         Optional<Adif3> result = reader.read(inputReader);
         if (result.isPresent()) {
             Adif3 adif = result.get();
+            int unsortedRecords = adif.getRecords().size();
             SortedSet<Adif3Record> sortedRecords = new TreeSet<>(new Adif3RecordTimestampComparator());
             for (Adif3Record record : adif.getRecords()) {
                 sortedRecords.add(record);
             }
             List<Adif3Record> sortedRecordList = new ArrayList<>();
             sortedRecordList.addAll(sortedRecords);
+            assert(sortedRecordList.size() == unsortedRecords);
             adif.setRecords(sortedRecordList);
             return adif;
         }
