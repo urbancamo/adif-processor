@@ -18,6 +18,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 public class Adif3PrintFormatter {
     class PrintState {
@@ -322,6 +323,30 @@ public class Adif3PrintFormatter {
                     value = rec.getStxString();
                 }
                 break;
+            case "QSL_STATUS":
+                boolean sent = rec.getQslSDate() != null;
+                boolean recvd = rec.getQslRDate() != null;
+                Boolean bureau = null;
+                Boolean direct = null;
+                if (rec.getQslVia() != null) {
+                    bureau = rec.getQslVia().toLowerCase(Locale.ROOT).contains("bureau");
+                    direct = rec.getQslVia().toLowerCase(Locale.ROOT).contains("direct");
+                }
+                if (sent && recvd) {
+                    value = "SR";
+                } else if (sent) {
+                    value = "S ";
+                } else if (recvd) {
+                    value = " R";
+                } else if (Boolean.TRUE.equals(bureau) && Boolean.TRUE.equals(direct)) {
+                    value = "BD";
+                } else if (Boolean.TRUE.equals(bureau)) {
+                    value = " B";
+                } else if (Boolean.TRUE.equals(direct)) {
+                    value = " D";
+                } else {
+                    value = "  ";
+                }
         }
         return value;
     }

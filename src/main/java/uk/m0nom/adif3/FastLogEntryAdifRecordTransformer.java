@@ -29,7 +29,7 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
 
     /**
      * Parse the Fast Log Entry comment string for pairs of key and values, for example
-     * OP: John, QTH: Gatwick, PWR: 100W, ANT: Inv-V, WX: 4 degC
+     * OP: John, QTH: Gatwick, PWR: 100W, ANT: Inv-V, WX: 4 degC, GRID: IO84io
      * In this case OP, QTH and PWR are transferred into their respective ADIF records,
      * and ANT/WX records are appended to the comment
      * @param rec
