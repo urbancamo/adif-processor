@@ -3,8 +3,9 @@ QTH: Qth
 RIG: Rig
 AGE: Age
 IOTA: Iota
-MHL: GridSquare
+GRID: GridSquare
 PWR: RxPwr
 SOTA: SotaRef
 SRX: SerialRx
 STX: SerialTx
+QSL: Qsl
