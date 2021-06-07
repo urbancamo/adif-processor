@@ -44,7 +44,7 @@ public class DirectoryTransformerApp implements Runnable
                     Collection<File> files = FileUtils.listFiles(new File(dir), new String[]{"adi"}, false);
                     for (File in: files) {
                         try {
-                            Adif3 log = readerWriter.read(in.getAbsolutePath(), "windows-1252");
+                            Adif3 log = readerWriter.read(in.getAbsolutePath(), "windows-1252", false);
                             transformer.transform(log);
 
                             // Create output file name from input file name

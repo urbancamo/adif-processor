@@ -42,7 +42,7 @@ public class FileTransformerApp implements Runnable
 
             try {
                 transformer.configure(configFilePath);
-                Adif3 log = readerWriter.read(in, "windows-1252");
+                Adif3 log = readerWriter.read(in, "windows-1252", false);
                 transformer.transform(log);
                 readerWriter.write(out, log);
             } catch (UnsupportedHeaderException ushe) {

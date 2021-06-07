@@ -276,13 +276,13 @@ public class Adif3PrintFormatter {
             case "SOTA_REF":
                 Sota sotaRef = rec.getSotaRef();
                 if (sotaRef != null) {
-                    value = rec.getSotaRef().adifCode();
+                    value = rec.getSotaRef().getValue();
                 }
                 break;
             case "MY_SOTA_REF":
                 Sota mySotaRef = rec.getMySotaRef();
-                if (mySotaRef != null && !"G/LD-999".equalsIgnoreCase(mySotaRef.adifCode())) {
-                    value = rec.getMySotaRef().adifCode();
+                if (mySotaRef != null && !"G/LD-999".equalsIgnoreCase(mySotaRef.getValue())) {
+                    value = rec.getMySotaRef().getValue();
                 }
                 break;
             case "NAME":

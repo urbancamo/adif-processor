@@ -34,7 +34,7 @@ public class Adif3FileReaderWriter {
 
         }
     }
-    public Adif3 read(String filename, String encoding) throws IOException {
+    public Adif3 read(String filename, String encoding, boolean sort) throws IOException {
         AdiReader reader = new AdiReader();
         BufferedReader inputReader =
                 Files.newBufferedReader(new File(filename).toPath(), Charset.forName(encoding));
@@ -42,15 +42,17 @@ public class Adif3FileReaderWriter {
         Optional<Adif3> result = reader.read(inputReader);
         if (result.isPresent()) {
             Adif3 adif = result.get();
-            int unsortedRecords = adif.getRecords().size();
-            SortedSet<Adif3Record> sortedRecords = new TreeSet<>(new Adif3RecordTimestampComparator());
-            for (Adif3Record record : adif.getRecords()) {
-                sortedRecords.add(record);
+            if (sort) {
+                int unsortedRecords = adif.getRecords().size();
+                SortedSet<Adif3Record> sortedRecords = new TreeSet<>(new Adif3RecordTimestampComparator());
+                for (Adif3Record record : adif.getRecords()) {
+                    sortedRecords.add(record);
+                }
+                List<Adif3Record> sortedRecordList = new ArrayList<>();
+                sortedRecordList.addAll(sortedRecords);
+                assert (sortedRecordList.size() == unsortedRecords);
+                adif.setRecords(sortedRecordList);
             }
-            List<Adif3Record> sortedRecordList = new ArrayList<>();
-            sortedRecordList.addAll(sortedRecords);
-            assert(sortedRecordList.size() == unsortedRecords);
-            adif.setRecords(sortedRecordList);
             return adif;
         }
         return null;
