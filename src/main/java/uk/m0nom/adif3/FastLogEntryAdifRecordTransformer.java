@@ -15,6 +15,7 @@ import java.util.*;
 public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer {
 
     private YamlMapping fieldMap;
+    private Map<String, String> unmapped = new HashMap<>();
 
     public FastLogEntryAdifRecordTransformer(YamlMapping config) {
         fieldMap = config.asMapping();
@@ -22,8 +23,18 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
 
     @Override
     public void transform(Adif3Record rec) {
+        // Duplicate references into the comment
+        if (rec.getSotaRef() != null) {
+            unmapped.put("SOTA", rec.getSotaRef().getValue());
+        }
         if (StringUtils.isNotBlank(rec.getComment())) {
             transformComment(rec, rec.getComment());
+        }
+        if (!unmapped.isEmpty()) {
+            addUnmappedToRecord(rec, unmapped);
+        } else {
+            // done a good job and slotted all the key/value pairs in the right place
+            rec.setComment("");
         }
     }
 
@@ -38,7 +49,6 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     private void transformComment(Adif3Record rec, String comment) {
         // try and split the comment up into comma separated list
         Map<String, String> tokens = tokenize(comment);
-        Map<String, String> unmapped = new HashMap<>();
 
         for (String key : tokens.keySet()) {
             String value = tokens.get(key).trim();
@@ -121,6 +131,9 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                             rec.setSrxString(value);
                         }
                         break;
+                    case "Fists":
+                        rec.setFists(value);
+                        break;
                     case "Qsl":
                         rec.setQslSDate(LocalDate.now());
                         rec.setQslSent(QslSent.SENT);
@@ -138,12 +151,6 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
             } else {
                 unmapped.put(key, value);
             }
-        }
-        if (!unmapped.isEmpty()) {
-            addUnmappedToRecord(rec, unmapped);
-        } else {
-            // done a good job and slotted all the key/value pairs in the right place
-            rec.setComment("");
         }
     }
 
