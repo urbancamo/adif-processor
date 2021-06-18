@@ -15,7 +15,6 @@ import java.util.*;
 public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer {
 
     private YamlMapping fieldMap;
-    private Map<String, String> unmapped = new HashMap<>();
 
     public FastLogEntryAdifRecordTransformer(YamlMapping config) {
         fieldMap = config.asMapping();
@@ -23,12 +22,13 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
 
     @Override
     public void transform(Adif3Record rec) {
+        Map<String, String> unmapped = new HashMap<>();
         // Duplicate references into the comment
         if (rec.getSotaRef() != null) {
             unmapped.put("SOTA", rec.getSotaRef().getValue());
         }
         if (StringUtils.isNotBlank(rec.getComment())) {
-            transformComment(rec, rec.getComment());
+            transformComment(rec, rec.getComment(), unmapped);
         }
         if (!unmapped.isEmpty()) {
             addUnmappedToRecord(rec, unmapped);
@@ -46,7 +46,7 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
      * @param rec
      * @param comment
      */
-    private void transformComment(Adif3Record rec, String comment) {
+    private void transformComment(Adif3Record rec, String comment, Map<String, String> unmapped) {
         // try and split the comment up into comma separated list
         Map<String, String> tokens = tokenize(comment);
 
