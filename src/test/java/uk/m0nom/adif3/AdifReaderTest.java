@@ -6,6 +6,10 @@ import org.junit.Test;
 import org.marsik.ham.adif.AdiReader;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
+import uk.m0nom.qrz.QrzXmlService;
+import uk.m0nom.sota.SotaCsvReader;
+import uk.m0nom.summits.SummitsDatabase;
+import uk.m0nom.wota.WotaCsvReader;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,6 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class AdifReaderTest {
+    private SummitsDatabase summits;
+
     @Test
     public void testAdifLOGHX() throws Exception {
         AdiReader reader = new AdiReader();
@@ -41,12 +47,19 @@ public class AdifReaderTest {
         BufferedReader inputReader = resourceInput("adif/2021-01-09-Queen-Adelaides-Hill.adi");
         Optional<Adif3> result = reader.read(inputReader);
         //System.out.println(new File("tmp.txt").getAbsolutePath());
-        YamlMapping config = Yaml.createYamlInput(new File("./src/main/resources/adif-processor.yaml")).readYamlMapping();
+        YamlMapping config = Yaml.createYamlInput(new File("adif-processor.yaml")).readYamlMapping();
         if (result.isPresent()) {
             Adif3 log = result.get();
             assertThat(log.getHeader().getProgramId()).isEqualTo("FLE");
 
-            Adif3RecordTransformer transformer = new FastLogEntryAdifRecordTransformer(config);
+            summits = new SummitsDatabase();
+            summits.loadData();
+            QrzXmlService qrzXmlService = new QrzXmlService();
+            if (!qrzXmlService.getSessionKey()) {
+                System.err.println("Could not connect to QRZ.COM, continuing...");
+            }
+
+            Adif3RecordTransformer transformer = new FastLogEntryAdifRecordTransformer(config, summits, qrzXmlService);
             for (Adif3Record rec : log.getRecords()) {
                 transformer.transform(rec);
             }

@@ -1,5 +1,7 @@
 package uk.m0nom.maidenheadlocator;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +21,17 @@ public class MaidenheadLocatorConversion {
     private final static Pattern LOC_6CHAR = Pattern.compile("^[A-R]{2}[0-9]{2}[A-X]{2}$");
     private final static Pattern LOC_8CHAR = Pattern.compile("^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}$");
     private final static Pattern LOC_10CHAR = Pattern.compile("^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}[A-X]{2}$");
+
+    private final static String[] INVALID_GRIDSQUARES = new String[] {"AA00AA"};
+
+    public static boolean isAValidGridSquare(String gridSquare) {
+        for (int i = 0; i < INVALID_GRIDSQUARES.length; i++) {
+            if (StringUtils.equalsIgnoreCase(gridSquare, INVALID_GRIDSQUARES[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static LatLng locatorToLatLng(String locStr) {
         String locatorTrimmed = locStr.trim().toUpperCase();

@@ -1,6 +1,7 @@
 package uk.m0nom.adif3;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.marsik.ham.adif.Adif3;
 
 import java.io.BufferedWriter;
@@ -9,10 +10,12 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.util.logging.Logger;
 
 
 public class PrintFormatApp implements Runnable
 {
+    private static final Logger logger = Logger.getLogger(FastLogEntryAdifRecordTransformer.class.getName());
     private static PrintFormatApp instance;
 
     private Adif3PrintFormatter formatter;
@@ -39,7 +42,7 @@ public class PrintFormatApp implements Runnable
         String out = "<unspecified>";
         try {
             if (args.length != 2) {
-                System.err.println(String.format("Usage: %s <inputFile>.adi <config-file>.yaml", this.getClass().getName()));
+                logger.config(String.format("Usage: %s <inputFile>.adi <config-file>.yaml", this.getClass().getName()));
             } else {
                 in = args[0];
                 out = String.format("%s.%s", FilenameUtils.removeExtension(in.toString()), "prn");
@@ -53,15 +56,16 @@ public class PrintFormatApp implements Runnable
                 writer.write(sb.toString());
             }
         } catch(IOException e){
-                System.err.println(String.format("Caught exception processing file: %s exception is:\n\t%s", in, e.getMessage()));
-                e.printStackTrace(System.err);
+                logger.severe(String.format("Caught exception processing file: %s exception is:\n\t%s", in, e.getMessage()));
+                logger.severe(ExceptionUtils.getStackTrace(e));
         }
         finally {
             if (writer != null) {
                 try {
                     writer.close();
                 } catch (IOException e) {
-                    System.err.println(String.format("Caught exception closing output file %s: %s", out, e.getMessage()));
+                    logger.severe(String.format("Caught exception closing output file %s: %s", out, e.getMessage()));
+                    logger.severe(ExceptionUtils.getStackTrace(e));
                 }
             }
         }

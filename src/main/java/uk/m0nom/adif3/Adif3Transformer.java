@@ -6,15 +6,21 @@ import org.marsik.ham.adif.AdiReader;
 import org.marsik.ham.adif.AdiWriter;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
+import uk.m0nom.qrz.QrzXmlService;
+import uk.m0nom.summits.SummitsDatabase;
 
 import java.io.*;
 import java.util.Optional;
 
 public class Adif3Transformer {
     private YamlMapping config = null;
+    private SummitsDatabase summits;
+    private QrzXmlService qrzXmlService;
 
-    public void configure(String yamlConfigFile) throws IOException {
+    public void configure(String yamlConfigFile, SummitsDatabase summits, QrzXmlService qrzXmlService) throws IOException {
         config = Yaml.createYamlInput(new File(yamlConfigFile)).readYamlMapping();
+        this.summits = summits;
+        this.qrzXmlService = qrzXmlService;
     }
 
     public void transform(Adif3 log) throws UnsupportedHeaderException {
@@ -23,7 +29,7 @@ public class Adif3Transformer {
         if (log.getHeader() != null) {
             switch (log.getHeader().getProgramId()) {
                 case "FLE":
-                    transformer = new FastLogEntryAdifRecordTransformer(config);
+                    transformer = new FastLogEntryAdifRecordTransformer(config, summits, qrzXmlService);
                     break;
                 case "LOGHX":
                     transformer = new LogHXAdifRecordTransformer();
