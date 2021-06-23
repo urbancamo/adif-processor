@@ -6,6 +6,7 @@ import org.marsik.ham.adif.AdiReader;
 import org.marsik.ham.adif.AdiWriter;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
+import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.summits.SummitsDatabase;
 
@@ -23,7 +24,7 @@ public class Adif3Transformer {
         this.qrzXmlService = qrzXmlService;
     }
 
-    public void transform(Adif3 log) throws UnsupportedHeaderException {
+    public void transform(Adif3 log, TransformControl control) throws UnsupportedHeaderException {
         Adif3RecordTransformer transformer = null;
 
         if (log.getHeader() != null) {

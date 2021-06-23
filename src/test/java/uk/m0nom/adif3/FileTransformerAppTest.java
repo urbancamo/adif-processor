@@ -10,9 +10,11 @@ public class FileTransformerAppTest
 {
     @Test
     public void testApp() {
-        String args[] = new String[2];
-        args[0] = "../test-classes/adif/2021-06-13-Lambrigg-Fell-SOTA.adi";
-        args[1] = "../2021-06-13-Lambrigg-Fell-SOTA-fta.adi";
+        String args[] = new String[4];
+        args[0] = "-k";
+        args[1] = "--encoding";
+        args[2] = "windows-1251";
+        args[3] = "../test-classes/adif/2021-06-19-Helvellyn-SOTA.adi";
 
         //System.out.println(new File(".").getAbsolutePath());
         FileTransformerApp app = new FileTransformerApp(args);

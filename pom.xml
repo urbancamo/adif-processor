@@ -16,10 +16,24 @@
   </properties>
 
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/de.micromata.jak/JavaAPIforKml -->
+    <dependency>
+      <groupId>de.micromata.jak</groupId>
+      <artifactId>JavaAPIforKml</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+
     <dependency>
       <groupId>org.marsik.ham</groupId>
       <artifactId>adif</artifactId>
       <version>1.2-SNAPSHOT</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/net.sourceforge.argparse4j/argparse4j -->
+    <dependency>
+      <groupId>net.sourceforge.argparse4j</groupId>
+      <artifactId>argparse4j</artifactId>
+      <version>0.9.0</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->

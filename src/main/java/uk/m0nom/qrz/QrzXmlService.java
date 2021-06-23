@@ -26,25 +26,32 @@ public class QrzXmlService {
 
     private OkHttpClient client;
     private String sessionKey;
-    private boolean disable;
+    private boolean enabled;
 
     public QrzXmlService() {
         client = new OkHttpClient();
         sessionKey = null;
-        disable = false;
+        enabled = true;
     }
 
+    public void enable() {
+        enabled = true;
+        logger.info("QRZ.COM lookup has been enabled");
+    }
     public void disable() {
-        disable = true;
+        enabled = false;
         logger.info("QRZ.COM lookup has been disabled");
     }
 
     public boolean isDisabled() {
-        return disable;
+        return !enabled;
+    }
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public boolean getSessionKey()  {
-        if (sessionKey == null && !disable) {
+        if (sessionKey == null && enabled) {
             String url = String.format("%s/%s/?username=%s&password=%s", QRZ_XML_SERVICE_BASE_URL, QRZ_XML_SERVICE_VERSION, USERNAME, PASSWORD);
             logger.info("Obtaining QRZ.COM session key");
             QrzDatabase database = runQuery(url);

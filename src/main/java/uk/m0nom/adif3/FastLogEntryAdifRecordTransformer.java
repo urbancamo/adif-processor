@@ -135,7 +135,23 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     }
 
     private void lookupLocationFromQrz(Adif3Record rec) {
-        QrzCallsign callsignData = qrzXmlService.getCallsignData(rec.getCall());
+        String callsign = rec.getCall();
+        QrzCallsign callsignData = qrzXmlService.getCallsignData(callsign);
+        if (callsignData != null) {
+            logger.info(String.format("Updating location of station %s from QRZ.COM data", callsign));
+           updateRecordFromQrzLocation(rec, callsignData);
+        } else if (isPortable(callsign)) {
+            // Try stripping off any portable callsign information and querying that as a last resort
+            String fixedCallsign = callsign.substring(0, StringUtils.lastIndexOf(callsign, "/"));
+            callsignData = qrzXmlService.getCallsignData(fixedCallsign);
+            if (callsignData != null) {
+                logger.info(String.format("Updating location of station %s from QRZ.COM FIXED station data %s", callsign, fixedCallsign));
+                updateRecordFromQrzLocation(rec, callsignData);
+            }
+       }
+    }
+
+    private void updateRecordFromQrzLocation(Adif3Record rec, QrzCallsign callsignData) {
         if (callsignData != null) {
             if (callsignData.getLat() != null && callsignData.getLon() != null) {
                 GlobalCoordinates coord = new GlobalCoordinates(callsignData.getLat(), callsignData.getLon());

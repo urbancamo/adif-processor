@@ -58,7 +58,7 @@ public class Adif3FileReaderWriter {
         return null;
     }
 
-    public void write(String filename, Adif3 log) throws IOException {
+    public void write(String filename, String encoding, Adif3 log) throws IOException {
         AdiWriter writer = new AdiWriter();
         writer.append(log.getHeader(), true);
 
@@ -69,7 +69,7 @@ public class Adif3FileReaderWriter {
         FileWriter fileWriter = null;
         BufferedWriter out = null;
         try {
-            fileWriter = new FileWriter(filename);
+            fileWriter = new FileWriter(filename, Charset.forName(encoding));
             out = new BufferedWriter(fileWriter);
         } finally {
             out.write(writer.toString());

@@ -3,6 +3,8 @@ package uk.m0nom.adif3;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.marsik.ham.adif.Adif3;
+import uk.m0nom.adif3.args.CommandLineArgs;
+import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.sota.SotaCsvReader;
 import uk.m0nom.summits.SummitsDatabase;
@@ -24,6 +26,7 @@ public class DirectoryTransformerApp implements Runnable
     private Adif3FileReaderWriter readerWriter;
     private SummitsDatabase summits;
     private QrzXmlService qrzXmlService;
+    private TransformControl control;
 
     private String args[];
 
@@ -35,6 +38,7 @@ public class DirectoryTransformerApp implements Runnable
         readerWriter = new Adif3FileReaderWriter();
         summits = new SummitsDatabase();
         qrzXmlService = new QrzXmlService();
+        control = new TransformControl();
     }
 
     public static void main( String[] args )
@@ -63,12 +67,12 @@ public class DirectoryTransformerApp implements Runnable
                     for (File in: files) {
                         try {
                             Adif3 log = readerWriter.read(in.getAbsolutePath(), "windows-1252", false);
-                            transformer.transform(log);
+                            transformer.transform(log, control);
 
                             // Create output file name from input file name
                             String out = String.format("%s-%s.%s", FilenameUtils.removeExtension(in.toString()),
                                     "fta", "adi");
-                            readerWriter.write(out, log);
+                            readerWriter.write(out, "windows-1252", log);
                              logger.info(String.format("Wrote: %s", out));
                         } catch (UnsupportedHeaderException ushe) {
                             logger.warning(String.format("Unknown header, skipping file: %s", in.getAbsolutePath()));
