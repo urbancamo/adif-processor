@@ -10,6 +10,7 @@ import org.marsik.ham.adif.enums.QslSent;
 import org.marsik.ham.adif.enums.QslVia;
 import org.marsik.ham.adif.types.Iota;
 import org.marsik.ham.adif.types.Sota;
+import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.maidenheadlocator.LatLng;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;
@@ -29,13 +30,15 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     private YamlMapping fieldMap;
     private SummitsDatabase summits;
     private QrzXmlService qrzXmlService;
+    private TransformControl control;
 
     private final String portableSuffixes[] = new String[] {"/P", "/M", "/MM", "/PM"};
 
-    public FastLogEntryAdifRecordTransformer(YamlMapping config, SummitsDatabase summits, QrzXmlService qrzXmlService) {
+    public FastLogEntryAdifRecordTransformer(YamlMapping config, SummitsDatabase summits, QrzXmlService qrzXmlService, TransformControl control) {
         fieldMap = config.asMapping();
         this.summits = summits;
         this.qrzXmlService = qrzXmlService;
+        this.control = control;
     }
 
     private void setCoordFromSotaId(Adif3Record rec, String sotaId, Map<String, String> unmapped) {
@@ -97,6 +100,11 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
             if (rec.getMySotaRef() != null) {
                 setMyLocationFromSotaId(rec, rec.getMySotaRef().getValue());
             } else {
+                /* If user has supplied a maidenhead location, use that in preference */
+                if (MaidenheadLocatorConversion.isAValidGridSquare(control.getMyGrid())) {
+                    rec.setMyGridSquare(control.getMyGrid());
+                }
+
                 if (rec.getMyGridSquare() == null) {
                     // Attempt a lookup from QRZ.com
                     QrzCallsign callsignData = qrzXmlService.getCallsignData(rec.getStationCallsign());
@@ -151,17 +159,26 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
        }
     }
 
+    /**
+     * Attempt to update the location based on callsign data downloaded from QRZ.COM
+     * What we need to be careful of here is of bad data. For example, some users set geoloc to
+     * grid but then the grid isn't valid. We need to ignore that, or we'll set the station to
+     * be antartica.
+     *
+     * @param rec
+     * @param callsignData
+     */
     private void updateRecordFromQrzLocation(Adif3Record rec, QrzCallsign callsignData) {
         if (callsignData != null) {
-            if (callsignData.getLat() != null && callsignData.getLon() != null) {
+            boolean gridBasedGeoloc = StringUtils.equalsIgnoreCase("grid", callsignData.getGeoloc());
+            String gridSquare = callsignData.getGrid();
+            boolean invalidGridBasedLoc = gridBasedGeoloc && !MaidenheadLocatorConversion.isAValidGridSquare(gridSquare);
+
+            if (callsignData.getLat() != null && callsignData.getLon() != null && !invalidGridBasedLoc) {
                 GlobalCoordinates coord = new GlobalCoordinates(callsignData.getLat(), callsignData.getLon());
                 rec.setCoordinates(coord);
-            }
-            if (rec.getGridsquare() == null) {
-                String gridSquare = callsignData.getGrid();
-                if (MaidenheadLocatorConversion.isAValidGridSquare(gridSquare)) {
-                    rec.setGridsquare(callsignData.getGrid());
-                }
+            } else if (rec.getGridsquare() == null && !invalidGridBasedLoc) {
+                rec.setGridsquare(callsignData.getGrid());
             }
         }
     }

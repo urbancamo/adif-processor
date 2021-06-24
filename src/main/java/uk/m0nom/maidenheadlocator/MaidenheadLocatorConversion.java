@@ -30,7 +30,7 @@ public class MaidenheadLocatorConversion {
                 return false;
             }
         }
-        return true;
+        return gridSquare != null;
     }
 
     public static LatLng locatorToLatLng(String locStr) {

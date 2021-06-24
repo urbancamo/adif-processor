@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.marsik.ham.adif.AdiReader;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
+import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.sota.SotaCsvReader;
 import uk.m0nom.summits.SummitsDatabase;
@@ -21,6 +22,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AdifReaderTest {
     private SummitsDatabase summits;
+    private TransformControl control;
+
+    public AdifReaderTest() {
+        control = new TransformControl();
+    }
 
     @Test
     public void testAdifLOGHX() throws Exception {
@@ -59,7 +65,7 @@ public class AdifReaderTest {
                 System.err.println("Could not connect to QRZ.COM, continuing...");
             }
 
-            Adif3RecordTransformer transformer = new FastLogEntryAdifRecordTransformer(config, summits, qrzXmlService);
+            Adif3RecordTransformer transformer = new FastLogEntryAdifRecordTransformer(config, summits, qrzXmlService, control);
             for (Adif3Record rec : log.getRecords()) {
                 transformer.transform(rec);
             }

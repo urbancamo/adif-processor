@@ -30,7 +30,7 @@ public class Adif3Transformer {
         if (log.getHeader() != null) {
             switch (log.getHeader().getProgramId()) {
                 case "FLE":
-                    transformer = new FastLogEntryAdifRecordTransformer(config, summits, qrzXmlService);
+                    transformer = new FastLogEntryAdifRecordTransformer(config, summits, qrzXmlService, control);
                     break;
                 case "LOGHX":
                     transformer = new LogHXAdifRecordTransformer();
