@@ -13,16 +13,9 @@ public class MaidenheadLocatorConversionTest {
     }
 
     @Test
-    public void testLocatorToLatLng10Char1() {
-        LatLng ll = MaidenheadLocatorConversion.locatorToLatLng("IO84mk33mp");
-        assertEquals("-2.971", String.format("%.3f", ll.longitude));
-        assertEquals("54.432", String.format("%.3f", ll.latitude));
-    }
-
-    @Test
-    public void testLocatorToLatLng10Char2() {
-        LatLng ll = MaidenheadLocatorConversion.locatorToLatLng("IO84ld28ss");
-        assertEquals("-3.060", String.format("%.3f", ll.longitude));
-        assertEquals("54.162", String.format("%.3f", ll.latitude));
+    public void testLocatorToLatLng10Char() {
+        LatLng ll = MaidenheadLocatorConversion.locatorToLatLng("IO84mj91mb");
+        assertEquals("-2.921", String.format("%.3f", ll.longitude));
+        assertEquals("54.379", String.format("%.3f", ll.latitude));
     }
 }

@@ -192,11 +192,17 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
             String sotaId = rec.getSotaRef().getValue();
             unmapped.put("SOTA", sotaId);
             setCoordFromSotaId(rec, sotaId, unmapped);
-        } else if (rec.getGridsquare() == null) {
-            lookupLocationFromQrz(rec);
         }
         if (StringUtils.isNotBlank(rec.getComment())) {
             transformComment(rec, rec.getComment(), unmapped);
+        }
+        if (rec.getGridsquare() == null) {
+            lookupLocationFromQrz(rec);
+        } else if (rec.getCoordinates() == null) {
+            // Set Coordinates from GridSquare that has been supplied in the input file
+            LatLng loc = MaidenheadLocatorConversion.locatorToLatLng(rec.getGridsquare());
+            GlobalCoordinates coord = new GlobalCoordinates(loc.latitude, loc.longitude);
+            rec.setCoordinates(coord);
         }
         if (!unmapped.isEmpty()) {
             addUnmappedToRecord(rec, unmapped);
@@ -250,8 +256,11 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                         break;
                     case "GridSquare":
                         if (MaidenheadLocatorConversion.isAValidGridSquare(value)) {
-                            rec.setGridsquare(value);
+                            rec.setGridsquare(value.substring(0,6));
                         }
+                        LatLng loc = MaidenheadLocatorConversion.locatorToLatLng(value);
+                        GlobalCoordinates coord = new GlobalCoordinates(loc.latitude, loc.longitude);
+                        rec.setCoordinates(coord);
                         break;
                     case "RxPwr":
                         String pwr = value.toLowerCase(Locale.ROOT).trim();

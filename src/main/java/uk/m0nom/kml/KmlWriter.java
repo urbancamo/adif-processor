@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 public class KmlWriter {
+    private final static double DEFAULT_RANGE_METRES = 3000.0;
     private static final Logger logger = Logger.getLogger(KmlWriter.class.getName());
 
     public void write(String pathname, Adif3 log) {
@@ -74,16 +75,27 @@ public class KmlWriter {
         style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the continent name
 
         Placemark placemark = folder.createAndAddPlacemark();
+        String htmlPanelContent = createMyPanelContent(rec);
         // use the style for each continent
         placemark.withName(station)
                 .withStyleUrl("#style_" + station)
-                // 3D chart imgae
-                .withDescription(
-                        String.format("https://qrz.com/db/%s", station))
+                // 3D chart image
+                .withDescription(htmlPanelContent)
                 // coordinates and distance (zoom level) of the viewer
-                .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(0).withRange(12000000);
+                .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(0).withRange(DEFAULT_RANGE_METRES);
 
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
+    }
+
+    private String createMyPanelContent(Adif3Record rec) {
+        StringBuilder sb = new StringBuilder();
+        String station = rec.getStationCallsign();
+        sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>", station, station));
+        if (rec.getMySotaRef() != null) {
+            String summitRef = rec.getMySotaRef().getValue();
+            sb.append(String.format("SOTA: <a href=\"https://summits.sota.org.uk/summit/%s\">%s</a><br/>", summitRef, summitRef));
+        }
+        return sb.toString();
     }
 
     private void createStationMarker(Document document, Folder folder, Adif3Record rec) {
@@ -105,17 +117,29 @@ public class KmlWriter {
         style.createAndSetLineStyle().withColor("ffb343ff").withWidth(5);
 
         Placemark placemark = folder.createAndAddPlacemark();
+        String htmlPanelContent = createPanelContent(rec);
         // use the style for each continent
         placemark.withName(station)
                 .withStyleUrl("#style_" + station)
                 // 3D chart imgae
-                .withDescription(
-                        String.format("https://qrz.com/db/%s", station))
+                .withDescription(htmlPanelContent)
                 // coordinates and distance (zoom level) of the viewer
-                .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(0).withRange(12000000);
+                .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(0).withRange(DEFAULT_RANGE_METRES);
 
         placemark.createAndSetLineString().addToCoordinates(myLongitude, myLatitude).addToCoordinates(longitude, latitude).setExtrude(true);
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
+    }
+
+    private String createPanelContent(Adif3Record rec) {
+        StringBuilder sb = new StringBuilder();
+        String station = rec.getCall();
+        sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>", station, station));
+        if (rec.getSotaRef() != null) {
+            String summitRef = rec.getSotaRef().getValue();
+            sb.append(String.format("SOTA: <a href=\"https://summits.sota.org.uk/summit/%s\">%s</a><br/>", summitRef, summitRef));
+        }
+        sb.append(String.format("%s %.4f Mhz %s", rec.getTimeOn().toString(), rec.getFreq(), rec.getMode().toString()));
+        return sb.toString();
     }
 
     private void createCommsLink(Document document, Folder folder, Adif3Record rec) {
