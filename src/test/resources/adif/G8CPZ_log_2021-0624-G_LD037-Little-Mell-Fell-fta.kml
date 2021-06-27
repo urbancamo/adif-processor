@@ -414,7 +414,7 @@
             <open>1</open>
             <Placemark>
                 <name>G8CPZ/P</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/G8CPZ/P&quot;&gt;G8CPZ/P&lt;/a&gt;&lt;br/&gt;SOTA: &lt;a href=&quot;https://https://summits.sota.org.uk/summit/G/LD-037&quot;&gt;G/LD-037&lt;/a&gt;&lt;br/&gt;</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/G8CPZ/P&quot;&gt;G8CPZ/P&lt;/a&gt;&lt;br/&gt;SOTA: &lt;a href=&quot;https://summits.sota.org.uk/summit/G/LD-037&quot;&gt;G/LD-037&lt;/a&gt;&lt;br/&gt;505 metres, 2 points&lt;br/&gt;</description>
                 <LookAt>
                     <longitude>-2.8944700000000125</longitude>
                     <latitude>54.60802000000001</latitude>
@@ -430,7 +430,7 @@
             </Placemark>
             <Placemark>
                 <name>G0TDM</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/G0TDM&quot;&gt;G0TDM&lt;/a&gt;&lt;br/&gt;10:59 nu FM</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/G0TDM&quot;&gt;G0TDM&lt;/a&gt;&lt;br/&gt;10:59 null Mhz FM</description>
                 <LookAt>
                     <longitude>-2.7916669999999897</longitude>
                     <latitude>54.6875</latitude>
@@ -448,14 +448,14 @@
                 <name>G0TDM_comms</name>
                 <styleUrl>#style_line_to_G0TDM</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 -2.7916669999999897,54.6875,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.8944443493320478,54.60803988102151,1105.975680693427 -2.8944443493320478,54.60803988102151</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
                 <name>GM4VFL/P</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/GM4VFL/P&quot;&gt;GM4VFL/P&lt;/a&gt;&lt;br/&gt;SOTA: &lt;a href=&quot;https://https://summits.sota.org.uk/summit/G/LD-037&quot;&gt;G/LD-037&lt;/a&gt;&lt;br/&gt;11:00 nu FM</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/GM4VFL/P&quot;&gt;GM4VFL/P&lt;/a&gt;&lt;br/&gt;SOTA: &lt;a href=&quot;https://summits.sota.org.uk/summit/GM/SS-196&quot;&gt;GM/SS-196&lt;/a&gt;&lt;br/&gt;451 metres, 1 points&lt;br/&gt;11:00 null Mhz FM</description>
                 <LookAt>
                     <longitude>-3.117999999999995</longitude>
                     <latitude>55.177599999999984</latitude>
@@ -473,14 +473,14 @@
                 <name>GM4VFL/P_comms</name>
                 <styleUrl>#style_line_to_GM4VFL/P</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 -3.117999999999995,55.177599999999984,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.8945251005497425,54.60816245269308,6500.837895045582 -2.8945251005497425,54.60816245269308</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
                 <name>G4IIY</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/G4IIY&quot;&gt;G4IIY&lt;/a&gt;&lt;br/&gt;11:03 nu FM</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/G4IIY&quot;&gt;G4IIY&lt;/a&gt;&lt;br/&gt;11:03 null Mhz FM</description>
                 <LookAt>
                     <longitude>-2.6958170000000052</longitude>
                     <latitude>55.005506999999994</latitude>
@@ -498,14 +498,14 @@
                 <name>G4IIY_comms</name>
                 <styleUrl>#style_line_to_G4IIY</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 -2.6958170000000052,55.005506999999994,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.8944208213669924,54.608119415426614,4605.505459134285 -2.8944208213669924,54.608119415426614</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
                 <name>M0MQV</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/M0MQV&quot;&gt;M0MQV&lt;/a&gt;&lt;br/&gt;11:05 nu FM</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/M0MQV&quot;&gt;M0MQV&lt;/a&gt;&lt;br/&gt;11:05 null Mhz FM</description>
                 <LookAt>
                     <longitude>-2.791666666666657</longitude>
                     <latitude>55.0625</latitude>
@@ -523,14 +523,14 @@
                 <name>M0MQV_comms</name>
                 <styleUrl>#style_line_to_M0MQV</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 -2.791666666666657,55.0625,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.894444585955199,54.6081336350897,5102.234214645018 -2.894444585955199,54.6081336350897</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
                 <name>M0KPW/P</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/M0KPW/P&quot;&gt;M0KPW/P&lt;/a&gt;&lt;br/&gt;SOTA: &lt;a href=&quot;https://https://summits.sota.org.uk/summit/G/LD-037&quot;&gt;G/LD-037&lt;/a&gt;&lt;br/&gt;11:07 nu FM</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/M0KPW/P&quot;&gt;M0KPW/P&lt;/a&gt;&lt;br/&gt;SOTA: &lt;a href=&quot;https://summits.sota.org.uk/summit/G/LD-027&quot;&gt;G/LD-027&lt;/a&gt;&lt;br/&gt;657 metres, 4 points&lt;br/&gt;11:07 null Mhz FM</description>
                 <LookAt>
                     <longitude>-2.920729999999992</longitude>
                     <latitude>54.54426999999998</latitude>
@@ -548,14 +548,14 @@
                 <name>M0KPW/P_comms</name>
                 <styleUrl>#style_line_to_M0KPW/P</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 -2.920729999999992,54.54426999999998,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.8944765752528667,54.60800406329713,729.6730746346182 -2.8944765752528667,54.60800406329713</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
                 <name>G1OAE</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/G1OAE&quot;&gt;G1OAE&lt;/a&gt;&lt;br/&gt;11:08 nu FM</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/G1OAE&quot;&gt;G1OAE&lt;/a&gt;&lt;br/&gt;11:08 null Mhz FM</description>
                 <LookAt>
                     <longitude>-3.528375000000011</longitude>
                     <latitude>54.65641199999999</latitude>
@@ -573,14 +573,14 @@
                 <name>G1OAE_comms</name>
                 <styleUrl>#style_line_to_G1OAE</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 -3.528375000000011,54.65641199999999,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.894628286138129,54.608032512382664,4128.917331735655 -2.894628286138129,54.608032512382664</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
                 <name>G4WHA/M</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/G4WHA/M&quot;&gt;G4WHA/M&lt;/a&gt;&lt;br/&gt;11:10 nu FM</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/G4WHA/M&quot;&gt;G4WHA/M&lt;/a&gt;&lt;br/&gt;11:10 null Mhz FM</description>
                 <LookAt>
                     <longitude>-2.958333333333343</longitude>
                     <latitude>54.89583333333334</latitude>
@@ -598,14 +598,14 @@
                 <name>G4WHA/M_comms</name>
                 <styleUrl>#style_line_to_G4WHA/M</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 -2.958333333333343,54.89583333333334,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.8944858530898046,54.608091959237015,3230.1878208201656 -2.8944858530898046,54.608091959237015</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
                 <name>HB9JOE</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/HB9JOE&quot;&gt;HB9JOE&lt;/a&gt;&lt;br/&gt;11:24 nu CW</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/HB9JOE&quot;&gt;HB9JOE&lt;/a&gt;&lt;br/&gt;11:24 null Mhz CW</description>
                 <LookAt>
                     <longitude>8.343453000000011</longitude>
                     <latitude>47.274557000000016</latitude>
@@ -623,14 +623,14 @@
                 <name>HB9JOE_comms</name>
                 <styleUrl>#style_line_to_HB9JOE</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 8.343453000000011,47.274557000000016,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.5672182612389065,54.4391860617589,375000.0 -2.5672182612389065,54.4391860617589</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
                 <name>EA2DT</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/EA2DT&quot;&gt;EA2DT&lt;/a&gt;&lt;br/&gt;11:26 nu CW</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/EA2DT&quot;&gt;EA2DT&lt;/a&gt;&lt;br/&gt;11:26 null Mhz CW</description>
                 <LookAt>
                     <longitude>-1.6651160000000118</longitude>
                     <latitude>42.81706199999999</latitude>
@@ -648,14 +648,14 @@
                 <name>EA2DT_comms</name>
                 <styleUrl>#style_line_to_EA2DT</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 -1.6651160000000118,42.81706199999999,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.8555782187807495,54.31371990440334,375000.0 -2.8555782187807495,54.31371990440334</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
                 <name>F5LKW</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/F5LKW&quot;&gt;F5LKW&lt;/a&gt;&lt;br/&gt;11:26 nu CW</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/F5LKW&quot;&gt;F5LKW&lt;/a&gt;&lt;br/&gt;11:26 null Mhz CW</description>
                 <LookAt>
                     <longitude>5.539999999999992</longitude>
                     <latitude>43.311667</latitude>
@@ -673,14 +673,14 @@
                 <name>F5LKW_comms</name>
                 <styleUrl>#style_line_to_F5LKW</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 5.539999999999992,43.311667,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.6303319698035352,54.33443281905406,375000.0 -2.6303319698035352,54.33443281905406</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
                 <name>G0FVH</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/G0FVH&quot;&gt;G0FVH&lt;/a&gt;&lt;br/&gt;11:27 nu CW</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/G0FVH&quot;&gt;G0FVH&lt;/a&gt;&lt;br/&gt;11:27 null Mhz CW</description>
                 <LookAt>
                     <longitude>-2.006040000000013</longitude>
                     <latitude>50.749787999999995</latitude>
@@ -698,14 +698,14 @@
                 <name>G0FVH_comms</name>
                 <styleUrl>#style_line_to_G0FVH</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 -2.006040000000013,50.749787999999995,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.8702507532835853,54.511680004954826,375000.0 -2.8702507532835853,54.511680004954826</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
                 <name>DL1FU</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/DL1FU&quot;&gt;DL1FU&lt;/a&gt;&lt;br/&gt;11:28 nu CW</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/DL1FU&quot;&gt;DL1FU&lt;/a&gt;&lt;br/&gt;11:28 null Mhz CW</description>
                 <LookAt>
                     <longitude>8.444420000000008</longitude>
                     <latitude>50.91354799999999</latitude>
@@ -723,14 +723,14 @@
                 <name>DL1FU_comms</name>
                 <styleUrl>#style_line_to_DL1FU</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 8.444420000000008,50.91354799999999,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.587596869817702,54.5295201438949,375000.0 -2.587596869817702,54.5295201438949</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
                 <name>G0HRT</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/G0HRT&quot;&gt;G0HRT&lt;/a&gt;&lt;br/&gt;11:36 nu CW</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/G0HRT&quot;&gt;G0HRT&lt;/a&gt;&lt;br/&gt;11:36 null Mhz CW</description>
                 <LookAt>
                     <longitude>-2.914578000000006</longitude>
                     <latitude>53.673902999999996</latitude>
@@ -748,14 +748,14 @@
                 <name>G0HRT_comms</name>
                 <styleUrl>#style_line_to_G0HRT</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 -2.914578000000006,53.673902999999996,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.894475141616283,54.60778648936753,10398.264326494747 -2.894475141616283,54.60778648936753</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
                 <name>G4LXI</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/G4LXI&quot;&gt;G4LXI&lt;/a&gt;&lt;br/&gt;11:49 nu CW</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/G4LXI&quot;&gt;G4LXI&lt;/a&gt;&lt;br/&gt;11:49 null Mhz CW</description>
                 <LookAt>
                     <longitude>-2.0537769999999966</longitude>
                     <latitude>52.345991</latitude>
@@ -773,14 +773,14 @@
                 <name>G4LXI_comms</name>
                 <styleUrl>#style_line_to_G4LXI</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 -2.0537769999999966,52.345991,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.8723296399089975,54.55155395732845,375000.0 -2.8723296399089975,54.55155395732845</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
                 <name>M0NOM/P</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/M0NOM/P&quot;&gt;M0NOM/P&lt;/a&gt;&lt;br/&gt;11:51 nu CW</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/M0NOM/P&quot;&gt;M0NOM/P&lt;/a&gt;&lt;br/&gt;11:51 null Mhz CW</description>
                 <LookAt>
                     <longitude>-2.92065972222224</longitude>
                     <latitude>54.379427083333326</latitude>
@@ -798,9 +798,9 @@
                 <name>M0NOM/P_comms</name>
                 <styleUrl>#style_line_to_M0NOM/P</styleUrl>
                 <LineString>
-                    <extrude>1</extrude>
-                    <altitudeMode>clampToGround</altitudeMode>
-                    <coordinates>-2.8944700000000125,54.60802000000001,8.0 -2.92065972222224,54.379427083333326,8.0</coordinates>
+                    <extrude>0</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>-2.8944700000000125,54.60802000000001 -2.8944765840714126,54.60796285356858,2550.2158258833647 -2.8944765840714126,54.60796285356858</coordinates>
                 </LineString>
             </Placemark>
         </Folder>

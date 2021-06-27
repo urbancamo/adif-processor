@@ -15,7 +15,7 @@ public class FileTransformerAppTest
         args[1] = "--encoding";
         args[2] = "windows-1251";
         args[3] = "-q";
-        args[4] = "../../src/test/resources/adif/G8CPZ_log_2021-0624-G_LD037-Little-Mell-Fell.adi";
+        args[4] = "../../src/test/resources/adif/test.adi";
 
         //System.out.println(new File(".").getAbsolutePath());
         FileTransformerApp app = new FileTransformerApp(args);

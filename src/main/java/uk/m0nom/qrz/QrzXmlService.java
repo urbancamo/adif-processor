@@ -70,6 +70,8 @@ public class QrzXmlService {
             QrzDatabase database = runQuery(url);
             if (database != null) {
                 return database.getCallsign();
+            } else {
+                logger.warning(String.format("Nothing found on QRZ.COM for: %s", callsign));
             }
         }
         return null;

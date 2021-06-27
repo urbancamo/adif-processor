@@ -16,6 +16,13 @@
   </properties>
 
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/net.sf.geographiclib/GeographicLib-Java -->
+    <dependency>
+      <groupId>net.sf.geographiclib</groupId>
+      <artifactId>GeographicLib-Java</artifactId>
+      <version>1.52</version>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/de.micromata.jak/JavaAPIforKml -->
     <dependency>
       <groupId>de.micromata.jak</groupId>

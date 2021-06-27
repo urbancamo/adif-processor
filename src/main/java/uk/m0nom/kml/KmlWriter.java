@@ -4,18 +4,27 @@ import de.micromata.opengis.kml.v_2_2_0.*;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
-import uk.m0nom.adif3.FileTransformerApp;
+import uk.m0nom.ionosphere.Ionosphere;
+import uk.m0nom.sota.SotaSummitInfo;
+import uk.m0nom.summits.SummitsDatabase;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Locale;
 import java.util.logging.Logger;
 
 public class KmlWriter {
     private final static double DEFAULT_RANGE_METRES = 3000.0;
     private static final Logger logger = Logger.getLogger(KmlWriter.class.getName());
+    private SummitsDatabase summits;
+    private Ionosphere ionosphere;
 
-    public void write(String pathname, Adif3 log) {
+    public KmlWriter() {
+        this.ionosphere = new Ionosphere();
+    }
+
+    public void write(String pathname, Adif3 log, SummitsDatabase summits) {
+        this.summits = summits;
+
         final Kml kml = new Kml();
         Document doc = kml.createAndSetDocument().withName(pathname).withOpen(true);
 
@@ -38,6 +47,8 @@ public class KmlWriter {
                     createStationMarker(doc, folder, rec);
                     createCommsLink(doc, folder, rec);
                 }
+            } else {
+                logger.warning(String.format("Could not determine location for: %s", rec.getCall()));
             }
         }
 
@@ -92,8 +103,7 @@ public class KmlWriter {
         String station = rec.getStationCallsign();
         sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>", station, station));
         if (rec.getMySotaRef() != null) {
-            String summitRef = rec.getMySotaRef().getValue();
-            sb.append(String.format("SOTA: <a href=\"https://summits.sota.org.uk/summit/%s\">%s</a><br/>", summitRef, summitRef));
+            appendSotaInfo(rec.getMySotaRef().getValue(), sb);
         }
         return sb.toString();
     }
@@ -135,11 +145,16 @@ public class KmlWriter {
         String station = rec.getCall();
         sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>", station, station));
         if (rec.getSotaRef() != null) {
-            String summitRef = rec.getSotaRef().getValue();
-            sb.append(String.format("SOTA: <a href=\"https://summits.sota.org.uk/summit/%s\">%s</a><br/>", summitRef, summitRef));
+            appendSotaInfo(rec.getSotaRef().getValue(), sb);
         }
         sb.append(String.format("%s %.4f Mhz %s", rec.getTimeOn().toString(), rec.getFreq(), rec.getMode().toString()));
         return sb.toString();
+    }
+
+    private void appendSotaInfo(String summitRef, StringBuilder sb) {
+        SotaSummitInfo summitInfo = summits.getSota().get(summitRef);
+        sb.append(String.format("SOTA: <a href=\"https://summits.sota.org.uk/summit/%s\">%s</a><br/>", summitRef, summitRef));
+        sb.append(String.format("%.0f metres, %d points<br/>", summitInfo.getAltitude(), summitInfo.getPoints()));
     }
 
     private void createCommsLink(Document document, Folder folder, Adif3Record rec) {
@@ -153,18 +168,35 @@ public class KmlWriter {
         String station = rec.getCall();
 
         Style style = document.createAndAddStyle();
-        style.withId("style_line_to_" + station);
+        style.withId("style_line_to_" + station + "_propagation");
         style.createAndSetLineStyle().withColor("c0c0c000").withWidth(3);
 
+        style = document.createAndAddStyle();
+        style.withId("style_line_to_" + station + "_surface");
+        style.createAndSetLineStyle().withColor("40000000").withWidth(3);
+
         Placemark placemark = folder.createAndAddPlacemark();
-        // use the style for each continent
-        placemark.withName(station + "_comms")
-                .withStyleUrl("#style_line_to_" + station);
-        LineString commsLine = placemark.createAndSetLineString();
-        commsLine.addToCoordinates(myLongitude, myLatitude, 8);
-        commsLine.addToCoordinates(longitude, latitude, 8);
-        commsLine.setAltitudeMode(AltitudeMode.CLAMP_TO_GROUND);
-        commsLine.setExtrude(true);
+        // use the style for each line type
+        placemark.withName(station + "_comms_propagation")
+                .withStyleUrl("#style_line_to_" + station + "_propagation");
+
+        LineString hfLine = placemark.createAndSetLineString();
+        KmlGeodesicUtils.getHfLine(hfLine, myCoords, coords, ionosphere, rec.getFreq(), rec.getBand(), rec.getTimeOn());
+
+        placemark = folder.createAndAddPlacemark();
+        // use the style for each line type
+        placemark.withName(station + "_comms_surface")
+                .withStyleUrl("#style_line_to_" + station + "_surface");
+
+        hfLine = placemark.createAndSetLineString();
+        KmlGeodesicUtils.getSurfaceLine(hfLine, myCoords, coords);
+
+        //commsLine.addToCoordinates(myLongitude, myLatitude, 8);
+        //commsLine.addToCoordinates(longitude, latitude, 8);
+        //commsLine.setAltitudeMode(AltitudeMode.CLAMP_TO_GROUND);
+        //commsLine.setExtrude(true);
+
+
     }
 
     private String getMyIconFromRec(Adif3Record rec) {

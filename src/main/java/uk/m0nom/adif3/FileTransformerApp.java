@@ -74,7 +74,7 @@ public class FileTransformerApp implements Runnable
             transformer.transform(log, control);
             readerWriter.write(out, control.getEncoding(), log);
             if (control.getGenerateKml()) {
-                kmlWriter.write(kml, log);
+                kmlWriter.write(kml, log, summits);
             }
         } catch (NoSuchFileException nfe) {
             logger.severe(String.format("Could not open input file: %s", control.getPathname()));
