@@ -6,6 +6,7 @@ import org.gavaghan.geodesy.*;
 import org.marsik.ham.adif.enums.Band;
 import uk.m0nom.ionosphere.Ionosphere;
 import uk.m0nom.ionosphere.PropagationBounce;
+import uk.m0nom.ionosphere.PropagationMode;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -19,8 +20,10 @@ public class KmlGeodesicUtils
         hfLine.addToCoordinates(endGc.getLongitude(), endGc.getLatitude(), 0);
     }
 
-    public static void getHfLine(LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc, Ionosphere ionosphere, Double frequency, Band band, LocalTime timeOfDay) {
+    public static HfLineResult getHfLine(LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc, Ionosphere ionosphere, Double frequency, Band band, LocalTime timeOfDay) {
         /* assume daytime propagation if we don't have a QSO time */
+        HfLineResult result = new HfLineResult();
+
         LocalTime time = MIDDAY;
         if (timeOfDay != null) {
             time = timeOfDay;
@@ -44,15 +47,30 @@ public class KmlGeodesicUtils
 
         /** work out the ionospheric propagation for this contact */
         double distanceInKm = distance / 1000;
+        result.setDistance(distanceInKm);
+
         double azimuth = curve.getAzimuth();
+        double totalAltitude = 0.0;
+        PropagationMode mode = null;
         List<PropagationBounce> bounces = ionosphere.getBounces(frequencyInKhz, distanceInKm, time);
-        addBouncesToLineString(hfLine, bounces, start, end, azimuth, calculator);
+        for (PropagationBounce bounce : bounces) {
+            totalAltitude += bounce.getHeight();
+            mode = bounce.getMode();
+        }
+        result.setMode(mode);
+        result.setAltitude(totalAltitude / bounces.size());
+        result.setBounces(bounces.size());
+
+        double skyDistance = addBouncesToLineString(hfLine, bounces, start, end, azimuth, calculator);
+        result.setSkyDistance(skyDistance);
+        return result;
     }
 
-    private static void addBouncesToLineString(LineString hfLine, List<PropagationBounce> bounces, GlobalCoordinates start, GlobalCoordinates end, double initialAzimuth, GeodeticCalculator calculator) {
+    private static double addBouncesToLineString(LineString hfLine, List<PropagationBounce> bounces, GlobalCoordinates start, GlobalCoordinates end, double initialAzimuth, GeodeticCalculator calculator) {
         hfLine.addToCoordinates(start.getLongitude(), start.getLatitude(), 0);
         GlobalCoordinates previous = start;
         double azimuth = initialAzimuth;
+        double skyDistance = 0.0;
 
         /* number of lines will be twice the number of bounces */
         for (int i = 0; i < bounces.size(); i++) {
@@ -62,6 +80,8 @@ public class KmlGeodesicUtils
             double distanceAcrossGlobal = bounce.getDistance();
             double reflectionHeight = bounce.getHeight() / 1000.0;
             double lengthOfLine = Math.sqrt((distanceAcrossGlobal * distanceAcrossGlobal) + (reflectionHeight * reflectionHeight));
+            skyDistance += lengthOfLine * 2.0;
+
             double distanceInMetres = lengthOfLine * 1000.0;
 
             /* Add 'up' bounce */
@@ -86,5 +106,7 @@ public class KmlGeodesicUtils
         }
         hfLine.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
         hfLine.setExtrude(false);
+
+        return skyDistance;
     }
 }

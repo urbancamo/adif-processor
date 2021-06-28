@@ -11,11 +11,22 @@ import lombok.Setter;
 public class TransformControl {
     private Boolean generateKml;
     private Boolean useQrzDotCom;
-    private Double myLatitude;
-    private Double myLongitude;
+    private String myLatitude;
+    private String myLongitude;
     private String myGrid;
     private String pathname;
     private String encoding;
+    private Boolean kmlS2s;
+    private String kmlS2sContactLineStyle;
+    private String kmlContactLineStyle;
+    private String qrzUsername;
+    private String qrzPassword;
+    private Boolean kmlContactShadow;
+    private String kmlFixedIconUrl;
+    private String kmlPortableIconUrl;
+    private String kmlMobileIconUrl;
+    private String kmlMaritimeIconUrl;
+
 
     public TransformControl() {
     }

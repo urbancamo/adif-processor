@@ -37,7 +37,7 @@ public class DirectoryTransformerApp implements Runnable
         transformer = new Adif3Transformer();
         readerWriter = new Adif3FileReaderWriter();
         summits = new SummitsDatabase();
-        qrzXmlService = new QrzXmlService();
+        qrzXmlService = new QrzXmlService(null, null);
         control = new TransformControl();
     }
 

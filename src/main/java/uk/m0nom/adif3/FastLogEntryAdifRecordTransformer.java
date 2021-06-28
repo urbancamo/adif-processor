@@ -96,6 +96,13 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     }
 
     private void setMyLocation(Adif3Record rec) {
+        if (control.getMyLatitude() != null && control.getMyLongitude() != null) {
+            Double latitude = Double.parseDouble(StringUtils.remove(control.getMyLatitude(),'\''));
+            Double longitude = Double.parseDouble(StringUtils.remove(control.getMyLongitude(),'\''));
+            rec.setMyCoordinates(new GlobalCoordinates(latitude, longitude));
+            return;
+        }
+
         if (rec.getMyCoordinates() == null) {
             if (rec.getMySotaRef() != null) {
                 setMyLocationFromSotaId(rec, rec.getMySotaRef().getValue());
@@ -146,8 +153,8 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         String callsign = rec.getCall();
         QrzCallsign callsignData = qrzXmlService.getCallsignData(callsign);
         if (callsignData != null) {
-            logger.info(String.format("Updating location of station %s from QRZ.COM data", callsign));
            updateRecordFromQrzLocation(rec, callsignData);
+            logger.info(String.format("Updating location of station %s from QRZ.COM data", callsign));
         } else if (isPortable(callsign)) {
             // Try stripping off any portable callsign information and querying that as a last resort
             String fixedCallsign = callsign.substring(0, StringUtils.lastIndexOf(callsign, "/"));

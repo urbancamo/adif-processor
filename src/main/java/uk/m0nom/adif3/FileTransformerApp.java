@@ -13,12 +13,14 @@ import uk.m0nom.wota.WotaCsvReader;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.NoSuchFileException;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class FileTransformerApp implements Runnable
 {
-    private static final Logger logger = Logger.getLogger(FileTransformerApp.class.getName());
+    private static Logger logger;// = Logger.getLogger(FileTransformerApp.class.getName());
 
     private static FileTransformerApp instance;
 
@@ -34,13 +36,23 @@ public class FileTransformerApp implements Runnable
 
     private String args[];
 
+    static {
+        InputStream stream = FileTransformerApp.class.getClassLoader().
+                getResourceAsStream("logging.properties");
+        try {
+            LogManager.getLogManager().readConfiguration(stream);
+            logger = Logger.getLogger(FileTransformerApp.class.getName());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public FileTransformerApp(String args[]) {
         this.args = args;
         transformer = new Adif3Transformer();
         readerWriter = new Adif3FileReaderWriter();
         summits = new SummitsDatabase();
-        qrzXmlService = new QrzXmlService();
-        kmlWriter = new KmlWriter();
         cli = new CommandLineArgs();
     }
 
@@ -53,6 +65,10 @@ public class FileTransformerApp implements Runnable
     @Override
     public void run() {
         TransformControl control = cli.parseArgs(args);
+        qrzXmlService = new QrzXmlService(control.getQrzUsername(), control.getQrzPassword());
+        kmlWriter = new KmlWriter(control);
+
+
         String in = control.getPathname();
         String out = String.format("%s-%s.%s", FilenameUtils.removeExtension(in.toString()), "fta", "adi");
         String kml = String.format("%s-%s.%s", FilenameUtils.removeExtension(in.toString()), "fta", "kml");

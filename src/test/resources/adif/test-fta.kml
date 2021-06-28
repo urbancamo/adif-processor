@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xal="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0">
+    <Document>
+        <name>../../src/test/resources/adif/test-fta.kml</name>
+        <open>1</open>
+        <Style id="style_M0NOM/P">
+            <IconStyle>
+                <scale>1.0</scale>
+                <heading>0.0</heading>
+                <Icon>
+                    <href>http://maps.google.com/mapfiles/kml/shapes/hiker.png</href>
+                    <refreshInterval>0.0</refreshInterval>
+                    <viewRefreshTime>0.0</viewRefreshTime>
+                    <viewBoundScale>0.0</viewBoundScale>
+                </Icon>
+            </IconStyle>
+            <LabelStyle>
+                <color>ff43b3ff</color>
+                <scale>1.0</scale>
+            </LabelStyle>
+        </Style>
+        <Folder>
+            <name>Contacts</name>
+            <open>1</open>
+            <Placemark>
+                <name>M0NOM/P</name>
+                <description>&lt;a href=&quot;https://qrz.com/db/M0NOM/P&quot;&gt;M0NOM/P&lt;/a&gt;&lt;br/&gt;SOTA: &lt;a href=&quot;https://summits.sota.org.uk/summit/G/LD-050&quot;&gt;G/LD-050&lt;/a&gt;&lt;br/&gt;321 metres, 1 points&lt;br/&gt;</description>
+                <LookAt>
+                    <longitude>-2.937909999999988</longitude>
+                    <latitude>54.28836000000001</latitude>
+                    <altitude>0.0</altitude>
+                    <heading>0.0</heading>
+                    <tilt>0.0</tilt>
+                    <range>3000.0</range>
+                </LookAt>
+                <styleUrl>#style_M0NOM/P</styleUrl>
+                <Point>
+                    <coordinates>-2.937909999999988,54.28836000000001</coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+    </Document>
+</kml>

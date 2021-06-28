@@ -1,0 +1,10 @@
+# Gummer's How, FT-1XD, FT-857, SBQB
+mycall m0nom/p
+operator 
+mysota g/ld-050
+
+# Log 
+date 2019-04-06
+
+80m ssb 3.760
+0925 2e0feh 58 58

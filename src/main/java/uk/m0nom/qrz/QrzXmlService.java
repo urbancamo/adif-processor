@@ -4,7 +4,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
-import uk.m0nom.adif3.FileTransformerApp;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -17,21 +16,23 @@ import java.util.logging.Logger;
  * https://www.qrz.com/XML/current_spec.html
  */
 public class QrzXmlService {
-    private static final Logger logger = Logger.getLogger(FileTransformerApp.class.getName());
+    private static final Logger logger = Logger.getLogger(QrzXmlService.class.getName());
 
     private final static String QRZ_XML_SERVICE_BASE_URL = " https://xmldata.qrz.com/xml";
     private final static String QRZ_XML_SERVICE_VERSION = "1.34";
-    private final static String USERNAME = "M0NOM";
-    private final static String PASSWORD = "WindermereIsMyQTH";
 
     private OkHttpClient client;
     private String sessionKey;
     private boolean enabled;
+    private String username;
+    private String password;
 
-    public QrzXmlService() {
+    public QrzXmlService(String username, String password) {
         client = new OkHttpClient();
         sessionKey = null;
         enabled = true;
+        this.username = username;
+        this.password = password;
     }
 
     public void enable() {
@@ -52,7 +53,7 @@ public class QrzXmlService {
 
     public boolean getSessionKey()  {
         if (sessionKey == null && enabled) {
-            String url = String.format("%s/%s/?username=%s&password=%s", QRZ_XML_SERVICE_BASE_URL, QRZ_XML_SERVICE_VERSION, USERNAME, PASSWORD);
+            String url = String.format("%s/%s/?username=%s&password=%s", QRZ_XML_SERVICE_BASE_URL, QRZ_XML_SERVICE_VERSION, username, password);
             logger.info("Obtaining QRZ.COM session key");
             QrzDatabase database = runQuery(url);
             if (database != null) {
@@ -66,7 +67,7 @@ public class QrzXmlService {
     public QrzCallsign getCallsignData(String callsign) {
         if (sessionKey != null) {
             String url = String.format("%s/%s/?s=%s;callsign=%s", QRZ_XML_SERVICE_BASE_URL, QRZ_XML_SERVICE_VERSION, sessionKey, callsign);
-            logger.info(String.format("Querying QRZ.COM for info on: %s", callsign));
+            //logger.info(String.format("Querying QRZ.COM for info on: %s", callsign));
             QrzDatabase database = runQuery(url);
             if (database != null) {
                 return database.getCallsign();

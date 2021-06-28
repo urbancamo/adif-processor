@@ -1,15 +1,18 @@
 package uk.m0nom.kml;
 
 import de.micromata.opengis.kml.v_2_2_0.*;
+import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
+import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.ionosphere.Ionosphere;
 import uk.m0nom.sota.SotaSummitInfo;
 import uk.m0nom.summits.SummitsDatabase;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 public class KmlWriter {
@@ -17,8 +20,10 @@ public class KmlWriter {
     private static final Logger logger = Logger.getLogger(KmlWriter.class.getName());
     private SummitsDatabase summits;
     private Ionosphere ionosphere;
+    private TransformControl control;
 
-    public KmlWriter() {
+    public KmlWriter(TransformControl control) {
+        this.control = control;
         this.ionosphere = new Ionosphere();
     }
 
@@ -123,11 +128,11 @@ public class KmlWriter {
         Style style = document.createAndAddStyle();
         style.withId("style_" + station) // set the stylename to use this style from the placemark
                 .createAndSetIconStyle().withScale(1.0).withIcon(icon); // set size and icon
-        style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the continent name
+        style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the station marker
         style.createAndSetLineStyle().withColor("ffb343ff").withWidth(5);
 
         Placemark placemark = folder.createAndAddPlacemark();
-        String htmlPanelContent = createPanelContent(rec);
+        String htmlPanelContent = getPanelContentForStation(rec);
         // use the style for each continent
         placemark.withName(station)
                 .withStyleUrl("#style_" + station)
@@ -140,7 +145,7 @@ public class KmlWriter {
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
     }
 
-    private String createPanelContent(Adif3Record rec) {
+    private String getPanelContentForStation(Adif3Record rec) {
         StringBuilder sb = new StringBuilder();
         String station = rec.getCall();
         sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>", station, station));
@@ -148,6 +153,32 @@ public class KmlWriter {
             appendSotaInfo(rec.getSotaRef().getValue(), sb);
         }
         sb.append(String.format("%s %.4f Mhz %s", rec.getTimeOn().toString(), rec.getFreq(), rec.getMode().toString()));
+        return sb.toString();
+    }
+
+    private String getPanelContentForCommsLink(Adif3Record rec, HfLineResult result) {
+        StringBuilder sb=  new StringBuilder();
+        sb.append(String.format("<b>Contact</b><br/><br/><br/>"));
+        sb.append(String.format("%s %s<br/>", rec.getQsoDate().toString(), rec.getTimeOn().toString()));
+        sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>",
+                rec.getStationCallsign(), rec.getStationCallsign()));
+        sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>",
+                rec.getCall(), rec.getCall()));
+        sb.append(String.format("Band: %s<br/>", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase(Locale.ROOT)));
+        sb.append(String.format("Mode: %s<br/>", rec.getMode().toString()));
+        if (rec.getFreq() != null) {
+            sb.append(String.format("Freq: %.3f Mhz<br/>", rec.getFreq()));
+        }
+        sb.append(String.format("Gnd dist: %.0f km<br/>", result.getDistance()));
+        sb.append(String.format("Sky dist: %.0f km<br/>", result.getSkyDistance()));
+        sb.append(String.format("Bounces: %d<br/>", result.getBounces()));
+        if (result.getAltitude() > 9999.99) {
+            sb.append(String.format("Bounce Alt: %.0f km<br/>", result.getAltitude() / 1000));
+        } else {
+            sb.append(String.format("Bounce Alt: %.0f metres<br/>", result.getAltitude()));
+        }
+        sb.append(String.format("Propagation Mode: %s", result.getMode().toString()));
+
         return sb.toString();
     }
 
@@ -169,11 +200,20 @@ public class KmlWriter {
 
         Style style = document.createAndAddStyle();
         style.withId("style_line_to_" + station + "_propagation");
-        style.createAndSetLineStyle().withColor("c0c0c000").withWidth(3);
+        if (rec.getMySotaRef() != null && rec.getSotaRef() != null) {
+            KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlS2sContactLineStyle());
+            style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
 
-        style = document.createAndAddStyle();
-        style.withId("style_line_to_" + station + "_surface");
-        style.createAndSetLineStyle().withColor("40000000").withWidth(3);
+        } else {
+            KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlContactLineStyle());
+            style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
+        }
+
+        if (control.getKmlContactShadow()) {
+            style = document.createAndAddStyle();
+            style.withId("style_line_to_" + station + "_surface");
+            style.createAndSetLineStyle().withColor("40000000").withWidth(3);
+        }
 
         Placemark placemark = folder.createAndAddPlacemark();
         // use the style for each line type
@@ -181,45 +221,42 @@ public class KmlWriter {
                 .withStyleUrl("#style_line_to_" + station + "_propagation");
 
         LineString hfLine = placemark.createAndSetLineString();
-        KmlGeodesicUtils.getHfLine(hfLine, myCoords, coords, ionosphere, rec.getFreq(), rec.getBand(), rec.getTimeOn());
+        HfLineResult result = KmlGeodesicUtils.getHfLine(hfLine, myCoords, coords, ionosphere, rec.getFreq(), rec.getBand(), rec.getTimeOn());
+        placemark.withDescription(getPanelContentForCommsLink(rec, result));
+        if (control.getKmlContactShadow()) {
+            placemark = folder.createAndAddPlacemark();
+            // use the style for each line type
+            placemark.withName(station + "_comms_surface")
+                    .withStyleUrl("#style_line_to_" + station + "_surface");
 
-        placemark = folder.createAndAddPlacemark();
-        // use the style for each line type
-        placemark.withName(station + "_comms_surface")
-                .withStyleUrl("#style_line_to_" + station + "_surface");
-
-        hfLine = placemark.createAndSetLineString();
-        KmlGeodesicUtils.getSurfaceLine(hfLine, myCoords, coords);
-
-        //commsLine.addToCoordinates(myLongitude, myLatitude, 8);
-        //commsLine.addToCoordinates(longitude, latitude, 8);
-        //commsLine.setAltitudeMode(AltitudeMode.CLAMP_TO_GROUND);
-        //commsLine.setExtrude(true);
-
+            hfLine = placemark.createAndSetLineString();
+            KmlGeodesicUtils.getSurfaceLine(hfLine, myCoords, coords);
+        }
 
     }
 
     private String getMyIconFromRec(Adif3Record rec) {
-        String icon = "http://maps.google.com/mapfiles/kml/shapes/ranger_station.png";
         String cs = rec.getStationCallsign().toUpperCase();
+        return getIconFromCallsign(cs);
+    }
+
+    private String getIconFromRec(Adif3Record rec) {
+        String cs = rec.getCall().toUpperCase();
+        return getIconFromCallsign(cs);
+    }
+
+    private String getIconFromCallsign(String cs) {
+        String icon = control.getKmlFixedIconUrl();
         if (cs.endsWith("/P")) {
-            return "http://maps.google.com/mapfiles/kml/shapes/hiker.png";
+            return control.getKmlPortableIconUrl();
         }
         if (cs.endsWith("/M")) {
-            return "http://maps.google.com/mapfiles/kml/shapes/cabs.png";
+            return control.getKmlMobileIconUrl();
+        }
+        if (cs.endsWith("/MM")) {
+            return control.getKmlMaritimeIconUrl();
         }
         return icon;
     }
 
-    private String getIconFromRec(Adif3Record rec) {
-        String icon = "http://maps.google.com/mapfiles/kml/shapes/ranger_station.png";
-        String cs = rec.getCall().toUpperCase();
-        if (cs.endsWith("/P")) {
-            return "http://maps.google.com/mapfiles/kml/shapes/hiker.png";
-        }
-        if (cs.endsWith("/M")) {
-            return "http://maps.google.com/mapfiles/kml/shapes/cabs.png";
-        }
-        return icon;
-    }
 }

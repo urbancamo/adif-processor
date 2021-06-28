@@ -10,14 +10,9 @@ public class FileTransformerAppTest
 {
     @Test
     public void testApp() {
-        String args[] = new String[5];
-        args[0] = "-k";
-        args[1] = "--encoding";
-        args[2] = "windows-1251";
-        args[3] = "-q";
-        args[4] = "../../src/test/resources/adif/test.adi";
+        String cli = "-k --encoding windows-1251 -ks2s --latitude '54.4055' --longitude '-3.01796' ../../src/test/resources/adif/2019-08-31-Black-Fell.adi";
+        String args[] = cli.split(" ");
 
-        //System.out.println(new File(".").getAbsolutePath());
         FileTransformerApp app = new FileTransformerApp(args);
         app.run();
     }
