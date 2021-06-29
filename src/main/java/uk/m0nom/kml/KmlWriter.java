@@ -9,11 +9,13 @@ import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.contacts.Station;
+import uk.m0nom.hema.HemaSummitInfo;
 import uk.m0nom.ionosphere.Ionosphere;
 import uk.m0nom.ionosphere.PropagationMode;
 import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.sota.SotaSummitInfo;
 import uk.m0nom.summits.SummitsDatabase;
+import uk.m0nom.wota.WotaSummitInfo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -117,6 +119,15 @@ public class KmlWriter {
         sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>", callsign, callsign));
         if (rec.getMySotaRef() != null) {
             appendSotaInfo(rec.getMySotaRef().getValue(), sb);
+        } else if (qso.getFrom().getSotaId() != null) {
+            appendSotaInfo(qso.getFrom().getSotaId(), sb);
+        }
+
+        if (qso.getFrom().getHemaId() != null) {
+            appendHemaInfo(qso.getFrom().getHemaId(), sb);
+        }
+            if (qso.getFrom().getWotaId() != null) {
+            appendWotaInfo(qso.getFrom().getWotaId(), sb);
         }
         return sb.toString();
     }
@@ -174,12 +185,23 @@ public class KmlWriter {
                 sb.append(String.format("Grid: %s<br/>", station.getQrzInfo().getGrid()));
             }
             if (qrzInfo.getLat() != null) {
-                sb.append(String.format("Lat: %.3f, Long: %.3f", qrzInfo.getLat(), qrzInfo.getLon()));
+                sb.append(String.format("Lat: %.3f, Long: %.3f<br/>", qrzInfo.getLat(), qrzInfo.getLon()));
             }
+        } else {
+            sb.append("<br/><br/>");
         }
 
         if (rec.getSotaRef() != null) {
             appendSotaInfo(rec.getSotaRef().getValue(), sb);
+        } else if (qso.getTo().getSotaId() != null) {
+            appendSotaInfo(qso.getTo().getSotaId(), sb);
+        }
+
+        if (qso.getTo().getHemaId() != null) {
+            appendHemaInfo(qso.getTo().getHemaId(), sb);
+        }
+        if (qso.getTo().getWotaId() != null) {
+            appendWotaInfo(qso.getTo().getWotaId(), sb);
         }
         //sb.append(String.format("%s %.4f Mhz %s", rec.getTimeOn().toString(), rec.getFreq(), rec.getMode().toString()));
         sb.append("</div>");
@@ -221,6 +243,22 @@ public class KmlWriter {
         sb.append(String.format("%.0f metres, %d points<br/>", summitInfo.getAltitude(), summitInfo.getPoints()));
     }
 
+    private void appendWotaInfo(String summitRef, StringBuilder sb) {
+        String lookupRef = summitRef.toUpperCase();
+        WotaSummitInfo summitInfo = summits.getWota().get(lookupRef);
+        if (StringUtils.equals(summitInfo.getBook(), "OF")) {
+            // need to compensate for LDO weird numbering
+            lookupRef = String.format("LDO-%03d", summitInfo.getInternalId());
+        }
+        sb.append(String.format("WOTA: <a href=\"https://wota.org.uk/MM_%s\">%s</a><br/>", lookupRef, summitRef.toUpperCase()));
+    }
+
+    private void appendHemaInfo(String summitRef, StringBuilder sb) {
+        HemaSummitInfo summitInfo = summits.getHema().get(summitRef);
+        sb.append(String.format("HEMA: %s<br/>", summitRef));
+        sb.append(String.format("%.0f metres<br/>", summitInfo.getAltitude()));
+    }
+
     private void createCommsLink(Document document, Folder folder, Qso qso) {
         Adif3Record rec = qso.getRecord();
 
@@ -256,7 +294,21 @@ public class KmlWriter {
                 .withStyleUrl("#style_line_to_" + station + "_path");
 
         LineString hfLine = placemark.createAndSetLineString();
-        HfLineResult result = KmlGeodesicUtils.getHfLine(hfLine, myCoords, coords, ionosphere, rec.getFreq(), rec.getBand(), rec.getTimeOn());
+        double myAltitude = 0.0;
+        double theirAltitude = 0.0;
+        if (qso.getRecord().getMySotaRef() != null) {
+            SotaSummitInfo summitInfo = summits.getSota().get(qso.getRecord().getMySotaRef().getValue());
+            if (summitInfo != null) {
+                myAltitude = summitInfo.getAltitude();
+            }
+        }
+        if (qso.getRecord().getSotaRef() != null) {
+            SotaSummitInfo summitInfo = summits.getSota().get(qso.getRecord().getSotaRef().getValue());
+            if (summitInfo != null) {
+                theirAltitude = summitInfo.getAltitude();
+            }
+        }
+        HfLineResult result = KmlGeodesicUtils.getHfLine(hfLine, myCoords, coords, ionosphere, rec.getFreq(), rec.getBand(), rec.getTimeOn(), myAltitude, theirAltitude);
         placemark.withDescription(getPanelContentForCommsLink(rec, result));
         if (control.getKmlContactShadow()) {
             placemark = folder.createAndAddPlacemark();

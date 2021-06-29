@@ -14,6 +14,7 @@ import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.contacts.Station;
+import uk.m0nom.hema.HemaSummitInfo;
 import uk.m0nom.maidenheadlocator.LatLng;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;
@@ -84,6 +85,56 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         }
     }
 
+    private void setMyLocationFromWotaId(Adif3Record rec, String wotaId) {
+        // Upload latitude and longitude based on SOTA reference
+        WotaSummitInfo wotaInfo = summits.getWota().get(wotaId);
+        if (wotaInfo != null) {
+            GlobalCoordinates coord = new GlobalCoordinates(wotaInfo.getLatitude(), wotaInfo.getLongitude());
+            rec.setMyCoordinates(coord);
+
+            // Also set the GridSquare as a fallback
+            rec.setMyGridSquare(MaidenheadLocatorConversion.latLngToLocator(wotaInfo.getLatitude(), wotaInfo.getLongitude()));
+
+            String sotaId = wotaInfo.getSotaId();
+            if (sotaId != null) {
+                // SOTA Latitude/Longitude is more accurate, so overwrite from that information
+                setMyLocationFromSotaId(rec, sotaId);
+            }
+        } else {
+            logger.warning(String.format("Suspicious WOTA reference for your callsign", wotaId, rec.getStationCallsign()));
+        }
+    }
+
+    private void setCoordFromHemaId(Adif3Record rec, String hemaId, Map<String, String> unmapped) {
+        // Upload latitude and longitude based on SOTA reference
+        HemaSummitInfo hemaInfo = summits.getHema().get(hemaId);
+        if (hemaInfo != null) {
+            GlobalCoordinates coord = new GlobalCoordinates(hemaInfo.getLatitude(), hemaInfo.getLongitude());
+            rec.setCoordinates(coord);
+
+            // Also set the GridSquare as a fallback
+            rec.setGridsquare(MaidenheadLocatorConversion.latLngToLocator(hemaInfo.getLatitude(), hemaInfo.getLongitude()));
+
+            unmapped.put("HEMA", hemaInfo.getSummitCode());
+        } else {
+            logger.warning(String.format("Suspicious HEMA reference %s for callsign %s at %s", hemaId, rec.getCall(), rec.getTimeOn().toString()));
+        }
+    }
+
+    private void setMyLocationFromHemaId(Adif3Record rec, String hemaId) {
+        // Upload latitude and longitude based on SOTA reference
+        HemaSummitInfo hemaInfo = summits.getHema().get(hemaId);
+        if (hemaInfo != null) {
+            GlobalCoordinates coord = new GlobalCoordinates(hemaInfo.getLatitude(), hemaInfo.getLongitude());
+            rec.setMyCoordinates(coord);
+
+            // Also set the GridSquare as a fallback
+            rec.setMyGridSquare(MaidenheadLocatorConversion.latLngToLocator(hemaInfo.getLatitude(), hemaInfo.getLongitude()));
+        } else {
+            logger.warning(String.format("Suspicious HEMA reference %s for your callsign %s", hemaId, rec.getStationCallsign()));
+        }
+    }
+
     private void setMyLocationFromSotaId(Adif3Record rec, String sotaId) {
         // Brilliant, a SOTA reference is great for setting my location
         SotaSummitInfo sotaInfo = summits.getSota().get(sotaId);
@@ -98,7 +149,8 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         }
     }
 
-    private QrzCallsign setMyLocation(Adif3Record rec) {
+    private QrzCallsign setMyLocation(Qso qso) {
+        Adif3Record rec = qso.getRecord();
         // Attempt a lookup from QRZ.com
         QrzCallsign callsignData = qrzXmlService.getCallsignData(rec.getStationCallsign());
 
@@ -110,8 +162,18 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         }
 
         if (rec.getMyCoordinates() == null) {
-            if (rec.getMySotaRef() != null) {
+            if (control.getSota() != null) {
+                setMyLocationFromSotaId(rec, control.getSota().toUpperCase());
+                qso.getFrom().setSotaId(control.getSota().toUpperCase());
+            } else if (control.getWota() != null) {
+                setMyLocationFromWotaId(rec, control.getWota().toUpperCase());
+                qso.getFrom().setWotaId(control.getWota().toUpperCase());
+            } else if (control.getHema() != null) {
+                setMyLocationFromHemaId(rec, control.getHema().toUpperCase());
+                qso.getFrom().setHemaId(control.getHema().toUpperCase());
+            } else if (rec.getMySotaRef() != null) {
                 setMyLocationFromSotaId(rec, rec.getMySotaRef().getValue());
+                qso.getFrom().setSotaId(rec.getMySotaRef().getValue());
             } else {
                 /* If user has supplied a maidenhead location, use that in preference */
                 if (MaidenheadLocatorConversion.isAValidGridSquare(control.getMyGrid())) {
@@ -196,26 +258,40 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         }
     }
 
+    private String stripPortable(String callsign) {
+        int loc = callsign.lastIndexOf('/');
+        if (loc == -1) {
+            return callsign;
+        }
+        return callsign.substring(0, loc);
+    }
+
     @Override
     public void transform(Qsos qsos, Adif3Record rec) {
         /* Add Adif3Record details to the Qsos meta structure */
         Qso qso = createQsoFromAdif3Record(qsos, rec);
 
         Map<String, String> unmapped = new HashMap<>();
-        QrzCallsign myQrzData = setMyLocation(rec);
+        QrzCallsign myQrzData = setMyLocation(qso);
         qso.getFrom().setQrzInfo(myQrzData);
+
+        /* Load QRZ.COM info for the worked station as a fixed station, for information */
+        String callsignToLookup = stripPortable(qso.getTo().getCallsign());
+        QrzCallsign theirQrzData = qrzXmlService.getCallsignData(callsignToLookup);
+        qso.getTo().setQrzInfo(theirQrzData);
 
         // Duplicate references into the comment
         if (rec.getSotaRef() != null) {
             String sotaId = rec.getSotaRef().getValue();
             unmapped.put("SOTA", sotaId);
             setCoordFromSotaId(rec, sotaId, unmapped);
+            qso.getTo().setSotaId(sotaId);
         }
         if (StringUtils.isNotBlank(rec.getComment())) {
-            transformComment(rec, rec.getComment(), unmapped);
+            transformComment(qso, rec.getComment(), unmapped);
         }
         if (rec.getGridsquare() == null) {
-            QrzCallsign theirQrzData = lookupLocationFromQrz(rec);
+            theirQrzData = lookupLocationFromQrz(rec);
             qso.getTo().setQrzInfo(theirQrzData);
         } else if (rec.getCoordinates() == null) {
             // Set Coordinates from GridSquare that has been supplied in the input file
@@ -243,10 +319,9 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
      * OP: John, QTH: Gatwick, PWR: 100W, ANT: Inv-V, WX: 4 degC, GRID: IO84io
      * In this case OP, QTH and PWR are transferred into their respective ADIF records,
      * and ANT/WX records are appended to the comment
-     * @param rec
-     * @param comment
      */
-    private void transformComment(Adif3Record rec, String comment, Map<String, String> unmapped) {
+    private void transformComment(Qso qso, String comment, Map<String, String> unmapped) {
+        Adif3Record rec = qso.getRecord();
         // try and split the comment up into comma separated list
         Map<String, String> tokens = tokenize(comment);
 
@@ -313,9 +388,10 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                         // Strip off any S2s reference
                         String sotaRef = StringUtils.split(value, ' ')[0];
                         try {
-                            Sota sota = Sota.valueOf(sotaRef);
+                            Sota sota = Sota.valueOf(sotaRef.toUpperCase());
                             rec.setSotaRef(sota);
                             setCoordFromSotaId(rec, sotaRef, unmapped);
+                            qso.getTo().setSotaId(sotaRef);
                         } catch (IllegalArgumentException iae) {
                             // something we can't work out about the reference, so put it in the unmapped list instead
                             System.err.println(String.format("Couldn't identify %s as a SOTA reference in field %s, leaving it unmapped", sotaRef, value));
@@ -327,7 +403,14 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                     case "WotaRef":
                         // Strip off any S2s reference
                         String wotaId = StringUtils.split(value, ' ')[0];
-                        setCoordFromWotaId(rec, wotaId, unmapped);
+                        setCoordFromWotaId(rec, wotaId.toUpperCase(), unmapped);
+                        qso.getTo().setWotaId(wotaId);
+                        break;
+                    case "HemaRef":
+                        // Strip off any S2s reference
+                        String hemaId = StringUtils.split(value, ' ')[0];
+                        setCoordFromHemaId(rec, hemaId.toUpperCase(), unmapped);
+                        qso.getTo().setHemaId(hemaId);
                         break;
                     case "SerialTx":
                         // Determine if this is a serial number of string based contest exchange

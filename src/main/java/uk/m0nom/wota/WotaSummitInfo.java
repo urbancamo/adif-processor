@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class WotaSummitInfo {
+    int internalId;
     String wotaId;
     String sotaId;
     String hemaId;

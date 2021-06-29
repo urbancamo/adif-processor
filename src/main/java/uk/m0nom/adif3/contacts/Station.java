@@ -18,6 +18,10 @@ public class Station {
     private QrzCallsign qrzInfo;
     private List<Qso> qsos;
 
+    private String sotaId;
+    private String hemaId;
+    private String wotaId;
+
     public Station() {
         qsos = new ArrayList<>();
     }

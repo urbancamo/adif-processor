@@ -39,6 +39,8 @@ public class WotaCsvReader {
             } else {
                 info.wotaId = String.format("LDO-%03d", wotaid - 214);
             }
+            info.setInternalId(wotaid);
+
             String sotaId = record.get("sotaid");
             if (!StringUtils.equals(sotaId, "NULL")) {
                 info.sotaId = String.format("G/LD-%03d", Integer.parseInt(sotaId));

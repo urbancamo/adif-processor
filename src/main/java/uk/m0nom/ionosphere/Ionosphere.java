@@ -11,7 +11,7 @@ public class Ionosphere {
     private Map<String, IonosphericLayer> nightTimeLayers;
 
     /** Height at which we map ground wave comms, per 1000m */
-    private final static double GROUNDWAVE_BOUNCE_ALT = 10;
+    private final static double GROUNDWAVE_BOUNCE_ALT = 6;
     private final static double MINIMUM_TAKEOFF_ANGLE = 6;
     private final static double MAXIMUM_GROUND_WAVE_DISTANCE_KM = 400;
 
@@ -45,14 +45,17 @@ public class Ionosphere {
         return PropagationMode.SKY_WAVE;
     }
 
-    public List<PropagationBounce> getBounces(double frequencyInKhz, double distanceInKm, LocalTime timeOfDay) {
+    public List<PropagationBounce> getBounces(double frequencyInKhz, double distanceInKm, LocalTime timeOfDay,
+                                              double myAltitude, double theirAltitude) {
         List<PropagationBounce> bounces = new LinkedList<>();
 
         PropagationMode mode = getPropagationMode(frequencyInKhz, distanceInKm);
         switch (mode) {
             case GROUND_WAVE:
                 // Single hop with nominal altitude that increases as the distance increases
-                PropagationBounce bounce = new PropagationBounce(mode, distanceInKm, GROUNDWAVE_BOUNCE_ALT * distanceInKm, 0.0);
+                double adjustAlt = Math.max(myAltitude, theirAltitude);
+                double apexHeight = Math.max(GROUNDWAVE_BOUNCE_ALT * distanceInKm, adjustAlt);
+                PropagationBounce bounce = new PropagationBounce(mode, distanceInKm, apexHeight, 0.0);
                 bounces.add(bounce);
                 break;
             case SKY_WAVE:

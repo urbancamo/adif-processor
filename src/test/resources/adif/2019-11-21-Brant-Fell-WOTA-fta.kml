@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xal="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0">
     <Document>
-        <name>../../src/test/resources/adif/test-fta.kml</name>
+        <name>../../src/test/resources/adif/2019-11-21-Brant-Fell-WOTA-fta.kml</name>
         <open>1</open>
         <Style id="style_M0NOM/P">
             <IconStyle>
@@ -19,12 +19,12 @@
                 <scale>1.0</scale>
             </LabelStyle>
         </Style>
-        <Style id="style_BD7MHZ">
+        <Style id="style_G8CPZ/P">
             <IconStyle>
                 <scale>1.0</scale>
                 <heading>0.0</heading>
                 <Icon>
-                    <href>http://maps.google.com/mapfiles/kml/shapes/ranger_station.png</href>
+                    <href>http://maps.google.com/mapfiles/kml/shapes/hiker.png</href>
                     <refreshInterval>0.0</refreshInterval>
                     <viewRefreshTime>0.0</viewRefreshTime>
                     <viewBoundScale>0.0</viewBoundScale>
@@ -39,13 +39,13 @@
                 <width>5.0</width>
             </LineStyle>
         </Style>
-        <Style id="style_line_to_BD7MHZ_path">
+        <Style id="style_line_to_G8CPZ/P_path">
             <LineStyle>
                 <color>7FF0CF89</color>
-                <width>3.0</width>
+                <width>2.0</width>
             </LineStyle>
         </Style>
-        <Style id="style_line_to_BD7MHZ_shadow">
+        <Style id="style_line_to_G8CPZ/P_shadow">
             <LineStyle>
                 <color>40000000</color>
                 <width>3.0</width>
@@ -56,10 +56,10 @@
             <open>1</open>
             <Placemark>
                 <name>M0NOM/P</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/M0NOM/P&quot;&gt;M0NOM/P&lt;/a&gt;&lt;br/&gt;SOTA: &lt;a href=&quot;https://summits.sota.org.uk/summit/G/LD-051&quot;&gt;G/LD-051&lt;/a&gt;&lt;br/&gt;317 metres, 1 points&lt;br/&gt;</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/M0NOM/P&quot;&gt;M0NOM/P&lt;/a&gt;&lt;br/&gt;WOTA: &lt;a href=&quot;https://wota.org.uk/MM_LDO-327&quot;&gt;LDO-113&lt;/a&gt;&lt;br/&gt;</description>
                 <LookAt>
-                    <longitude>-3.0565300000000093</longitude>
-                    <latitude>54.3963</latitude>
+                    <longitude>-2.910896699999995</longitude>
+                    <latitude>54.356986000000006</latitude>
                     <altitude>0.0</altitude>
                     <heading>0.0</heading>
                     <tilt>0.0</tilt>
@@ -67,48 +67,40 @@
                 </LookAt>
                 <styleUrl>#style_M0NOM/P</styleUrl>
                 <Point>
-                    <coordinates>-3.0565300000000093,54.3963</coordinates>
+                    <coordinates>-2.910896699999995,54.356986000000006</coordinates>
                 </Point>
             </Placemark>
             <Placemark>
-                <name>BD7MHZ</name>
-                <description>&lt;b&gt;Station&lt;/b&gt;&lt;br/&gt;Callsign: &lt;a href=&quot;https://qrz.com/db/BD7MHZ&quot;&gt;BD7MHZ&lt;/a&gt;&lt;br/&gt;Name: Sam Wood&lt;br/&gt;&lt;br/&gt;&lt;a href=&quot;https://qrz.com/db/BD7MHZ&quot;&gt;&lt;img src=&quot;https://cdn-xml.qrz.com/z/bd7mhz/QSLCard2.jpg&quot; width=&quot;320&quot;/&gt;&lt;/a&gt;&lt;br/&gt;14:36 14.2800 Mhz SSB</description>
+                <name>G8CPZ/P</name>
+                <description>&lt;div style='border:10px'&gt;&lt;b&gt;Station&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Callsign: &lt;a href=&quot;https://qrz.com/db/G8CPZ/P&quot;&gt;G8CPZ/P&lt;/a&gt;&lt;br/&gt;Name: AJ Barth&lt;br/&gt;Grid: IO84of&lt;br/&gt;Lat: 54.220, Long: -2.810&lt;br/&gt;WOTA: &lt;a href=&quot;https://wota.org.uk/MM_LDO-322&quot;&gt;LDO-108&lt;/a&gt;&lt;br/&gt;&lt;/div&gt;</description>
                 <LookAt>
-                    <longitude>110.78171500000002</longitude>
-                    <latitude>21.445655999999985</latitude>
+                    <longitude>-2.922900400000003</longitude>
+                    <latitude>54.205904000000004</latitude>
                     <altitude>0.0</altitude>
                     <heading>0.0</heading>
                     <tilt>0.0</tilt>
                     <range>3000.0</range>
                 </LookAt>
-                <styleUrl>#style_BD7MHZ</styleUrl>
+                <styleUrl>#style_G8CPZ/P</styleUrl>
                 <Point>
-                    <coordinates>110.78171500000002,21.445655999999985</coordinates>
+                    <coordinates>-2.922900400000003,54.205904000000004</coordinates>
                 </Point>
             </Placemark>
             <Placemark>
-                <name>BD7MHZ_comms_path</name>
-                <description>&lt;b&gt;Contact&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;2021-06-27 14:36&lt;br/&gt;&lt;a href=&quot;https://qrz.com/db/M0NOM/P&quot;&gt;M0NOM/P&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;https://qrz.com/db/BD7MHZ&quot;&gt;BD7MHZ&lt;/a&gt;&lt;br/&gt;Band: 20m&lt;br/&gt;Mode: SSB&lt;br/&gt;Freq: 14.280 Mhz&lt;br/&gt;Gnd dist: 9524 km&lt;br/&gt;Sky dist: 14330 km&lt;br/&gt;Bounces: 3&lt;br/&gt;Avg Alt: 375 km&lt;br/&gt;Avg Angle: 27°&lt;br/&gt;Propagation Mode: SKY_WAVE</description>
-                <styleUrl>#style_line_to_BD7MHZ_path</styleUrl>
+                <name>G8CPZ/P_comms_path</name>
+                <description>&lt;b&gt;Contact&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;2019-11-21 13:04&lt;br/&gt;&lt;a href=&quot;https://qrz.com/db/M0NOM/P&quot;&gt;M0NOM/P&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;https://qrz.com/db/G8CPZ/P&quot;&gt;G8CPZ/P&lt;/a&gt;&lt;br/&gt;Band: 2m&lt;br/&gt;Mode: FM&lt;br/&gt;Freq: 145.525 Mhz&lt;br/&gt;Gnd dist: 17 km&lt;br/&gt;Propagation Mode: GROUND_WAVE</description>
+                <styleUrl>#style_line_to_G8CPZ/P_path</styleUrl>
                 <LineString>
                     <extrude>0</extrude>
                     <altitudeMode>relativeToGround</altitudeMode>
-                    <coordinates>
-                    -3.0565300000000093,54.3963 
-                    73.29193976590463,53.465442232356736,375000.0 
-                    110.78171500000212,21.44565599999686 
-                    73.32126970884858,53.49190561537807,375000.0 
-                    110.78171500000212,21.44565599999686 
-                    73.32126970884858,53.49190561537807,375000.0 
-                    110.78171500000002,21.445655999999985
-                    </coordinates>
+                    <coordinates>-2.910896699999995,54.356986000000006 -2.9169095294723775,54.28144562547783,101.0108257450812 -2.922900400000003,54.205904000000004</coordinates>
                 </LineString>
             </Placemark>
             <Placemark>
-                <name>BD7MHZ_comms_shadow</name>
-                <styleUrl>#style_line_to_BD7MHZ_shadow</styleUrl>
+                <name>G8CPZ/P_comms_shadow</name>
+                <styleUrl>#style_line_to_G8CPZ/P_shadow</styleUrl>
                 <LineString>
-                    <coordinates>-3.0565300000000093,54.3963 110.78171500000002,21.445655999999985</coordinates>
+                    <coordinates>-2.910896699999995,54.356986000000006 -2.922900400000003,54.205904000000004</coordinates>
                 </LineString>
             </Placemark>
         </Folder>

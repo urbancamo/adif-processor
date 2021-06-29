@@ -29,6 +29,12 @@ public class CommandLineArgs {
                 .help("Specify override longitude in decimal format, enclose in single quotes");
         parser.addArgument("-g", "--grid").required(false)
                 .help("Specify override grid in 4/6/10 characters");
+        parser.addArgument("-he", "--hema").required(false)
+                .help("Specify override HEMA Id for your location");
+        parser.addArgument("-w", "--wota").required(false)
+                .help("Specify override WOTA Id for your location");
+        parser.addArgument("-s", "--sota").required(false)
+                .help("Specify override SOTA Id for your location");
         parser.addArgument("-e", "--encoding").required(false).setDefault("windows-1251")
                 .help("Specify encoding of input ADIF file");
         parser.addArgument("-ks2s", "--kml-s2s").required(false).action(Arguments.storeTrue())
@@ -70,6 +76,11 @@ public class CommandLineArgs {
             control.setKmlPortableIconUrl(ns.getString("kml_portable_station"));
             control.setKmlPortableIconUrl(ns.getString("kml_portable_station"));
             control.setKmlMaritimeIconUrl(ns.getString("kml_maritime_station"));
+
+            control.setHema(ns.getString("hema"));
+            control.setWota(ns.getString("wota"));
+            control.setSota(ns.getString("sota"));
+
             control.setPathname(ns.getString("path").substring(1, ns.getString("path").length()-1));
         } catch (ArgumentParserException e) {
             parser.handleError(e);

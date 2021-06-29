@@ -26,7 +26,9 @@ public class TransformControl {
     private String kmlPortableIconUrl;
     private String kmlMobileIconUrl;
     private String kmlMaritimeIconUrl;
-
+    private String hema;
+    private String wota;
+    private String sota;
 
     public TransformControl() {
     }
