@@ -52,7 +52,7 @@ public class Ionosphere {
         switch (mode) {
             case GROUND_WAVE:
                 // Single hop with nominal altitude that increases as the distance increases
-                PropagationBounce bounce = new PropagationBounce(mode, distanceInKm / 2.0, GROUNDWAVE_BOUNCE_ALT * distanceInKm);
+                PropagationBounce bounce = new PropagationBounce(mode, distanceInKm, GROUNDWAVE_BOUNCE_ALT * distanceInKm, 0.0);
                 bounces.add(bounce);
                 break;
             case SKY_WAVE:
@@ -62,7 +62,7 @@ public class Ionosphere {
                 int hops = calculateNumberOfHops(distanceInKm, alt / 1000);
                 for (int i = 0; i < hops; i++) {
                     double hopDistance = distanceInKm / hops;
-                    bounce = new PropagationBounce(mode, hopDistance, alt);
+                    bounce = new PropagationBounce(mode, hopDistance, alt, 0.0);
                     bounces.add(bounce);
                 }
                 break;
@@ -70,7 +70,7 @@ public class Ionosphere {
                 layers = getLayerForTimeOfDay(timeOfDay);
                 bounceLayer = layers.get("E");
                 alt = bounceLayer.getAverageHeight();
-                bounces.add(new PropagationBounce(mode, distanceInKm / 2.0, alt));
+                bounces.add(new PropagationBounce(mode, distanceInKm, alt, 0.0));
                 break;
         }
         return bounces;

@@ -35,17 +35,17 @@ public class CommandLineArgs {
                 .help("Highlight Summit to Summit Contacts in KML file");
         parser.addArgument("-kcs", "--kml-contact-shadow").required(false).action(Arguments.storeTrue()).setDefault(Boolean.TRUE)
                 .help("Draw a shadow under the KML contact line");
-        parser.addArgument("-ks2sls", "--kml-s2s-line-style").required(false).setDefault("dark_midnight_blue:50:3")
-                .help("Set the colour of contact line for Summit to Summit contacts of the form html_color:transparency:width, default is: dark_midnight_blue:50:3");
-        parser.addArgument("-kcls", "--kml-contact-line-style").required(false).setDefault("baby_blue:50:3")
-                .help("Set the colour of contact line for contacts of the form html_color:transparency:width, default is: baby_blue:50:3");
+        parser.addArgument("-ks2sls", "--kml-s2s-line-style").required(false).setDefault("brick_red:50:2")
+                .help("Set the colour of contact line for Summit to Summit contacts of the form html_color:transparency:width, default is: brick_red:50:2");
+        parser.addArgument("-kcls", "--kml-contact-line-style").required(false).setDefault("baby_blue:50:2")
+                .help("Set the colour of contact line for contacts of the form html_color:transparency:width, default is: baby_blue:50:2");
         parser.addArgument("-kfi", "--kml-fixed-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/ranger_station.png")
                 .help("URL of the icon to use for fixed/home station locations");
         parser.addArgument("-kpi", "--kml-portable-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/hiker.png")
                 .help("URL of the icon to use for fixed/home station locations");
         parser.addArgument("-kmi", "--kml-mobile-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/ranger_station.png")
                 .help("URL of the icon to use for fixed/home station locations");
-        parser.addArgument("-kmmi", "--kml-maritime-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/ferry.png")
+        parser.addArgument("-kmmi", "--kml-maritime-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/sailing.png")
                 .help("URL of the icon to use for maritime mobile station locations");
         parser.addArgument("path").nargs("*")
                 .help("Input ADIF files");

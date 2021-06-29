@@ -42,7 +42,7 @@
         <Style id="style_line_to_BD7MHZ_path">
             <LineStyle>
                 <color>7FF0CF89</color>
-                <width>2.0</width>
+                <width>3.0</width>
             </LineStyle>
         </Style>
         <Style id="style_line_to_BD7MHZ_shadow">
@@ -72,7 +72,7 @@
             </Placemark>
             <Placemark>
                 <name>BD7MHZ</name>
-                <description>&lt;div style='border:10px'&gt;&lt;b&gt;Station&lt;/b&gt;&lt;br/&gt;Callsign: &lt;a href=&quot;https://qrz.com/db/BD7MHZ&quot;&gt;BD7MHZ&lt;/a&gt;&lt;br/&gt;Name: Sam Wood&lt;br/&gt;&lt;br/&gt;&lt;div style='border:10px'&gt;&lt;a href=&quot;https://qrz.com/db/BD7MHZ&quot;&gt;&lt;img src=&quot;https://cdn-xml.qrz.com/z/bd7mhz/QSLCard2.jpg&quot; width=&quot;320&quot;/&gt;&lt;/a&gt;&lt;/div&gt;&lt;br/&gt;14:36 14.2800 Mhz SSB&lt;/div&gt;</description>
+                <description>&lt;b&gt;Station&lt;/b&gt;&lt;br/&gt;Callsign: &lt;a href=&quot;https://qrz.com/db/BD7MHZ&quot;&gt;BD7MHZ&lt;/a&gt;&lt;br/&gt;Name: Sam Wood&lt;br/&gt;&lt;br/&gt;&lt;a href=&quot;https://qrz.com/db/BD7MHZ&quot;&gt;&lt;img src=&quot;https://cdn-xml.qrz.com/z/bd7mhz/QSLCard2.jpg&quot; width=&quot;320&quot;/&gt;&lt;/a&gt;&lt;br/&gt;14:36 14.2800 Mhz SSB</description>
                 <LookAt>
                     <longitude>110.78171500000002</longitude>
                     <latitude>21.445655999999985</latitude>
@@ -88,12 +88,20 @@
             </Placemark>
             <Placemark>
                 <name>BD7MHZ_comms_path</name>
-                <description>&lt;b&gt;Contact&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;2021-06-27 14:36&lt;br/&gt;&lt;a href=&quot;https://qrz.com/db/M0NOM/P&quot;&gt;M0NOM/P&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;https://qrz.com/db/BD7MHZ&quot;&gt;BD7MHZ&lt;/a&gt;&lt;br/&gt;Band: 20m&lt;br/&gt;Mode: SSB&lt;br/&gt;Freq: 14.280 Mhz&lt;br/&gt;Gnd dist: 9524 km&lt;br/&gt;Sky dist: 4893 km&lt;br/&gt;Bounces: 3&lt;br/&gt;Avg Alt: 375 km&lt;br/&gt;Avg Angle: 27°&lt;br/&gt;Propagation Mode: SKY_WAVE</description>
+                <description>&lt;b&gt;Contact&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;2021-06-27 14:36&lt;br/&gt;&lt;a href=&quot;https://qrz.com/db/M0NOM/P&quot;&gt;M0NOM/P&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;https://qrz.com/db/BD7MHZ&quot;&gt;BD7MHZ&lt;/a&gt;&lt;br/&gt;Band: 20m&lt;br/&gt;Mode: SSB&lt;br/&gt;Freq: 14.280 Mhz&lt;br/&gt;Gnd dist: 9524 km&lt;br/&gt;Sky dist: 14330 km&lt;br/&gt;Bounces: 3&lt;br/&gt;Avg Alt: 375 km&lt;br/&gt;Avg Angle: 27°&lt;br/&gt;Propagation Mode: SKY_WAVE</description>
                 <styleUrl>#style_line_to_BD7MHZ_path</styleUrl>
                 <LineString>
                     <extrude>0</extrude>
                     <altitudeMode>relativeToGround</altitudeMode>
-                    <coordinates>-3.0565300000000093,54.3963 21.44635245523645,59.63636096618018,375000.0 49.635891026696754,59.26984262908627 73.29193976590463,53.465442232356736,375000.0 89.94046956972971,44.25458982173879 101.72724981120507,33.29071322636088,375000.0 110.78171500000002,21.445655999999985</coordinates>
+                    <coordinates>
+                    -3.0565300000000093,54.3963 
+                    73.29193976590463,53.465442232356736,375000.0 
+                    110.78171500000212,21.44565599999686 
+                    73.32126970884858,53.49190561537807,375000.0 
+                    110.78171500000212,21.44565599999686 
+                    73.32126970884858,53.49190561537807,375000.0 
+                    110.78171500000002,21.445655999999985
+                    </coordinates>
                 </LineString>
             </Placemark>
             <Placemark>

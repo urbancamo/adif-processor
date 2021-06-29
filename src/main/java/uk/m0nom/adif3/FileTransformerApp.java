@@ -5,6 +5,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.marsik.ham.adif.Adif3;
 import uk.m0nom.adif3.args.CommandLineArgs;
 import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.kml.KmlWriter;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.sota.SotaCsvReader;
@@ -32,6 +33,8 @@ public class FileTransformerApp implements Runnable
     private SummitsDatabase summits;
     private QrzXmlService qrzXmlService;
 
+    private Qsos qsos;
+
     private final static String configFilePath = "adif-processor.yaml";
 
     private String args[];
@@ -54,6 +57,7 @@ public class FileTransformerApp implements Runnable
         readerWriter = new Adif3FileReaderWriter();
         summits = new SummitsDatabase();
         cli = new CommandLineArgs();
+        qsos = new Qsos();
     }
 
     public static void main( String[] args )
@@ -87,10 +91,10 @@ public class FileTransformerApp implements Runnable
 
             logger.info(String.format("Reading input file %s with encoding %s", control.getPathname(), control.getEncoding()));
             Adif3 log = readerWriter.read(in, control.getEncoding(), false);
-            transformer.transform(log, control);
+            qsos = transformer.transform(log, control);
             readerWriter.write(out, control.getEncoding(), log);
             if (control.getGenerateKml()) {
-                kmlWriter.write(kml, log, summits);
+                kmlWriter.write(kml, summits, qsos);
             }
         } catch (NoSuchFileException nfe) {
             logger.severe(String.format("Could not open input file: %s", control.getPathname()));

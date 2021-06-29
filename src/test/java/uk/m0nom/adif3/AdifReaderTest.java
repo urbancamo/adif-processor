@@ -7,6 +7,7 @@ import org.marsik.ham.adif.AdiReader;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.sota.SotaCsvReader;
 import uk.m0nom.summits.SummitsDatabase;
@@ -56,6 +57,7 @@ public class AdifReaderTest {
         YamlMapping config = Yaml.createYamlInput(new File("adif-processor.yaml")).readYamlMapping();
         if (result.isPresent()) {
             Adif3 log = result.get();
+            Qsos qsos = new Qsos(log);
             assertThat(log.getHeader().getProgramId()).isEqualTo("FLE");
 
             summits = new SummitsDatabase();
@@ -67,7 +69,7 @@ public class AdifReaderTest {
 
             Adif3RecordTransformer transformer = new FastLogEntryAdifRecordTransformer(config, summits, qrzXmlService, control);
             for (Adif3Record rec : log.getRecords()) {
-                transformer.transform(rec);
+                transformer.transform(qsos, rec);
             }
             assertThat(log.getRecords()).hasSize(16);
         }

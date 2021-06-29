@@ -50,19 +50,24 @@ public class KmlGeodesicUtils
         result.setDistance(distanceInKm);
 
         double azimuth = curve.getAzimuth();
-        double totalAltitude = 0.0;
+        double avgAltitude = 0.0;
+        double avgAngle = 0.0;
         PropagationMode mode = null;
         List<PropagationBounce> bounces = ionosphere.getBounces(frequencyInKhz, distanceInKm, time);
-        for (PropagationBounce bounce : bounces) {
-            totalAltitude += bounce.getHeight();
-            mode = bounce.getMode();
-        }
-        result.setMode(mode);
-        result.setAltitude(totalAltitude / bounces.size());
-        result.setBounces(bounces.size());
 
         double skyDistance = addBouncesToLineString(hfLine, bounces, start, end, azimuth, calculator);
         result.setSkyDistance(skyDistance);
+
+        for (PropagationBounce bounce : bounces) {
+            avgAltitude += bounce.getHeight();
+            avgAngle += bounce.getAngle();
+            mode = bounce.getMode();
+        }
+        result.setMode(mode);
+        result.setAltitude(avgAltitude / bounces.size());
+        result.setAngle(avgAngle / bounces.size());
+        result.setBounces(bounces.size());
+
         return result;
     }
 
@@ -77,15 +82,21 @@ public class KmlGeodesicUtils
             PropagationBounce bounce = bounces.get(i);
 
             /* Need work out the distance taking into account the altitude gain */
-            double distanceAcrossGlobal = bounce.getDistance();
-            double reflectionHeight = bounce.getHeight() / 1000.0;
-            double lengthOfLine = Math.sqrt((distanceAcrossGlobal * distanceAcrossGlobal) + (reflectionHeight * reflectionHeight));
-            skyDistance += lengthOfLine * 2.0;
 
-            double distanceInMetres = lengthOfLine * 1000.0;
+            double distanceAcrossGlobal = bounce.getDistance() * 1000;
+            double reflectionHeight = bounce.getHeight();
+            double distanceOfHalfHop = distanceAcrossGlobal / 2.0;
+            /* need to make sure we take into account both sides of the hop into space and back again */
+            double commsDistance = Math.sqrt((distanceOfHalfHop * distanceOfHalfHop) + (reflectionHeight * reflectionHeight));
+            skyDistance += commsDistance / 1000.0;
+
+            /* set the angle of the bounce */
+            double halfCommsDistance = commsDistance / 2.0;
+            double angle = Math.toDegrees(Math.atan((halfCommsDistance / distanceOfHalfHop)));
+            bounce.setAngle(angle);
 
             /* Add 'up' bounce */
-            GlobalCoordinates apex = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, previous, azimuth, distanceInMetres / 2.0);
+            GlobalCoordinates apex = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, previous, azimuth, distanceAcrossGlobal / 2.0);
             hfLine.addToCoordinates(apex.getLongitude(), apex.getLatitude(), bounce.getHeight());
 
             /* Recalculate Azimuth between Apex and End Point */
@@ -96,7 +107,7 @@ public class KmlGeodesicUtils
             if  (i == bounces.size() - 1) {
                 hfLine.addToCoordinates(end.getLongitude(), end.getLatitude(), 0);
             } else {
-                GlobalCoordinates rtn = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, apex, azimuth, distanceInMetres / 2.0);
+                GlobalCoordinates rtn = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, apex, azimuth, distanceAcrossGlobal / 2.0);
                 hfLine.addToCoordinates(rtn.getLongitude(), rtn.getLatitude(), 0);
                 /* Recalculate Azimuth between Apex and End Point */
                 curve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, rtn, end);

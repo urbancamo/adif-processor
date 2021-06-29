@@ -10,6 +10,7 @@ public class HfLineResult {
     int bounces;
     double altitude;
     double distance;
+    double angle;
     double skyDistance;
     PropagationMode mode;
 

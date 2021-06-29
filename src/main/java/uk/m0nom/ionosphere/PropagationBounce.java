@@ -1,18 +1,15 @@
 package uk.m0nom.ionosphere;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class PropagationBounce {
-    private double height;
-    private double distance;
     private PropagationMode mode;
-
-    public PropagationBounce(PropagationMode mode, double distance, double height) {
-        this.mode = mode;
-        this.distance = distance;
-        this.height = height;
-    }
+    private double distance;
+    private double height;
+    private double angle;
 }

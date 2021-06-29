@@ -56,7 +56,7 @@
             <open>1</open>
             <Placemark>
                 <name>GB0AWD</name>
-                <description>&lt;a href=&quot;https://qrz.com/db/GB0AWD&quot;&gt;GB0AWD&lt;/a&gt;&lt;br/&gt;</description>
+                <description>&lt;a href=&quot;https://qrz.com/db/uk.m0nom.adif3.contacts.Station@1be2019a&quot;&gt;uk.m0nom.adif3.contacts.Station@1be2019a&lt;/a&gt;&lt;br/&gt;</description>
                 <LookAt>
                     <longitude>-3.017959999999988</longitude>
                     <latitude>54.40550000000002</latitude>
@@ -88,7 +88,7 @@
             </Placemark>
             <Placemark>
                 <name>ON/DO1JJ/P_comms_propagation</name>
-                <description>&lt;b&gt;Contact&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;2019-08-31 14:56&lt;br/&gt;&lt;a href=&quot;https://qrz.com/db/GB0AWD&quot;&gt;GB0AWD&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;https://qrz.com/db/ON/DO1JJ/P&quot;&gt;ON/DO1JJ/P&lt;/a&gt;&lt;br/&gt;Band: 40m&lt;br/&gt;Mode: SSB&lt;br/&gt;Freq: 7.134 Mhz&lt;br/&gt;Gnd dist: 754 km&lt;br/&gt;Sky dist: 842 km&lt;br/&gt;Bounces: 1&lt;br/&gt;Avg. Altitude: 375 km&lt;br/&gt;Propagation Mode: SKY_WAVE</description>
+                <description>&lt;b&gt;Contact&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;2019-08-31 14:56&lt;br/&gt;&lt;a href=&quot;https://qrz.com/db/GB0AWD&quot;&gt;GB0AWD&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;https://qrz.com/db/ON/DO1JJ/P&quot;&gt;ON/DO1JJ/P&lt;/a&gt;&lt;br/&gt;Band: 40m&lt;br/&gt;Mode: SSB&lt;br/&gt;Freq: 7.134 Mhz&lt;br/&gt;Gnd dist: 754 km&lt;br/&gt;Sky dist: 1684 km&lt;br/&gt;Bounces: 1&lt;br/&gt;Bounce Alt: 375 km&lt;br/&gt;Propagation Mode: SKY_WAVE</description>
                 <styleUrl>#style_line_to_ON/DO1JJ/P_propagation</styleUrl>
                 <LineString>
                     <extrude>0</extrude>

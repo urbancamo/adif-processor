@@ -11,6 +11,9 @@ import org.marsik.ham.adif.enums.QslVia;
 import org.marsik.ham.adif.types.Iota;
 import org.marsik.ham.adif.types.Sota;
 import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.contacts.Qso;
+import uk.m0nom.adif3.contacts.Qsos;
+import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.maidenheadlocator.LatLng;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;
@@ -95,12 +98,15 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         }
     }
 
-    private void setMyLocation(Adif3Record rec) {
+    private QrzCallsign setMyLocation(Adif3Record rec) {
+        // Attempt a lookup from QRZ.com
+        QrzCallsign callsignData = qrzXmlService.getCallsignData(rec.getStationCallsign());
+
         if (control.getMyLatitude() != null && control.getMyLongitude() != null) {
             Double latitude = Double.parseDouble(StringUtils.remove(control.getMyLatitude(),'\''));
             Double longitude = Double.parseDouble(StringUtils.remove(control.getMyLongitude(),'\''));
             rec.setMyCoordinates(new GlobalCoordinates(latitude, longitude));
-            return;
+            return callsignData;
         }
 
         if (rec.getMyCoordinates() == null) {
@@ -113,8 +119,6 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                 }
 
                 if (rec.getMyGridSquare() == null) {
-                    // Attempt a lookup from QRZ.com
-                    QrzCallsign callsignData = qrzXmlService.getCallsignData(rec.getStationCallsign());
                     if (callsignData != null) {
                         if (callsignData.getLat() != null && callsignData.getLon() != null) {
                             GlobalCoordinates coord = new GlobalCoordinates(callsignData.getLat(), callsignData.getLon());
@@ -134,6 +138,7 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                 }
             }
         }
+        return callsignData;
     }
 
     private boolean isPortable(String callsign) {
@@ -149,21 +154,22 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         }
     }
 
-    private void lookupLocationFromQrz(Adif3Record rec) {
+    private QrzCallsign lookupLocationFromQrz(Adif3Record rec) {
         String callsign = rec.getCall();
         QrzCallsign callsignData = qrzXmlService.getCallsignData(callsign);
         if (callsignData != null) {
            updateRecordFromQrzLocation(rec, callsignData);
-            logger.info(String.format("Updating location of station %s from QRZ.COM data", callsign));
+            logger.info(String.format("Retrieved %s from QRZ.COM", callsign));
         } else if (isPortable(callsign)) {
             // Try stripping off any portable callsign information and querying that as a last resort
             String fixedCallsign = callsign.substring(0, StringUtils.lastIndexOf(callsign, "/"));
             callsignData = qrzXmlService.getCallsignData(fixedCallsign);
             if (callsignData != null) {
-                logger.info(String.format("Updating location of station %s from QRZ.COM FIXED station data %s", callsign, fixedCallsign));
+                logger.info(String.format("Retrieved %s from QRZ.COM using FIXED station callsign %s", callsign, fixedCallsign));
                 updateRecordFromQrzLocation(rec, callsignData);
             }
        }
+        return callsignData;
     }
 
     /**
@@ -191,9 +197,14 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     }
 
     @Override
-    public void transform(Adif3Record rec) {
+    public void transform(Qsos qsos, Adif3Record rec) {
+        /* Add Adif3Record details to the Qsos meta structure */
+        Qso qso = createQsoFromAdif3Record(qsos, rec);
+
         Map<String, String> unmapped = new HashMap<>();
-        setMyLocation(rec);
+        QrzCallsign myQrzData = setMyLocation(rec);
+        qso.getFrom().setQrzInfo(myQrzData);
+
         // Duplicate references into the comment
         if (rec.getSotaRef() != null) {
             String sotaId = rec.getSotaRef().getValue();
@@ -204,7 +215,8 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
             transformComment(rec, rec.getComment(), unmapped);
         }
         if (rec.getGridsquare() == null) {
-            lookupLocationFromQrz(rec);
+            QrzCallsign theirQrzData = lookupLocationFromQrz(rec);
+            qso.getTo().setQrzInfo(theirQrzData);
         } else if (rec.getCoordinates() == null) {
             // Set Coordinates from GridSquare that has been supplied in the input file
             LatLng loc = MaidenheadLocatorConversion.locatorToLatLng(rec.getGridsquare());
@@ -217,6 +229,13 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
             // done a good job and slotted all the key/value pairs in the right place
             rec.setComment("");
         }
+    }
+
+    private Qso createQsoFromAdif3Record(Qsos qsos, Adif3Record rec) {
+        Qso qso = new Qso();
+        qso.setRecord(rec);
+        qsos.addQso(qso);
+        return qso;
     }
 
     /**

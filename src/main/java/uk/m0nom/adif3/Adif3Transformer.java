@@ -7,6 +7,7 @@ import org.marsik.ham.adif.AdiWriter;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.summits.SummitsDatabase;
 
@@ -24,8 +25,9 @@ public class Adif3Transformer {
         this.qrzXmlService = qrzXmlService;
     }
 
-    public void transform(Adif3 log, TransformControl control) throws UnsupportedHeaderException {
+    public Qsos transform(Adif3 log, TransformControl control) throws UnsupportedHeaderException {
         Adif3RecordTransformer transformer = null;
+        Qsos qsos = new Qsos(log);
 
         if (log.getHeader() != null) {
             switch (log.getHeader().getProgramId()) {
@@ -40,11 +42,12 @@ public class Adif3Transformer {
             }
             if (transformer != null) {
                 for (Adif3Record rec : log.getRecords()) {
-                    transformer.transform(rec);
+                    transformer.transform(qsos, rec);
                 }
             }
         } else {
             throw new UnsupportedHeaderException();
         }
+        return qsos;
     }
 }
