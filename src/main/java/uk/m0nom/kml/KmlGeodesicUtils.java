@@ -87,11 +87,10 @@ public class KmlGeodesicUtils
             double reflectionHeight = bounce.getHeight();
             double distanceOfHalfHop = distanceAcrossGlobal / 2.0;
             /* need to make sure we take into account both sides of the hop into space and back again */
-            double commsDistance = Math.sqrt((distanceOfHalfHop * distanceOfHalfHop) + (reflectionHeight * reflectionHeight));
-            skyDistance += commsDistance / 1000.0;
+            double halfCommsDistance = Math.sqrt((distanceOfHalfHop * distanceOfHalfHop) + (reflectionHeight * reflectionHeight));
+            skyDistance += halfCommsDistance * 2.0 / 1000.0;
 
             /* set the angle of the bounce */
-            double halfCommsDistance = commsDistance / 2.0;
             double angle = Math.toDegrees(Math.atan((halfCommsDistance / distanceOfHalfHop)));
             bounce.setAngle(angle);
 

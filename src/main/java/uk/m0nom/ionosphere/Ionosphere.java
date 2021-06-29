@@ -13,7 +13,8 @@ public class Ionosphere {
     /** Height at which we map ground wave comms, per 1000m */
     private final static double GROUNDWAVE_BOUNCE_ALT = 6;
     private final static double MINIMUM_TAKEOFF_ANGLE = 6;
-    private final static double MAXIMUM_GROUND_WAVE_DISTANCE_KM = 400;
+    private final static double MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM = 400;
+    private final static double MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM = 50;
 
     public Ionosphere() {
         dayTimeLayers = new HashMap<>();
@@ -33,13 +34,15 @@ public class Ionosphere {
     }
 
     public PropagationMode getPropagationMode(double frequencyInKhz, double distanceInKm) {
-        if (frequencyInKhz > 50000 && distanceInKm < MAXIMUM_GROUND_WAVE_DISTANCE_KM) {
+        if (frequencyInKhz > 50000 && distanceInKm < MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM) {
             return PropagationMode.GROUND_WAVE;
-        } else if (frequencyInKhz > 50000 && distanceInKm >= MAXIMUM_GROUND_WAVE_DISTANCE_KM) {
+        } else if (frequencyInKhz > 50000 && distanceInKm >= MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM) {
             return PropagationMode.SPORADIC_E;
-        } else if (frequencyInKhz < 50000 && distanceInKm < MAXIMUM_GROUND_WAVE_DISTANCE_KM) {
+        } else if (frequencyInKhz < 50000 && frequencyInKhz > 7000 && distanceInKm < MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM) {
             return PropagationMode.GROUND_WAVE;
-        } else if (frequencyInKhz < 50000 && distanceInKm >= MAXIMUM_GROUND_WAVE_DISTANCE_KM) {
+        } else if (frequencyInKhz < 50000 && frequencyInKhz < 7000 && distanceInKm < MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM) {
+            return PropagationMode.GROUND_WAVE;
+        } else if (frequencyInKhz < 50000 && distanceInKm >= MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM) {
             return PropagationMode.SKY_WAVE;
         }
         return PropagationMode.SKY_WAVE;
