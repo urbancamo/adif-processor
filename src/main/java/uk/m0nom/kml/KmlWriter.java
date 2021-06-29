@@ -11,6 +11,7 @@ import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.ionosphere.Ionosphere;
 import uk.m0nom.ionosphere.PropagationMode;
+import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.sota.SotaSummitInfo;
 import uk.m0nom.summits.SummitsDatabase;
 
@@ -159,21 +160,28 @@ public class KmlWriter {
         String callsign = station.getCallsign();
         Adif3Record rec = qso.getRecord();
 
-        sb.append("<div style='border:10px'><b>Station</b><br/>");
+        sb.append("<div style='border:10px'><b>Station</b><br/><br/>");
 
         sb.append(String.format("Callsign: <a href=\"https://qrz.com/db/%s\">%s</a><br/>", callsign, callsign));
-        if (station.getQrzInfo() != null) {
+        QrzCallsign qrzInfo = station.getQrzInfo();
+        if (qrzInfo != null) {
             sb.append(String.format("Name: %s %s<br/>", station.getQrzInfo().getFname(), station.getQrzInfo().getName()));
-            if (station.getQrzInfo().getImage() != null) {
+            if (qrzInfo.getImage() != null) {
                 sb.append(String.format("<br/><div style='border:10px'><a href=\"https://qrz.com/db/%s\"><img src=\"%s\" width=\"200\"/></a></div><br/>",
                         callsign, station.getQrzInfo().getImage()));
+            }
+            if (qrzInfo.getGrid() != null) {
+                sb.append(String.format("Grid: %s<br/>", station.getQrzInfo().getGrid()));
+            }
+            if (qrzInfo.getLat() != null) {
+                sb.append(String.format("Lat: %.3f, Long: %.3f", qrzInfo.getLat(), qrzInfo.getLon()));
             }
         }
 
         if (rec.getSotaRef() != null) {
             appendSotaInfo(rec.getSotaRef().getValue(), sb);
         }
-        sb.append(String.format("%s %.4f Mhz %s", rec.getTimeOn().toString(), rec.getFreq(), rec.getMode().toString()));
+        //sb.append(String.format("%s %.4f Mhz %s", rec.getTimeOn().toString(), rec.getFreq(), rec.getMode().toString()));
         sb.append("</div>");
         return sb.toString();
     }
@@ -264,17 +272,17 @@ public class KmlWriter {
 
     private String getMyIconFromRec(Adif3Record rec) {
         String cs = rec.getStationCallsign().toUpperCase();
-        return getIconFromCallsign(cs);
+        return getIconFromCallsign(cs, rec.getMySotaRef() != null);
     }
 
     private String getIconFromRec(Adif3Record rec) {
         String cs = rec.getCall().toUpperCase();
-        return getIconFromCallsign(cs);
+        return getIconFromCallsign(cs, rec.getSotaRef() != null);
     }
 
-    private String getIconFromCallsign(String cs) {
+    private String getIconFromCallsign(String cs, boolean isSota) {
         String icon = control.getKmlFixedIconUrl();
-        if (cs.endsWith("/P")) {
+        if (cs.endsWith("/P") || isSota) {
             return control.getKmlPortableIconUrl();
         }
         if (cs.endsWith("/M")) {

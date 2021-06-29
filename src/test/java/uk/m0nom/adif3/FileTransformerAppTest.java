@@ -10,7 +10,7 @@ public class FileTransformerAppTest
 {
     @Test
     public void testApp() {
-        String cli = "-k --encoding windows-1251 -ks2s --latitude '54.4055' --longitude '-3.01796' ../../src/test/resources/adif/2019-08-31-Black-Fell.adi";
+        String cli = "-k --encoding windows-1251 -ks2s --qrz --qrz-username M0NOM --qrz-password WindermereIsMyQTH ../../src/test/resources/adif/test.adi";
         String args[] = cli.split(" ");
 
         FileTransformerApp app = new FileTransformerApp(args);
