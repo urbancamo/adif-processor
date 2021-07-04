@@ -3,6 +3,7 @@ package uk.m0nom.adif3;
 import com.amihaiemil.eoyaml.Yaml;
 import com.amihaiemil.eoyaml.YamlMapping;
 import com.amihaiemil.eoyaml.YamlNode;
+import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.types.Sota;
@@ -58,6 +59,8 @@ public class Adif3PrintFormatter {
         pageConfig.setPageEnd(stripQuotes(page.string("pageEnd")));
         pageConfig.setLineEnd(stripQuotes(page.string("lineEnd")));
         pageConfig.setHeaderLine(stripQuotes(page.string("headerLine")));
+        pageConfig.setColumnSeparator(stripQuotes(page.string("columnSeparator")));
+        pageConfig.setHeaderSeparator(stripQuotes(page.string("headerSeparator")));
         LineConfig line = new LineConfig();
         pageConfig.setLine(line);
 
@@ -150,18 +153,31 @@ public class Adif3PrintFormatter {
 
     private void printColumnHeaders() {
         StringBuilder line = new StringBuilder();
+        StringBuilder separator = new StringBuilder();
+        boolean printSeparator = StringUtils.length(pageConfig.getHeaderSeparator()) > 0;
         LineConfig lineConfig = pageConfig.getLine();
         List<ColumnConfig> columnConfigs = lineConfig.getColumns();
         for (ColumnConfig columnConfig : columnConfigs) {
             printColumnHeader(columnConfig, line);
         }
         printLine(line.toString());
+
+        if (printSeparator) {
+            for (ColumnConfig columnConfig : columnConfigs) {
+                printColumnHeaderUnderline(columnConfig, separator);
+            }
+            printLine(separator.toString());
+        }
     }
 
     private void printColumnHeader(ColumnConfig column, StringBuilder line) {
         String header = column.getHeader();
-        int position = column.getStart();
         printValueToColumn(column, header, line);
+    }
+
+    private void printColumnHeaderUnderline(ColumnConfig column, StringBuilder line) {
+        String separator = StringUtils.repeat(pageConfig.getHeaderSeparator().charAt(0), column.getLength()-1);
+        printValueToColumn(column, separator, line);
     }
 
     private void printValueToColumn(ColumnConfig column, String value, StringBuilder line) {
@@ -197,14 +213,22 @@ public class Adif3PrintFormatter {
     }
 
     private void advanceToColumn(StringBuilder line, int position) {
+        boolean first= true;
         for (int i = state.currentColumn; i < position; i++) {
-            line.append(' ');
+            if (first) {
+                line.append(pageConfig.getColumnSeparator());
+                first = false;
+            } else {
+                line.append(' ');
+            }
             state.currentColumn++;
         }
     }
 
     private void printLine(String line) {
+        state.sb.append(pageConfig.getColumnSeparator());
         state.sb.append(line);
+        state.sb.append(pageConfig.getColumnSeparator());
         printLineEnd();
     }
 

@@ -22,7 +22,7 @@ public class HemaCsvReader {
         Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(reader);
         for (CSVRecord record : records) {
             HemaSummitInfo info = new HemaSummitInfo();
-
+            info.key = Integer.parseInt(record.get("hHillKey"));
             info.summitCode = record.get("hFullReference");
             info.altitude = Double.parseDouble(record.get("hHeightM"));
             info.longitude = Double.parseDouble(record.get("hLongitude"));

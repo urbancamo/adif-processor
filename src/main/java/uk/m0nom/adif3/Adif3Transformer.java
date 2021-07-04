@@ -30,16 +30,7 @@ public class Adif3Transformer {
         Qsos qsos = new Qsos(log);
 
         if (log.getHeader() != null) {
-            switch (log.getHeader().getProgramId()) {
-                case "FLE":
-                    transformer = new FastLogEntryAdifRecordTransformer(config, summits, qrzXmlService, control);
-                    break;
-                case "LOGHX":
-                    transformer = new LogHXAdifRecordTransformer();
-                    break;
-                default:
-                    throw new UnsupportedHeaderException();
-            }
+            transformer = new FastLogEntryAdifRecordTransformer(config, summits, qrzXmlService, control);
             if (transformer != null) {
                 for (Adif3Record rec : log.getRecords()) {
                     transformer.transform(qsos, rec);

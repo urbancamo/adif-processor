@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 
 public class FileTransformerApp implements Runnable
 {
-    private static Logger logger;// = Logger.getLogger(FileTransformerApp.class.getName());
+    private static Logger logger;
 
     private static FileTransformerApp instance;
 

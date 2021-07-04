@@ -3,7 +3,6 @@ package uk.m0nom.kml;
 import de.micromata.opengis.kml.v_2_2_0.*;
 import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
-import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
@@ -12,6 +11,7 @@ import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.hema.HemaSummitInfo;
 import uk.m0nom.ionosphere.Ionosphere;
 import uk.m0nom.ionosphere.PropagationMode;
+import uk.m0nom.pota.PotaInfo;
 import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.sota.SotaSummitInfo;
 import uk.m0nom.summits.SummitsDatabase;
@@ -28,10 +28,12 @@ public class KmlWriter {
     private SummitsDatabase summits;
     private Ionosphere ionosphere;
     private TransformControl control;
+    private KmlBandLineStyles bandLineStyles;
 
     public KmlWriter(TransformControl control) {
         this.control = control;
         this.ionosphere = new Ionosphere();
+        bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());
     }
 
     public void write(String pathname, SummitsDatabase summits, Qsos qsos) {
@@ -60,7 +62,7 @@ public class KmlWriter {
                     createCommsLink(doc, folder, qso);
                 }
             } else {
-                logger.warning(String.format("Could not determine location for: %s", qso.getTo().getCallsign()));
+                logger.warning(String.format("Cannot determine communication link, no location data for: %s", qso.getTo().getCallsign()));
             }
         }
 
@@ -90,15 +92,14 @@ public class KmlWriter {
         Double latitude = coords.getLatitude();
         String station = qso.getFrom().getCallsign();
 
-        Icon icon = new Icon()
-                .withHref(getMyIconFromRec(qso.getRecord()));
+        Icon icon = new Icon().withHref(getIconFromStation(qso.getFrom()));
         Style style = document.createAndAddStyle();
         style.withId("style_" + station) // set the stylename to use this style from the placemark
                 .createAndSetIconStyle().withScale(1.0).withIcon(icon); // set size and icon
         style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the continent name
 
         Placemark placemark = folder.createAndAddPlacemark();
-        String htmlPanelContent = createMyPanelContent(qso);
+        String htmlPanelContent = getPanelContentForStation(qso.getFrom());
         // use the style for each continent
         placemark.withName(station)
                 .withStyleUrl("#style_" + station)
@@ -110,27 +111,6 @@ public class KmlWriter {
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
     }
 
-    private String createMyPanelContent(Qso qso) {
-        Station station = qso.getFrom();
-        Adif3Record rec = qso.getRecord();
-
-        StringBuilder sb = new StringBuilder();
-        String callsign = station.getCallsign();
-        sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>", callsign, callsign));
-        if (rec.getMySotaRef() != null) {
-            appendSotaInfo(rec.getMySotaRef().getValue(), sb);
-        } else if (qso.getFrom().getSotaId() != null) {
-            appendSotaInfo(qso.getFrom().getSotaId(), sb);
-        }
-
-        if (qso.getFrom().getHemaId() != null) {
-            appendHemaInfo(qso.getFrom().getHemaId(), sb);
-        }
-            if (qso.getFrom().getWotaId() != null) {
-            appendWotaInfo(qso.getFrom().getWotaId(), sb);
-        }
-        return sb.toString();
-    }
 
     private void createStationMarker(Document document, Folder folder, Qso qso) {
         Adif3Record rec = qso.getRecord();
@@ -144,7 +124,7 @@ public class KmlWriter {
         String station = rec.getCall();
 
         Icon icon = new Icon()
-                .withHref(getIconFromRec(rec));
+                .withHref(getIconFromStation(qso.getTo()));
         Style style = document.createAndAddStyle();
         style.withId("style_" + station) // set the stylename to use this style from the placemark
                 .createAndSetIconStyle().withScale(1.0).withIcon(icon); // set size and icon
@@ -152,7 +132,7 @@ public class KmlWriter {
         style.createAndSetLineStyle().withColor("ffb343ff").withWidth(5);
 
         Placemark placemark = folder.createAndAddPlacemark();
-        String htmlPanelContent = getPanelContentForStation(qso);
+        String htmlPanelContent = getPanelContentForStation(qso.getTo());
         // use the style for each continent
         placemark.withName(station)
                 .withStyleUrl("#style_" + station)
@@ -165,45 +145,47 @@ public class KmlWriter {
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
     }
 
-    private String getPanelContentForStation(Qso qso) {
+    private String getPanelContentForStation(Station station) {
         StringBuilder sb = new StringBuilder();
-        Station station = qso.getTo();
         String callsign = station.getCallsign();
-        Adif3Record rec = qso.getRecord();
 
-        sb.append("<div style='border:10px'><b>Station</b><br/><br/>");
-
-        sb.append(String.format("Callsign: <a href=\"https://qrz.com/db/%s\">%s</a><br/>", callsign, callsign));
+        sb.append("<div style=\"width: 340px; height: 480px\">");
         QrzCallsign qrzInfo = station.getQrzInfo();
         if (qrzInfo != null) {
-            sb.append(String.format("Name: %s %s<br/>", station.getQrzInfo().getFname(), station.getQrzInfo().getName()));
             if (qrzInfo.getImage() != null) {
-                sb.append(String.format("<br/><div style='border:10px'><a href=\"https://qrz.com/db/%s\"><img src=\"%s\" width=\"200\"/></a></div><br/>",
+                sb.append(String.format("<a href=\"https://qrz.com/db/%s\"><img src=\"%s\" width=\"300px\"/></a><br/>",
                         callsign, station.getQrzInfo().getImage()));
+            } else {
+                sb.append(String.format("<a href=\"https://qrz.com/db/%s\"><img src=\"%s\" width=\"300px\"/></a><br/>",
+                        callsign, "http://i3.cpcache.com/product/178743690/ham_radio_operator_35_button.jpg?height=630&width=630&qv=90"));
             }
+            sb.append(String.format("Callsign: <a href=\"https://qrz.com/db/%s\">%s</a><br/>",
+                    callsign, callsign));
+        } else {
+            sb.append(String.format("Callsign: %s<br/>", callsign));
+        }
+        if (station.getSotaId() != null) {
+            appendSotaInfo(station.getSotaId(), sb);
+        }
+        if (station.getHemaId() != null) {
+            appendHemaInfo(station.getHemaId(), sb);
+        }
+        if (station.getWotaId() != null) {
+            appendWotaInfo(station.getWotaId(), sb);
+        }
+        if (station.getPotaId() != null) {
+            appendPotaInfo(station.getPotaId(), sb);
+        }
+
+        if (qrzInfo != null) {
+            sb.append(String.format("Name: %s %s<br/>", qrzInfo.getFname(), qrzInfo.getName()));
             if (qrzInfo.getGrid() != null) {
-                sb.append(String.format("Grid: %s<br/>", station.getQrzInfo().getGrid()));
+                sb.append(String.format("Grid: %s<br/>", qrzInfo.getGrid()));
             }
             if (qrzInfo.getLat() != null) {
                 sb.append(String.format("Lat: %.3f, Long: %.3f<br/>", qrzInfo.getLat(), qrzInfo.getLon()));
             }
-        } else {
-            sb.append("<br/><br/>");
         }
-
-        if (rec.getSotaRef() != null) {
-            appendSotaInfo(rec.getSotaRef().getValue(), sb);
-        } else if (qso.getTo().getSotaId() != null) {
-            appendSotaInfo(qso.getTo().getSotaId(), sb);
-        }
-
-        if (qso.getTo().getHemaId() != null) {
-            appendHemaInfo(qso.getTo().getHemaId(), sb);
-        }
-        if (qso.getTo().getWotaId() != null) {
-            appendWotaInfo(qso.getTo().getWotaId(), sb);
-        }
-        //sb.append(String.format("%s %.4f Mhz %s", rec.getTimeOn().toString(), rec.getFreq(), rec.getMode().toString()));
         sb.append("</div>");
         return sb.toString();
     }
@@ -220,6 +202,9 @@ public class KmlWriter {
         sb.append(String.format("Mode: %s<br/>", rec.getMode().toString()));
         if (rec.getFreq() != null) {
             sb.append(String.format("Freq: %.3f Mhz<br/>", rec.getFreq()));
+        }
+        if (rec.getTxPwr() != null) {
+            sb.append(String.format("TX Pwr: %.1f Watts<br/>", rec.getTxPwr()));
         }
         sb.append(String.format("Gnd dist: %.0f km<br/>", result.getDistance()));
         if (result.getMode() == PropagationMode.SKY_WAVE) {
@@ -255,8 +240,13 @@ public class KmlWriter {
 
     private void appendHemaInfo(String summitRef, StringBuilder sb) {
         HemaSummitInfo summitInfo = summits.getHema().get(summitRef);
-        sb.append(String.format("HEMA: %s<br/>", summitRef));
-        sb.append(String.format("%.0f metres<br/>", summitInfo.getAltitude()));
+        sb.append(String.format("HEMA: <a href=\"http://hema.org.uk/fullSummit.jsp?summitKey=%d\">%s</a><br/>",
+                summitInfo.getKey(), summitRef));
+    }
+
+    private void appendPotaInfo(String parkRef, StringBuilder sb) {
+        PotaInfo parkInfo = summits.getPota().get(parkRef);
+        sb.append(String.format("POTA: <a href=\"https://pota.app/#/park/%s\">%s</a><br/>",parkRef, parkRef));
     }
 
     private void createCommsLink(Document document, Folder folder, Qso qso) {
@@ -273,11 +263,14 @@ public class KmlWriter {
 
         Style style = document.createAndAddStyle();
         style.withId("style_line_to_" + station + "_path");
-        if (rec.getMySotaRef() != null && rec.getSotaRef() != null) {
+
+        if (control.getKmlS2s() && rec.getMySotaRef() != null && rec.getSotaRef() != null) {
             KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlS2sContactLineStyle());
             style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
-
-        } else {
+        } else if (control.getKmlContactColourByBand()) {
+            KmlLineStyle styling = bandLineStyles.getLineStyle(qso.getRecord().getBand());
+            style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
+        } else  {
             KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlContactLineStyle());
             style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
         }
@@ -322,19 +315,15 @@ public class KmlWriter {
 
     }
 
-    private String getMyIconFromRec(Adif3Record rec) {
-        String cs = rec.getStationCallsign().toUpperCase();
-        return getIconFromCallsign(cs, rec.getMySotaRef() != null);
-    }
+    private String getIconFromStation(Station station) {
+        String cs = station.getCallsign();
 
-    private String getIconFromRec(Adif3Record rec) {
-        String cs = rec.getCall().toUpperCase();
-        return getIconFromCallsign(cs, rec.getSotaRef() != null);
-    }
-
-    private String getIconFromCallsign(String cs, boolean isSota) {
         String icon = control.getKmlFixedIconUrl();
-        if (cs.endsWith("/P") || isSota) {
+
+        if (station.isPota()) {
+            return control.getKmlParkIconUrl();
+        }
+        if (cs.endsWith("/P") || station.isSota()) {
             return control.getKmlPortableIconUrl();
         }
         if (cs.endsWith("/M")) {

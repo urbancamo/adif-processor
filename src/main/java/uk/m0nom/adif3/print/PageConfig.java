@@ -41,5 +41,7 @@ public class PageConfig {
     int bottomMargin;
     int leftMargin;
     int rightMargin;
+    String columnSeparator;
+    String headerSeparator;
     LineConfig line;
 }

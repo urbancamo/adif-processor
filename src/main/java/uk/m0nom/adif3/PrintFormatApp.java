@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 public class PrintFormatApp implements Runnable
 {
-    private static final Logger logger = Logger.getLogger(FastLogEntryAdifRecordTransformer.class.getName());
+    private static final Logger logger = Logger.getLogger(PrintFormatApp.class.getName());
     private static PrintFormatApp instance;
 
     private Adif3PrintFormatter formatter;
