@@ -125,17 +125,18 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         // Upload latitude and longitude based on SOTA reference
         PotaInfo parkInfo = summits.getPota().get(potaId);
         if (parkInfo != null) {
-            // Some parks don't have a location (trails for example)
-            if (parkInfo.hasCoord()) {
-                GlobalCoordinates coord = new GlobalCoordinates(parkInfo.getLatitude(), parkInfo.getLongitude());
-                rec.setCoordinates(coord);
+            if (rec.getGridsquare() != null) {
+                if (parkInfo.hasCoord()) {
+                    GlobalCoordinates coord = new GlobalCoordinates(parkInfo.getLatitude(), parkInfo.getLongitude());
+                    rec.setCoordinates(coord);
+                } else if (parkInfo.hasGrid()) {
+                    // Some parks don't have a grid
+                    LatLng latLng = MaidenheadLocatorConversion.locatorToLatLng(parkInfo.getGrid());
+                    GlobalCoordinates coords = new GlobalCoordinates(latLng.latitude, latLng.longitude);
+                    rec.setMyCoordinates(coords);
+                    rec.setGridsquare(parkInfo.getGrid());
+                }
             }
-            // Some parks don't have a grid
-            if (parkInfo.hasGrid()) {
-                // Also set the GridSquare as a fallback
-                rec.setGridsquare(parkInfo.getGrid());
-            }
-
             unmapped.put("POTA", parkInfo.getReference());
         } else {
             logger.warning(String.format("Suspicious POTA reference %s for callsign %s at %s", potaId, rec.getCall(), rec.getTimeOn().toString()));
@@ -153,6 +154,24 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
             rec.setMyGridSquare(MaidenheadLocatorConversion.latLngToLocator(hemaInfo.getLatitude(), hemaInfo.getLongitude()));
         } else {
             logger.warning(String.format("Suspicious HEMA reference %s for your callsign %s", hemaId, rec.getStationCallsign()));
+        }
+    }
+
+    private void setMyLocationFromPotaId(Adif3Record rec, String potaId) {
+        // We treat POTA Grid references specified on the command line differently, as some parks don't have a grid reference
+        // so an override take preference over everything
+        PotaInfo potaInfo = summits.getPota().get(potaId);
+        if (potaId != null) {
+            if (potaInfo.hasCoord()) {
+                GlobalCoordinates coord = new GlobalCoordinates(potaInfo.getLatitude(), potaInfo.getLongitude());
+                rec.setMyCoordinates(coord);
+            } else if (potaInfo.hasGrid()) {
+                // Also set the GridSquare as a fallback
+                rec.setMyGridSquare(MaidenheadLocatorConversion.latLngToLocator(potaInfo.getLatitude(), potaInfo.getLongitude()));
+                rec.setMyCoordinates(new GlobalCoordinates(potaInfo.getLatitude(), potaInfo.getLongitude()));
+            }
+        } else {
+            logger.warning(String.format("Suspicious Parks on the Air reference %s for your callsign %s", potaId, rec.getStationCallsign()));
         }
     }
 
@@ -196,6 +215,22 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         QrzCallsign callsignData = qrzXmlService.getCallsignData(rec.getStationCallsign());
         boolean locationOverride = false;
 
+        if (control.getSota() != null) {
+            qso.getFrom().setSotaId(control.getSota());
+            setWotaFromSotaId(qso.getFrom(), control.getSota().toUpperCase());
+        }
+        if (control.getWota() != null) {
+            qso.getFrom().setWotaId(control.getWota().toUpperCase());
+            setHemaOrSotaFromWota(qso.getFrom(), control.getWota().toUpperCase());
+        }
+        if (control.getHema() != null) {
+            qso.getFrom().setHemaId(control.getHema().toUpperCase());
+            setWotaFromHemaId(qso.getFrom(), control.getHema().toUpperCase());
+        }
+        if (control.getPota() != null) {
+            qso.getFrom().setPotaId(control.getPota().toUpperCase());
+        }
+
         if (control.getMyLatitude() != null && control.getMyLongitude() != null) {
             double latitude = Double.parseDouble(StringUtils.remove(control.getMyLatitude(),'\''));
             double longitude = Double.parseDouble(StringUtils.remove(control.getMyLongitude(),'\''));
@@ -204,9 +239,9 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
             reportLocationOverride(rec.getStationCallsign(), latitude, longitude);
         }
 
-        // Check to see whether a 10 digit Maidenhead locator has been specified in the control
-        // structure. This overrides my location at the end
-        if (control.getMyGrid() != null && control.getMyGrid().length() == 10
+        // Check to see whether a Maidenhead locator has been specified in the control
+        // structure. This overrides my location at the end, unless coordinates have also been specified.
+        if (control.getMyGrid() != null && (control.getMyLatitude() == null || control.getMyLongitude() == null)
                 && MaidenheadLocatorConversion.isAValidGridSquare(control.getMyGrid())) {
             setMyLocationFromGrid(qso, control.getMyGrid());
             reportLocationOverride(rec.getStationCallsign(), control.getMyGrid());
@@ -217,26 +252,25 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                 if (!locationOverride) {
                     setMyLocationFromSotaId(rec, control.getSota().toUpperCase());
                 }
-                qso.getFrom().setSotaId(control.getSota().toUpperCase());
             } else if (control.getWota() != null) {
                 String wotaId = control.getWota().toUpperCase();
                 if (!locationOverride) {
                     setMyLocationFromWotaId(rec, control.getWota().toUpperCase());
                 }
-                qso.getFrom().setWotaId(control.getWota().toUpperCase());
-                setHemaOrSotaFromWota(qso.getFrom(), control.getWota().toUpperCase());
             } else if (control.getHema() != null) {
                 if (!locationOverride) {
                     setMyLocationFromHemaId(rec, control.getHema().toUpperCase());
                 }
-                qso.getFrom().setHemaId(control.getHema().toUpperCase());
-                setWotaFromHemaId(qso.getFrom(), control.getHema().toUpperCase());
             } else if (rec.getMySotaRef() != null) {
                 if (!locationOverride) {
                     setMyLocationFromSotaId(rec, rec.getMySotaRef().getValue());
                 }
                 qso.getFrom().setSotaId(rec.getMySotaRef().getValue());
                 setWotaFromSotaId(qso.getFrom(), rec.getMySotaRef().getValue());
+            } else if (control.getPota() != null) {
+                if (!locationOverride) {
+                    setMyLocationFromPotaId(rec, control.getPota().toUpperCase());
+                }
             } else {
                 /* If user has supplied a maidenhead location, use that in preference */
                 if (MaidenheadLocatorConversion.isAValidGridSquare(control.getMyGrid())) {
@@ -378,11 +412,39 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
             GlobalCoordinates coord = new GlobalCoordinates(loc.latitude, loc.longitude);
             rec.setCoordinates(coord);
         }
+
+        // Look to see if there is anything in the SIG/SIGINFO fields
+        if (StringUtils.isNotEmpty(rec.getSig())) {
+            processSig(qso);
+        }
+
         if (!unmapped.isEmpty()) {
             addUnmappedToRecord(rec, unmapped);
         } else {
             // done a good job and slotted all the key/value pairs in the right place
             rec.setComment("");
+        }
+    }
+
+    private void processSig(Qso qso) {
+        Adif3Record rec = qso.getRecord();
+        String sig = rec.getSig().toUpperCase();
+        String sigInfo = rec.getSigInfo().toUpperCase();
+
+        if (StringUtils.isNotEmpty(sigInfo)) {
+            if (StringUtils.equals(sig, "POTA") && summits.getPota().get(sigInfo) != null) {
+                // They are at a Park
+                qso.getTo().setPotaId(sigInfo);
+            } else if (StringUtils.equals(sig, "SOTA") && summits.getSota().get(sigInfo) != null) {
+                // They are on a SOTA summit
+                qso.getTo().setSotaId(sigInfo);
+            } else if (StringUtils.equals(sig, "WOTA") && summits.getWota().get(sigInfo) != null) {
+                // They are on a Wainwright
+                qso.getTo().setWotaId(sigInfo);
+            } else if (StringUtils.equals(sig, "HEMA") && summits.getHema().get(sigInfo) != null) {
+                // They are on a HEMA summit
+                qso.getTo().setHemaId(sigInfo);
+            }
         }
     }
 

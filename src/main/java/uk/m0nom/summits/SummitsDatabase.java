@@ -74,7 +74,7 @@ public class SummitsDatabase {
             }
             logger.info(String.format("Loading Parks on the Air list from: %s", potaList));
             setPota(PotaCsvReader.read(potaCsvStream));
-            logger.info(String.format("%d pota Summits loaded", getPota().size()));
+            logger.info(String.format("%d Parks loaded", getPota().size()));
         } catch (IOException e) {
             e.printStackTrace();
         }

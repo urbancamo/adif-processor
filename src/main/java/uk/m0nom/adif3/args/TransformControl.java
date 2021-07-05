@@ -14,6 +14,7 @@ public class TransformControl {
     private String myGrid;
 
     private String pathname;
+    private String outputPath;
     private String encoding;
 
     private Boolean useQrzDotCom;
@@ -23,6 +24,7 @@ public class TransformControl {
     private String hema;
     private String wota;
     private String sota;
+    private String pota;
 
     private Boolean generateKml;
     private Integer kmlContactWidth;
@@ -37,7 +39,11 @@ public class TransformControl {
     private String kmlPortableIconUrl;
     private String kmlMobileIconUrl;
     private String kmlMaritimeIconUrl;
+
     private String kmlParkIconUrl;
+    private String kmlSotaIconUrl;
+    private String kmlWotaIconUrl;
+    private String kmlHemaIconUrl;
 
     public TransformControl() {
     }

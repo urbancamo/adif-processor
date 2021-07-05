@@ -14,4 +14,11 @@ public class Qso {
     private Station from;
     private Station to;
     private Adif3Record record;
+
+    public boolean isS2S() {
+        return     (from.getSotaId() != null && to.getSotaId() != null)
+                || (from.getWotaId() != null && to.getWotaId() != null)
+                || (from.getPotaId() != null && to.getPotaId() != null)
+                || (from.getHemaId() != null && to.getHemaId() != null);
+    }
 }

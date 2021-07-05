@@ -26,18 +26,12 @@ public class Adif3Transformer {
     }
 
     public Qsos transform(Adif3 log, TransformControl control) throws UnsupportedHeaderException {
-        Adif3RecordTransformer transformer = null;
+        Adif3RecordTransformer transformer;
         Qsos qsos = new Qsos(log);
 
-        if (log.getHeader() != null) {
-            transformer = new FastLogEntryAdifRecordTransformer(config, summits, qrzXmlService, control);
-            if (transformer != null) {
-                for (Adif3Record rec : log.getRecords()) {
-                    transformer.transform(qsos, rec);
-                }
-            }
-        } else {
-            throw new UnsupportedHeaderException();
+        transformer = new FastLogEntryAdifRecordTransformer(config, summits, qrzXmlService, control);
+        for (Adif3Record rec : log.getRecords()) {
+            transformer.transform(qsos, rec);
         }
         return qsos;
     }

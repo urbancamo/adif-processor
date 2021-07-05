@@ -55,12 +55,8 @@ public class KmlWriter {
             }
             GlobalCoordinates coords = qso.getRecord().getCoordinates();
             if (coords != null) {
-                Double longitude = coords.getLongitude();
-                Double latitude = coords.getLatitude();
-                if (longitude != null && latitude != null) {
-                    createStationMarker(doc, folder, qso);
-                    createCommsLink(doc, folder, qso);
-                }
+                createStationMarker(doc, folder, qso);
+                createCommsLink(doc, folder, qso);
             } else {
                 logger.warning(String.format("Cannot determine communication link, no location data for: %s", qso.getTo().getCallsign()));
             }
@@ -78,18 +74,14 @@ public class KmlWriter {
     private void addMyStationToMap(Document doc, Folder folder, Qso qso) {
         GlobalCoordinates coords = qso.getRecord().getMyCoordinates();
         if (coords != null) {
-            Double longitude = coords.getLongitude();
-            Double latitude = coords.getLatitude();
-            if (longitude != null && latitude != null) {
-                createMyStationMarker(doc, folder, qso);
-            }
+            createMyStationMarker(doc, folder, qso);
         }
    }
 
     private void createMyStationMarker(Document document, Folder folder, Qso qso) {
         GlobalCoordinates coords = qso.getRecord().getMyCoordinates();
-        Double longitude = coords.getLongitude();
-        Double latitude = coords.getLatitude();
+        double longitude = coords.getLongitude();
+        double latitude = coords.getLatitude();
         String station = qso.getFrom().getCallsign();
 
         Icon icon = new Icon().withHref(getIconFromStation(qso.getFrom()));
@@ -115,12 +107,12 @@ public class KmlWriter {
     private void createStationMarker(Document document, Folder folder, Qso qso) {
         Adif3Record rec = qso.getRecord();
         GlobalCoordinates myCoords = rec.getMyCoordinates();
-        Double myLatitude = myCoords.getLatitude();
-        Double myLongitude = myCoords.getLongitude();
+        double myLatitude = myCoords.getLatitude();
+        double myLongitude = myCoords.getLongitude();
 
         GlobalCoordinates coords = rec.getCoordinates();
-        Double longitude = coords.getLongitude();
-        Double latitude = coords.getLatitude();
+        double longitude = coords.getLongitude();
+        double latitude = coords.getLatitude();
         String station = rec.getCall();
 
         Icon icon = new Icon()
@@ -192,7 +184,7 @@ public class KmlWriter {
 
     private String getPanelContentForCommsLink(Adif3Record rec, HfLineResult result) {
         StringBuilder sb=  new StringBuilder();
-        sb.append(String.format("<b>Contact</b><br/><br/><br/>"));
+        sb.append("<b>Contact</b><br/><br/><br/>");
         sb.append(String.format("%s %s<br/>", rec.getQsoDate().toString(), rec.getTimeOn().toString()));
         sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>",
                 rec.getStationCallsign(), rec.getStationCallsign()));
@@ -225,6 +217,7 @@ public class KmlWriter {
     private void appendSotaInfo(String summitRef, StringBuilder sb) {
         SotaSummitInfo summitInfo = summits.getSota().get(summitRef);
         sb.append(String.format("SOTA: <a href=\"https://summits.sota.org.uk/summit/%s\">%s</a><br/>", summitRef, summitRef));
+        sb.append(String.format("%s<br/>", summitInfo.getName()));
         sb.append(String.format("%.0f metres, %d points<br/>", summitInfo.getAltitude(), summitInfo.getPoints()));
     }
 
@@ -236,17 +229,20 @@ public class KmlWriter {
             lookupRef = String.format("LDO-%03d", summitInfo.getInternalId());
         }
         sb.append(String.format("WOTA: <a href=\"https://wota.org.uk/MM_%s\">%s</a><br/>", lookupRef, summitRef.toUpperCase()));
+        sb.append(String.format("%s<br/>", summitInfo.getName()));
     }
 
     private void appendHemaInfo(String summitRef, StringBuilder sb) {
         HemaSummitInfo summitInfo = summits.getHema().get(summitRef);
         sb.append(String.format("HEMA: <a href=\"http://hema.org.uk/fullSummit.jsp?summitKey=%d\">%s</a><br/>",
                 summitInfo.getKey(), summitRef));
+        sb.append(String.format("%s<br/>", summitInfo.getName()));
     }
 
     private void appendPotaInfo(String parkRef, StringBuilder sb) {
         PotaInfo parkInfo = summits.getPota().get(parkRef);
         sb.append(String.format("POTA: <a href=\"https://pota.app/#/park/%s\">%s</a><br/>",parkRef, parkRef));
+        sb.append(String.format("%s<br/>", parkInfo.getName()));
     }
 
     private void createCommsLink(Document document, Folder folder, Qso qso) {
@@ -264,14 +260,16 @@ public class KmlWriter {
         Style style = document.createAndAddStyle();
         style.withId("style_line_to_" + station + "_path");
 
-        if (control.getKmlS2s() && rec.getMySotaRef() != null && rec.getSotaRef() != null) {
+        if (control.getKmlS2s() && qso.isS2S()) {
             KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlS2sContactLineStyle());
+            assert styling != null;
             style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
         } else if (control.getKmlContactColourByBand()) {
             KmlLineStyle styling = bandLineStyles.getLineStyle(qso.getRecord().getBand());
             style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
         } else  {
             KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlContactLineStyle());
+            assert styling != null;
             style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
         }
 
@@ -323,7 +321,16 @@ public class KmlWriter {
         if (station.isPota()) {
             return control.getKmlParkIconUrl();
         }
-        if (cs.endsWith("/P") || station.isSota()) {
+        if (station.isHema()) {
+            return control.getKmlHemaIconUrl();
+        }
+        if (station.isWota()) {
+            return control.getKmlWotaIconUrl();
+        }
+        if (station.isSota()) {
+            return control.getKmlSotaIconUrl();
+        }
+        if (cs.endsWith("/P")) {
             return control.getKmlPortableIconUrl();
         }
         if (cs.endsWith("/M")) {
