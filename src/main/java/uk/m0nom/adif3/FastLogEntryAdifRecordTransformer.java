@@ -202,11 +202,17 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     }
 
     private void setWotaFromHemaId(Station station, String hemaId) {
-        station.setWotaId(summits.getWota().getFromHemaId(hemaId).getWotaId());
+        WotaSummitInfo info = summits.getWota().getFromHemaId(hemaId);
+        if (info != null) {
+            station.setWotaId(info.getWotaId());
+        }
     }
 
     private void setWotaFromSotaId(Station station, String sotaId) {
-        station.setWotaId(summits.getWota().getFromSotaId(sotaId).getWotaId());
+        WotaSummitInfo info = summits.getWota().getFromSotaId(sotaId);
+        if (info != null) {
+            station.setWotaId(summits.getWota().getFromSotaId(sotaId).getWotaId());
+        }
     }
 
     private QrzCallsign setMyLocation(Qso qso) {
