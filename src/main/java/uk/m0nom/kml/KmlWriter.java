@@ -171,12 +171,22 @@ public class KmlWriter {
 
         if (qrzInfo != null) {
             sb.append(String.format("Name: %s %s<br/>", qrzInfo.getFname(), qrzInfo.getName()));
-            if (qrzInfo.getGrid() != null) {
-                sb.append(String.format("Grid: %s<br/>", qrzInfo.getGrid()));
-            }
-            if (qrzInfo.getLat() != null) {
-                sb.append(String.format("Lat: %.3f, Long: %.3f<br/>", qrzInfo.getLat(), qrzInfo.getLon()));
-            }
+        }
+
+        String grid = station.getGrid();
+        if (grid == null && qrzInfo != null) {
+            grid = qrzInfo.getGrid();
+        }
+        if (grid != null) {
+            sb.append(String.format("Grid: %s<br/>", grid));
+        }
+
+        GlobalCoordinates coordinates = station.getCoordinates();
+        if (coordinates == null && qrzInfo != null) {
+            coordinates = new GlobalCoordinates(qrzInfo.getLat(), qrzInfo.getLon());
+        }
+        if (coordinates != null) {
+            sb.append(String.format("Lat: %.3f, Long: %.3f<br/>", coordinates.getLatitude(), coordinates.getLongitude()));
         }
         sb.append("</div>");
         return sb.toString();

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.qrz.QrzCallsign;
 
@@ -22,6 +23,8 @@ public class Station {
     private String hemaId;
     private String wotaId;
     private String potaId;
+    private String grid;
+    private GlobalCoordinates coordinates;
 
     public Station() {
         qsos = new ArrayList<>();

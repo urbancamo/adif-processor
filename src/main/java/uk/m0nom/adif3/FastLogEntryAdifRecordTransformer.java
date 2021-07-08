@@ -192,8 +192,10 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     private void setMyLocationFromGrid(Qso qso, String myGrid) {
         Adif3Record rec = qso.getRecord();
         qso.getRecord().setMyGridSquare(myGrid.substring(4));
+        qso.getFrom().setGrid(myGrid);
         LatLng myLocation = MaidenheadLocatorConversion.locatorToLatLng(myGrid);
         rec.setMyCoordinates(new GlobalCoordinates(myLocation.latitude, myLocation.longitude));
+        qso.getFrom().setCoordinates(rec.getMyCoordinates());
     }
 
     private void setHemaOrSotaFromWota(Station station, String wotaId) {
