@@ -1,0 +1,22 @@
+Generated on 2021-07-04T02:26:02.163Z 
+ <adif_ver:5>3.0.5
+ <programid:5>HAMRS
+ <programversion:6>0.10.7
+ <EOH>
+
+<band:3>20m
+<call:5>S51DX
+<mode:3>SSB
+<my_gridsquare:6>EN91lh
+<my_sig:4>POTA
+<my_sig_info:6>K-1980
+<my_state:2>OH
+<operator:7>KE8OKM 
+<qso_date:8>20210621
+<qso_date_off:8>20210703
+<rst_rcvd:2>57
+<rst_sent:2>54
+<time_on:4>2346
+<tx_pwr:2>6w
+<eor>
+

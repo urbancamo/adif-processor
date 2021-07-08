@@ -14,6 +14,11 @@ public class KmlLineStyle extends KmlColour {
         this.width = width;
     }
 
+    public KmlLineStyle(String name, int red, int green, int blue, int transparency, int width) {
+        super(name, red, green, blue, transparency);
+        this.width = width;
+    }
+
     public KmlLineStyle(KmlColour colour, int width) {
         super();
         setGreen(colour.getGreen());

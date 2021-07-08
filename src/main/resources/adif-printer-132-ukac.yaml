@@ -8,6 +8,7 @@ page:
   pageEnd:      ''
   lineEnd:      'windows'
   headerLine:   'COLUMN_NAMES'
+  headerSeparator: '-'
   pageHeight:   66
   pageWidth:    132
   topMargin:    1
@@ -15,6 +16,7 @@ page:
   bottomMargin: 1
   leftMargin:   0
   rightMargin:  0
+  columnSeparator: ''
 columns:
   - column:
       adif: 'QSO_DATE'

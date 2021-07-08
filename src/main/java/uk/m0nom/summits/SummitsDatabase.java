@@ -2,7 +2,8 @@ package uk.m0nom.summits;
 
 import lombok.Getter;
 import lombok.Setter;
-import uk.m0nom.adif3.FileTransformerApp;
+import uk.m0nom.pota.PotaCsvReader;
+import uk.m0nom.pota.PotaDatabase;
 import uk.m0nom.hema.HemaCsvReader;
 import uk.m0nom.hema.HemaSummitsDatabase;
 import uk.m0nom.sota.SotaCsvReader;
@@ -22,7 +23,8 @@ public class SummitsDatabase {
     private WotaSummitsDatabase wota;
     private SotaSummitsDatabase sota;
     private HemaSummitsDatabase hema;
-
+    private PotaDatabase pota;
+    
     public void loadData() {
         try {
             String sotaSummitsList = "sota/summitslist.csv";
@@ -60,6 +62,19 @@ public class SummitsDatabase {
             logger.info(String.format("Loading HEMA Summits list from: %s", hemaSummitsList));
             setHema(HemaCsvReader.read(hemaCsvStream));
             logger.info(String.format("%d HEMA Summits loaded", getHema().size()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            String potaList = "pota/all_parks_ext.csv";
+            InputStream potaCsvStream = getClass().getClassLoader().getResourceAsStream(potaList);
+            if (potaCsvStream == null) {
+                logger.severe(String.format("Can't load %s using classloader %s", potaList, getClass().getClassLoader().toString()));
+            }
+            logger.info(String.format("Loading Parks on the Air list from: %s", potaList));
+            setPota(PotaCsvReader.read(potaCsvStream));
+            logger.info(String.format("%d Parks loaded", getPota().size()));
         } catch (IOException e) {
             e.printStackTrace();
         }

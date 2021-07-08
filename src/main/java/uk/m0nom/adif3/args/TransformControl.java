@@ -9,26 +9,41 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TransformControl {
-    private Boolean generateKml;
-    private Boolean useQrzDotCom;
     private String myLatitude;
     private String myLongitude;
     private String myGrid;
+
     private String pathname;
+    private String outputPath;
     private String encoding;
+
+    private Boolean useQrzDotCom;
+    private String qrzUsername;
+    private String qrzPassword;
+
+    private String hema;
+    private String wota;
+    private String sota;
+    private String pota;
+
+    private Boolean generateKml;
+    private Integer kmlContactWidth;
+    private Integer kmlContactTransparency;
+    private Boolean kmlContactColourByBand;
     private Boolean kmlS2s;
     private String kmlS2sContactLineStyle;
     private String kmlContactLineStyle;
-    private String qrzUsername;
-    private String qrzPassword;
     private Boolean kmlContactShadow;
+
     private String kmlFixedIconUrl;
     private String kmlPortableIconUrl;
     private String kmlMobileIconUrl;
     private String kmlMaritimeIconUrl;
-    private String hema;
-    private String wota;
-    private String sota;
+
+    private String kmlParkIconUrl;
+    private String kmlSotaIconUrl;
+    private String kmlWotaIconUrl;
+    private String kmlHemaIconUrl;
 
     public TransformControl() {
     }

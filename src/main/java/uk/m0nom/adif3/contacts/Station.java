@@ -21,6 +21,7 @@ public class Station {
     private String sotaId;
     private String hemaId;
     private String wotaId;
+    private String potaId;
 
     public Station() {
         qsos = new ArrayList<>();
@@ -35,4 +36,9 @@ public class Station {
     public void addQso(Qso qso) {
         qsos.add(qso);
     }
+
+    public boolean isSota() { return sotaId != null; }
+    public boolean isHema() { return hemaId != null; }
+    public boolean isWota() { return wotaId != null; }
+    public boolean isPota() { return potaId != null; }
 }

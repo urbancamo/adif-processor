@@ -8,12 +8,12 @@ import org.marsik.ham.adif.Adif3Record;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class Adif3FileReaderWriter {
+    private static final Logger logger = Logger.getLogger(Adif3FileReaderWriter.class.getName());
+
     /**
      * Compare two QSOs based on their date, if date is the same then the time on.
      * This allows the QSO list to be sorted chronologically.
@@ -45,11 +45,8 @@ public class Adif3FileReaderWriter {
             if (sort) {
                 int unsortedRecords = adif.getRecords().size();
                 SortedSet<Adif3Record> sortedRecords = new TreeSet<>(new Adif3RecordTimestampComparator());
-                for (Adif3Record record : adif.getRecords()) {
-                    sortedRecords.add(record);
-                }
-                List<Adif3Record> sortedRecordList = new ArrayList<>();
-                sortedRecordList.addAll(sortedRecords);
+                sortedRecords.addAll(adif.getRecords());
+                List<Adif3Record> sortedRecordList = new ArrayList<>(sortedRecords);
                 assert (sortedRecordList.size() == unsortedRecords);
                 adif.setRecords(sortedRecordList);
             }
@@ -60,7 +57,9 @@ public class Adif3FileReaderWriter {
 
     public void write(String filename, String encoding, Adif3 log) throws IOException {
         AdiWriter writer = new AdiWriter();
-        writer.append(log.getHeader(), true);
+        if (log.getHeader() != null) {
+            writer.append(log.getHeader(), true);
+        }
 
         for (Adif3Record rec : log.getRecords()) {
             writer.append(rec);
@@ -72,9 +71,14 @@ public class Adif3FileReaderWriter {
             fileWriter = new FileWriter(filename, Charset.forName(encoding));
             out = new BufferedWriter(fileWriter);
         } finally {
+            assert out != null;
             out.write(writer.toString());
             out.close();
-            fileWriter.close();
+            try {
+                fileWriter.close();
+            } catch (Exception e) {
+                logger.severe(String.format("Eror closing output file: %s, error is: %s", filename, e.getMessage()));
+            }
         }
     }
 }

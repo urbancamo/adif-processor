@@ -1,6 +1,7 @@
 package uk.m0nom.adif3;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.marsik.ham.adif.Adif3;
 import uk.m0nom.adif3.args.CommandLineArgs;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
 
 public class FileTransformerApp implements Runnable
 {
-    private static Logger logger;// = Logger.getLogger(FileTransformerApp.class.getName());
+    private static Logger logger;
 
     private static FileTransformerApp instance;
 
@@ -37,7 +38,7 @@ public class FileTransformerApp implements Runnable
 
     private final static String configFilePath = "adif-processor.yaml";
 
-    private String args[];
+    private final String[] args;
 
     static {
         InputStream stream = FileTransformerApp.class.getClassLoader().
@@ -51,7 +52,7 @@ public class FileTransformerApp implements Runnable
         }
     }
 
-    public FileTransformerApp(String args[]) {
+    public FileTransformerApp(String[] args) {
         this.args = args;
         transformer = new Adif3Transformer();
         readerWriter = new Adif3FileReaderWriter();
@@ -73,9 +74,21 @@ public class FileTransformerApp implements Runnable
         kmlWriter = new KmlWriter(control);
 
 
-        String in = control.getPathname();
-        String out = String.format("%s-%s.%s", FilenameUtils.removeExtension(in.toString()), "fta", "adi");
-        String kml = String.format("%s-%s.%s", FilenameUtils.removeExtension(in.toString()), "fta", "kml");
+        String inPath = control.getPathname();
+        String outPath = control.getOutputPath();
+        // If we have an output path prepend that to the calculated output filenames
+        if (StringUtils.isNotEmpty(outPath)) {
+            if (!StringUtils.endsWith(outPath, File.separator) && !StringUtils.endsWith(outPath, "/")) {
+                // ensure it ends in a path separator
+                outPath = outPath + File.separator;
+            }
+        } else {
+            outPath = FilenameUtils.getPath(inPath);
+        }
+
+        String inBasename = FilenameUtils.getBaseName(inPath);
+        String out = String.format("%s%s-%s.%s", outPath, inBasename, "fta", "adi");
+        String kml = String.format("%s%s-%s.%s", outPath, inBasename, "fta", "kml");
 
         logger.info(String.format("Running from: %s", new File(".").getAbsolutePath()));
         try {
@@ -89,9 +102,10 @@ public class FileTransformerApp implements Runnable
             }
             transformer.configure(configFilePath, summits, qrzXmlService);
 
-            logger.info(String.format("Reading input file %s with encoding %s", control.getPathname(), control.getEncoding()));
-            Adif3 log = readerWriter.read(in, control.getEncoding(), false);
+            logger.info(String.format("Reading input file %s with encoding %s", inPath, control.getEncoding()));
+            Adif3 log = readerWriter.read(inPath, control.getEncoding(), false);
             qsos = transformer.transform(log, control);
+            logger.info(String.format("Writing output file %s with encoding %s", out, control.getEncoding()));
             readerWriter.write(out, control.getEncoding(), log);
             if (control.getGenerateKml()) {
                 kmlWriter.write(kml, summits, qsos);
@@ -99,10 +113,10 @@ public class FileTransformerApp implements Runnable
         } catch (NoSuchFileException nfe) {
             logger.severe(String.format("Could not open input file: %s", control.getPathname()));
         } catch (UnsupportedHeaderException ushe) {
-            logger.severe(String.format("Unknown header for file: %s", in));
+            logger.severe(String.format("Unknown header for file: %s", inPath));
             logger.severe(ExceptionUtils.getStackTrace(ushe));
         } catch (IOException e) {
-            logger.severe(String.format("Caught exception %s processing file: %s", e.getMessage(), in));
+            logger.severe(String.format("Caught exception %s processing file: %s", e.getMessage(), inPath));
             logger.severe(ExceptionUtils.getStackTrace(e));
         }
     }

@@ -29,6 +29,23 @@ public class KmlColour {
         this.transparency = transparency;
     }
 
+    /**
+     * Create a custom colour
+     * @param red
+     * @param green
+     * @param blue
+     * @param transparency
+     */
+
+    public KmlColour(String name, int red, int green, int blue, int transparency) {
+        this.name = name;
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+        this.transparency = transparency;
+        this.key = getStringSpecifier();
+    }
+
     public String getStringSpecifier() {
         return String.format("%02X%02X%02X%02X", transparency, blue, green, red);
     }

@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class SotaSummitInfo {
     String summitCode;
+    String name;
     double altitude, longitude, latitude;
     int points, bonusPoints;
 }
