@@ -10,7 +10,7 @@ public class FileTransformerAppTest
 {
     @Test
     public void testApp() {
-        String cli = "-k --encoding windows-1251 --qrz --qrz-username M0NOM --qrz-password WindermereIsMyQTH --grid IO84MJ91MB -o ../ ../../src/test/resources/adif/2021-07-08-Queen-Adelaides-Hill.adi";
+        String cli = "-k --encoding windows-1251 --qrz --qrz-username M0NOM --qrz-password WindermereIsMyQTH -md -o ../ ../../src/test/resources/adif/2021-07-09-Skiddaw-SOTA.adi";
         String[] args = cli.split(" ");
 
         FileTransformerApp app = new FileTransformerApp(args);

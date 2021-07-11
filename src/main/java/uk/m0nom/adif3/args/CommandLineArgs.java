@@ -74,6 +74,9 @@ public class CommandLineArgs {
         parser.addArgument("-kwotai", "--kml-wota-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/trail.png")
                 .help("URL of the icon to use for SOTA station locations");
 
+        parser.addArgument("-md", "--markdown").required(false).action(Arguments.storeTrue())
+                .help("Generate Markdown file containing the contacts");
+
         parser.addArgument("path").nargs("*")
                 .help("Input ADIF files");
 
@@ -109,6 +112,8 @@ public class CommandLineArgs {
             control.setWota(ns.getString("wota"));
             control.setSota(ns.getString("sota"));
             control.setPota(ns.getString("pota"));
+
+            control.setMarkdown(ns.getBoolean("markdown"));
 
             control.setOutputPath(ns.getString("output"));
             control.setPathname(ns.getString("path").substring(1, ns.getString("path").length()-1));

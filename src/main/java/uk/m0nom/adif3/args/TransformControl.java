@@ -45,6 +45,8 @@ public class TransformControl {
     private String kmlWotaIconUrl;
     private String kmlHemaIconUrl;
 
+    private Boolean markdown;
+
     public TransformControl() {
     }
 }

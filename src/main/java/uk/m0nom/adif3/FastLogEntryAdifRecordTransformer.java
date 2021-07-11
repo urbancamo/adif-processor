@@ -223,13 +223,18 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         QrzCallsign callsignData = qrzXmlService.getCallsignData(rec.getStationCallsign());
         boolean locationOverride = false;
 
-        if (control.getSota() != null) {
-            qso.getFrom().setSotaId(control.getSota());
-            setWotaFromSotaId(qso.getFrom(), control.getSota().toUpperCase());
-        }
         if (control.getWota() != null) {
             qso.getFrom().setWotaId(control.getWota().toUpperCase());
             setHemaOrSotaFromWota(qso.getFrom(), control.getWota().toUpperCase());
+        }
+        if (control.getSota() != null) {
+            qso.getFrom().setSotaId(control.getSota());
+            setWotaFromSotaId(qso.getFrom(), control.getSota().toUpperCase());
+        } else if (rec.getMySotaRef() != null) {
+            String sotaRef = rec.getMySotaRef().getValue().toUpperCase();
+            qso.getFrom().setSotaId(sotaRef);
+            setWotaFromSotaId(qso.getFrom(), sotaRef);
+
         }
         if (control.getHema() != null) {
             qso.getFrom().setHemaId(control.getHema().toUpperCase());
@@ -273,7 +278,6 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                 if (!locationOverride) {
                     setMyLocationFromSotaId(rec, rec.getMySotaRef().getValue());
                 }
-                qso.getFrom().setSotaId(rec.getMySotaRef().getValue());
                 setWotaFromSotaId(qso.getFrom(), rec.getMySotaRef().getValue());
             } else if (control.getPota() != null) {
                 if (!locationOverride) {
