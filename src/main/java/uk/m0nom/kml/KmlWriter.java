@@ -157,26 +157,52 @@ public class KmlWriter {
             sb.append(String.format("Callsign: %s<br/>", callsign));
         }
         if (station.getSotaId() != null) {
-            appendSotaInfo(station.getSotaId(), sb);
+            if (summits.getSota().get(station.getSotaId()) != null) {
+                appendSotaInfo(station.getSotaId(), sb);
+            } else {
+                logger.warning(String.format("Suspicious SOTA reference: %s for %s", station.getSotaId(), station.getCallsign()));
+            }
         }
         if (station.getHemaId() != null) {
-            appendHemaInfo(station.getHemaId(), sb);
+            if (summits.getHema().get(station.getHemaId()) != null) {
+                appendHemaInfo(station.getHemaId(), sb);
+            } else {
+                logger.warning(String.format("Suspicious HEMA reference: %s for %s", station.getHemaId(), station.getCallsign()));
+            }
         }
         if (station.getWotaId() != null) {
-            appendWotaInfo(station.getWotaId(), sb);
+            if (summits.getWota().get(station.getWotaId()) != null) {
+                appendWotaInfo(station.getWotaId(), sb);
+            } else {
+                logger.warning(String.format("Suspicious WOTA reference: %s for %s", station.getWotaId(), station.getCallsign()));
+            }
         }
         if (station.getPotaId() != null) {
-            appendPotaInfo(station.getPotaId(), sb);
+            if (summits.getPota().get(station.getPotaId()) != null) {
+                appendPotaInfo(station.getPotaId(), sb);
+            } else {
+                logger.warning(String.format("Suspicious Parks on the Air reference: %s for %s", station.getPotaId(), station.getCallsign()));
+            }
         }
 
         if (qrzInfo != null) {
             sb.append(String.format("Name: %s %s<br/>", qrzInfo.getFname(), qrzInfo.getName()));
-            if (qrzInfo.getGrid() != null) {
-                sb.append(String.format("Grid: %s<br/>", qrzInfo.getGrid()));
-            }
-            if (qrzInfo.getLat() != null) {
-                sb.append(String.format("Lat: %.3f, Long: %.3f<br/>", qrzInfo.getLat(), qrzInfo.getLon()));
-            }
+        }
+
+        String grid = station.getGrid();
+        if (grid == null && qrzInfo != null) {
+            grid = qrzInfo.getGrid();
+        }
+        if (grid != null) {
+            sb.append(String.format("Grid: %s<br/>", grid));
+        }
+
+        GlobalCoordinates coordinates = station.getCoordinates();
+        if (coordinates == null && qrzInfo != null) {
+            coordinates = new GlobalCoordinates(qrzInfo.getLat(), qrzInfo.getLon());
+        }
+        if (coordinates != null) {
+            sb.append(String.format("Lat: %.3f, Long: %.3f<br/>", coordinates.getLatitude(), coordinates.getLongitude()));
         }
         sb.append("</div>");
         return sb.toString();
@@ -185,8 +211,8 @@ public class KmlWriter {
     private String getPanelContentForCommsLink(Adif3Record rec, HfLineResult result) {
         StringBuilder sb=  new StringBuilder();
         sb.append("<b>Contact</b><br/><br/><br/>");
-        sb.append(String.format("%s %s<br/>", rec.getQsoDate().toString(), rec.getTimeOn().toString()));
-        sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>",
+        sb.append(String.format("D: %s, T: %s<br/>", rec.getQsoDate().toString(), rec.getTimeOn().toString()));
+        sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a> ⇋ ",
                 rec.getStationCallsign(), rec.getStationCallsign()));
         sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>",
                 rec.getCall(), rec.getCall()));
@@ -216,8 +242,8 @@ public class KmlWriter {
 
     private void appendSotaInfo(String summitRef, StringBuilder sb) {
         SotaSummitInfo summitInfo = summits.getSota().get(summitRef);
-        sb.append(String.format("SOTA: <a href=\"https://summits.sota.org.uk/summit/%s\">%s</a><br/>", summitRef, summitRef));
-        sb.append(String.format("%s<br/>", summitInfo.getName()));
+        sb.append(String.format("SOTA: <a href=\"https://summits.sota.org.uk/summit/%s\">%s</a>, ", summitRef, summitRef));
+        sb.append(String.format("%s, ", summitInfo.getName()));
         sb.append(String.format("%.0f metres, %d points<br/>", summitInfo.getAltitude(), summitInfo.getPoints()));
     }
 
@@ -228,13 +254,13 @@ public class KmlWriter {
             // need to compensate for LDO weird numbering
             lookupRef = String.format("LDO-%03d", summitInfo.getInternalId());
         }
-        sb.append(String.format("WOTA: <a href=\"https://wota.org.uk/MM_%s\">%s</a><br/>", lookupRef, summitRef.toUpperCase()));
+        sb.append(String.format("WOTA: <a href=\"https://wota.org.uk/MM_%s\">%s</a>, ", lookupRef, summitRef.toUpperCase()));
         sb.append(String.format("%s<br/>", summitInfo.getName()));
     }
 
     private void appendHemaInfo(String summitRef, StringBuilder sb) {
         HemaSummitInfo summitInfo = summits.getHema().get(summitRef);
-        sb.append(String.format("HEMA: <a href=\"http://hema.org.uk/fullSummit.jsp?summitKey=%d\">%s</a><br/>",
+        sb.append(String.format("HEMA: <a href=\"http://hema.org.uk/fullSummit.jsp?summitKey=%d\">%s</a>, ",
                 summitInfo.getKey(), summitRef));
         sb.append(String.format("%s<br/>", summitInfo.getName()));
     }
@@ -318,17 +344,19 @@ public class KmlWriter {
 
         String icon = control.getKmlFixedIconUrl();
 
+        // SOTA icon overrides WOTA, so is above it in this list
+        if (station.isSota()) {
+            return control.getKmlSotaIconUrl();
+        }
         if (station.isPota()) {
             return control.getKmlParkIconUrl();
         }
+        // HEMA icon overrides WOTA, so is above it in this list
         if (station.isHema()) {
             return control.getKmlHemaIconUrl();
         }
         if (station.isWota()) {
             return control.getKmlWotaIconUrl();
-        }
-        if (station.isSota()) {
-            return control.getKmlSotaIconUrl();
         }
         if (cs.endsWith("/P")) {
             return control.getKmlPortableIconUrl();

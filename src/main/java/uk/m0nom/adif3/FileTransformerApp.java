@@ -13,15 +13,20 @@ import uk.m0nom.sota.SotaCsvReader;
 import uk.m0nom.summits.SummitsDatabase;
 import uk.m0nom.wota.WotaCsvReader;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.StandardOpenOption;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class FileTransformerApp implements Runnable
 {
+    private static final String MARKDOWN_CONTROL_FILE = "adif-printer-132-table.yaml";
     private static Logger logger;
 
     private static FileTransformerApp instance;
@@ -33,6 +38,8 @@ public class FileTransformerApp implements Runnable
 
     private SummitsDatabase summits;
     private QrzXmlService qrzXmlService;
+
+    private Adif3PrintFormatter formatter;
 
     private Qsos qsos;
 
@@ -59,6 +66,7 @@ public class FileTransformerApp implements Runnable
         summits = new SummitsDatabase();
         cli = new CommandLineArgs();
         qsos = new Qsos();
+        formatter = new Adif3PrintFormatter();
     }
 
     public static void main( String[] args )
@@ -89,7 +97,7 @@ public class FileTransformerApp implements Runnable
         String inBasename = FilenameUtils.getBaseName(inPath);
         String out = String.format("%s%s-%s.%s", outPath, inBasename, "fta", "adi");
         String kml = String.format("%s%s-%s.%s", outPath, inBasename, "fta", "kml");
-
+        String markdown = String.format("%s%s-%s.%s", outPath, inBasename, "fta", "md");
         logger.info(String.format("Running from: %s", new File(".").getAbsolutePath()));
         try {
             summits.loadData();
@@ -109,6 +117,25 @@ public class FileTransformerApp implements Runnable
             readerWriter.write(out, control.getEncoding(), log);
             if (control.getGenerateKml()) {
                 kmlWriter.write(kml, summits, qsos);
+            }
+            if (control.getMarkdown()) {
+                BufferedWriter markdownWriter = null;
+                try {
+                    File markdownFile = new File(markdown);
+                    markdownFile.delete();
+                    markdownFile.createNewFile();
+                    formatter.configure(MARKDOWN_CONTROL_FILE);
+                    logger.info(String.format("Writing Markdown to: %s", markdown));
+                    StringBuilder sb = formatter.format(log);
+                    markdownWriter = Files.newBufferedWriter(markdownFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);
+                    markdownWriter.write(sb.toString());
+                } catch (IOException ioe) {
+                    logger.severe(String.format("Error writing Markdown file %s: %s", markdown, ioe.getMessage()));
+                } finally {
+                    if (markdownWriter != null) {
+                        markdownWriter.close();
+                    }
+                }
             }
         } catch (NoSuchFileException nfe) {
             logger.severe(String.format("Could not open input file: %s", control.getPathname()));

@@ -192,8 +192,10 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     private void setMyLocationFromGrid(Qso qso, String myGrid) {
         Adif3Record rec = qso.getRecord();
         qso.getRecord().setMyGridSquare(myGrid.substring(4));
+        qso.getFrom().setGrid(myGrid);
         LatLng myLocation = MaidenheadLocatorConversion.locatorToLatLng(myGrid);
         rec.setMyCoordinates(new GlobalCoordinates(myLocation.latitude, myLocation.longitude));
+        qso.getFrom().setCoordinates(rec.getMyCoordinates());
     }
 
     private void setHemaOrSotaFromWota(Station station, String wotaId) {
@@ -202,11 +204,17 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     }
 
     private void setWotaFromHemaId(Station station, String hemaId) {
-        station.setWotaId(summits.getWota().getFromHemaId(hemaId).getWotaId());
+        WotaSummitInfo info = summits.getWota().getFromHemaId(hemaId);
+        if (info != null) {
+            station.setWotaId(info.getWotaId());
+        }
     }
 
     private void setWotaFromSotaId(Station station, String sotaId) {
-        station.setWotaId(summits.getWota().getFromSotaId(sotaId).getWotaId());
+        WotaSummitInfo info = summits.getWota().getFromSotaId(sotaId);
+        if (info != null) {
+            station.setWotaId(summits.getWota().getFromSotaId(sotaId).getWotaId());
+        }
     }
 
     private QrzCallsign setMyLocation(Qso qso) {
@@ -215,13 +223,18 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         QrzCallsign callsignData = qrzXmlService.getCallsignData(rec.getStationCallsign());
         boolean locationOverride = false;
 
-        if (control.getSota() != null) {
-            qso.getFrom().setSotaId(control.getSota());
-            setWotaFromSotaId(qso.getFrom(), control.getSota().toUpperCase());
-        }
         if (control.getWota() != null) {
             qso.getFrom().setWotaId(control.getWota().toUpperCase());
             setHemaOrSotaFromWota(qso.getFrom(), control.getWota().toUpperCase());
+        }
+        if (control.getSota() != null) {
+            qso.getFrom().setSotaId(control.getSota());
+            setWotaFromSotaId(qso.getFrom(), control.getSota().toUpperCase());
+        } else if (rec.getMySotaRef() != null) {
+            String sotaRef = rec.getMySotaRef().getValue().toUpperCase();
+            qso.getFrom().setSotaId(sotaRef);
+            setWotaFromSotaId(qso.getFrom(), sotaRef);
+
         }
         if (control.getHema() != null) {
             qso.getFrom().setHemaId(control.getHema().toUpperCase());
@@ -265,7 +278,6 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                 if (!locationOverride) {
                     setMyLocationFromSotaId(rec, rec.getMySotaRef().getValue());
                 }
-                qso.getFrom().setSotaId(rec.getMySotaRef().getValue());
                 setWotaFromSotaId(qso.getFrom(), rec.getMySotaRef().getValue());
             } else if (control.getPota() != null) {
                 if (!locationOverride) {
