@@ -122,6 +122,8 @@ public class FileTransformerApp implements Runnable
                 BufferedWriter markdownWriter = null;
                 try {
                     File markdownFile = new File(markdown);
+                    markdownFile.delete();
+                    markdownFile.createNewFile();
                     formatter.configure(MARKDOWN_CONTROL_FILE);
                     logger.info(String.format("Writing Markdown to: %s", markdown));
                     StringBuilder sb = formatter.format(log);
