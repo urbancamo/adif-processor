@@ -4,6 +4,8 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang3.StringUtils;
+import uk.m0nom.activity.Activity;
+import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityReader;
 import uk.m0nom.activity.ActivityType;
 
@@ -17,12 +19,12 @@ import java.util.Map;
 
 public class HemaCsvReader extends ActivityReader {
 
-    public HemaCsvReader() {
-        super(ActivityType.HEMA);
+    public HemaCsvReader(String sourceFile) {
+        super(ActivityType.HEMA, sourceFile);
     }
 
-    public HemaSummitsDatabase read(InputStream inputStream) throws IOException {
-        Map<String, HemaSummitInfo> summitInfo = new HashMap<>();
+    public ActivityDatabase read(InputStream inputStream) throws IOException {
+        Map<String, Activity> summitInfo = new HashMap<>();
 
         final Reader reader = new InputStreamReader(new BOMInputStream(inputStream), StandardCharsets.UTF_8);
 
@@ -31,17 +33,17 @@ public class HemaCsvReader extends ActivityReader {
             HemaSummitInfo info = new HemaSummitInfo();
             info.key = Integer.parseInt(record.get("hHillKey"));
 
-            info.ref = record.get("hFullReference");
+            info.setRef(record.get("hFullReference"));
             info.altitude = Double.parseDouble(record.get("hHeightM"));
 
-            info.coords = readCoords(record, "hLongitude", "hLatitude");
+            info.setCoords(readCoords(record, "hLongitude", "hLatitude"));
 
             info.active = StringUtils.equals(record.get("hActive"), "Y");
-            info.name = record.get("hName");
+            info.setName(record.get("hName"));
 
-            summitInfo.put(info.ref, info);
+            summitInfo.put(info.getRef(), info);
         }
 
-        return new HemaSummitsDatabase(summitInfo);
+        return new ActivityDatabase(ActivityType.HEMA, summitInfo);
     }
 }

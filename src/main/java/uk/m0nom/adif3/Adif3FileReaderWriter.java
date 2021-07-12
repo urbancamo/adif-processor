@@ -14,26 +14,6 @@ import java.util.logging.Logger;
 public class Adif3FileReaderWriter {
     private static final Logger logger = Logger.getLogger(Adif3FileReaderWriter.class.getName());
 
-    /**
-     * Compare two QSOs based on their date, if date is the same then the time on.
-     * This allows the QSO list to be sorted chronologically.
-     */
-    class Adif3RecordTimestampComparator implements Comparator<Adif3Record> {
-        @Override
-        public int compare(Adif3Record o1, Adif3Record o2) {
-            int dateCompare = o1.getQsoDate().compareTo(o2.getQsoDate());
-            int timeCompare = o1.getTimeOn().compareTo(o2.getTimeOn());
-            if (dateCompare != 0) {
-                return dateCompare;
-            }
-            if (timeCompare != 0) {
-                return timeCompare;
-            } else {
-                return o1.getCall().compareTo(o2.getCall());
-            }
-
-        }
-    }
     public Adif3 read(String filename, String encoding, boolean sort) throws IOException {
         AdiReader reader = new AdiReader();
         BufferedReader inputReader =

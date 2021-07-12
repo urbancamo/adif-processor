@@ -1,4 +1,4 @@
-package uk.m0nom.ionosphere;
+package uk.m0nom.propagation;
 
 import org.junit.Assert;
 import org.junit.Test;

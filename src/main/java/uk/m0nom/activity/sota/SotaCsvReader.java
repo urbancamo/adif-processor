@@ -3,6 +3,8 @@ package uk.m0nom.activity.sota;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.input.BOMInputStream;
+import uk.m0nom.activity.Activity;
+import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityReader;
 import uk.m0nom.activity.ActivityType;
 
@@ -23,12 +25,12 @@ import java.util.Map;
  */
 public class SotaCsvReader extends ActivityReader {
 
-    public SotaCsvReader() {
-        super(ActivityType.SOTA);
+    public SotaCsvReader(String sourceFile) {
+        super(ActivityType.SOTA, sourceFile);
     }
 
-    public SotaSummitsDatabase read(InputStream inputStream) throws IOException {
-        Map<String, SotaSummitInfo> summitInfo = new HashMap<>();
+    public ActivityDatabase read(InputStream inputStream) throws IOException {
+        Map<String, Activity> summitInfo = new HashMap<>();
 
         final Reader reader = new InputStreamReader(new BOMInputStream(inputStream), StandardCharsets.UTF_8);
 
@@ -36,17 +38,17 @@ public class SotaCsvReader extends ActivityReader {
         for (CSVRecord record : records) {
             SotaSummitInfo info = new SotaSummitInfo();
 
-            info.ref = record.get("SummitCode");
-            info.name = record.get("SummitName");
+            info.setRef(record.get("SummitCode"));
+            info.setName(record.get("SummitName"));
             info.altitude = Double.parseDouble(record.get("AltM"));
 
-            info.coords = readCoords(record, "Longitude", "Latitude");
+            info.setCoords(readCoords(record,"Latitude", "Longitude"));
             info.points = Integer.parseInt(record.get("Points"));
             info.bonusPoints = Integer.parseInt(record.get("BonusPoints"));
 
-            summitInfo.put(info.ref, info);
+            summitInfo.put(info.getRef(), info);
         }
 
-        return new SotaSummitsDatabase(summitInfo);
+        return new ActivityDatabase(ActivityType.SOTA, summitInfo);
     }
 }

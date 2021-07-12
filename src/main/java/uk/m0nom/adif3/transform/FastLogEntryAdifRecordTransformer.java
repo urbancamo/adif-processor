@@ -1,4 +1,4 @@
-package uk.m0nom.adif3;
+package uk.m0nom.adif3.transform;
 
 import com.amihaiemil.eoyaml.YamlMapping;
 import com.amihaiemil.eoyaml.YamlNode;
@@ -9,6 +9,10 @@ import org.marsik.ham.adif.enums.QslSent;
 import org.marsik.ham.adif.enums.QslVia;
 import org.marsik.ham.adif.types.Iota;
 import org.marsik.ham.adif.types.Sota;
+import uk.m0nom.activity.Activity;
+import uk.m0nom.activity.ActivityDatabase;
+import uk.m0nom.activity.ActivityType;
+import uk.m0nom.activity.wota.WotaSummitsDatabase;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
@@ -19,7 +23,7 @@ import uk.m0nom.activity.pota.PotaInfo;
 import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.activity.sota.SotaSummitInfo;
-import uk.m0nom.activity.ActivityDatabase;
+import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.wota.WotaSummitInfo;
 
 import java.time.LocalDate;
@@ -30,29 +34,29 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     private static final Logger logger = Logger.getLogger(FastLogEntryAdifRecordTransformer.class.getName());
 
     private final YamlMapping fieldMap;
-    private final ActivityDatabase summits;
+    private final ActivityDatabases activities;
     private final QrzXmlService qrzXmlService;
     private final TransformControl control;
     private boolean reportedLocationOverride = false;
 
     private final String[] portableSuffixes = new String[] {"/P", "/M", "/MM", "/PM"};
 
-    public FastLogEntryAdifRecordTransformer(YamlMapping config, ActivityDatabase summits, QrzXmlService qrzXmlService, TransformControl control) {
+    public FastLogEntryAdifRecordTransformer(YamlMapping config, ActivityDatabases activities, QrzXmlService qrzXmlService, TransformControl control) {
         fieldMap = config.asMapping();
-        this.summits = summits;
+        this.activities = activities;
         this.qrzXmlService = qrzXmlService;
         this.control = control;
     }
 
     private void setCoordFromSotaId(Adif3Record rec, String sotaId, Map<String, String> unmapped) {
-        // Upload latitude and longitude based on SOTA reference
-        SotaSummitInfo sotaInfo = summits.getSota().get(sotaId);
+        Activity sotaInfo = activities.getDatabase(ActivityType.SOTA).get(sotaId);
         if (sotaInfo != null) {
             rec.setCoordinates(sotaInfo.getCoords());
             // Also set the GridSquare as a fallback
             rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(sotaInfo.getCoords()));
             // See if this is also a WOTA
-            WotaSummitInfo wotaInfo = summits.getWota().getFromSotaId(sotaId);
+            WotaSummitsDatabase wotaSummitsDatabase = (WotaSummitsDatabase) activities.getDatabase(ActivityType.WOTA);
+            Activity wotaInfo = wotaSummitsDatabase.getFromSotaId(sotaId);
             if (wotaInfo != null) {
                 unmapped.put("WOTA", wotaInfo.getRef());
             }
@@ -62,8 +66,7 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     }
 
     private void setCoordFromWotaId(Adif3Record rec, String wotaId, Map<String, String> unmapped) {
-        // Upload latitude and longitude based on SOTA reference
-        WotaSummitInfo wotaInfo = summits.getWota().get(wotaId);
+        WotaSummitInfo wotaInfo = (WotaSummitInfo) activities.getDatabase(ActivityType.WOTA).get(wotaId);
         if (wotaInfo != null) {
             rec.setCoordinates(wotaInfo.getCoords());
 
@@ -83,8 +86,7 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     }
 
     private void setMyLocationFromWotaId(Adif3Record rec, String wotaId) {
-        // Upload latitude and longitude based on SOTA reference
-        WotaSummitInfo wotaInfo = summits.getWota().get(wotaId);
+        WotaSummitInfo wotaInfo = (WotaSummitInfo) activities.getDatabase(ActivityType.WOTA).get(wotaId);
         if (wotaInfo != null) {
             rec.setMyCoordinates(wotaInfo.getCoords());
 
@@ -102,8 +104,7 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     }
 
     private void setCoordFromHemaId(Adif3Record rec, String hemaId, Map<String, String> unmapped) {
-        // Upload latitude and longitude based on SOTA reference
-        HemaSummitInfo hemaInfo = summits.getHema().get(hemaId);
+        Activity hemaInfo = activities.getDatabase(ActivityType.HEMA).get(hemaId);
         if (hemaInfo != null) {
             rec.setCoordinates(hemaInfo.getCoords());
 
@@ -117,8 +118,7 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     }
 
     private void setCoordFromPotaId(Adif3Record rec, String potaId, Map<String, String> unmapped) {
-        // Upload latitude and longitude based on SOTA reference
-        PotaInfo parkInfo = summits.getPota().get(potaId);
+        PotaInfo parkInfo = (PotaInfo) activities.getDatabase(ActivityType.POTA).get(potaId);
         if (parkInfo != null) {
             if (rec.getGridsquare() != null) {
                 if (parkInfo.hasCoords()) {
@@ -137,8 +137,7 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     }
 
     private void setMyLocationFromHemaId(Adif3Record rec, String hemaId) {
-        // Upload latitude and longitude based on SOTA reference
-        HemaSummitInfo hemaInfo = summits.getHema().get(hemaId);
+        Activity hemaInfo = activities.getDatabase(ActivityType.HEMA).get(hemaId);
         if (hemaInfo != null) {
             rec.setMyCoordinates(hemaInfo.getCoords());
 
@@ -152,7 +151,7 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     private void setMyLocationFromPotaId(Adif3Record rec, String potaId) {
         // We treat POTA Grid references specified on the command line differently, as some parks don't have a grid reference
         // so an override take preference over everything
-        PotaInfo potaInfo = summits.getPota().get(potaId);
+        PotaInfo potaInfo = (PotaInfo) activities.getDatabase(ActivityType.POTA).get(potaId);
         if (potaId != null) {
             if (potaInfo.hasCoords()) {
                 rec.setMyCoordinates(potaInfo.getCoords());
@@ -167,8 +166,7 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     }
 
     private void setMyLocationFromSotaId(Adif3Record rec, String sotaId) {
-        // Brilliant, a SOTA reference is great for setting my location
-        SotaSummitInfo sotaInfo = summits.getSota().get(sotaId);
+        Activity sotaInfo = activities.getDatabase(ActivityType.SOTA).get(sotaId);
         if (sotaInfo != null) {
             rec.setMyCoordinates(sotaInfo.getCoords());
             if (rec.getMyGridSquare() == null) {
@@ -188,22 +186,20 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
     }
 
     private void setHemaOrSotaFromWota(Station station, String wotaId) {
-        station.setHemaId(summits.getWota().get(wotaId).getHemaId());
-        station.setSotaId(summits.getWota().get(wotaId).getSotaId());
+        WotaSummitInfo wotaInfo = (WotaSummitInfo) activities.getDatabase(ActivityType.WOTA).get(wotaId);
+
+        station.addActivity(activities.getDatabase(ActivityType.HEMA).get(wotaInfo.getHemaId()));
+        station.addActivity(activities.getDatabase(ActivityType.SOTA).get(wotaInfo.getSotaId()));
     }
 
     private void setWotaFromHemaId(Station station, String hemaId) {
-        WotaSummitInfo info = summits.getWota().getFromHemaId(hemaId);
-        if (info != null) {
-            station.setWotaId(info.getRef());
-        }
+        WotaSummitsDatabase wotaDatabase = (WotaSummitsDatabase) activities.getDatabase(ActivityType.WOTA);
+        station.addActivity(wotaDatabase.getFromHemaId(hemaId));
     }
 
     private void setWotaFromSotaId(Station station, String sotaId) {
-        WotaSummitInfo info = summits.getWota().getFromSotaId(sotaId);
-        if (info != null) {
-            station.setWotaId(summits.getWota().getFromSotaId(sotaId).getRef());
-        }
+        WotaSummitsDatabase wotaDatabase = (WotaSummitsDatabase) activities.getDatabase(ActivityType.WOTA);
+        station.addActivity(wotaDatabase.getFromSotaId(sotaId));
     }
 
     private QrzCallsign setMyLocation(Qso qso) {
@@ -213,24 +209,23 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         boolean locationOverride = false;
 
         if (control.getWota() != null) {
-            qso.getFrom().setWotaId(control.getWota().toUpperCase());
+            qso.getFrom().addActivity(activities.getDatabase(ActivityType.WOTA).get(control.getWota().toUpperCase()));
             setHemaOrSotaFromWota(qso.getFrom(), control.getWota().toUpperCase());
         }
         if (control.getSota() != null) {
-            qso.getFrom().setSotaId(control.getSota());
+            qso.getFrom().addActivity(activities.getDatabase(ActivityType.SOTA).get(control.getSota()));
             setWotaFromSotaId(qso.getFrom(), control.getSota().toUpperCase());
         } else if (rec.getMySotaRef() != null) {
             String sotaRef = rec.getMySotaRef().getValue().toUpperCase();
-            qso.getFrom().setSotaId(sotaRef);
+            qso.getFrom().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaRef));
             setWotaFromSotaId(qso.getFrom(), sotaRef);
-
         }
         if (control.getHema() != null) {
-            qso.getFrom().setHemaId(control.getHema().toUpperCase());
+            qso.getFrom().addActivity(activities.getDatabase(ActivityType.HEMA).get(control.getHema().toUpperCase()));
             setWotaFromHemaId(qso.getFrom(), control.getHema().toUpperCase());
         }
         if (control.getPota() != null) {
-            qso.getFrom().setPotaId(control.getPota().toUpperCase());
+            qso.getFrom().addActivity(activities.getDatabase(ActivityType.POTA).get(control.getPota().toUpperCase()));
         }
 
         if (control.getMyLatitude() != null && control.getMyLongitude() != null) {
@@ -397,7 +392,7 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
             String sotaId = rec.getSotaRef().getValue();
             unmapped.put("SOTA", sotaId);
             setCoordFromSotaId(rec, sotaId, unmapped);
-            qso.getTo().setSotaId(sotaId);
+            qso.getTo().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaId));
         }
 
         if (StringUtils.isNotBlank(rec.getComment())) {
@@ -426,22 +421,14 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
 
     private void processSig(Qso qso) {
         Adif3Record rec = qso.getRecord();
-        String sig = rec.getSig().toUpperCase();
-        String sigInfo = rec.getSigInfo().toUpperCase();
+        String activityType = rec.getSig().toUpperCase();
+        String activityLocation = rec.getSigInfo().toUpperCase();
 
-        if (StringUtils.isNotEmpty(sigInfo)) {
-            if (StringUtils.equals(sig, "POTA") && summits.getPota().get(sigInfo) != null) {
-                // They are at a Park
-                qso.getTo().setPotaId(sigInfo);
-            } else if (StringUtils.equals(sig, "SOTA") && summits.getSota().get(sigInfo) != null) {
-                // They are on a SOTA summit
-                qso.getTo().setSotaId(sigInfo);
-            } else if (StringUtils.equals(sig, "WOTA") && summits.getWota().get(sigInfo) != null) {
-                // They are on a Wainwright
-                qso.getTo().setWotaId(sigInfo);
-            } else if (StringUtils.equals(sig, "HEMA") && summits.getHema().get(sigInfo) != null) {
-                // They are on a HEMA summit
-                qso.getTo().setHemaId(sigInfo);
+        if (StringUtils.isNotEmpty(activityType)) {
+            // See if it is an activity we support
+            ActivityDatabase database = activities.getDatabase(activityType);
+            if (database != null) {
+                qso.getTo().addActivity(database.get(activityLocation));
             }
         }
     }
@@ -530,7 +517,7 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                             Sota sota = Sota.valueOf(sotaRef.toUpperCase());
                             rec.setSotaRef(sota);
                             setCoordFromSotaId(rec, sotaRef, unmapped);
-                            qso.getTo().setSotaId(sotaRef);
+                            qso.getTo().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaRef));
                         } catch (IllegalArgumentException iae) {
                             // something we can't work out about the reference, so put it in the unmapped list instead
                             logger.severe(String.format("Couldn't identify %s as a SOTA reference in field %s, leaving it unmapped", sotaRef, value));
@@ -543,19 +530,19 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                         // Strip off any S2s reference
                         String wotaId = StringUtils.split(value, ' ')[0];
                         setCoordFromWotaId(rec, wotaId.toUpperCase(), unmapped);
-                        qso.getTo().setWotaId(wotaId);
+                        qso.getTo().addActivity(activities.getDatabase(ActivityType.WOTA).get(wotaId));
                         break;
                     case "HemaRef":
                         // Strip off any S2s reference
                         String hemaId = StringUtils.split(value, ' ')[0];
                         setCoordFromHemaId(rec, hemaId.toUpperCase(), unmapped);
-                        qso.getTo().setHemaId(hemaId);
+                        qso.getTo().addActivity(activities.getDatabase(ActivityType.HEMA).get(hemaId));
                         break;
                     case "PotaRef":
                         // Strip off any S2s reference
                         String potaId = StringUtils.split(value, ' ')[0];
                         setCoordFromPotaId(rec, potaId.toUpperCase(), unmapped);
-                        qso.getTo().setPotaId(potaId);
+                        qso.getTo().addActivity(activities.getDatabase(ActivityType.POTA).get(potaId));
                         break;
                     case "SerialTx":
                         // Determine if this is a serial number of string based contest exchange

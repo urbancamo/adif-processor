@@ -4,9 +4,9 @@ import de.micromata.opengis.kml.v_2_2_0.AltitudeMode;
 import de.micromata.opengis.kml.v_2_2_0.LineString;
 import org.gavaghan.geodesy.*;
 import org.marsik.ham.adif.enums.Band;
-import uk.m0nom.ionosphere.Ionosphere;
-import uk.m0nom.ionosphere.PropagationBounce;
-import uk.m0nom.ionosphere.PropagationMode;
+import uk.m0nom.propagation.Ionosphere;
+import uk.m0nom.propagation.PropagationBounce;
+import uk.m0nom.propagation.PropagationMode;
 
 import java.time.LocalTime;
 import java.util.List;

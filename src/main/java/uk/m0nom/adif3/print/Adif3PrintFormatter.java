@@ -1,4 +1,4 @@
-package uk.m0nom.adif3;
+package uk.m0nom.adif3.print;
 
 import com.amihaiemil.eoyaml.Yaml;
 import com.amihaiemil.eoyaml.YamlMapping;
@@ -30,68 +30,18 @@ public class Adif3PrintFormatter {
         int currentRecord;
     }
 
+    public Adif3PrintFormatter() {
+        printJobConfig = new PrintJobConfig();
+    }
+
     private YamlMapping config = null;
     private PrintJobConfig printJobConfig;
-    private PageConfig pageConfig;
 
     private PrintState state;
 
     public PrintJobConfig getPrintJobConfig() { return printJobConfig; }
 
-    public void configure(String yamlConfigFile) throws IOException {
-        config = Yaml.createYamlInput(new File(yamlConfigFile)).readYamlMapping();
-        YamlMapping printJob = config.yamlMapping("printJob");
-        printJobConfig = new PrintJobConfig();
-        printJobConfig.setInEncoding(printJob.string("inEncoding"));
-        printJobConfig.setOutEncoding(printJob.string("outEncoding"));
-        printJobConfig.setStartCommand(printJob.string("startCommand"));
-        printJobConfig.setEndCommand(printJob.string("endCommand"));
 
-        YamlMapping page = config.yamlMapping("page");
-        pageConfig = new PageConfig();
-        printJobConfig.setPageConfig(pageConfig);
-        pageConfig.setPageHeight(page.integer("pageHeight"));
-        pageConfig.setPageWidth(page.integer("pageWidth"));
-        pageConfig.setTopMargin(page.integer("topMargin"));
-        pageConfig.setBottomMargin(page.integer("bottomMargin"));
-        pageConfig.setLeftMargin(page.integer("leftMargin"));
-        pageConfig.setRightMargin(page.integer("rightMargin"));
-        pageConfig.setPageEnd(stripQuotes(page.string("pageEnd")));
-        pageConfig.setLineEnd(stripQuotes(page.string("lineEnd")));
-        pageConfig.setHeaderLine(stripQuotes(page.string("headerLine")));
-        pageConfig.setColumnSeparator(stripQuotes(page.string("columnSeparator")));
-        pageConfig.setHeaderSeparator(stripQuotes(page.string("headerSeparator")));
-        LineConfig line = new LineConfig();
-        pageConfig.setLine(line);
-
-        Collection<YamlNode> nodes = config.yamlSequence("columns").values();
-
-
-        for (YamlNode node : nodes) {
-            ColumnConfig column = new ColumnConfig();
-            YamlMapping colMap = node.asMapping().yamlMapping("column");
-
-            // each column is a mapping
-            column.setAdif(colMap.string("adif"));
-            column.setHeader(colMap.string("header"));
-            column.setStart(colMap.integer("start"));
-            column.setLength(colMap.integer("length"));
-            column.setAlign(colMap.string("align"));
-            column.setFormat(colMap.string("format"));
-            line.addColumn(column);
-        }
-    }
-
-    private String stripQuotes(String str) {
-        String stripped = str;
-        if (stripped.startsWith("'")) {
-            stripped = stripped.substring(1, str.length());
-        }
-        if (stripped.endsWith("'")) {
-            stripped = stripped.substring(0, stripped.length()-1);
-        }
-        return stripped;
-    }
     public StringBuilder format(Adif3 log) {
         resetPrintState();
 
@@ -115,7 +65,7 @@ public class Adif3PrintFormatter {
 
     private boolean atPageBreak() {
         // Check for page ending
-        return (state.currentLine == 1 || state.currentLine % pageConfig.getPageHeight() == 0);
+        return (state.currentLine == 1 || state.currentLine % printJobConfig.pageConfig.getPageHeight() == 0);
     }
 
     private void handlePageBreak(Adif3 log) {
@@ -124,26 +74,26 @@ public class Adif3PrintFormatter {
             // Add a Control-L
             printPageEnd();
         }
-        for (int i = 0; i < pageConfig.getTopMargin(); i++) {
+        for (int i = 0; i < printJobConfig.pageConfig.getTopMargin(); i++) {
             printLineEnd();
         }
         printHeader(log);
-        for (int i = 0; i < pageConfig.getHeaderMargin(); i++) {
+        for (int i = 0; i < printJobConfig.pageConfig.getHeaderMargin(); i++) {
             printLineEnd();
         }
     }
 
     private void printPageEnd() {
-        for (int i = 0; i < pageConfig.getBottomMargin(); i++) {
+        for (int i = 0; i < printJobConfig.pageConfig.getBottomMargin(); i++) {
             printLineEnd();
         }
-        state.sb.append(pageConfig.getPageEnd());
+        state.sb.append(printJobConfig.pageConfig.getPageEnd());
         state.currentPage++;
     }
 
     private void printHeader(Adif3 log) {
-        if (pageConfig.getHeaderLine().length() > 0) {
-            if ("COLUMN_NAMES".equals(pageConfig.getHeaderLine())) {
+        if (printJobConfig.pageConfig.getHeaderLine().length() > 0) {
+            if ("COLUMN_NAMES".equals(printJobConfig.pageConfig.getHeaderLine())) {
                 printColumnHeaders();
             } else {
                 state.sb.append("TODO");
@@ -154,8 +104,8 @@ public class Adif3PrintFormatter {
     private void printColumnHeaders() {
         StringBuilder line = new StringBuilder();
         StringBuilder separator = new StringBuilder();
-        boolean printSeparator = StringUtils.length(pageConfig.getHeaderSeparator()) > 0;
-        LineConfig lineConfig = pageConfig.getLine();
+        boolean printSeparator = StringUtils.length(printJobConfig.pageConfig.getHeaderSeparator()) > 0;
+        LineConfig lineConfig = printJobConfig.pageConfig.getLine();
         List<ColumnConfig> columnConfigs = lineConfig.getColumns();
         for (ColumnConfig columnConfig : columnConfigs) {
             printColumnHeader(columnConfig, line);
@@ -176,7 +126,7 @@ public class Adif3PrintFormatter {
     }
 
     private void printColumnHeaderUnderline(ColumnConfig column, StringBuilder line) {
-        String separator = StringUtils.repeat(pageConfig.getHeaderSeparator().charAt(0), column.getLength()-1);
+        String separator = StringUtils.repeat(printJobConfig.pageConfig.getHeaderSeparator().charAt(0), column.getLength()-1);
         printValueToColumn(column, separator, line);
     }
 
@@ -216,7 +166,7 @@ public class Adif3PrintFormatter {
         boolean first= true;
         for (int i = state.currentColumn; i < position; i++) {
             if (first) {
-                line.append(pageConfig.getColumnSeparator());
+                line.append(printJobConfig.pageConfig.getColumnSeparator());
                 first = false;
             } else {
                 line.append(' ');
@@ -226,14 +176,14 @@ public class Adif3PrintFormatter {
     }
 
     private void printLine(String line) {
-        state.sb.append(pageConfig.getColumnSeparator());
+        state.sb.append(printJobConfig.pageConfig.getColumnSeparator());
         state.sb.append(line);
-        state.sb.append(pageConfig.getColumnSeparator());
+        state.sb.append(printJobConfig.pageConfig.getColumnSeparator());
         printLineEnd();
     }
 
     private void printLineEnd() {
-        switch (pageConfig.getLineEnd()) {
+        switch (printJobConfig.pageConfig.getLineEnd()) {
             case "unix":
                 state.sb.append("\n");
                 break;
@@ -247,7 +197,7 @@ public class Adif3PrintFormatter {
     public void printRecord(Adif3Record rec) {
         StringBuilder line = new StringBuilder();
         String value = "";
-        for (ColumnConfig column : pageConfig.getLine().getColumns()) {
+        for (ColumnConfig column : printJobConfig.pageConfig.getLine().getColumns()) {
             value = getAdif3FieldFromRecord(rec, column);
             printValueToColumn(column, value, line);
         }

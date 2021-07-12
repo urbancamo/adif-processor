@@ -5,17 +5,24 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Logger;
 
 @Getter
 public abstract class ActivityReader {
 
     private static final Logger logger = Logger.getLogger(ActivityReader.class.getName());
-    protected ActivityType type;
+    public ActivityType type;
+    public String sourceFile;
 
-    protected ActivityReader(ActivityType type) {
+    public ActivityReader(ActivityType type, String sourceFile) {
         this.type = type;
+        this.sourceFile = sourceFile;
     }
+
+
+    public abstract ActivityDatabase read(InputStream inputStream) throws IOException;
 
     /**
      * Read lat/long from CSV file and convert to GlobalCoordinates. If neither is specified returns null

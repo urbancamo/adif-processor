@@ -6,17 +6,19 @@ import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
+import uk.m0nom.adif3.transform.Adif3RecordTransformer;
+import uk.m0nom.adif3.transform.FastLogEntryAdifRecordTransformer;
 import uk.m0nom.qrz.QrzXmlService;
-import uk.m0nom.activity.ActivityDatabase;
+import uk.m0nom.activity.ActivityDatabases;
 
 import java.io.*;
 
 public class Adif3Transformer {
     private YamlMapping config = null;
-    private ActivityDatabase summits;
+    private ActivityDatabases summits;
     private QrzXmlService qrzXmlService;
 
-    public void configure(String yamlConfigFile, ActivityDatabase summits, QrzXmlService qrzXmlService) throws IOException {
+    public void configure(String yamlConfigFile, ActivityDatabases summits, QrzXmlService qrzXmlService) throws IOException {
         config = Yaml.createYamlInput(new File(yamlConfigFile)).readYamlMapping();
         this.summits = summits;
         this.qrzXmlService = qrzXmlService;

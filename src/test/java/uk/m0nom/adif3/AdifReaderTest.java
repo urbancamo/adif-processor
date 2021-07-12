@@ -8,8 +8,10 @@ import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
+import uk.m0nom.adif3.transform.Adif3RecordTransformer;
+import uk.m0nom.adif3.transform.FastLogEntryAdifRecordTransformer;
 import uk.m0nom.qrz.QrzXmlService;
-import uk.m0nom.activity.ActivityDatabase;
+import uk.m0nom.activity.ActivityDatabases;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class AdifReaderTest {
-    private ActivityDatabase summits;
+    private ActivityDatabases summits;
     private TransformControl control;
 
     public AdifReaderTest() {
@@ -60,7 +62,7 @@ public class AdifReaderTest {
             Qsos qsos = new Qsos(log);
             assertThat(log.getHeader().getProgramId()).isEqualTo("FLE");
 
-            summits = new ActivityDatabase();
+            summits = new ActivityDatabases();
             summits.loadData();
             QrzXmlService qrzXmlService = new QrzXmlService(null, null);
             if (!qrzXmlService.getSessionKey()) {

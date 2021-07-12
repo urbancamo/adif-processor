@@ -4,6 +4,8 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang3.StringUtils;
+import uk.m0nom.activity.Activity;
+import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityReader;
 import uk.m0nom.activity.ActivityType;
 
@@ -25,12 +27,13 @@ import java.util.Map;
  * gridid
  */
 public class WotaCsvReader extends ActivityReader {
-    public WotaCsvReader() {
-        super(ActivityType.WOTA);
+
+    public WotaCsvReader(String sourceFile) {
+        super(ActivityType.WOTA, sourceFile);
     }
 
-    public WotaSummitsDatabase read(InputStream inputStream) throws IOException {
-        Map<String, WotaSummitInfo> summitInfo = new HashMap<>();
+    public ActivityDatabase read(InputStream inputStream) throws IOException {
+        Map<String, Activity> summitInfo = new HashMap<>();
 
         final Reader reader = new InputStreamReader(new BOMInputStream(inputStream), StandardCharsets.UTF_8);
 
@@ -40,9 +43,9 @@ public class WotaCsvReader extends ActivityReader {
 
             int wotaid = Integer.parseInt(record.get("wotaid"));
             if (wotaid <= 214) {
-                info.ref = String.format("LDW-%03d", wotaid);
+                info.setRef(String.format("LDW-%03d", wotaid));
             } else {
-                info.ref = String.format("LDO-%03d", wotaid - 214);
+                info.setRef(String.format("LDO-%03d", wotaid - 214));
             }
             info.setInternalId(wotaid);
 
@@ -52,7 +55,7 @@ public class WotaCsvReader extends ActivityReader {
             }
 
             info.book = record.get("book");
-            info.name = record.get("name");
+            info.setName(record.get("name"));
             info.height = Integer.parseInt(record.get("height"));
             info.reference = record.get("reference");
 
@@ -65,11 +68,11 @@ public class WotaCsvReader extends ActivityReader {
             info.x = Integer.parseInt(record.get("x"));
             info.y = Integer.parseInt(record.get("y"));
 
-            info.coords = readCoords(record, "lat", "long");
+            info.setCoords(readCoords(record, "lat", "long"));
 
-            summitInfo.put(info.ref, info);
+            summitInfo.put(info.getRef(), info);
         }
 
-        return new WotaSummitsDatabase(summitInfo);
+        return new WotaSummitsDatabase(ActivityType.WOTA, summitInfo);
     }
 }

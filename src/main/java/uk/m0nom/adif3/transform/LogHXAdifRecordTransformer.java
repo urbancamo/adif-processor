@@ -1,9 +1,9 @@
-package uk.m0nom.adif3;
+package uk.m0nom.adif3.transform;
 
-import com.amihaiemil.eoyaml.YamlMapping;
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.contacts.Qsos;
+import uk.m0nom.adif3.transform.Adif3RecordTransformer;
 
 public class LogHXAdifRecordTransformer implements Adif3RecordTransformer {
     @Override

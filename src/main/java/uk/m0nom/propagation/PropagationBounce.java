@@ -1,4 +1,4 @@
-package uk.m0nom.ionosphere;
+package uk.m0nom.propagation;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

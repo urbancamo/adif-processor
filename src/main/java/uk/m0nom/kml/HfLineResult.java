@@ -2,7 +2,7 @@ package uk.m0nom.kml;
 
 import lombok.Getter;
 import lombok.Setter;
-import uk.m0nom.ionosphere.PropagationMode;
+import uk.m0nom.propagation.PropagationMode;
 
 @Getter
 @Setter

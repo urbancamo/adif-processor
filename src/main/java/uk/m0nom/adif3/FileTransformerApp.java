@@ -7,9 +7,10 @@ import org.marsik.ham.adif.Adif3;
 import uk.m0nom.adif3.args.CommandLineArgs;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
+import uk.m0nom.adif3.print.Adif3PrintFormatter;
 import uk.m0nom.kml.KmlWriter;
 import uk.m0nom.qrz.QrzXmlService;
-import uk.m0nom.activity.ActivityDatabase;
+import uk.m0nom.activity.ActivityDatabases;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
 
 public class FileTransformerApp implements Runnable
 {
-    private static final String MARKDOWN_CONTROL_FILE = "adif-printer-132-table.yaml";
+    private static final String MARKDOWN_CONTROL_FILE = "adif-printer-132-markdown.yaml";
     private static Logger logger;
 
     private static FileTransformerApp instance;
@@ -34,7 +35,7 @@ public class FileTransformerApp implements Runnable
     private Adif3FileReaderWriter readerWriter;
     private KmlWriter kmlWriter;
 
-    private ActivityDatabase summits;
+    private ActivityDatabases summits;
     private QrzXmlService qrzXmlService;
 
     private Adif3PrintFormatter formatter;
@@ -61,7 +62,7 @@ public class FileTransformerApp implements Runnable
         this.args = args;
         transformer = new Adif3Transformer();
         readerWriter = new Adif3FileReaderWriter();
-        summits = new ActivityDatabase();
+        summits = new ActivityDatabases();
         cli = new CommandLineArgs();
         qsos = new Qsos();
         formatter = new Adif3PrintFormatter();
@@ -122,7 +123,7 @@ public class FileTransformerApp implements Runnable
                     File markdownFile = new File(markdown);
                     if (markdownFile.delete()) {
                         if (markdownFile.createNewFile()) {
-                            formatter.configure(MARKDOWN_CONTROL_FILE);
+                            formatter.getPrintJobConfig().configure(MARKDOWN_CONTROL_FILE);
                             logger.info(String.format("Writing Markdown to: %s", markdown));
                             StringBuilder sb = formatter.format(log);
                             markdownWriter = Files.newBufferedWriter(markdownFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);

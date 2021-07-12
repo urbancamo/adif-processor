@@ -3,6 +3,7 @@ package uk.m0nom.adif3;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.marsik.ham.adif.Adif3;
+import uk.m0nom.adif3.print.Adif3PrintFormatter;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -46,7 +47,7 @@ public class PrintFormatApp implements Runnable
             } else {
                 in = args[0];
                 out = String.format("%s.%s", FilenameUtils.removeExtension(in.toString()), "prn");
-                formatter.configure(args[1]);
+                formatter.getPrintJobConfig().configure(args[1]);
                 Adif3 log = readerWriter.read(in, formatter.getPrintJobConfig().getInEncoding(), true);
                 StringBuilder sb = formatter.format(log);
                 File outFile = new File(out);

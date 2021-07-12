@@ -1,40 +1,42 @@
 package uk.m0nom.activity.wota;
 
+import uk.m0nom.activity.Activity;
+import uk.m0nom.activity.ActivityDatabase;
+import uk.m0nom.activity.ActivityDatabases;
+import uk.m0nom.activity.ActivityType;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class WotaSummitsDatabase {
-    private Map<String, WotaSummitInfo> summits;
-    private Map<String, WotaSummitInfo> summitsWithSotaKey;
-    private Map<String, WotaSummitInfo> summitsWithHemaKey;
+public class WotaSummitsDatabase extends ActivityDatabase {
+    private Map<String, Activity> summitsWithSotaKey;
+    private Map<String, Activity> summitsWithHemaKey;
 
-    public WotaSummitsDatabase(Map<String, WotaSummitInfo> summits) {
-        this.summits = summits;
+    public WotaSummitsDatabase(ActivityType type, Map<String, Activity> summits) {
+        super(type, summits);
+
         summitsWithSotaKey = new HashMap<>();
         summitsWithHemaKey = new HashMap<>();
 
         // Now generate the cross-reference tables
-        for (WotaSummitInfo info : summits.values()) {
-            if (info.sotaId != null) {
-                summitsWithSotaKey.put(info.sotaId, info);
-            }
-            if (info.hemaId != null) {
-                summitsWithHemaKey.put(info.hemaId, info);
+        for (Activity activity : summits.values()) {
+            if (activity instanceof WotaSummitInfo) {
+                WotaSummitInfo info = (WotaSummitInfo) activity;
+                if (info.sotaId != null) {
+                    summitsWithSotaKey.put(info.sotaId, info);
+                }
+                if (info.hemaId != null) {
+                    summitsWithHemaKey.put(info.hemaId, info);
+                }
             }
         }
     }
 
-    public WotaSummitInfo get(String wotaId) {
-        return summits.get(wotaId);
+    public Activity getFromSotaId(String ref) {
+        return summitsWithSotaKey.get(ref);
     }
 
-    public WotaSummitInfo getFromSotaId(String sotaId) {
-        return summitsWithSotaKey.get(sotaId);
+    public Activity getFromHemaId(String ref) {
+        return summitsWithHemaKey.get(ref);
     }
-
-    public WotaSummitInfo getFromHemaId(String hemaId) {
-        return summitsWithHemaKey.get(hemaId);
-    }
-
-    public int size() { return summits.size(); }
 }

@@ -5,7 +5,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.marsik.ham.adif.Adif3;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.qrz.QrzXmlService;
-import uk.m0nom.activity.ActivityDatabase;
+import uk.m0nom.activity.ActivityDatabases;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class DirectoryTransformerApp implements Runnable
 
     private Adif3Transformer transformer;
     private Adif3FileReaderWriter readerWriter;
-    private ActivityDatabase summits;
+    private ActivityDatabases summits;
     private QrzXmlService qrzXmlService;
     private TransformControl control;
 
@@ -32,7 +32,7 @@ public class DirectoryTransformerApp implements Runnable
         this.args = args;
         transformer = new Adif3Transformer();
         readerWriter = new Adif3FileReaderWriter();
-        summits = new ActivityDatabase();
+        summits = new ActivityDatabases();
         qrzXmlService = new QrzXmlService(null, null);
         control = new TransformControl();
     }

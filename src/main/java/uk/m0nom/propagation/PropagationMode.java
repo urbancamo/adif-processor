@@ -1,4 +1,4 @@
-package uk.m0nom.ionosphere;
+package uk.m0nom.propagation;
 
 public enum PropagationMode {
     GROUND_WAVE,
