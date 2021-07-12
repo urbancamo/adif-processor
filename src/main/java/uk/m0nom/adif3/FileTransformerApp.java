@@ -121,18 +121,19 @@ public class FileTransformerApp implements Runnable
                 BufferedWriter markdownWriter = null;
                 try {
                     File markdownFile = new File(markdown);
-                    if (markdownFile.delete()) {
-                        if (markdownFile.createNewFile()) {
-                            formatter.getPrintJobConfig().configure(MARKDOWN_CONTROL_FILE);
-                            logger.info(String.format("Writing Markdown to: %s", markdown));
-                            StringBuilder sb = formatter.format(log);
-                            markdownWriter = Files.newBufferedWriter(markdownFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);
-                            markdownWriter.write(sb.toString());
-                        } else {
-                            logger.severe(String.format("Error creating Markdown file %s, check permissions?", markdown));
+                    if (markdownFile.exists()) {
+                        if (!markdownFile.delete()) {
+                            logger.severe(String.format("Error deleting Markdown file %s, check permissions?", markdown));
                         }
+                    }
+                    if (markdownFile.createNewFile()) {
+                        formatter.getPrintJobConfig().configure(MARKDOWN_CONTROL_FILE);
+                        logger.info(String.format("Writing Markdown to: %s", markdown));
+                        StringBuilder sb = formatter.format(log);
+                        markdownWriter = Files.newBufferedWriter(markdownFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);
+                        markdownWriter.write(sb.toString());
                     } else {
-                        logger.severe(String.format("Error deleting Markdown file %s, check permissions?", markdown));
+                        logger.severe(String.format("Error creating Markdown file %s, check permissions?", markdown));
                     }
                 } catch (IOException ioe) {
                     logger.severe(String.format("Error writing Markdown file %s: %s", markdown, ioe.getMessage()));
