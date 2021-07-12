@@ -3,17 +3,13 @@ package uk.m0nom.adif3;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.marsik.ham.adif.Adif3;
-import uk.m0nom.adif3.args.CommandLineArgs;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.qrz.QrzXmlService;
-import uk.m0nom.sota.SotaCsvReader;
-import uk.m0nom.summits.SummitsDatabase;
-import uk.m0nom.wota.WotaCsvReader;
+import uk.m0nom.activity.ActivityDatabase;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DirectoryTransformerApp implements Runnable
@@ -24,19 +20,19 @@ public class DirectoryTransformerApp implements Runnable
 
     private Adif3Transformer transformer;
     private Adif3FileReaderWriter readerWriter;
-    private SummitsDatabase summits;
+    private ActivityDatabase summits;
     private QrzXmlService qrzXmlService;
     private TransformControl control;
 
-    private String args[];
+    private final String[] args;
 
     private final static String configFilePath = "./src/main/resources/adif-processor.yaml";
 
-    public DirectoryTransformerApp(String args[]) {
+    public DirectoryTransformerApp(String[] args) {
         this.args = args;
         transformer = new Adif3Transformer();
         readerWriter = new Adif3FileReaderWriter();
-        summits = new SummitsDatabase();
+        summits = new ActivityDatabase();
         qrzXmlService = new QrzXmlService(null, null);
         control = new TransformControl();
     }

@@ -2,24 +2,21 @@ package uk.m0nom.adif3;
 
 import com.amihaiemil.eoyaml.Yaml;
 import com.amihaiemil.eoyaml.YamlMapping;
-import org.marsik.ham.adif.AdiReader;
-import org.marsik.ham.adif.AdiWriter;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.qrz.QrzXmlService;
-import uk.m0nom.summits.SummitsDatabase;
+import uk.m0nom.activity.ActivityDatabase;
 
 import java.io.*;
-import java.util.Optional;
 
 public class Adif3Transformer {
     private YamlMapping config = null;
-    private SummitsDatabase summits;
+    private ActivityDatabase summits;
     private QrzXmlService qrzXmlService;
 
-    public void configure(String yamlConfigFile, SummitsDatabase summits, QrzXmlService qrzXmlService) throws IOException {
+    public void configure(String yamlConfigFile, ActivityDatabase summits, QrzXmlService qrzXmlService) throws IOException {
         config = Yaml.createYamlInput(new File(yamlConfigFile)).readYamlMapping();
         this.summits = summits;
         this.qrzXmlService = qrzXmlService;

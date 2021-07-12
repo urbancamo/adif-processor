@@ -1,0 +1,53 @@
+package uk.m0nom.activity;
+
+import lombok.Getter;
+import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.StringUtils;
+import org.gavaghan.geodesy.GlobalCoordinates;
+
+import java.util.logging.Logger;
+
+@Getter
+public abstract class ActivityReader {
+
+    private static final Logger logger = Logger.getLogger(ActivityReader.class.getName());
+    protected ActivityType type;
+
+    protected ActivityReader(ActivityType type) {
+        this.type = type;
+    }
+
+    /**
+     * Read lat/long from CSV file and convert to GlobalCoordinates. If neither is specified returns null
+     * @param record CSVRecord to read
+     * @param latColName name of Latitude column in CSV record
+     * @param longColName name of Longitude column in CSV record
+     * @return Global Coordinate for lat/long, or null if neither specified
+     */
+    protected GlobalCoordinates readCoords(CSVRecord record, String latColName, String longColName) {
+        GlobalCoordinates location = null;
+
+        String longitudeStr = record.get(latColName);
+
+        String latitudeStr = record.get(longColName);
+        if (!StringUtils.isEmpty(longitudeStr) && !StringUtils.isEmpty(latitudeStr)) {
+            Double longitude = null;
+            try {
+                longitude = Double.parseDouble(longitudeStr);
+            } catch (NumberFormatException e) {
+                logger.severe(String.format("Error parsing longitude '%s' from CSV file for activity %s", longitudeStr, type.getActivityName()));
+            }
+            Double latitude = null;
+            try {
+                latitude = Double.parseDouble(latitudeStr);
+            } catch (NumberFormatException ignored) {
+
+
+            }
+            if (latitude != null && longitude != null) {
+                location = new GlobalCoordinates(longitude, latitude);
+            }
+        }
+        return location;
+    }
+}

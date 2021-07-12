@@ -2,13 +2,112 @@
 Processor for Amateur Radio ADIF files.
 Written by Mark Wickens [mark@wickensonline.co.uk](mailto:"mark@wickensonline.co.uk").
 
+## What is this?
+The post processor was originally designed to enrich ADIF content by 
+
 Currently the post-processor can generate three types of output:
   - Enriched ADIF 
   - Google Earth KML file 
   - Pretty Printed contact listing file.
 
-The post-processor knows summit references for the [HEMA](http://hema.org.uk/) [SOTA](https://www.sota.org.uk/), [WOTA](https://wota.org.uk).
+The post-processor knows activity references for [HEMA](http://hema.org.uk/) [SOTA](https://www.sota.org.uk/), [WOTA](https://wota.org.uk) and [Parks on the Air](https://https://parksontheair.com/).
 
+## Command Line Arguments
+Using the argument `-h` or `--help` shows the command line arguments:
+
+```
+Transform an ADIF file prior to storing  or mapping it by enriching it with
+positional data.
+
+positional arguments:
+  path                   Input ADIF files
+
+named arguments:
+  -h, --help             show this help message and exit
+  -q, --qrz              Enable QRZ.COM lookup (default: false)
+  -qu QRZ_USERNAME, --qrz-username QRZ_USERNAME
+                         Username for the QRZ XML Service
+  -qp QRZ_PASSWORD, --qrz-password QRZ_PASSWORD
+                         Password for the QRZ XML Service
+  -lat LATITUDE, --latitude LATITUDE
+                         Specify  override  latitude   in  decimal  format,
+                         enclose in single quotes
+  -long LONGITUDE, --longitude LONGITUDE
+                         Specify  override  longitude  in  decimal  format,
+                         enclose in single quotes
+  -g GRID, --grid GRID   Specify override grid in 4/6/10 characters
+  -he HEMA, --hema HEMA  Specify override HEMA Id for your location
+  -w WOTA, --wota WOTA   Specify override WOTA Id for your location
+  -s SOTA, --sota SOTA   Specify override SOTA Id for your location
+  -p POTA, --pota POTA   Specify override POTA Id for your location
+  -o OUTPUT, --output OUTPUT
+                         Write output files to this directory
+  -e ENCODING, --encoding ENCODING
+                         Specify encoding  of  input  ADIF  file  (default:
+                         windows-1251)
+  -k, --kml              Generate a KML output  file  for mapping direct to
+                         Google Earth (default: false)
+  -kcw KML_CONTACT_WIDTH, --kml-contact-width KML_CONTACT_WIDTH
+                         Specify the width of contact lines (default: 3)
+  -kct KML_CONTACT_TRANSPARENCY, --kml-contact-transparency KML_CONTACT_TRANSPARENCY
+                         Specify the transparency of  contact lines between
+                         0% and 100%, 0% being solid (default: 20)
+  -kcband, --kml-contact-colour-band
+                         Colour QSOs  based  on  the  band  used  (default:
+                         false)
+  -ks2s, --kml-s2s       Highlight Summit to  Summit  Contacts  in KML file
+                         (default: false)
+  -kcs, --kml-contact-shadow
+                         Draw  a  shadow   under   the   KML  contact  line
+                         (default: true)
+  -ks2sls KML_S2S_LINE_STYLE, --kml-s2s-line-style KML_S2S_LINE_STYLE
+                         Set the  colour  of  contact  line  for  Summit to
+                         Summit   contacts   of    the   form   html_color:
+                         transparency:width,  default   is:  brick_red:50:2
+                         (default: brick_red:50:2)
+  -kcls KML_CONTACT_LINE_STYLE, --kml-contact-line-style KML_CONTACT_LINE_STYLE
+                         Set the colour  of  contact  line  for contacts of
+                         the  form  html_color:transparency:width,  default
+                         is: baby_blue:50:2 (default: baby_blue:50:2)
+  -kfi KML_FIXED_STATION, --kml-fixed-station KML_FIXED_STATION
+                         URL of the  icon  to  use  for  fixed/home station
+                         locations      (default:       http://maps.google.
+                         com/mapfiles/kml/shapes/ranger_station.png)
+  -kpi KML_PORTABLE_STATION, --kml-portable-station KML_PORTABLE_STATION
+                         URL of the  icon  to  use  for  fixed/home station
+                         locations      (default:       http://maps.google.
+                         com/mapfiles/kml/shapes/hiker.png)
+  -kmi KML_MOBILE_STATION, --kml-mobile-station KML_MOBILE_STATION
+                         URL of the  icon  to  use  for  fixed/home station
+                         locations      (default:       http://maps.google.
+                         com/mapfiles/kml/shapes/ranger_station.png)
+  -kmmi KML_MARITIME_STATION, --kml-maritime-station KML_MARITIME_STATION
+                         URL  of  the  icon  to  use  for  maritime  mobile
+                         station  locations  (default:  http://maps.google.
+                         com/mapfiles/kml/shapes/sailing.png)
+  -kparki KML_PARK_STATION, --kml-park-station KML_PARK_STATION
+                         URL of the  icon  to  use  for  Parks  on  the Air
+                         station  locations  (default:  http://maps.google.
+                         com/mapfiles/kml/shapes/picnic.png)
+  -ksotai KML_SOTA_STATION, --kml-sota-station KML_SOTA_STATION
+                         URL of the icon to  use for SOTA station locations
+                         (default:                      http://maps.google.
+                         com/mapfiles/kml/shapes/mountains.png)
+  -khemai KML_HEMA_STATION, --kml-hema-station KML_HEMA_STATION
+                         URL of the icon to  use for SOTA station locations
+                         (default:                      http://maps.google.
+                         com/mapfiles/kml/shapes/hospitals.png)
+  -kwotai KML_WOTA_STATION, --kml-wota-station KML_WOTA_STATION
+                         URL of the icon to  use for SOTA station locations
+                         (default:                      http://maps.google.
+                         com/mapfiles/kml/shapes/trail.png)
+  -md, --markdown        Generate Markdown  file  containing  the  contacts
+                         (default: false)
+
+```
+## Configuration Files
+
+TODO
 ## The ADIF format 30 second Primer
 [ADIF](http://adif.org/) _Amateur Data Interchange Format_ is a text file representation for Amateur radio contacts. It is a popular
 output format for logging programs. The [ADIF specification](https://adif.org/312/ADIF_312.htm) describes the valid content of the header and record fields.

@@ -1,21 +1,20 @@
-package uk.m0nom.wota;
+package uk.m0nom.activity.wota;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.gavaghan.geodesy.GlobalCoordinates;
+import uk.m0nom.activity.Activity;
 
 @Getter
 @Setter
-public class WotaSummitInfo {
+public class WotaSummitInfo extends Activity {
     int internalId;
-    String wotaId;
     String sotaId;
     String hemaId;
 
     String book;
-    String name;
     int height;
     String reference;
     String gridId;
     int x,y;
-    double latitude, longitude;
 }

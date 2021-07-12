@@ -1,4 +1,4 @@
-package uk.m0nom.sota;
+package uk.m0nom.activity.sota;
 
 import java.util.Map;
 

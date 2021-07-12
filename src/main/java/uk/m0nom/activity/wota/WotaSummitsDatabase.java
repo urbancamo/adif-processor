@@ -1,4 +1,4 @@
-package uk.m0nom.wota;
+package uk.m0nom.activity.wota;
 
 import java.util.HashMap;
 import java.util.Map;

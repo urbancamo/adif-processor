@@ -8,14 +8,14 @@ import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.contacts.Station;
-import uk.m0nom.hema.HemaSummitInfo;
+import uk.m0nom.activity.hema.HemaSummitInfo;
 import uk.m0nom.ionosphere.Ionosphere;
 import uk.m0nom.ionosphere.PropagationMode;
-import uk.m0nom.pota.PotaInfo;
+import uk.m0nom.activity.pota.PotaInfo;
 import uk.m0nom.qrz.QrzCallsign;
-import uk.m0nom.sota.SotaSummitInfo;
-import uk.m0nom.summits.SummitsDatabase;
-import uk.m0nom.wota.WotaSummitInfo;
+import uk.m0nom.activity.sota.SotaSummitInfo;
+import uk.m0nom.activity.ActivityDatabase;
+import uk.m0nom.activity.wota.WotaSummitInfo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 public class KmlWriter {
     private final static double DEFAULT_RANGE_METRES = 3000.0;
     private static final Logger logger = Logger.getLogger(KmlWriter.class.getName());
-    private SummitsDatabase summits;
+    private ActivityDatabase summits;
     private Ionosphere ionosphere;
     private TransformControl control;
     private KmlBandLineStyles bandLineStyles;
@@ -36,7 +36,7 @@ public class KmlWriter {
         bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());
     }
 
-    public void write(String pathname, SummitsDatabase summits, Qsos qsos) {
+    public void write(String pathname, ActivityDatabase summits, Qsos qsos) {
         this.summits = summits;
 
         final Kml kml = new Kml();

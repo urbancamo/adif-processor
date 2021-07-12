@@ -1,4 +1,4 @@
-package uk.m0nom.pota;
+package uk.m0nom.activity.pota;
 
 import java.util.Map;
 

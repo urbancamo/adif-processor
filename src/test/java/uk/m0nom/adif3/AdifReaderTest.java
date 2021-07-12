@@ -9,20 +9,19 @@ import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.qrz.QrzXmlService;
-import uk.m0nom.sota.SotaCsvReader;
-import uk.m0nom.summits.SummitsDatabase;
-import uk.m0nom.wota.WotaCsvReader;
+import uk.m0nom.activity.ActivityDatabase;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class AdifReaderTest {
-    private SummitsDatabase summits;
+    private ActivityDatabase summits;
     private TransformControl control;
 
     public AdifReaderTest() {
@@ -44,6 +43,7 @@ public class AdifReaderTest {
                     firstRec = rec;
                 }
             }
+            assert firstRec != null;
             assertThat(firstRec.getCall()).isEqualTo("M6VMS");
         }
     }
@@ -60,7 +60,7 @@ public class AdifReaderTest {
             Qsos qsos = new Qsos(log);
             assertThat(log.getHeader().getProgramId()).isEqualTo("FLE");
 
-            summits = new SummitsDatabase();
+            summits = new ActivityDatabase();
             summits.loadData();
             QrzXmlService qrzXmlService = new QrzXmlService(null, null);
             if (!qrzXmlService.getSessionKey()) {
@@ -76,6 +76,6 @@ public class AdifReaderTest {
     }
 
     private BufferedReader resourceInput(String path) {
-        return new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(path)));
+        return new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path))));
     }
 }

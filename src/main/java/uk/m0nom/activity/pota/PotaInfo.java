@@ -1,24 +1,18 @@
-package uk.m0nom.pota;
+package uk.m0nom.activity.pota;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.gavaghan.geodesy.GlobalCoordinates;
+import uk.m0nom.activity.Activity;
 
 @Getter
 @Setter
-public class PotaInfo {
-    String reference;
-    String name;
+public class PotaInfo extends Activity {
     Boolean active;
     Integer entityId;
     String locationDesc;
-    Double latitude;
-    Double longitude;
     String grid;
-
-    public boolean hasCoord() {
-        return latitude != null && longitude != null;
-    }
 
     public boolean hasGrid() {
         return StringUtils.isNotEmpty(grid);

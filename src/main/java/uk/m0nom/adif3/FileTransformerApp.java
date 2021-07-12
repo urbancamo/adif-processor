@@ -9,9 +9,7 @@ import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.kml.KmlWriter;
 import uk.m0nom.qrz.QrzXmlService;
-import uk.m0nom.sota.SotaCsvReader;
-import uk.m0nom.summits.SummitsDatabase;
-import uk.m0nom.wota.WotaCsvReader;
+import uk.m0nom.activity.ActivityDatabase;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -36,7 +34,7 @@ public class FileTransformerApp implements Runnable
     private Adif3FileReaderWriter readerWriter;
     private KmlWriter kmlWriter;
 
-    private SummitsDatabase summits;
+    private ActivityDatabase summits;
     private QrzXmlService qrzXmlService;
 
     private Adif3PrintFormatter formatter;
@@ -63,7 +61,7 @@ public class FileTransformerApp implements Runnable
         this.args = args;
         transformer = new Adif3Transformer();
         readerWriter = new Adif3FileReaderWriter();
-        summits = new SummitsDatabase();
+        summits = new ActivityDatabase();
         cli = new CommandLineArgs();
         qsos = new Qsos();
         formatter = new Adif3PrintFormatter();
@@ -122,13 +120,19 @@ public class FileTransformerApp implements Runnable
                 BufferedWriter markdownWriter = null;
                 try {
                     File markdownFile = new File(markdown);
-                    markdownFile.delete();
-                    markdownFile.createNewFile();
-                    formatter.configure(MARKDOWN_CONTROL_FILE);
-                    logger.info(String.format("Writing Markdown to: %s", markdown));
-                    StringBuilder sb = formatter.format(log);
-                    markdownWriter = Files.newBufferedWriter(markdownFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);
-                    markdownWriter.write(sb.toString());
+                    if (markdownFile.delete()) {
+                        if (markdownFile.createNewFile()) {
+                            formatter.configure(MARKDOWN_CONTROL_FILE);
+                            logger.info(String.format("Writing Markdown to: %s", markdown));
+                            StringBuilder sb = formatter.format(log);
+                            markdownWriter = Files.newBufferedWriter(markdownFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);
+                            markdownWriter.write(sb.toString());
+                        } else {
+                            logger.severe(String.format("Error creating Markdown file %s, check permissions?", markdown));
+                        }
+                    } else {
+                        logger.severe(String.format("Error deleting Markdown file %s, check permissions?", markdown));
+                    }
                 } catch (IOException ioe) {
                     logger.severe(String.format("Error writing Markdown file %s: %s", markdown, ioe.getMessage()));
                 } finally {

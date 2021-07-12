@@ -1,6 +1,4 @@
-package uk.m0nom.hema;
-
-import uk.m0nom.sota.SotaSummitInfo;
+package uk.m0nom.activity.hema;
 
 import java.util.Map;
 

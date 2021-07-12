@@ -1,6 +1,8 @@
 package uk.m0nom.maidenheadlocator;
 
 import org.apache.commons.lang3.StringUtils;
+import org.gavaghan.geodesy.GlobalCoordinates;
+import org.gavaghan.geodesy.GlobalPosition;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,15 +27,15 @@ public class MaidenheadLocatorConversion {
     private final static String[] INVALID_GRIDSQUARES = new String[] {"AA00AA"};
 
     public static boolean isAValidGridSquare(String gridSquare) {
-        for (int i = 0; i < INVALID_GRIDSQUARES.length; i++) {
-            if (StringUtils.equalsIgnoreCase(gridSquare, INVALID_GRIDSQUARES[i])) {
+        for (String invalidGridsquare : INVALID_GRIDSQUARES) {
+            if (StringUtils.equalsIgnoreCase(gridSquare, invalidGridsquare)) {
                 return false;
             }
         }
         return gridSquare != null;
     }
 
-    public static LatLng locatorToLatLng(String locStr) {
+    public static GlobalCoordinates locatorToCoords(String locStr) {
         String locatorTrimmed = locStr.trim().toUpperCase();
         Matcher matcher4Char = LOC_4CHAR.matcher(locatorTrimmed);
         Matcher matcher6Char = LOC_6CHAR.matcher(locatorTrimmed);
@@ -42,26 +44,24 @@ public class MaidenheadLocatorConversion {
 
         char[] locator = locatorTrimmed.toCharArray();
 
+        double longitude, latitude;
+
         if (matcher4Char.matches()) {
-            LatLng ll = new LatLng();
-            ll.longitude = (locator[0] - 'A') * 20 + (locator[2] - '0' + 0.5) * 2 - 180;
-            ll.latitude = (locator[1] - 'A') * 10 + (locator[3] - '0' + 0.5) - 90;
-            return ll;
+            latitude = (locator[1] - 'A') * 10 + (locator[3] - '0' + 0.5) - 90;
+            longitude = (locator[0] - 'A') * 20 + (locator[2] - '0' + 0.5) * 2 - 180;
+            return new GlobalCoordinates(latitude, longitude);
         } else if (matcher6Char.matches()) {
-            LatLng ll = new LatLng();
-            ll.longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.5) / 12 - 180;
-            ll.latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.5) / 24 - 90;
-            return ll;
+            longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.5) / 12 - 180;
+            latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.5) / 24 - 90;
+            return new GlobalCoordinates(latitude, longitude);
         } else if (matcher8Char.matches()) {
-            LatLng ll = new LatLng();
-            ll.longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.0) / 12 + (locator[6] - '0' + 0.5) / 120 - 180;
-            ll.latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.0) / 24 + (locator[7] - '0' + 0.5) / 240 - 90;
-            return ll;
+            longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.0) / 12 + (locator[6] - '0' + 0.5) / 120 - 180;
+            latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.0) / 24 + (locator[7] - '0' + 0.5) / 240 - 90;
+            return new GlobalCoordinates(latitude, longitude);
         } else if (matcher10Char.matches()) {
-            LatLng ll = new LatLng();
-            ll.longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.0) / 12 + (locator[6] - '0' + 0.0) / 120 + (locator[8] - 'A' + 0.5) / 120 / 24 - 180;
-            ll.latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.0) / 24 + (locator[7] - '0' + 0.0) / 240 + (locator[9] - 'A' + 0.5) / 240 / 24 - 90;
-            return ll;
+            longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.0) / 12 + (locator[6] - '0' + 0.0) / 120 + (locator[8] - 'A' + 0.5) / 120 / 24 - 180;
+            latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.0) / 24 + (locator[7] - '0' + 0.0) / 240 + (locator[9] - 'A' + 0.5) / 240 / 24 - 90;
+            return new GlobalCoordinates(latitude, longitude);
         } else {
             throw new UnsupportedOperationException(String.format("Invalid locator format: %s", locatorTrimmed));
         }
@@ -72,49 +72,26 @@ public class MaidenheadLocatorConversion {
     /**
      * Converts latitude and longitude in degrees to a locator
      *
-     * @param ll LatLng structure to convert
+     * @param coords GlobalCoordinates structure to convert
      * @return Locator string
      */
-    public static String latLngToLocator(LatLng ll) {
-        return latLngToLocator(ll.latitude, ll.longitude, 0);
+    public static String coordsToLocator(GlobalCoordinates coords) {
+        return coordsToLocator(coords, 0);
     }
 
     
     /** Convert latitude and longitude in degrees to a locator
     *
-    * @param ll structure to convert
-    * @param ext precision (0, 1, 2)
-    * @return ocator string</returns>
-     */
-    public static String latLngToLocator(LatLng ll, int ext) {
-        return latLngToLocator(ll.latitude, ll.longitude, ext);
-    }
-
-    
-    /** Convert latitude and longitude in degrees to a locator
-    *
-    * @param latitude Latitude to convert
-    * @param longitude Longitude to convert
-    * @return locator string
-     */
-    public static String latLngToLocator(double latitude, double longitude) {
-        return latLngToLocator(latitude, longitude, 0);
-    }
-
-    
-    /** Convert latitude and longitude in degrees to a locator
-    *
-    * @param latitudeIn Latitude to convert
-    * @param longitudeIn Longitude to convert
+     * @param coords GlobalCoordinates structure to convert
     * @param ext Extra precision (0, 1, 2)
     * @return Locator string
      */
-    public static String latLngToLocator(double latitudeIn, double longitudeIn, int ext) {
+    public static String coordsToLocator(GlobalCoordinates coords, int ext) {
         int v;
         String locator = "";
 
-        double latitude = latitudeIn + 90;
-        double longitude = longitudeIn + 180;
+        double latitude = coords.getLatitude() + 90;
+        double longitude = coords.getLongitude() + 180;
 
         locator += (char) ('A' + Math.floor(longitude / 20));
         locator += (char) ('A' + Math.floor(latitude / 10));
@@ -178,23 +155,23 @@ public class MaidenheadLocatorConversion {
      * @return Distance in km<
      */
     public static double distance(String a, String b) {
-        return distance(locatorToLatLng(a), locatorToLatLng(b));
+        return distance(locatorToCoords(a), locatorToCoords(b));
     }
 
     
     /** Calculate the distance in km between two locators
     *
-    * @param a Start LatLng structure
-    * @param b End LatLng structure
+    * @param a Start GlobalCoordinates structure
+    * @param b End GlobalCoordinates structure
     * @return Distance in km
      */
-    public static double distance(LatLng a, LatLng b) {
+    public static double distance(GlobalCoordinates a, GlobalCoordinates b) {
         if (a.compareTo(b) == 0) return 0;
 
-        double hn = Math.toRadians(a.latitude);
-        double he = Math.toRadians(a.longitude);
-        double n = Math.toRadians(b.latitude);
-        double e = Math.toRadians(b.longitude);
+        double hn = Math.toRadians(a.getLatitude());
+        double he = Math.toRadians(a.getLongitude());
+        double n = Math.toRadians(b.getLatitude());
+        double e = Math.toRadians(b.getLongitude());
 
         double co = Math.cos(he - e) * Math.cos(hn) * Math.cos(n) + Math.sin(hn) * Math.sin(n);
         double ca = Math.atan(Math.abs(Math.sqrt(1 - co * co) / co));
@@ -210,23 +187,23 @@ public class MaidenheadLocatorConversion {
     * @return Azimuth in degrees
      */
     public static double azimuth(String a, String b) {
-        return azimuth(locatorToLatLng(a), locatorToLatLng(b));
+        return azimuth(locatorToCoords(a), locatorToCoords(b));
     }
 
     
     /** Calculate the azimuth in degrees between two locators
     *
-    * @param a Start LatLng structure
-    * @param b End LatLng structure
+    * @param a Start GlobalCoordinates structure
+    * @param b End GlobalCoordinates structure
     * @return azimuth in degrees
      */
-    public static double azimuth(LatLng a, LatLng b) {
+    public static double azimuth(GlobalCoordinates a, GlobalCoordinates b) {
         if (a.compareTo(b) == 0) return 0;
 
-        double hn = Math.toRadians(a.latitude);
-        double he = Math.toRadians(a.longitude);
-        double n = Math.toRadians(b.latitude);
-        double e = Math.toRadians(b.longitude);
+        double hn = Math.toRadians(a.getLatitude());
+        double he = Math.toRadians(a.getLongitude());
+        double n = Math.toRadians(b.getLatitude());
+        double e = Math.toRadians(b.getLongitude());
 
         double co = Math.cos(he - e) * Math.cos(hn) * Math.cos(n) + Math.sin(hn) * Math.sin(n);
         double ca = Math.atan(Math.abs(Math.sqrt(1 - co * co) / co));

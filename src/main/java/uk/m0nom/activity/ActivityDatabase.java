@@ -1,15 +1,15 @@
-package uk.m0nom.summits;
+package uk.m0nom.activity;
 
 import lombok.Getter;
 import lombok.Setter;
-import uk.m0nom.pota.PotaCsvReader;
-import uk.m0nom.pota.PotaDatabase;
-import uk.m0nom.hema.HemaCsvReader;
-import uk.m0nom.hema.HemaSummitsDatabase;
-import uk.m0nom.sota.SotaCsvReader;
-import uk.m0nom.sota.SotaSummitsDatabase;
-import uk.m0nom.wota.WotaCsvReader;
-import uk.m0nom.wota.WotaSummitsDatabase;
+import uk.m0nom.activity.pota.PotaCsvReader;
+import uk.m0nom.activity.pota.PotaDatabase;
+import uk.m0nom.activity.hema.HemaCsvReader;
+import uk.m0nom.activity.hema.HemaSummitsDatabase;
+import uk.m0nom.activity.sota.SotaCsvReader;
+import uk.m0nom.activity.sota.SotaSummitsDatabase;
+import uk.m0nom.activity.wota.WotaCsvReader;
+import uk.m0nom.activity.wota.WotaSummitsDatabase;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,8 +17,8 @@ import java.util.logging.Logger;
 
 @Getter
 @Setter
-public class SummitsDatabase {
-    private static final Logger logger = Logger.getLogger(SummitsDatabase.class.getName());
+public class ActivityDatabase {
+    private static final Logger logger = Logger.getLogger(ActivityDatabase.class.getName());
 
     private WotaSummitsDatabase wota;
     private SotaSummitsDatabase sota;
@@ -33,7 +33,7 @@ public class SummitsDatabase {
                 logger.severe(String.format("Can't load %s using classloader %s", sotaSummitsList, getClass().getClassLoader().toString()));
             }
             logger.info(String.format("Loading SOTA Summits list from: %s", sotaSummitsList));
-            setSota(SotaCsvReader.read(sotaCsvStream));
+            setSota(new SotaCsvReader().read(sotaCsvStream));
             logger.info(String.format("%d SOTA Summits loaded", getSota().size()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,7 +47,7 @@ public class SummitsDatabase {
                 logger.severe(String.format("Can't load %s using classloader %s", wotaSummitsList, getClass().getClassLoader().toString()));
             }
             logger.info(String.format("Loading WOTA Summits list from: %s", wotaSummitsList));
-            setWota(WotaCsvReader.read(wotaCsvStream));
+            setWota(new WotaCsvReader().read(wotaCsvStream));
             logger.info(String.format("%d WOTA Summits loaded", getWota().size()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -60,7 +60,7 @@ public class SummitsDatabase {
                 logger.severe(String.format("Can't load %s using classloader %s", hemaSummitsList, getClass().getClassLoader().toString()));
             }
             logger.info(String.format("Loading HEMA Summits list from: %s", hemaSummitsList));
-            setHema(HemaCsvReader.read(hemaCsvStream));
+            setHema(new HemaCsvReader().read(hemaCsvStream));
             logger.info(String.format("%d HEMA Summits loaded", getHema().size()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,7 +73,7 @@ public class SummitsDatabase {
                 logger.severe(String.format("Can't load %s using classloader %s", potaList, getClass().getClassLoader().toString()));
             }
             logger.info(String.format("Loading Parks on the Air list from: %s", potaList));
-            setPota(PotaCsvReader.read(potaCsvStream));
+            setPota(new PotaCsvReader().read(potaCsvStream));
             logger.info(String.format("%d Parks loaded", getPota().size()));
         } catch (IOException e) {
             e.printStackTrace();

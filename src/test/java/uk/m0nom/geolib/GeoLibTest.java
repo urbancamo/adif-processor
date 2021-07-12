@@ -3,17 +3,16 @@ package uk.m0nom.geolib;
 import org.gavaghan.geodesy.*;
 import org.junit.Assert;
 import org.junit.Test;
-import uk.m0nom.maidenheadlocator.LatLng;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
 public class GeoLibTest {
     @Test
     public void distanceTest() {
-        LatLng myLocation = MaidenheadLocatorConversion.locatorToLatLng("IO84mj91mb");
-        LatLng belgium =  MaidenheadLocatorConversion.locatorToLatLng("JO11PF");
+        GlobalCoordinates myLocation = MaidenheadLocatorConversion.locatorToCoords("IO84mj91mb");
+        GlobalCoordinates belgium =  MaidenheadLocatorConversion.locatorToCoords("JO11PF");
 
-        GlobalCoordinates start = new GlobalCoordinates(myLocation.latitude, myLocation.longitude);
-        GlobalCoordinates end = new GlobalCoordinates(belgium.latitude, belgium.longitude);
+        GlobalCoordinates start = new GlobalCoordinates(myLocation.getLatitude(), myLocation.getLongitude());
+        GlobalCoordinates end = new GlobalCoordinates(belgium.getLatitude(), belgium.getLongitude());
 
         GeodeticCalculator calculator = new GeodeticCalculator();
         GeodeticCurve curve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, start, end);
@@ -30,7 +29,7 @@ public class GeoLibTest {
         GlobalCoordinates midpoint2 = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, end, reverseAzimuth, distance / 2.0);
         System.out.printf("Midpoint2: %s\n", midpoint2.toString());
 
-        Assert.assertTrue(String.format("%.3f", midpoint1.getLatitude()).equals(String.format("%.3f", midpoint2.getLatitude())));
-        Assert.assertTrue(String.format("%.3f", midpoint2.getLongitude()).equals(String.format("%.3f", midpoint1.getLongitude())));
+        Assert.assertEquals(String.format("%.3f", midpoint1.getLatitude()), String.format("%.3f", midpoint2.getLatitude()));
+        Assert.assertEquals(String.format("%.3f", midpoint2.getLongitude()), String.format("%.3f", midpoint1.getLongitude()));
     }
 }
