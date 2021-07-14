@@ -20,8 +20,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 public class Adif3PrintFormatter {
+    private static final Logger logger = Logger.getLogger(Adif3PrintFormatter.class.getName());
+
     class PrintState {
         StringBuilder sb;
         int currentPage;
@@ -230,6 +233,9 @@ public class Adif3PrintFormatter {
             case "CALL":
                 value = rec.getCall();
                 break;
+            case "BAND":
+                value = rec.getBand().adifCode();
+                break;
             case "FREQ":
                 if (rec.getFreq() != null) {
                     Double freq = rec.getFreq();
@@ -321,6 +327,10 @@ public class Adif3PrintFormatter {
                 } else {
                     value = "  ";
                 }
+                break;
+            default:
+                logger.warning(String.format("Print formatting column %s not currently handled", column.getAdif()));
+                break;
         }
         return value;
     }
