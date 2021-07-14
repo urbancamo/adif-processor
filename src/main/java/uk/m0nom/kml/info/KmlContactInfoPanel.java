@@ -2,13 +2,15 @@ package uk.m0nom.kml.info;
 
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
+import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.propagation.PropagationMode;
 import uk.m0nom.kml.HfLineResult;
 
 import java.util.Locale;
 
 public class KmlContactInfoPanel {
-    public String getPanelContentForCommsLink(Adif3Record rec, HfLineResult result) {
+    public String getPanelContentForCommsLink(Qso qso, HfLineResult result) {
+        Adif3Record rec = qso.getRecord();
         StringBuilder sb=  new StringBuilder();
         sb.append("<b>Contact</b><br/><br/><br/>");
         sb.append(String.format("D: %s, T: %s<br/>", rec.getQsoDate().toString(), rec.getTimeOn().toString()));
@@ -16,6 +18,7 @@ public class KmlContactInfoPanel {
                 rec.getStationCallsign(), rec.getStationCallsign()));
         sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>",
                 rec.getCall(), rec.getCall()));
+
         sb.append(String.format("Band: %s<br/>", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase(Locale.ROOT)));
         sb.append(String.format("Mode: %s<br/>", rec.getMode().toString()));
         if (rec.getFreq() != null) {

@@ -1,6 +1,7 @@
 package uk.m0nom.kml;
 
 import de.micromata.opengis.kml.v_2_2_0.*;
+import org.apache.commons.io.FilenameUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.activity.ActivityType;
@@ -32,11 +33,11 @@ public class KmlWriter {
         bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());
     }
 
-    public void write(String pathname, ActivityDatabases activities, Qsos qsos) {
+    public void write(String pathname, String name, ActivityDatabases activities, Qsos qsos) {
         this.activities = activities;
 
         final Kml kml = new Kml();
-        Document doc = kml.createAndSetDocument().withName(pathname).withOpen(true);
+        Document doc = kml.createAndSetDocument().withName(name).withOpen(true);
 
         // create a Folder
         Folder folder = doc.createAndAddFolder();
@@ -189,7 +190,7 @@ public class KmlWriter {
             }
         }
         HfLineResult result = KmlGeodesicUtils.getHfLine(hfLine, myCoords, coords, ionosphere, rec.getFreq(), rec.getBand(), rec.getTimeOn(), myAltitude, theirAltitude);
-        placemark.withDescription(new KmlContactInfoPanel().getPanelContentForCommsLink(rec, result));
+        placemark.withDescription(new KmlContactInfoPanel().getPanelContentForCommsLink(qso, result));
         if (control.getKmlContactShadow()) {
             placemark = folder.createAndAddPlacemark();
             // use the style for each line type

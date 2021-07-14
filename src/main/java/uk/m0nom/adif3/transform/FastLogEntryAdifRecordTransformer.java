@@ -208,11 +208,11 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         QrzCallsign callsignData = qrzXmlService.getCallsignData(rec.getStationCallsign());
         boolean locationOverride = false;
 
-        if (control.getWota() != null) {
+        if (StringUtils.isNotEmpty(control.getWota())) {
             qso.getFrom().addActivity(activities.getDatabase(ActivityType.WOTA).get(control.getWota().toUpperCase()));
             setHemaOrSotaFromWota(qso.getFrom(), control.getWota().toUpperCase());
         }
-        if (control.getSota() != null) {
+        if (StringUtils.isNotEmpty(control.getSota())) {
             qso.getFrom().addActivity(activities.getDatabase(ActivityType.SOTA).get(control.getSota()));
             setWotaFromSotaId(qso.getFrom(), control.getSota().toUpperCase());
         } else if (rec.getMySotaRef() != null) {
@@ -220,15 +220,15 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
             qso.getFrom().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaRef));
             setWotaFromSotaId(qso.getFrom(), sotaRef);
         }
-        if (control.getHema() != null) {
+        if (StringUtils.isNotEmpty(control.getHema())) {
             qso.getFrom().addActivity(activities.getDatabase(ActivityType.HEMA).get(control.getHema().toUpperCase()));
             setWotaFromHemaId(qso.getFrom(), control.getHema().toUpperCase());
         }
-        if (control.getPota() != null) {
+        if (StringUtils.isNotEmpty(control.getPota())) {
             qso.getFrom().addActivity(activities.getDatabase(ActivityType.POTA).get(control.getPota().toUpperCase()));
         }
 
-        if (control.getMyLatitude() != null && control.getMyLongitude() != null) {
+        if (StringUtils.isNotEmpty(control.getMyLatitude()) && StringUtils.isNotEmpty(control.getMyLongitude())) {
             double latitude = Double.parseDouble(StringUtils.remove(control.getMyLatitude(),'\''));
             double longitude = Double.parseDouble(StringUtils.remove(control.getMyLongitude(),'\''));
             rec.setMyCoordinates(new GlobalCoordinates(latitude, longitude));
@@ -245,16 +245,16 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         }
 
         if (rec.getMyCoordinates() == null) {
-            if (control.getSota() != null) {
+            if (StringUtils.isNotEmpty(control.getSota())) {
                 if (!locationOverride) {
                     setMyLocationFromSotaId(rec, control.getSota().toUpperCase());
                 }
-            } else if (control.getWota() != null) {
+            } else if (StringUtils.isNotEmpty(control.getWota())) {
                 String wotaId = control.getWota().toUpperCase();
                 if (!locationOverride) {
                     setMyLocationFromWotaId(rec, control.getWota().toUpperCase());
                 }
-            } else if (control.getHema() != null) {
+            } else if (StringUtils.isNotEmpty(control.getHema())) {
                 if (!locationOverride) {
                     setMyLocationFromHemaId(rec, control.getHema().toUpperCase());
                 }
@@ -263,11 +263,11 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
                     setMyLocationFromSotaId(rec, rec.getMySotaRef().getValue());
                 }
                 setWotaFromSotaId(qso.getFrom(), rec.getMySotaRef().getValue());
-            } else if (control.getPota() != null) {
+            } else if (StringUtils.isNotEmpty(control.getPota())) {
                 if (!locationOverride) {
                     setMyLocationFromPotaId(rec, control.getPota().toUpperCase());
                 }
-            } else {
+            } else if (StringUtils.isNotEmpty(control.getMyGrid())) {
                 /* If user has supplied a maidenhead location, use that in preference */
                 if (MaidenheadLocatorConversion.isAValidGridSquare(control.getMyGrid())) {
                     rec.setMyGridSquare(control.getMyGrid());
@@ -317,7 +317,7 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
 
     private void issueWarnings(Adif3Record rec) {
         // Check to see if a /P or /M station has a location, if not issue a warning
-        String callsign = rec.getCall().strip();
+        String callsign = rec.getCall().trim().toUpperCase();
         boolean portable = isPortable(callsign);
         if (portable && rec.getMyCoordinates() == null && rec.getGridsquare() == null) {
             logger.warning(String.format("Contact with non-fixed station %s at %s does not have a location defined", callsign, rec.getTimeOn()));

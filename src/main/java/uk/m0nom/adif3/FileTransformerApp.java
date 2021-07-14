@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 public class FileTransformerApp implements Runnable
 {
     private static final String MARKDOWN_CONTROL_FILE = "adif-printer-132-markdown.yaml";
-    private static Logger logger;
+    private static final Logger logger = Logger.getLogger(FileTransformerApp.class.getName());
 
     private static FileTransformerApp instance;
 
@@ -51,7 +51,6 @@ public class FileTransformerApp implements Runnable
                 getResourceAsStream("logging.properties");
         try {
             LogManager.getLogManager().readConfiguration(stream);
-            logger = Logger.getLogger(FileTransformerApp.class.getName());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -115,7 +114,7 @@ public class FileTransformerApp implements Runnable
             logger.info(String.format("Writing output file %s with encoding %s", out, control.getEncoding()));
             readerWriter.write(out, control.getEncoding(), log);
             if (control.getGenerateKml()) {
-                kmlWriter.write(kml, summits, qsos);
+                kmlWriter.write(kml, inBasename, summits, qsos);
             }
             if (control.getMarkdown()) {
                 BufferedWriter markdownWriter = null;
