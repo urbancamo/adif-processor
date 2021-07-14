@@ -8,6 +8,7 @@ import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
+import uk.m0nom.adif3.transform.TransformResults;
 import uk.m0nom.propagation.Ionosphere;
 import uk.m0nom.activity.sota.SotaSummitInfo;
 import uk.m0nom.activity.ActivityDatabases;
@@ -33,7 +34,7 @@ public class KmlWriter {
         bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());
     }
 
-    public void write(String pathname, String name, ActivityDatabases activities, Qsos qsos) {
+    public void write(String pathname, String name, ActivityDatabases activities, Qsos qsos, TransformResults results) {
         this.activities = activities;
 
         final Kml kml = new Kml();
@@ -52,9 +53,13 @@ public class KmlWriter {
             }
             GlobalCoordinates coords = qso.getRecord().getCoordinates();
             if (coords != null) {
-                createStationMarker(doc, folder, qso);
+                String error = createStationMarker(doc, folder, qso);
+                if (error != null) {
+                    results.setError(error);
+                }
                 createCommsLink(doc, folder, qso);
             } else {
+                results.addContactWithoutLocation(qso.getTo().getCallsign());
                 logger.warning(String.format("Cannot determine communication link, no location data for: %s", qso.getTo().getCallsign()));
             }
         }
@@ -101,8 +106,11 @@ public class KmlWriter {
     }
 
 
-    private void createStationMarker(Document document, Folder folder, Qso qso) {
+    private String createStationMarker(Document document, Folder folder, Qso qso) {
         Adif3Record rec = qso.getRecord();
+        if (qso.getFrom().getCoordinates() == null && rec.getMyCoordinates() == null) {
+            return String.format("Cannot determine coordinates for station %s, please specify a location override", qso.getFrom().getCallsign());
+        }
         GlobalCoordinates myCoords = rec.getMyCoordinates();
         double myLatitude = myCoords.getLatitude();
         double myLongitude = myCoords.getLongitude();
@@ -133,6 +141,7 @@ public class KmlWriter {
 
         placemark.createAndSetLineString().addToCoordinates(myLongitude, myLatitude).addToCoordinates(longitude, latitude).setExtrude(true);
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
+        return null;
     }
 
     private void createCommsLink(Document document, Folder folder, Qso qso) {

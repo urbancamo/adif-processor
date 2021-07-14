@@ -8,6 +8,7 @@ import uk.m0nom.adif3.args.CommandLineArgs;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.print.Adif3PrintFormatter;
+import uk.m0nom.adif3.transform.TransformResults;
 import uk.m0nom.kml.KmlWriter;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.activity.ActivityDatabases;
@@ -75,6 +76,7 @@ public class FileTransformerApp implements Runnable
 
     @Override
     public void run() {
+        TransformResults results = new TransformResults();
         TransformControl control = cli.parseArgs(args);
         qrzXmlService = new QrzXmlService(control.getQrzUsername(), control.getQrzPassword());
         kmlWriter = new KmlWriter(control);
@@ -114,7 +116,11 @@ public class FileTransformerApp implements Runnable
             logger.info(String.format("Writing output file %s with encoding %s", out, control.getEncoding()));
             readerWriter.write(out, control.getEncoding(), log);
             if (control.getGenerateKml()) {
-                kmlWriter.write(kml, inBasename, summits, qsos);
+                kmlWriter.write(kml, inBasename, summits, qsos, results);
+                if (results.getError() != null) {
+                    kml = "";
+                    logger.severe(results.getError());
+                }
             }
             if (control.getMarkdown()) {
                 BufferedWriter markdownWriter = null;
