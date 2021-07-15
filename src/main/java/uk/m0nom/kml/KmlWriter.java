@@ -48,7 +48,10 @@ public class KmlWriter {
         boolean first = true;
         for (Qso qso : qsos.getQsos()) {
             if (first) {
-                addMyStationToMap(doc, folder, qso);
+                String error = addMyStationToMap(doc, folder, qso);
+                if (error != null) {
+                    results.setError(error);
+                }
                 first = false;
             }
             GlobalCoordinates coords = qso.getRecord().getCoordinates();
@@ -57,7 +60,10 @@ public class KmlWriter {
                 if (error != null) {
                     results.setError(error);
                 }
-                createCommsLink(doc, folder, qso);
+                error = createCommsLink(doc, folder, qso);
+                if (error != null) {
+                    results.setError(error);
+                }
             } else {
                 results.addContactWithoutLocation(qso.getTo().getCallsign());
                 logger.warning(String.format("Cannot determine communication link, no location data for: %s", qso.getTo().getCallsign()));
@@ -73,15 +79,16 @@ public class KmlWriter {
         }
     }
 
-    private void addMyStationToMap(Document doc, Folder folder, Qso qso) {
+    private String addMyStationToMap(Document doc, Folder folder, Qso qso) {
         GlobalCoordinates coords = qso.getRecord().getMyCoordinates();
-        if (coords != null) {
-            createMyStationMarker(doc, folder, qso);
-        }
+        return createMyStationMarker(doc, folder, qso);
    }
 
-    private void createMyStationMarker(Document document, Folder folder, Qso qso) {
+    private String createMyStationMarker(Document document, Folder folder, Qso qso) {
         GlobalCoordinates coords = qso.getRecord().getMyCoordinates();
+        if (qso.getFrom().getCoordinates() == null && coords == null) {
+            return String.format("Cannot determine coordinates for station %s, please specify a location override", qso.getFrom().getCallsign());
+        }
         double longitude = coords.getLongitude();
         double latitude = coords.getLatitude();
         String station = qso.getFrom().getCallsign();
@@ -103,6 +110,7 @@ public class KmlWriter {
                 .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(0).withRange(DEFAULT_RANGE_METRES);
 
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
+        return null;
     }
 
 
@@ -144,10 +152,14 @@ public class KmlWriter {
         return null;
     }
 
-    private void createCommsLink(Document document, Folder folder, Qso qso) {
+    private String createCommsLink(Document document, Folder folder, Qso qso) {
         Adif3Record rec = qso.getRecord();
 
         GlobalCoordinates myCoords = rec.getMyCoordinates();
+        if (qso.getFrom().getCoordinates() == null && rec.getMyCoordinates() == null) {
+            return String.format("Cannot determine coordinates for station %s, please specify a location override", qso.getFrom().getCallsign());
+        }
+
         Double myLatitude = myCoords.getLatitude();
         Double myLongitude = myCoords.getLongitude();
 
@@ -209,6 +221,7 @@ public class KmlWriter {
             hfLine = placemark.createAndSetLineString();
             KmlGeodesicUtils.getSurfaceLine(hfLine, myCoords, coords);
         }
+        return null;
 
     }
 
