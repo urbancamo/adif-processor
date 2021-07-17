@@ -8,6 +8,7 @@ import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.activity.ActivityDatabases;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -57,7 +58,7 @@ public class DirectoryTransformerApp implements Runnable
                     if (!qrzXmlService.getSessionKey()) {
                         logger.warning("Could not connect to QRZ.COM, continuing...");
                     }
-                    transformer.configure(configFilePath, summits, qrzXmlService);
+                    transformer.configure(new FileInputStream(new File(configFilePath)), summits, qrzXmlService);
 
                     Collection<File> files = FileUtils.listFiles(new File(dir), new String[]{"adi"}, false);
                     for (File in: files) {

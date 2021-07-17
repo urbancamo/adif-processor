@@ -9,7 +9,7 @@ import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.transform.Adif3RecordTransformer;
-import uk.m0nom.adif3.transform.FastLogEntryAdifRecordTransformer;
+import uk.m0nom.adif3.transform.CommentParsingAdifRecordTransformer;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.activity.ActivityDatabases;
 
@@ -69,7 +69,7 @@ public class AdifReaderTest {
                 System.err.println("Could not connect to QRZ.COM, continuing...");
             }
 
-            Adif3RecordTransformer transformer = new FastLogEntryAdifRecordTransformer(config, summits, qrzXmlService, control);
+            Adif3RecordTransformer transformer = new CommentParsingAdifRecordTransformer(config, summits, qrzXmlService, control);
             for (Adif3Record rec : log.getRecords()) {
                 transformer.transform(qsos, rec);
             }

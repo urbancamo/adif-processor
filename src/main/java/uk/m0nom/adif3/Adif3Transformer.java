@@ -7,19 +7,22 @@ import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.transform.Adif3RecordTransformer;
-import uk.m0nom.adif3.transform.FastLogEntryAdifRecordTransformer;
+import uk.m0nom.adif3.transform.CommentParsingAdifRecordTransformer;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.activity.ActivityDatabases;
 
 import java.io.*;
+import java.util.logging.Logger;
 
 public class Adif3Transformer {
+    private static final Logger logger = Logger.getLogger(Adif3Transformer.class.getName());
+
     private YamlMapping config = null;
     private ActivityDatabases summits;
     private QrzXmlService qrzXmlService;
 
-    public void configure(String yamlConfigFile, ActivityDatabases summits, QrzXmlService qrzXmlService) throws IOException {
-        config = Yaml.createYamlInput(new File(yamlConfigFile)).readYamlMapping();
+    public void configure(InputStream yamlConfigFile, ActivityDatabases summits, QrzXmlService qrzXmlService) throws IOException {
+        config = Yaml.createYamlInput(yamlConfigFile).readYamlMapping();
         this.summits = summits;
         this.qrzXmlService = qrzXmlService;
     }
@@ -28,7 +31,7 @@ public class Adif3Transformer {
         Adif3RecordTransformer transformer;
         Qsos qsos = new Qsos(log);
 
-        transformer = new FastLogEntryAdifRecordTransformer(config, summits, qrzXmlService, control);
+        transformer = new CommentParsingAdifRecordTransformer(config, summits, qrzXmlService, control);
         for (Adif3Record rec : log.getRecords()) {
             transformer.transform(qsos, rec);
         }

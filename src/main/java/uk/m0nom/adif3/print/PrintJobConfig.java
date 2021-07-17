@@ -9,7 +9,9 @@ import lombok.Setter;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 import static uk.m0nom.adif3.print.PrintUtils.stripQuotes;
 
@@ -17,6 +19,8 @@ import static uk.m0nom.adif3.print.PrintUtils.stripQuotes;
 @Setter
 @NoArgsConstructor
 public class PrintJobConfig {
+    private static final Logger logger = Logger.getLogger(PrintJobConfig.class.getName());
+
     String inEncoding;
     String outEncoding;
     String startCommand;
@@ -24,8 +28,9 @@ public class PrintJobConfig {
 
     PageConfig pageConfig;
 
-    public void configure(String yamlConfigFile) throws IOException {
-        YamlMapping config = Yaml.createYamlInput(new File(yamlConfigFile)).readYamlMapping();
+    public void configure(InputStream yamlConfig) throws IOException {
+
+        YamlMapping config = Yaml.createYamlInput(yamlConfig).readYamlMapping();
         YamlMapping printJob = config.yamlMapping("printJob");
         setInEncoding(printJob.string("inEncoding"));
         setOutEncoding(printJob.string("outEncoding"));

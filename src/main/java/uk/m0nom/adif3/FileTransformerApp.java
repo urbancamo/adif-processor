@@ -13,10 +13,7 @@ import uk.m0nom.kml.KmlWriter;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.activity.ActivityDatabases;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -108,7 +105,7 @@ public class FileTransformerApp implements Runnable
                     qrzXmlService.disable();
                 }
             }
-            transformer.configure(configFilePath, summits, qrzXmlService);
+            transformer.configure(new FileInputStream(new File(configFilePath)), summits, qrzXmlService);
 
             logger.info(String.format("Reading input file %s with encoding %s", inPath, control.getEncoding()));
             Adif3 log = readerWriter.read(inPath, control.getEncoding(), false);
@@ -132,7 +129,7 @@ public class FileTransformerApp implements Runnable
                         }
                     }
                     if (markdownFile.createNewFile()) {
-                        formatter.getPrintJobConfig().configure(MARKDOWN_CONTROL_FILE);
+                        formatter.getPrintJobConfig().configure(new FileInputStream(new File(MARKDOWN_CONTROL_FILE)));
                         logger.info(String.format("Writing Markdown to: %s", markdown));
                         StringBuilder sb = formatter.format(log);
                         markdownWriter = Files.newBufferedWriter(markdownFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);

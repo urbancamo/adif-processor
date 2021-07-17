@@ -17,12 +17,10 @@ import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.contacts.Station;
-import uk.m0nom.activity.hema.HemaSummitInfo;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.activity.pota.PotaInfo;
 import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.qrz.QrzXmlService;
-import uk.m0nom.activity.sota.SotaSummitInfo;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.wota.WotaSummitInfo;
 
@@ -30,22 +28,24 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer {
-    private static final Logger logger = Logger.getLogger(FastLogEntryAdifRecordTransformer.class.getName());
+public class CommentParsingAdifRecordTransformer implements Adif3RecordTransformer {
+    private static final Logger logger = Logger.getLogger(CommentParsingAdifRecordTransformer.class.getName());
 
     private final YamlMapping fieldMap;
     private final ActivityDatabases activities;
     private final QrzXmlService qrzXmlService;
     private final TransformControl control;
+    private final AdifQrzEnricher enricher;
     private boolean reportedLocationOverride = false;
 
     private final String[] portableSuffixes = new String[] {"/P", "/M", "/MM", "/PM"};
 
-    public FastLogEntryAdifRecordTransformer(YamlMapping config, ActivityDatabases activities, QrzXmlService qrzXmlService, TransformControl control) {
+    public CommentParsingAdifRecordTransformer(YamlMapping config, ActivityDatabases activities, QrzXmlService qrzXmlService, TransformControl control) {
         fieldMap = config.asMapping();
         this.activities = activities;
         this.qrzXmlService = qrzXmlService;
         this.control = control;
+        this.enricher = new AdifQrzEnricher();
     }
 
     private void setCoordFromSotaId(Adif3Record rec, String sotaId, Map<String, String> unmapped) {
@@ -365,14 +365,6 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         }
     }
 
-    private String stripPortable(String callsign) {
-        int loc = callsign.lastIndexOf('/');
-        if (loc == -1) {
-            return callsign;
-        }
-        return callsign.substring(0, loc);
-    }
-
     @Override
     public void transform(Qsos qsos, Adif3Record rec) {
         /* Add Adif3Record details to the Qsos meta structure */
@@ -381,10 +373,12 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         Map<String, String> unmapped = new HashMap<>();
         QrzCallsign myQrzData = setMyLocation(qso);
         qso.getFrom().setQrzInfo(myQrzData);
+        enricher.enrichAdifForMe(qso.getRecord(), myQrzData);
 
         /* Load QRZ.COM info for the worked station as a fixed station, for information */
-        String callsignToLookup = stripPortable(qso.getTo().getCallsign());
-        QrzCallsign theirQrzData = qrzXmlService.getCallsignData(callsignToLookup);
+        QrzCallsign theirQrzData = qrzXmlService.getCallsignData(qso.getTo().getCallsign());
+        enricher.enrichAdifForThem(qso.getRecord(), theirQrzData);
+
         qso.getTo().setQrzInfo(theirQrzData);
 
         // Duplicate references into the comment
@@ -450,10 +444,17 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         Adif3Record rec = qso.getRecord();
         // try and split the comment up into comma separated list
         Map<String, String> tokens = tokenize(comment);
+
+        // If this is a 'regular comment' then don't tokenize
+        if (StringUtils.isNotEmpty(comment) && tokens.size() == 0) {
+            unmapped.put(comment, "");
+            return;
+        }
+
         Double latitude = null;
         Double longitude = null;
 
-        for (String key : tokens.keySet()) {
+         for (String key : tokens.keySet()) {
             String value = tokens.get(key).trim();
 
             YamlNode keyNode = fieldMap.value(key);
@@ -616,9 +617,13 @@ public class FastLogEntryAdifRecordTransformer implements Adif3RecordTransformer
         int keySetLen = keySet.size();
         int i = 1;
         for (String key : unmapped.keySet()) {
-            sb.append(String.format("%s: %s", key, unmapped.get(key)));
-            if (i++ < keySetLen) {
-                sb.append(", ");
+            if (StringUtils.isNotEmpty(key)) {
+                sb.append(String.format("%s: %s", key, unmapped.get(key)));
+                if (i++ < keySetLen) {
+                    sb.append(", ");
+                }
+            } else {
+                sb.append(String.format("%s ", key));
             }
         }
         rec.setComment(sb.toString());

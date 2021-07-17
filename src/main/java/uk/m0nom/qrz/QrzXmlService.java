@@ -65,6 +65,10 @@ public class QrzXmlService {
     }
 
     public QrzCallsign getCallsignData(String callsign) {
+        return getCallsignDataInternal(callsign);
+    }
+
+    public QrzCallsign getCallsignDataInternal(String callsign) {
         if (sessionKey != null) {
             String url = String.format("%s/%s/?s=%s;callsign=%s", QRZ_XML_SERVICE_BASE_URL, QRZ_XML_SERVICE_VERSION, sessionKey, callsign);
             //logger.info(String.format("Querying QRZ.COM for info on: %s", callsign));

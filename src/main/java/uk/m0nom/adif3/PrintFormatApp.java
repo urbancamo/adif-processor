@@ -7,6 +7,7 @@ import uk.m0nom.adif3.print.Adif3PrintFormatter;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -47,7 +48,7 @@ public class PrintFormatApp implements Runnable
             } else {
                 in = args[0];
                 out = String.format("%s.%s", FilenameUtils.removeExtension(in.toString()), "prn");
-                formatter.getPrintJobConfig().configure(args[1]);
+                formatter.getPrintJobConfig().configure(new FileInputStream(new File(args[1])));
                 Adif3 log = readerWriter.read(in, formatter.getPrintJobConfig().getInEncoding(), true);
                 StringBuilder sb = formatter.format(log);
                 File outFile = new File(out);
