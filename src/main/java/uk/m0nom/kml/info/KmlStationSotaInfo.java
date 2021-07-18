@@ -18,7 +18,7 @@ public class KmlStationSotaInfo extends KmlStationActivityInfo {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("SOTA: <a href=\"https://summits.sota.org.uk/summit/%s\">%s</a><br/>", activity.getRef(), activity.getRef()));
         sb.append(String.format("%s<br/>", summitInfo.getName()));
-        sb.append(String.format("%.0f metres, %d points<br/>", summitInfo.getAltitude(), summitInfo.getPoints()));
+        sb.append(String.format("%.0f metres, %d points<br/><br/>", summitInfo.getAltitude(), summitInfo.getPoints()));
         return sb.toString();
     }
 }

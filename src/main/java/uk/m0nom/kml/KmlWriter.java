@@ -70,7 +70,6 @@ public class KmlWriter {
             }
         }
 
-        // print and save
         try {
             logger.info(String.format("Writing KML to: %s", pathname));
             kml.marshal(new File(pathname));

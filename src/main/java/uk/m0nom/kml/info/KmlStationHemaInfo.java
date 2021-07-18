@@ -14,9 +14,9 @@ public class KmlStationHemaInfo extends KmlStationActivityInfo {
     private String appendHemaInfo(Activity activity) {
         StringBuilder sb = new StringBuilder();
         HemaSummitInfo summitInfo = (HemaSummitInfo) activity;
-        sb.append(String.format("HEMA: <a href=\"http://hema.org.uk/fullSummit.jsp?summitKey=%d\">%s</a>, ",
+        sb.append(String.format("HEMA: <a href=\"http://hema.org.uk/fullSummit.jsp?summitKey=%d\">%s</a><br/>",
                 summitInfo.getKey(), summitInfo.getRef()));
-        sb.append(String.format("%s<br/>", summitInfo.getName()));
+        sb.append(String.format("%s<br/><br/>", summitInfo.getName()));
         return sb.toString();
     }
 }

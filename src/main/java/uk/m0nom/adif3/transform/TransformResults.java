@@ -9,6 +9,7 @@ import java.util.Collection;
 @Getter
 @Setter
 public class TransformResults {
+    private boolean errors = false;
     private String adiFile;
     private String kmlFile;
     private String markdownFile;
@@ -17,6 +18,11 @@ public class TransformResults {
 
     public TransformResults() {
         contactsWithoutLocation = new ArrayList<>();
+    }
+
+    public TransformResults(String errorMessage) {
+        this.error = errorMessage;
+        this.errors = true;
     }
 
     public void addContactWithoutLocation(String callsign) {

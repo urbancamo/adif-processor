@@ -15,8 +15,8 @@ public class KmlStationWotaInfo extends KmlStationActivityInfo {
             // need to compensate for LDO weird numbering
             lookupRef = String.format("LDO-%03d", summitInfo.getInternalId());
         }
-        sb.append(String.format("WOTA: <a href=\"https://wota.org.uk/MM_%s\">%s</a>, ", lookupRef, summitInfo.getRef()));
-        sb.append(String.format("%s<br/>", summitInfo.getName()));
+        sb.append(String.format("WOTA: <a href=\"https://wota.org.uk/MM_%s\">%s</a><br/>", lookupRef, summitInfo.getRef()));
+        sb.append(String.format("%s<br/><br/>", summitInfo.getName()));
         return sb.toString();
     }
 }

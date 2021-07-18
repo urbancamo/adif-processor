@@ -14,7 +14,7 @@ public class KmlStationPotaInfo extends KmlStationActivityInfo {
     private String appendPotaInfo(Activity activity) {
         PotaInfo parkInfo = (PotaInfo) activity;
         String sb = String.format("POTA: <a href=\"https://pota.app/#/park/%s\">%s</a><br/>", parkInfo.getRef(), parkInfo.getRef()) +
-                String.format("%s<br/>", parkInfo.getName());
+                String.format("%s<br/><br/>", parkInfo.getName());
         return sb;
     }
 }
