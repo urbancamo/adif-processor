@@ -377,9 +377,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
         /* Load QRZ.COM info for the worked station as a fixed station, for information */
         QrzCallsign theirQrzData = qrzXmlService.getCallsignData(qso.getTo().getCallsign());
-        enricher.enrichAdifForThem(qso.getRecord(), theirQrzData);
-
         qso.getTo().setQrzInfo(theirQrzData);
+        enricher.enrichAdifForThem(qso.getRecord(), theirQrzData);
 
         // Duplicate references into the comment
         if (rec.getSotaRef() != null) {

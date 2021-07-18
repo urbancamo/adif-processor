@@ -159,12 +159,7 @@ public class KmlWriter {
             return String.format("Cannot determine coordinates for station %s, please specify a location override", qso.getFrom().getCallsign());
         }
 
-        Double myLatitude = myCoords.getLatitude();
-        Double myLongitude = myCoords.getLongitude();
-
         GlobalCoordinates coords = rec.getCoordinates();
-        Double longitude = coords.getLongitude();
-        Double latitude = coords.getLatitude();
         String station = rec.getCall();
 
         Style style = document.createAndAddStyle();
