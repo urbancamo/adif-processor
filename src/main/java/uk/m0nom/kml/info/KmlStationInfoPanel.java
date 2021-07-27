@@ -18,6 +18,7 @@ public class KmlStationInfoPanel {
         infoMap.put(ActivityType.WOTA, new KmlStationWotaInfo());
         infoMap.put(ActivityType.POTA, new KmlStationPotaInfo());
         infoMap.put(ActivityType.HEMA, new KmlStationHemaInfo());
+        infoMap.put(ActivityType.WWFF, new KmlStationWwffInfo());
     }
 
     public String getPanelContentForStation(Station station) {
@@ -51,6 +52,9 @@ public class KmlStationInfoPanel {
         }
         if (station.isDoing(ActivityType.POTA)) {
             sb.append(infoMap.get(ActivityType.POTA).getInfo(station));
+        }
+        if (station.isDoing(ActivityType.WWFF)) {
+            sb.append(infoMap.get(ActivityType.WWFF).getInfo(station));
         }
 
         if (qrzInfo != null) {

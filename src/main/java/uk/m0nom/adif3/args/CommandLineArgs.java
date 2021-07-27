@@ -102,6 +102,7 @@ public class CommandLineArgs {
             control.setKmlSotaIconUrl(ns.getString("kml_sota_station"));
             control.setKmlWotaIconUrl(ns.getString("kml_wota_station"));
             control.setKmlHemaIconUrl(ns.getString("kml_hema_station"));
+            control.setKmlWwffIconUrl(ns.getString("kml_wwff_station"));
             control.setKmlMaritimeIconUrl(ns.getString("kml_maritime_station"));
             control.setKmlParkIconUrl(ns.getString("kml_park_station"));
             control.setKmlContactTransparency(100-ns.getInt("kml_contact_transparency"));

@@ -25,6 +25,7 @@ public class TransformControl {
     private String wota;
     private String sota;
     private String pota;
+    private String wwff;
 
     private Boolean generateKml;
     private Integer kmlContactWidth;
@@ -44,6 +45,7 @@ public class TransformControl {
     private String kmlSotaIconUrl;
     private String kmlWotaIconUrl;
     private String kmlHemaIconUrl;
+    private String kmlWwffIconUrl;
 
     private Boolean markdown;
 

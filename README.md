@@ -101,6 +101,10 @@ named arguments:
                          URL of the icon to  use for SOTA station locations
                          (default:                      http://maps.google.
                          com/mapfiles/kml/shapes/trail.png)
+  -kwwffi KML_WWFF_STATION, --kml-wwff-station KML_WWFF_STATION
+                         URL of the icon to  use for WWFF station locations
+                         (default:                      http://maps.google.
+                         com/mapfiles/kml/shapes/parks.png)
   -md, --markdown        Generate Markdown  file  containing  the  contacts
                          (default: false)
 

@@ -7,6 +7,7 @@ import uk.m0nom.activity.pota.PotaCsvReader;
 import uk.m0nom.activity.hema.HemaCsvReader;
 import uk.m0nom.activity.sota.SotaCsvReader;
 import uk.m0nom.activity.wota.WotaCsvReader;
+import uk.m0nom.activity.wwff.WwffCsvReader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +31,7 @@ public class ActivityDatabases {
         readers.put(ActivityType.SOTA, new SotaCsvReader( "sota/summitslist.csv"));
         readers.put(ActivityType.POTA, new PotaCsvReader("pota/all_parks_ext.csv"));
         readers.put(ActivityType.WOTA, new WotaCsvReader( "wota/summits.csv"));
+        readers.put(ActivityType.WWFF, new WwffCsvReader("wwff/wwff_directory.csv"));
     }
 
     public void loadData() {
