@@ -13,6 +13,7 @@ import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.activity.wota.WotaSummitsDatabase;
+import uk.m0nom.activity.wwff.WwffInfo;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
@@ -136,6 +137,20 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
     }
 
+    private void setCoordFromWwffId(Adif3Record rec, String wwffId, Map<String, String> unmapped) {
+        WwffInfo wwffInfo = (WwffInfo) activities.getDatabase(ActivityType.WWFF).get(wwffId);
+        if (wwffInfo != null) {
+            if (rec.getGridsquare() != null) {
+                if (wwffInfo.hasCoords()) {
+                    rec.setCoordinates(wwffInfo.getCoords());
+                }
+            }
+            unmapped.put("WWFF", wwffInfo.getRef());
+        } else {
+            logger.warning(String.format("Suspicious WWFF reference %s for callsign %s at %s", wwffId, rec.getCall(), rec.getTimeOn().toString()));
+        }
+    }
+
     private void setMyLocationFromHemaId(Adif3Record rec, String hemaId) {
         Activity hemaInfo = activities.getDatabase(ActivityType.HEMA).get(hemaId);
         if (hemaInfo != null) {
@@ -162,6 +177,19 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             }
         } else {
             logger.warning(String.format("Suspicious Parks on the Air reference %s for your callsign %s", potaId, rec.getStationCallsign()));
+        }
+    }
+
+    private void setMyLocationFromWwffId(Adif3Record rec, String wwffId) {
+        // We treat POTA Grid references specified on the command line differently, as some parks don't have a grid reference
+        // so an override take preference over everything
+        WwffInfo wwffInfo = (WwffInfo) activities.getDatabase(ActivityType.WWFF).get(wwffId);
+        if (wwffId != null) {
+            if (wwffInfo.hasCoords()) {
+                rec.setMyCoordinates(wwffInfo.getCoords());
+            }
+        } else {
+            logger.warning(String.format("Suspicious World Wide Flora Fauna reference %s for your callsign %s", wwffId, rec.getStationCallsign()));
         }
     }
 
@@ -227,6 +255,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         if (StringUtils.isNotEmpty(control.getPota())) {
             qso.getFrom().addActivity(activities.getDatabase(ActivityType.POTA).get(control.getPota().toUpperCase()));
         }
+        if (StringUtils.isNotEmpty(control.getWwff())) {
+            qso.getFrom().addActivity(activities.getDatabase(ActivityType.WWFF).get(control.getWwff().toUpperCase()));
+        }
 
         if (StringUtils.isNotEmpty(control.getMyLatitude()) && StringUtils.isNotEmpty(control.getMyLongitude())) {
             double latitude = Double.parseDouble(StringUtils.remove(control.getMyLatitude(),'\''));
@@ -250,7 +281,6 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     setMyLocationFromSotaId(rec, control.getSota().toUpperCase());
                 }
             } else if (StringUtils.isNotEmpty(control.getWota())) {
-                String wotaId = control.getWota().toUpperCase();
                 if (!locationOverride) {
                     setMyLocationFromWotaId(rec, control.getWota().toUpperCase());
                 }
@@ -267,7 +297,11 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 if (!locationOverride) {
                     setMyLocationFromPotaId(rec, control.getPota().toUpperCase());
                 }
-            } else if (StringUtils.isNotEmpty(control.getMyGrid())) {
+            } else if (StringUtils.isNotEmpty(control.getWwff())) {
+            if (!locationOverride) {
+                setMyLocationFromWwffId(rec, control.getWwff().toUpperCase());
+            }
+        } else if (StringUtils.isNotEmpty(control.getMyGrid())) {
                 /* If user has supplied a maidenhead location, use that in preference */
                 if (MaidenheadLocatorConversion.isAValidGridSquare(control.getMyGrid())) {
                     rec.setMyGridSquare(control.getMyGrid());
@@ -543,6 +577,12 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         String potaId = StringUtils.split(value, ' ')[0];
                         setCoordFromPotaId(rec, potaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.POTA).get(potaId));
+                        break;
+                    case "WwffRef":
+                        // Strip off any S2s reference
+                        String wwffId = StringUtils.split(value, ' ')[0];
+                        setCoordFromWwffId(rec, wwffId.toUpperCase(), unmapped);
+                        qso.getTo().addActivity(activities.getDatabase(ActivityType.WWFF).get(wwffId));
                         break;
                     case "SerialTx":
                         // Determine if this is a serial number of string based contest exchange
