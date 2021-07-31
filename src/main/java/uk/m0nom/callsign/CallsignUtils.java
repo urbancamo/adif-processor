@@ -121,25 +121,27 @@ public class CallsignUtils {
      */
     public static List<Callsign> getCallsignVariants(String callsign) {
         List<Callsign> variants = new ArrayList<>();
+        Callsign portableInCountry = new Callsign(callsign, CallsignVariant.IN_COUNTRY);
+        variants.add(portableInCountry);
 
         // Strip off any suffixes such as /P, /M, /MM etc.
         Callsign fixedInCountry = getOperatorWithoutSuffix(callsign);
         Callsign portableInHomeCountry = getOperatorAsIsInHomeCountry(callsign);
         Callsign fixedInHomeCountry = null;
-        if (fixedInCountry != null) {
-            variants.add(fixedInCountry);
-        }
-        if (portableInHomeCountry != null) {
+        if (portableInHomeCountry != null && !portableInCountry.getCallsign().equals(portableInHomeCountry.getCallsign())) {
             variants.add(portableInHomeCountry);
         }
         if (fixedInCountry != null) {
+            variants.add(fixedInCountry);
+        }
+        if (fixedInCountry != null) {
             fixedInHomeCountry = getOperatorWithoutCountryPrefix(fixedInCountry.getCallsign());
-            if (fixedInHomeCountry != null) {
+            if (fixedInHomeCountry != null && !fixedInCountry.getCallsign().equals(fixedInHomeCountry.getCallsign())) {
                 variants.add(fixedInHomeCountry);
             }
         }
         variants.addAll(getUkCallsignVariants(callsign));
-        if (portableInHomeCountry != null) {
+        if (portableInHomeCountry != null && !portableInCountry.getCallsign().equals(portableInHomeCountry.getCallsign())) {
             variants.addAll(getUkCallsignVariants(portableInHomeCountry.getCallsign()));
         }
         if (fixedInHomeCountry != null) {
@@ -216,19 +218,19 @@ public class CallsignUtils {
         if (loc != -1) {
             CallsignSuffix suffix = getSuffix(callsign);
             if (suffix != null) {
-                return !StringUtils.equals(callsign.substring(loc + 1, callsign.length()), suffix.getSuffix());
+                return !StringUtils.equals(callsign.substring(loc, callsign.length()), suffix.getSuffix());
             }
             return true;
         }
         return false;
     }
 
-    public static String stripCountryPrefix(String fixedCallsign) {
-        if (isAbroad(fixedCallsign)) {
-            int loc = fixedCallsign.indexOf('/');
-            return fixedCallsign.substring(loc+1, fixedCallsign.length());
+    public static String stripCountryPrefix(String callsign) {
+        if (isAbroad(callsign)) {
+            int loc = callsign.indexOf('/');
+            return callsign.substring(loc+1, callsign.length());
         }
-        return fixedCallsign;
+        return callsign;
     }
 
 }

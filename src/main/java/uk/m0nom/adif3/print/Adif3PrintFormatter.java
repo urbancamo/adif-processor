@@ -303,6 +303,16 @@ public class Adif3PrintFormatter {
                     value = rec.getStxString();
                 }
                 break;
+            case "SIG" :
+                if (rec.getSig() != null) {
+                    value = rec.getSig();
+                }
+                break;
+            case "SIG_INFO" :
+                if (rec.getSigInfo() != null) {
+                    value = rec.getSigInfo();
+                }
+                break;
             case "QSL_STATUS":
                 boolean sent = rec.getQslSDate() != null;
                 boolean recvd = rec.getQslRDate() != null;

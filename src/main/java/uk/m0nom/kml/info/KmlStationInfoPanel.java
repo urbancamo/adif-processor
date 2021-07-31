@@ -30,13 +30,13 @@ public class KmlStationInfoPanel {
         if (qrzInfo != null) {
             if (qrzInfo.getImage() != null) {
                 sb.append(String.format("<a href=\"https://qrz.com/db/%s\"><img src=\"%s\" width=\"300px\"/></a><br/>",
-                        callsign, station.getQrzInfo().getImage()));
+                        station.getQrzInfo().getCall(), station.getQrzInfo().getImage()));
             } else {
                 sb.append(String.format("<a href=\"https://qrz.com/db/%s\"><img src=\"%s\" width=\"300px\"/></a><br/>",
-                        callsign, "http://i3.cpcache.com/product/178743690/ham_radio_operator_35_button.jpg?height=630&width=630&qv=90"));
+                        station.getQrzInfo().getCall(), "http://i3.cpcache.com/product/178743690/ham_radio_operator_35_button.jpg?height=630&width=630&qv=90"));
             }
             sb.append(String.format("Callsign: <a href=\"https://qrz.com/db/%s\">%s</a><br/>",
-                    callsign, callsign));
+                    station.getQrzInfo().getCall(), callsign));
         } else {
             sb.append(String.format("Callsign: %s<br/>", callsign));
         }

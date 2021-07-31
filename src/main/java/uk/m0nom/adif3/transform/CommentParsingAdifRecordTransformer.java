@@ -11,19 +11,17 @@ import org.marsik.ham.adif.types.Iota;
 import org.marsik.ham.adif.types.Sota;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
+import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
+import uk.m0nom.activity.wota.WotaSummitInfo;
 import uk.m0nom.activity.wota.WotaSummitsDatabase;
-import uk.m0nom.activity.wwff.WwffInfo;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
-import uk.m0nom.activity.pota.PotaInfo;
 import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.qrz.QrzXmlService;
-import uk.m0nom.activity.ActivityDatabases;
-import uk.m0nom.activity.wota.WotaSummitInfo;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -49,40 +47,53 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         this.enricher = new AdifQrzEnricher();
     }
 
-    private void setCoordFromSotaId(Adif3Record rec, String sotaId, Map<String, String> unmapped) {
+    private void setTheirCoordFromActivity(Adif3Record rec, ActivityType activity, String reference, Map<String, String> unmapped) {
+        Activity info = activities.getDatabase(activity).get(reference);
+        if (info != null) {
+            if (info.hasCoords()) {
+                rec.setCoordinates(info.getCoords());
+                rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(info.getCoords()));
+            } else if (info.hasGrid()) {
+                GlobalCoordinates coords = MaidenheadLocatorConversion.locatorToCoords(info.getGrid());
+                rec.setMyCoordinates(coords);
+                rec.setGridsquare(info.getGrid());
+            }
+            // If the SIG isn't set, add it here
+            if (StringUtils.isEmpty(rec.getSig())) {
+                rec.setSig(activity.getActivityName());
+                rec.setSigInfo(reference);
+            }
+            // Add the activity to the unmapped list
+            unmapped.put(activity.getActivityName(), reference);
+        } else {
+            logger.warning(String.format("Suspicious %s reference %s for callsign %s at %s", activity.getActivityName(), reference, rec.getCall(), rec.getTimeOn().toString()));
+        }
+    }
+
+    private void setTheirCoordFromSotaId(Adif3Record rec, String sotaId, Map<String, String> unmapped) {
+        setTheirCoordFromActivity(rec, ActivityType.SOTA, sotaId, unmapped);
         Activity sotaInfo = activities.getDatabase(ActivityType.SOTA).get(sotaId);
         if (sotaInfo != null) {
-            rec.setCoordinates(sotaInfo.getCoords());
-            // Also set the GridSquare as a fallback
-            rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(sotaInfo.getCoords()));
             // See if this is also a WOTA
             WotaSummitsDatabase wotaSummitsDatabase = (WotaSummitsDatabase) activities.getDatabase(ActivityType.WOTA);
             Activity wotaInfo = wotaSummitsDatabase.getFromSotaId(sotaId);
             if (wotaInfo != null) {
                 unmapped.put("WOTA", wotaInfo.getRef());
             }
-        } else {
-            logger.warning(String.format("Suspicious SOTA reference %s for callsign %s at %s", sotaId, rec.getCall(), rec.getTimeOn().toString()));
         }
     }
 
-    private void setCoordFromWotaId(Adif3Record rec, String wotaId, Map<String, String> unmapped) {
+    private void setTheirCoordFromWotaId(Adif3Record rec, String wotaId, Map<String, String> unmapped) {
+        setTheirCoordFromActivity(rec, ActivityType.WOTA, wotaId, unmapped);
         WotaSummitInfo wotaInfo = (WotaSummitInfo) activities.getDatabase(ActivityType.WOTA).get(wotaId);
         if (wotaInfo != null) {
-            rec.setCoordinates(wotaInfo.getCoords());
-
-            // Also set the GridSquare as a fallback
-            rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(wotaInfo.getCoords()));
-
             String sotaId = wotaInfo.getSotaId();
             if (sotaId != null) {
                 // SOTA Latitude/Longitude is more accurate, so overwrite from that information
-                setCoordFromSotaId(rec, sotaId, unmapped);
+                setTheirCoordFromSotaId(rec, sotaId, unmapped);
             } else {
                 unmapped.put("WOTA", wotaInfo.getRef());
             }
-        } else {
-            logger.warning(String.format("Suspicious WOTA reference %s for callsign %s at %s", wotaId, rec.getCall(), rec.getTimeOn().toString()));
         }
     }
 
@@ -97,58 +108,10 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             String sotaId = wotaInfo.getSotaId();
             if (sotaId != null) {
                 // SOTA Latitude/Longitude is more accurate, so overwrite from that information
-                setMyLocationFromSotaId(rec, sotaId);
+                setMyLocationFromActivity(rec, ActivityType.SOTA, sotaId);
             }
         } else {
             logger.warning(String.format("Suspicious WOTA reference %s for callsign: %s", wotaId, rec.getStationCallsign()));
-        }
-    }
-
-    private void setCoordFromHemaId(Adif3Record rec, String hemaId, Map<String, String> unmapped) {
-        Activity hemaInfo = activities.getDatabase(ActivityType.HEMA).get(hemaId);
-        if (hemaInfo != null) {
-            rec.setCoordinates(hemaInfo.getCoords());
-
-            // Also set the GridSquare as a fallback
-            rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(hemaInfo.getCoords()));
-
-            unmapped.put("HEMA", hemaInfo.getRef());
-        } else {
-            logger.warning(String.format("Suspicious HEMA reference %s for callsign %s at %s", hemaId, rec.getCall(), rec.getTimeOn().toString()));
-        }
-    }
-
-    private void setCoordFromPotaId(Adif3Record rec, String potaId, Map<String, String> unmapped) {
-        PotaInfo parkInfo = (PotaInfo) activities.getDatabase(ActivityType.POTA).get(potaId);
-        if (parkInfo != null) {
-            if (rec.getGridsquare() == null) {
-                if (parkInfo.getCoords() != null) {
-                    rec.setCoordinates(parkInfo.getCoords());
-                    rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(parkInfo.getCoords()));
-                } else if (parkInfo.hasGrid()) {
-                    GlobalCoordinates coords = MaidenheadLocatorConversion.locatorToCoords(parkInfo.getGrid());
-                    rec.setMyCoordinates(coords);
-                    rec.setGridsquare(parkInfo.getGrid());
-                }
-            }
-            unmapped.put("POTA", parkInfo.getRef());
-        } else {
-            logger.warning(String.format("Suspicious POTA reference %s for callsign %s at %s", potaId, rec.getCall(), rec.getTimeOn().toString()));
-        }
-    }
-
-    private void setCoordFromWwffId(Adif3Record rec, String wwffId, Map<String, String> unmapped) {
-        WwffInfo wwffInfo = (WwffInfo) activities.getDatabase(ActivityType.WWFF).get(wwffId);
-        if (wwffInfo != null) {
-            if (rec.getGridsquare() == null) {
-                if (wwffInfo.hasCoords()) {
-                    rec.setCoordinates(wwffInfo.getCoords());
-                    rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(wwffInfo.getCoords()));
-                }
-            }
-            unmapped.put("WWFF", wwffInfo.getRef());
-        } else {
-            logger.warning(String.format("Suspicious WWFF reference %s for callsign %s at %s", wwffId, rec.getCall(), rec.getTimeOn().toString()));
         }
     }
 
@@ -164,45 +127,20 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
     }
 
-    private void setMyLocationFromPotaId(Adif3Record rec, String potaId) {
-        // We treat POTA Grid references specified on the command line differently, as some parks don't have a grid reference
-        // so an override take preference over everything
-        PotaInfo potaInfo = (PotaInfo) activities.getDatabase(ActivityType.POTA).get(potaId);
-        if (potaId != null) {
-            if (potaInfo.hasCoords()) {
-                rec.setMyCoordinates(potaInfo.getCoords());
-            } else if (potaInfo.hasGrid()) {
-                // Also set the GridSquare as a fallback
-                rec.setMyGridSquare(MaidenheadLocatorConversion.coordsToLocator(potaInfo.getCoords()));
-                rec.setMyCoordinates(potaInfo.getCoords());
+    private void setMyLocationFromActivity(Adif3Record rec, ActivityType activity, String ref) {
+        Activity info = activities.getDatabase(activity).get(ref);
+        if (info != null) {
+            if (rec.getMyCoordinates() == null) {
+                if (info.hasCoords()) {
+                    rec.setMyCoordinates(info.getCoords());
+                    rec.setMyGridSquare(MaidenheadLocatorConversion.coordsToLocator(info.getCoords()));
+                } else if (info.hasGrid()) {
+                    rec.setMyGridSquare(info.getGrid());
+                    rec.setMyCoordinates(MaidenheadLocatorConversion.locatorToCoords(info.getGrid()));
+                }
             }
         } else {
-            logger.warning(String.format("Suspicious Parks on the Air reference %s for your callsign %s", potaId, rec.getStationCallsign()));
-        }
-    }
-
-    private void setMyLocationFromWwffId(Adif3Record rec, String wwffId) {
-        // We treat POTA Grid references specified on the command line differently, as some parks don't have a grid reference
-        // so an override take preference over everything
-        WwffInfo wwffInfo = (WwffInfo) activities.getDatabase(ActivityType.WWFF).get(wwffId);
-        if (wwffId != null) {
-            if (wwffInfo.hasCoords()) {
-                rec.setMyCoordinates(wwffInfo.getCoords());
-            }
-        } else {
-            logger.warning(String.format("Suspicious World Wide Flora Fauna reference %s for your callsign %s", wwffId, rec.getStationCallsign()));
-        }
-    }
-
-    private void setMyLocationFromSotaId(Adif3Record rec, String sotaId) {
-        Activity sotaInfo = activities.getDatabase(ActivityType.SOTA).get(sotaId);
-        if (sotaInfo != null) {
-            rec.setMyCoordinates(sotaInfo.getCoords());
-            if (rec.getMyGridSquare() == null) {
-                rec.setMyGridSquare(MaidenheadLocatorConversion.coordsToLocator(sotaInfo.getCoords()));
-            }
-        } else {
-            logger.warning(String.format("Suspicious SOTA reference %s for YOU!", sotaId));
+            logger.warning(String.format("Suspicious %s reference %s for callsign %s at %s", activity.getActivityName(), ref, rec.getCall(), rec.getTimeOn().toString()));
         }
     }
 
@@ -279,7 +217,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         if (rec.getMyCoordinates() == null) {
             if (StringUtils.isNotEmpty(control.getSota())) {
                 if (!locationOverride) {
-                    setMyLocationFromSotaId(rec, control.getSota().toUpperCase());
+                    setMyLocationFromActivity(rec, ActivityType.SOTA, control.getSota().toUpperCase());
                 }
             } else if (StringUtils.isNotEmpty(control.getWota())) {
                 if (!locationOverride) {
@@ -291,16 +229,16 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 }
             } else if (rec.getMySotaRef() != null) {
                 if (!locationOverride) {
-                    setMyLocationFromSotaId(rec, rec.getMySotaRef().getValue());
+                    setMyLocationFromActivity(rec, ActivityType.SOTA, rec.getMySotaRef().getValue());
                 }
                 setWotaFromSotaId(qso.getFrom(), rec.getMySotaRef().getValue());
             } else if (StringUtils.isNotEmpty(control.getPota())) {
                 if (!locationOverride) {
-                    setMyLocationFromPotaId(rec, control.getPota().toUpperCase());
+                    setMyLocationFromActivity(rec, ActivityType.POTA, control.getPota().toUpperCase());
                 }
             } else if (StringUtils.isNotEmpty(control.getWwff())) {
             if (!locationOverride) {
-                setMyLocationFromWwffId(rec, control.getWwff().toUpperCase());
+                setMyLocationFromActivity(rec, ActivityType.WWFF, control.getWwff().toUpperCase());
             }
         } else if (StringUtils.isNotEmpty(control.getMyGrid())) {
                 /* If user has supplied a maidenhead location, use that in preference */
@@ -418,8 +356,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         // Duplicate references into the comment
         if (rec.getSotaRef() != null) {
             String sotaId = rec.getSotaRef().getValue();
-            unmapped.put("SOTA", sotaId);
-            setCoordFromSotaId(rec, sotaId, unmapped);
+            setTheirCoordFromActivity(rec, ActivityType.SOTA, sotaId, unmapped);
             qso.getTo().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaId));
         }
 
@@ -436,7 +373,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
         // Look to see if there is anything in the SIG/SIGINFO fields
         if (StringUtils.isNotEmpty(rec.getSig())) {
-            processSig(qso);
+            processSig(qso, unmapped);
         }
 
         if (!unmapped.isEmpty()) {
@@ -447,7 +384,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
     }
 
-    private void processSig(Qso qso) {
+    private void processSig(Qso qso, Map<String, String> unmapped) {
         Adif3Record rec = qso.getRecord();
         String activityType = rec.getSig().toUpperCase();
         String activityLocation = rec.getSigInfo().toUpperCase();
@@ -459,6 +396,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 Activity activity = database.get(activityLocation);
                 qso.getTo().addActivity(activity);
                 setTheirLocationFromActivity(qso, activity);
+                unmapped.put(activityType, activityLocation);
             }
         }
     }
@@ -569,7 +507,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         try {
                             Sota sota = Sota.valueOf(sotaRef.toUpperCase());
                             rec.setSotaRef(sota);
-                            setCoordFromSotaId(rec, sotaRef, unmapped);
+                            setTheirCoordFromSotaId(rec, sotaRef, unmapped);
                             qso.getTo().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaRef));
                         } catch (IllegalArgumentException iae) {
                             // something we can't work out about the reference, so put it in the unmapped list instead
@@ -582,25 +520,25 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     case "WotaRef":
                         // Strip off any S2s reference
                         String wotaId = StringUtils.split(value, ' ')[0];
-                        setCoordFromWotaId(rec, wotaId.toUpperCase(), unmapped);
+                        setTheirCoordFromWotaId(rec, wotaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.WOTA).get(wotaId));
                         break;
                     case "HemaRef":
                         // Strip off any S2s reference
                         String hemaId = StringUtils.split(value, ' ')[0];
-                        setCoordFromHemaId(rec, hemaId.toUpperCase(), unmapped);
+                        setTheirCoordFromActivity(rec, ActivityType.HEMA, hemaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.HEMA).get(hemaId));
                         break;
                     case "PotaRef":
                         // Strip off any S2s reference
                         String potaId = StringUtils.split(value, ' ')[0];
-                        setCoordFromPotaId(rec, potaId.toUpperCase(), unmapped);
+                        setTheirCoordFromActivity(rec, ActivityType.POTA, potaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.POTA).get(potaId));
                         break;
                     case "WwffRef":
                         // Strip off any S2s reference
                         String wwffId = StringUtils.split(value, ' ')[0];
-                        setCoordFromWwffId(rec, wwffId.toUpperCase(), unmapped);
+                        setTheirCoordFromActivity(rec, ActivityType.WWFF, wwffId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.WWFF).get(wwffId));
                         break;
                     case "SerialTx":

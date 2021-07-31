@@ -70,9 +70,13 @@ columns:
       header: 'OPERATOR'
       length: 10
   - column:
-      adif: 'QTH'
-      header: 'QTH'
-      length: 15
+      adif: 'SIG'
+      header: 'SIG'
+      length: 5
+  - column:
+      adif: 'SIG_INFO'
+      header: 'REF'
+      length: 8
   - column:
       adif: 'COMMENT'
       header: 'COMMENT'

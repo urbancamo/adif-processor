@@ -5,14 +5,21 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static uk.m0nom.callsign.CallsignUtils.containsCallsign;
-import static uk.m0nom.callsign.CallsignUtils.getUkCallsignVariants;
+import static uk.m0nom.callsign.CallsignUtils.*;
 
 public class CallsignUtilsTest {
     @Test
+    public void getVariantsForM0NOM_slash_Portable() {
+        List<Callsign> callsigns = getCallsignVariants("M0NOM/P");
+        assertTrue(StringUtils.equals(callsigns.get(0).getCallsign(), "M0NOM/P"));
+        assertFalse(callsigns.contains("P"));
+    }
+
+    @Test
     public void getUkCallsignVariantsforG() {
-        List<Callsign> callsigns = getUkCallsignVariants("M0NOM");
+        List<Callsign> callsigns = getCallsignVariants("M0NOM");
         assertTrue("Variants doesn't comtain correct number", callsigns.size() == 5);
         assertTrue(StringUtils.equals(callsigns.get(0).getCallsign(), "MD0NOM"));
         assertTrue(StringUtils.equals(callsigns.get(1).getCallsign(), "MG0NOM"));
@@ -37,7 +44,7 @@ public class CallsignUtilsTest {
         String callsign = "M0NOM/A";
         String baseCallsign = "M0NOM";
 
-        List<Callsign> alternatives = CallsignUtils.getCallsignVariants(callsign);
+        List<Callsign> alternatives = getCallsignVariants(callsign);
         assertTrue(String.format("Didn't detect correct base address %s for %s", baseCallsign, callsign),
                 CallsignUtils.containsCallsign(alternatives, "M0NOM"));
     }
@@ -46,7 +53,7 @@ public class CallsignUtilsTest {
     public void  englishSotaActivatorInWales() {
         String callsign = "MW0BLA/P";
         String baseCallsign = "M0BLA";
-        List<Callsign> alternatives = CallsignUtils.getCallsignVariants(callsign);
+        List<Callsign> alternatives = getCallsignVariants(callsign);
         assertTrue(String.format("Didn't detect correct base address %s for %s", baseCallsign, callsign),
                 CallsignUtils.containsCallsign(alternatives, baseCallsign));
     }
@@ -55,7 +62,7 @@ public class CallsignUtilsTest {
     public void scottishSotaActivatorInWales() {
         String callsign = "MW0VIK/P";
         String baseCallsign = "MM0VIK";
-        List<Callsign> alternatives = CallsignUtils.getCallsignVariants(callsign);
+        List<Callsign> alternatives = getCallsignVariants(callsign);
         assertTrue(String.format("Didn't detect correct base address %s for %s", baseCallsign, callsign),
                 CallsignUtils.containsCallsign(alternatives, baseCallsign));
     }
@@ -64,7 +71,7 @@ public class CallsignUtilsTest {
     public void meActivatingnISpainFindPortable() {
         String callsign = "EA7/M0NOM/P";
         String baseCallsign = "M0NOM/P";
-        List<Callsign> alternatives = CallsignUtils.getCallsignVariants(callsign);
+        List<Callsign> alternatives = getCallsignVariants(callsign);
 
         assertTrue(String.format("Didn't detect correct base address %s for %s", baseCallsign, callsign),
                 CallsignUtils.containsCallsign(alternatives, baseCallsign));
@@ -74,7 +81,7 @@ public class CallsignUtilsTest {
     public void meActivatingInSpainFindFixed() {
         String callsign = "EA7/M0NOM/P";
         String baseCallsign = "M0NOM";
-        List<Callsign> alternatives = CallsignUtils.getCallsignVariants(callsign);
+        List<Callsign> alternatives = getCallsignVariants(callsign);
         assertTrue(String.format("Didn't detect correct base address %s for %s", baseCallsign, callsign),
                 CallsignUtils.containsCallsign(alternatives, baseCallsign));
     }
@@ -83,7 +90,7 @@ public class CallsignUtilsTest {
     public void meActivatingInSpainCheckOrdering() {
         String callsign = "EA7/M0NOM/P";
         String baseCallsign = "M0NOM";
-        List<Callsign> alternatives = CallsignUtils.getCallsignVariants(callsign);
+        List<Callsign> alternatives = getCallsignVariants(callsign);
 
         int indexOfMeAbroadPortable;
         int indexOfMeAtHomePortable;

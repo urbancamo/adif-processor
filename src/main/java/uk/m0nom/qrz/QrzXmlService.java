@@ -4,12 +4,15 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
+import uk.m0nom.callsign.Callsign;
+import uk.m0nom.callsign.CallsignUtils;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -65,7 +68,14 @@ public class QrzXmlService {
     }
 
     public QrzCallsign getCallsignData(String callsign) {
-        return getCallsignDataInternal(callsign);
+        List<Callsign> alternatives = CallsignUtils.getCallsignVariants(callsign);
+        for (Callsign alternative : alternatives) {
+            QrzCallsign data = getCallsignDataInternal(alternative.getCallsign());
+            if (data != null) {
+                return data;
+            }
+        }
+        return null;
     }
 
     public QrzCallsign getCallsignDataInternal(String callsign) {
