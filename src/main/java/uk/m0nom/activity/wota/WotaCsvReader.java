@@ -51,22 +51,22 @@ public class WotaCsvReader extends ActivityReader {
 
             String sotaId = record.get("sotaid");
             if (!StringUtils.equals(sotaId, "NULL")) {
-                info.sotaId = String.format("G/LD-%03d", Integer.parseInt(sotaId));
+                info.setSotaId(String.format("G/LD-%03d", Integer.parseInt(sotaId)));
             }
 
-            info.book = record.get("book");
+            info.setBook(record.get("book"));
             info.setName(record.get("name"));
-            info.height = Integer.parseInt(record.get("height"));
-            info.reference = record.get("reference");
+            info.setHeight(Integer.parseInt(record.get("height")));
+            info.setReference(record.get("reference"));
 
             String humpId = record.get("humpid");
             if (!StringUtils.equals(humpId, "NULL")) {
-                info.hemaId = String.format("G/HLD-%03d", Integer.parseInt(humpId));
+                info.setHemaId(String.format("G/HLD-%03d", Integer.parseInt(humpId)));
             }
-            info.gridId = record.get("gridid");
+            info.setGridId(record.get("gridid"));
 
-            info.x = Integer.parseInt(record.get("x"));
-            info.y = Integer.parseInt(record.get("y"));
+            info.setX(Integer.parseInt(record.get("x")));
+            info.setY(Integer.parseInt(record.get("y")));
 
             info.setCoords(readCoords(record, "lat", "long"));
 

@@ -9,15 +9,15 @@ import uk.m0nom.activity.ActivityType;
 @Getter
 @Setter
 public class WotaSummitInfo extends Activity {
-    int internalId;
-    String sotaId;
-    String hemaId;
+    private int internalId;
+    private String sotaId;
+    private String hemaId;
 
-    String book;
-    int height;
-    String reference;
-    String gridId;
-    int x,y;
+    private String book;
+    private int height;
+    private String reference;
+    private String gridId;
+    private int x, y;
 
     public WotaSummitInfo() {
         super(ActivityType.WOTA);

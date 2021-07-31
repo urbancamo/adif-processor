@@ -35,9 +35,9 @@ public class PotaCsvReader extends ActivityReader {
             PotaInfo info = new PotaInfo();
             info.setRef(record.get("reference"));
             info.setName(record.get("name"));
-            info.active = StringUtils.equals(record.get("active"), "1");
-            info.entityId = Integer.parseInt(record.get("entityId"));
-            info.locationDesc = record.get("locationDesc");
+            info.setActive(StringUtils.equals(record.get("active"), "1"));
+            info.setEntityId(Integer.parseInt(record.get("entityId")));
+            info.setLocationDesc(record.get("locationDesc"));
 
             info.setCoords(readCoords(record, "latitude", "longitude"));
             potaInfo.put(info.getRef(), info);

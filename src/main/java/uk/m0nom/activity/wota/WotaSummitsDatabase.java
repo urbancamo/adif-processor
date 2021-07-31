@@ -22,11 +22,11 @@ public class WotaSummitsDatabase extends ActivityDatabase {
         for (Activity activity : summits.values()) {
             if (activity instanceof WotaSummitInfo) {
                 WotaSummitInfo info = (WotaSummitInfo) activity;
-                if (info.sotaId != null) {
-                    summitsWithSotaKey.put(info.sotaId, info);
+                if (info.getSotaId() != null) {
+                    summitsWithSotaKey.put(info.getSotaId(), info);
                 }
-                if (info.hemaId != null) {
-                    summitsWithHemaKey.put(info.hemaId, info);
+                if (info.getHemaId() != null) {
+                    summitsWithHemaKey.put(info.getHemaId(), info);
                 }
             }
         }

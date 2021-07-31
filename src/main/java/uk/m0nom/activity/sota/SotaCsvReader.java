@@ -40,11 +40,11 @@ public class SotaCsvReader extends ActivityReader {
 
             info.setRef(record.get("SummitCode"));
             info.setName(record.get("SummitName"));
-            info.altitude = Double.parseDouble(record.get("AltM"));
+            info.setAltitude(Double.parseDouble(record.get("AltM")));
 
             info.setCoords(readCoords(record,"Latitude", "Longitude"));
-            info.points = Integer.parseInt(record.get("Points"));
-            info.bonusPoints = Integer.parseInt(record.get("BonusPoints"));
+            info.setPoints(Integer.parseInt(record.get("Points")));
+            info.setBonusPoints(Integer.parseInt(record.get("BonusPoints")));
 
             summitInfo.put(info.getRef(), info);
         }

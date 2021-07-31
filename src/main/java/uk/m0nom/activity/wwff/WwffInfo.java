@@ -24,6 +24,5 @@ public class WwffInfo extends Activity {
 
     public WwffInfo() {
         super(ActivityType.WWFF);
-
     }
 }

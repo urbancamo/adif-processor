@@ -10,16 +10,12 @@ import uk.m0nom.activity.ActivityType;
 @Getter
 @Setter
 public class PotaInfo extends Activity {
-    Boolean active;
-    Integer entityId;
-    String locationDesc;
-    String grid;
+    private Boolean active;
+    private Integer entityId;
+    private String locationDesc;
 
     public PotaInfo() {
         super(ActivityType.POTA);
     }
 
-    public boolean hasGrid() {
-        return StringUtils.isNotEmpty(grid);
-    }
 }

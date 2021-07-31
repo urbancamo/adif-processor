@@ -121,11 +121,11 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private void setCoordFromPotaId(Adif3Record rec, String potaId, Map<String, String> unmapped) {
         PotaInfo parkInfo = (PotaInfo) activities.getDatabase(ActivityType.POTA).get(potaId);
         if (parkInfo != null) {
-            if (rec.getGridsquare() != null) {
-                if (parkInfo.hasCoords()) {
+            if (rec.getGridsquare() == null) {
+                if (parkInfo.getCoords() != null) {
                     rec.setCoordinates(parkInfo.getCoords());
+                    rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(parkInfo.getCoords()));
                 } else if (parkInfo.hasGrid()) {
-                    // Some parks don't have a grid
                     GlobalCoordinates coords = MaidenheadLocatorConversion.locatorToCoords(parkInfo.getGrid());
                     rec.setMyCoordinates(coords);
                     rec.setGridsquare(parkInfo.getGrid());
@@ -140,9 +140,10 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private void setCoordFromWwffId(Adif3Record rec, String wwffId, Map<String, String> unmapped) {
         WwffInfo wwffInfo = (WwffInfo) activities.getDatabase(ActivityType.WWFF).get(wwffId);
         if (wwffInfo != null) {
-            if (rec.getGridsquare() != null) {
+            if (rec.getGridsquare() == null) {
                 if (wwffInfo.hasCoords()) {
                     rec.setCoordinates(wwffInfo.getCoords());
+                    rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(wwffInfo.getCoords()));
                 }
             }
             unmapped.put("WWFF", wwffInfo.getRef());
@@ -455,8 +456,26 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             // See if it is an activity we support
             ActivityDatabase database = activities.getDatabase(activityType);
             if (database != null) {
-                qso.getTo().addActivity(database.get(activityLocation));
+                Activity activity = database.get(activityLocation);
+                qso.getTo().addActivity(activity);
+                setTheirLocationFromActivity(qso, activity);
             }
+        }
+    }
+
+    private void setTheirLocationFromActivity(Qso qso, Activity activity) {
+        if (activity.hasCoords()) {
+            GlobalCoordinates coords = activity.getCoords();
+            String grid = MaidenheadLocatorConversion.coordsToLocator(coords);
+
+            qso.getTo().setCoordinates(coords);
+            qso.getRecord().setCoordinates(coords);
+            qso.getTo().setGrid(grid);
+            qso.getRecord().setGridsquare(grid);
+        } else if (activity.hasGrid()) {
+            String grid = activity.getGrid();
+            qso.getTo().setGrid(grid);
+            qso.getRecord().setGridsquare(grid);
         }
     }
 
