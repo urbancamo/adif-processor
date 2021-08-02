@@ -36,7 +36,7 @@ public class HemaCsvReader extends ActivityReader {
             info.setRef(record.get("hFullReference"));
             info.altitude = Double.parseDouble(record.get("hHeightM"));
 
-            info.setCoords(readCoords(record, "hLongitude", "hLatitude"));
+            info.setCoords(readCoords(record, "hLatitude", "hLongitude"));
 
             info.active = StringUtils.equals(record.get("hActive"), "Y");
             info.setName(record.get("hName"));

@@ -20,23 +20,25 @@ public class CallsignUtilsTest {
     @Test
     public void getUkCallsignVariantsforG() {
         List<Callsign> callsigns = getCallsignVariants("M0NOM");
-        assertTrue("Variants doesn't comtain correct number", callsigns.size() == 5);
-        assertTrue(StringUtils.equals(callsigns.get(0).getCallsign(), "MD0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(1).getCallsign(), "MG0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(2).getCallsign(), "MI0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(3).getCallsign(), "MM0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(4).getCallsign(), "MW0NOM"));
+        assertTrue("Variants doesn't contain correct number", callsigns.size() == 6);
+        assertTrue(StringUtils.equals(callsigns.get(0).getCallsign(), "M0NOM"));
+        assertTrue(StringUtils.equals(callsigns.get(1).getCallsign(), "MD0NOM"));
+        assertTrue(StringUtils.equals(callsigns.get(2).getCallsign(), "MG0NOM"));
+        assertTrue(StringUtils.equals(callsigns.get(3).getCallsign(), "MI0NOM"));
+        assertTrue(StringUtils.equals(callsigns.get(4).getCallsign(), "MM0NOM"));
+        assertTrue(StringUtils.equals(callsigns.get(5).getCallsign(), "MW0NOM"));
     }
 
     @Test
     public void getUkCallsignVariantsforGM() {
         List<Callsign> callsigns = getUkCallsignVariants("MM0NOM");
-        assertTrue("Variants doesn't comtain correct number", callsigns.size() == 5);
-        assertTrue(StringUtils.equals(callsigns.get(0).getCallsign(), "M0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(1).getCallsign(), "MD0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(2).getCallsign(), "MG0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(3).getCallsign(), "MI0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(4).getCallsign(), "MW0NOM"));
+        assertTrue("Variants doesn't contain correct number", callsigns.size() == 6);
+        assertTrue(StringUtils.equals(callsigns.get(0).getCallsign(), "MM0NOM"));
+        assertTrue(StringUtils.equals(callsigns.get(1).getCallsign(), "M0NOM"));
+        assertTrue(StringUtils.equals(callsigns.get(2).getCallsign(), "MD0NOM"));
+        assertTrue(StringUtils.equals(callsigns.get(3).getCallsign(), "MG0NOM"));
+        assertTrue(StringUtils.equals(callsigns.get(4).getCallsign(), "MI0NOM"));
+        assertTrue(StringUtils.equals(callsigns.get(5).getCallsign(), "MW0NOM"));
     }
 
     @Test
@@ -96,7 +98,7 @@ public class CallsignUtilsTest {
         int indexOfMeAtHomePortable;
         int indexOfMeAtHomeFixed;
 
-        indexOfMeAbroadPortable = indexOfCallsignInList(alternatives, "EA7/M0NOM");
+        indexOfMeAbroadPortable = indexOfCallsignInList(alternatives, "EA7/M0NOM/P");
         assertTrue(String.format("Didn't determine that EA7/M0NOM is a variant of %s", callsign), indexOfMeAbroadPortable != -1);
 
         indexOfMeAtHomePortable = indexOfCallsignInList(alternatives,"M0NOM/P");

@@ -3,9 +3,7 @@ package uk.m0nom.callsign;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,6 +61,7 @@ public class CallsignUtils {
         if (ukVariant != null) {
             switch (ukVariant.getVariant()) {
                 case G_ALT:
+                    ukVariants.add(new Callsign(callsign, CallsignVariant.G_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GD_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GG_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GI_ALT));
@@ -70,6 +69,7 @@ public class CallsignUtils {
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GW_ALT));
                     break;
                 case GM_ALT:
+                    ukVariants.add(new Callsign(callsign, CallsignVariant.GM_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.G_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GD_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GG_ALT));
@@ -77,6 +77,7 @@ public class CallsignUtils {
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GW_ALT));
                     break;
                 case GW_ALT:
+                    ukVariants.add(new Callsign(callsign, CallsignVariant.GW_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.G_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GD_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GG_ALT));
@@ -84,6 +85,7 @@ public class CallsignUtils {
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GM_ALT));
                     break;
                 case GG_ALT:
+                    ukVariants.add(new Callsign(callsign, CallsignVariant.GG_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.G_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GD_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GI_ALT));
@@ -91,6 +93,7 @@ public class CallsignUtils {
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GW_ALT));
                     break;
                 case GI_ALT:
+                    ukVariants.add(new Callsign(callsign, CallsignVariant.GI_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.G_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GD_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GG_ALT));
@@ -98,6 +101,7 @@ public class CallsignUtils {
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GW_ALT));
                     break;
                 case GD_ALT:
+                    ukVariants.add(new Callsign(callsign, CallsignVariant.GD_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.G_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GG_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GI_ALT));
@@ -147,7 +151,27 @@ public class CallsignUtils {
         if (fixedInHomeCountry != null) {
             variants.addAll(getUkCallsignVariants(fixedInHomeCountry.getCallsign()));
         }
+        variants = dedup(variants);
         return variants;
+    }
+
+    // Remove duplicates
+    private static List<Callsign> dedup(List<Callsign> variants) {
+        Map<String, Callsign> callsignMap = new HashMap<>();
+
+        for (Callsign callsign : variants) {
+            if (!callsignMap.containsKey(callsign.getCallsign())) {
+                callsignMap.put(callsign.getCallsign(), callsign);
+            }
+        }
+        List<Callsign> deduped = new ArrayList<>(callsignMap.size());
+        for (Callsign callsign : variants) {
+            if (callsignMap.containsKey(callsign.getCallsign())) {
+                deduped.add(callsign);
+                callsignMap.remove(callsign.getCallsign());
+            }
+        }
+        return deduped;
     }
 
     private static Callsign getOperatorAsIsInHomeCountry(String callsign) {

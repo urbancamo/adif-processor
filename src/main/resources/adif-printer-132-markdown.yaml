@@ -52,13 +52,13 @@ columns:
       length: 4
       align: right
   - column:
-      adif: 'RST_RCVD'
-      header: 'RSR'
+      adif: 'RST_SENT'
+      header: 'RST'
       length: 3
       align: right
   - column:
-      adif: 'RST_SENT'
-      header: 'RST'
+      adif: 'RST_RCVD'
+      header: 'RSR'
       length: 3
       align: right
   - column:
