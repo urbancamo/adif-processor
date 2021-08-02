@@ -62,6 +62,10 @@ columns:
       length: 3
       align: right
   - column:
+      adif: 'MY_SOTA_REF'
+      header: 'SOTA-TX'
+      length: 9
+  - column:
       adif: 'SOTA_REF'
       header: 'SOTA-RX'
       length: 9

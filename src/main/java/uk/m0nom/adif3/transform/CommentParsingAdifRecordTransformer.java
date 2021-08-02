@@ -394,9 +394,11 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             ActivityDatabase database = activities.getDatabase(activityType);
             if (database != null) {
                 Activity activity = database.get(activityLocation);
-                qso.getTo().addActivity(activity);
-                setTheirLocationFromActivity(qso, activity);
-                unmapped.put(activityType, activityLocation);
+                if (activity != null) {
+                    qso.getTo().addActivity(activity);
+                    setTheirLocationFromActivity(qso, activity);
+                    unmapped.put(activityType, activityLocation);
+                }
             }
         }
     }
