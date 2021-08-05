@@ -61,7 +61,7 @@ public class CommandLineArgs {
                 .help("URL of the icon to use for fixed/home station locations");
         parser.addArgument("-kpi", "--kml-portable-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/hiker.png")
                 .help("URL of the icon to use for fixed/home station locations");
-        parser.addArgument("-kmi", "--kml-mobile-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/ranger_station.png")
+        parser.addArgument("-kmi", "--kml-mobile-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/cabs.png")
                 .help("URL of the icon to use for fixed/home station locations");
         parser.addArgument("-kmmi", "--kml-maritime-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/sailing.png")
                 .help("URL of the icon to use for maritime mobile station locations");
