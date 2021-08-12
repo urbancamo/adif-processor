@@ -363,10 +363,12 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         if (StringUtils.isNotBlank(rec.getComment())) {
             transformComment(qso, rec.getComment(), unmapped);
         }
-        if (rec.getGridsquare() == null) {
+        if (rec.getCoordinates() == null) {
             theirQrzData = lookupLocationFromQrz(rec);
             qso.getTo().setQrzInfo(theirQrzData);
-        } else if (rec.getCoordinates() == null) {
+        }
+        // IF qrz.com can't fill in the coordinates, and the gridsquare is set, fill in coordinates from that
+        if (rec.getCoordinates() == null && rec.getGridsquare() != null) {
             // Set Coordinates from GridSquare that has been supplied in the input file
             rec.setCoordinates(MaidenheadLocatorConversion.locatorToCoords(rec.getGridsquare()));
         }

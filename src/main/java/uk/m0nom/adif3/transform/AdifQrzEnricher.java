@@ -1,5 +1,6 @@
 package uk.m0nom.adif3.transform;
 
+import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.qrz.QrzCallsign;
@@ -31,8 +32,19 @@ public class AdifQrzEnricher {
         if (rec.getCountry() == null) {
             rec.setCountry(qrzData.getCountry());
         }
+
         if (rec.getName() == null) {
-            rec.setName(qrzData.getName());
+            String name = "";
+            if (StringUtils.isNotEmpty(qrzData.getFname())) {
+                name = qrzData.getFname();
+            }
+            if (StringUtils.isNotEmpty(qrzData.getName())) {
+                if (StringUtils.isNotEmpty(name)) {
+                    name = name + " ";
+                }
+                name = name + qrzData.getName();
+            }
+            rec.setName(name);
         }
         if (rec.getGridsquare() == null) {
             rec.setGridsquare(qrzData.getGrid());
