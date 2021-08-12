@@ -21,7 +21,7 @@ import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
 public class KmlWriter {
-    private final static double DEFAULT_RANGE_METRES = 3000.0;
+    private final static double DEFAULT_RANGE_METRES = 500.0;
     private static final Logger logger = Logger.getLogger(KmlWriter.class.getName());
     private ActivityDatabases activities;
     private Ionosphere ionosphere;
