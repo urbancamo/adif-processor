@@ -84,7 +84,6 @@ public class KmlWriter {
     }
 
     private String addMyStationToMap(Document doc, Folder folder, Qso qso) {
-        GlobalCoordinates coords = qso.getRecord().getMyCoordinates();
         return createMyStationMarker(doc, folder, qso);
    }
 
