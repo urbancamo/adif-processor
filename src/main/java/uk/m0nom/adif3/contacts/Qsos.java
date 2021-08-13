@@ -20,12 +20,10 @@ public class Qsos {
     private static final Logger logger = Logger.getLogger(Qsos.class.getName());
 
     private List<Qso> qsos;
-    private Map<String, Station> stations;
     private Adif3 log;
 
     public Qsos() {
         qsos = new ArrayList<>();
-        stations = new HashMap<>();
     }
 
     public Qsos(Adif3 log) {
@@ -46,29 +44,11 @@ public class Qsos {
             }
         }
 
-        if (!hasStation(fromCallsign)) {
-            Station fromStation = new Station(fromCallsign, qso);
-            qso.setFrom(fromStation);
-            stations.put(fromCallsign, fromStation);
-        } else {
-            qso.setFrom(getStation(fromCallsign));
-        }
+        Station fromStation = new Station(fromCallsign, qso);
+        qso.setFrom(fromStation);
 
         String toCallsign = qso.getRecord().getCall();
-        if (!hasStation(toCallsign)) {
-            Station toStation = new Station(toCallsign, qso);
-            qso.setTo(toStation);
-            stations.put(toCallsign, toStation);
-        } else {
-            qso.setTo(getStation(toCallsign));
-        }
-    }
-
-    public boolean hasStation(String callsign) {
-        return stations.get(callsign) != null;
-    }
-
-    public Station getStation(String callsign) {
-        return stations.get(callsign);
+        Station toStation = new Station(toCallsign, qso);
+        qso.setTo(toStation);
     }
 }
