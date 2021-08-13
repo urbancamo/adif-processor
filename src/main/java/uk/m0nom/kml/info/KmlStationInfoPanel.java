@@ -1,5 +1,6 @@
 package uk.m0nom.kml.info;
 
+import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.contacts.Station;
@@ -58,7 +59,9 @@ public class KmlStationInfoPanel {
         }
 
         if (qrzInfo != null) {
-            sb.append(String.format("Name: %s %s<br/>", qrzInfo.getFname(), qrzInfo.getName()));
+            sb.append(String.format("Name: %s %s<br/>",
+                    StringUtils.defaultIfBlank(qrzInfo.getFname(), ""),
+                    StringUtils.defaultIfBlank(qrzInfo.getName(), "")));
         }
 
         String grid = station.getGrid();
