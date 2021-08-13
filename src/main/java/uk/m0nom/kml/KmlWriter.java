@@ -1,7 +1,6 @@
 package uk.m0nom.kml;
 
 import de.micromata.opengis.kml.v_2_2_0.*;
-import org.apache.commons.io.FilenameUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.activity.ActivityType;
@@ -18,6 +17,10 @@ import uk.m0nom.kml.info.KmlStationInfoPanel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
 public class KmlWriter {
@@ -27,6 +30,8 @@ public class KmlWriter {
     private Ionosphere ionosphere;
     private TransformControl control;
     private KmlBandLineStyles bandLineStyles;
+
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm");
 
     public KmlWriter(TransformControl control) {
         this.control = control;
@@ -93,16 +98,18 @@ public class KmlWriter {
         String station = qso.getFrom().getCallsign();
 
         Icon icon = new Icon().withHref(new KmlIcon().getIconFromStation(control, qso.getFrom()));
-        Style style = document.createAndAddStyle();
-        style.withId("style_" + station) // set the stylename to use this style from the placemark
-                .createAndSetIconStyle().withScale(1.0).withIcon(icon); // set size and icon
+        Style style = document.createAndAddStyle()
+                .withId(getStyleId(station));
+
+        // set the stylename to use this style from the placemark
+        style.createAndSetIconStyle().withScale(1.0).withIcon(icon); // set size and icon
         style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the continent name
 
         Placemark placemark = folder.createAndAddPlacemark();
         String htmlPanelContent = new KmlStationInfoPanel().getPanelContentForStation(qso.getFrom());
         // use the style for each continent
         placemark.withName(station)
-                .withStyleUrl("#style_" + station)
+                .withStyleUrl(getStyleUrl(station))
                 // 3D chart image
                 .withDescription(htmlPanelContent)
                 // coordinates and distance (zoom level) of the viewer
@@ -114,6 +121,8 @@ public class KmlWriter {
 
 
     private String createStationMarker(Document document, Folder folder, Qso qso) {
+        String id = getStationMarkerId(qso);
+        String name = getStationMarkerName(qso);
         Adif3Record rec = qso.getRecord();
         if (qso.getFrom().getCoordinates() == null && rec.getMyCoordinates() == null) {
             return String.format("Cannot determine coordinates for station %s, please specify a location override", qso.getFrom().getCallsign());
@@ -130,18 +139,21 @@ public class KmlWriter {
         Icon icon = new Icon()
                 .withHref(new KmlIcon().getIconFromStation(control, qso.getTo()));
 
-        Style style = document.createAndAddStyle();
-        style.withId("style_" + station) // set the stylename to use this style from the placemark
-                .createAndSetIconStyle().withScale(1.0).withIcon(icon); // set size and icon
+        Style style = document.createAndAddStyle()
+                .withId(getStyleId(id));
+
+        // set the stylename to use this style from the placemark
+        style.createAndSetIconStyle().withScale(1.0).withIcon(icon); // set size and icon
         style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the station marker
         style.createAndSetLineStyle().withColor("ffb343ff").withWidth(5);
 
         Placemark placemark = folder.createAndAddPlacemark();
         String htmlPanelContent = new KmlStationInfoPanel().getPanelContentForStation(qso.getTo());
         // use the style for each continent
-        placemark.withName(station)
-                .withStyleUrl("#style_" + station)
-                // 3D chart imgae
+        placemark.withName(name)
+                .withId(id)
+                .withStyleUrl(getStyleUrl(id))
+                // 3D chart image
                 .withDescription(htmlPanelContent)
                 // coordinates and distance (zoom level) of the viewer
                 .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(0).withRange(DEFAULT_RANGE_METRES);
@@ -151,7 +163,61 @@ public class KmlWriter {
         return null;
     }
 
+    private String getStyleId(String id) {
+        return String.format("style_%s", id);
+    }
+
+    private String getStyleUrl(String id) {
+        return String.format("#%s", getStyleId(id));
+    }
+
+    /** In order to be unique the station marker name must contain the date and time of the contact **/
+    private String getStationMarkerId(Qso qso) {
+        String stationName = qso.getTo().getCallsign();
+        String dateTime = getQsoDateTimeAsString(qso);
+        String id = String.format("%s %s", dateTime, stationName);
+        return id.replaceAll(" ", "_");
+    }
+
+    private String getStationMarkerName(Qso qso) {
+        return qso.getTo().getCallsign();
+    }
+
+    private String getCommsLinkId(Qso qso) {
+        String fromName = qso.getFrom().getCallsign();
+        String toName = qso.getTo().getCallsign();
+        String dateTime = getQsoDateTimeAsString(qso);
+
+        String id = String.format("%s %s %s", dateTime, fromName, toName);
+        return id.replaceAll(" ", "_");
+    }
+
+    private String getCommsLinkName(Qso qso) {
+        String fromName = qso.getFrom().getCallsign();
+        String toName = qso.getTo().getCallsign();
+
+        return String.format("%s ⇋ %s", fromName, toName);
+    }
+    private String getCommsLinkShadowId(Qso qso) {
+        String commsLinkLabel = getCommsLinkId(qso);
+        String id = String.format("%s Shadow", commsLinkLabel);
+        return id.replaceAll(" ", "_");
+    }
+
+    private String getQsoDateTimeAsString(Qso qso) {
+        LocalDate date = qso.getRecord().getQsoDate();
+        LocalTime time = qso.getRecord().getTimeOn();
+
+        LocalDateTime contactDateTime = LocalDateTime.of(date, time);
+        return formatter.format(contactDateTime);
+    }
+
+
     private String createCommsLink(Document document, Folder folder, Qso qso) {
+        String commsLinkId = getCommsLinkId(qso);
+        String commsLinkName = getCommsLinkName(qso);
+        String commsLinkShadowId = getCommsLinkShadowId(qso);
+
         Adif3Record rec = qso.getRecord();
 
         GlobalCoordinates myCoords = rec.getMyCoordinates();
@@ -160,10 +226,9 @@ public class KmlWriter {
         }
 
         GlobalCoordinates coords = rec.getCoordinates();
-        String station = rec.getCall();
 
-        Style style = document.createAndAddStyle();
-        style.withId("style_line_to_" + station + "_path");
+        Style style = document.createAndAddStyle()
+                .withId(getStyleId(commsLinkId));
 
         if (control.getKmlS2s() && qso.doingSameActivity()) {
             KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlS2sContactLineStyle());
@@ -179,15 +244,17 @@ public class KmlWriter {
         }
 
         if (control.getKmlContactShadow()) {
-            style = document.createAndAddStyle();
-            style.withId("style_line_to_" + station + "_shadow");
+            style = document.createAndAddStyle()
+                    .withId(getStyleId(commsLinkShadowId));
+
             style.createAndSetLineStyle().withColor("40000000").withWidth(3);
         }
 
         Placemark placemark = folder.createAndAddPlacemark();
         // use the style for each line type
-        placemark.withName(station + "_comms_path")
-                .withStyleUrl("#style_line_to_" + station + "_path");
+        placemark.withName(commsLinkName)
+                .withId(commsLinkId)
+                .withStyleUrl(getStyleUrl(commsLinkId));
 
         LineString hfLine = placemark.createAndSetLineString();
         double myAltitude = 0.0;
@@ -209,8 +276,9 @@ public class KmlWriter {
         if (control.getKmlContactShadow()) {
             placemark = folder.createAndAddPlacemark();
             // use the style for each line type
-            placemark.withName(station + "_comms_shadow")
-                    .withStyleUrl("#style_line_to_" + station + "_shadow");
+            placemark.withName("")
+                    .withId(commsLinkShadowId)
+                    .withStyleUrl(getStyleUrl(commsLinkShadowId));
 
             hfLine = placemark.createAndSetLineString();
             KmlGeodesicUtils.getSurfaceLine(hfLine, myCoords, coords);

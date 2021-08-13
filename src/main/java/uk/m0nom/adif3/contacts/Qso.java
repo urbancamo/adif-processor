@@ -11,6 +11,7 @@ import org.marsik.ham.adif.Adif3Record;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Qso {
+    private int index;
     private Station from;
     private Station to;
     private Adif3Record record;

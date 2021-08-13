@@ -32,8 +32,9 @@ public class Adif3Transformer {
         Qsos qsos = new Qsos(log);
 
         transformer = new CommentParsingAdifRecordTransformer(config, summits, qrzXmlService, control);
+        int index = 1;
         for (Adif3Record rec : log.getRecords()) {
-            transformer.transform(qsos, rec);
+            transformer.transform(qsos, rec, index++);
         }
 
         // Change the header

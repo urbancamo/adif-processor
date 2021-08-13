@@ -70,8 +70,9 @@ public class AdifReaderTest {
             }
 
             Adif3RecordTransformer transformer = new CommentParsingAdifRecordTransformer(config, summits, qrzXmlService, control);
+            int index = 1;
             for (Adif3Record rec : log.getRecords()) {
-                transformer.transform(qsos, rec);
+                transformer.transform(qsos, rec, index++);
             }
             assertThat(log.getRecords()).hasSize(16);
         }

@@ -339,9 +339,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     }
 
     @Override
-    public void transform(Qsos qsos, Adif3Record rec) {
+    public void transform(Qsos qsos, Adif3Record rec, int index) {
         /* Add Adif3Record details to the Qsos meta structure */
-        Qso qso = createQsoFromAdif3Record(qsos, rec);
+        Qso qso = createQsoFromAdif3Record(qsos, rec, index);
 
         Map<String, String> unmapped = new HashMap<>();
         QrzCallsign myQrzData = setMyLocation(qso);
@@ -422,8 +422,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
     }
 
-    private Qso createQsoFromAdif3Record(Qsos qsos, Adif3Record rec) {
+    private Qso createQsoFromAdif3Record(Qsos qsos, Adif3Record rec, int index) {
         Qso qso = new Qso();
+        qso.setIndex(index);
         qso.setRecord(rec);
         qsos.addQso(qso);
         return qso;
