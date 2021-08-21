@@ -47,8 +47,15 @@ public class TransformControl {
     private String kmlHemaIconUrl;
     private String kmlWwffIconUrl;
 
+    private String kmlCwIconUrl;
+
+    private Boolean kmlShowStationSubLabel;
+    private Boolean kmlShowLocalActivationSites;
+    private Double kmlLocalActivationSitesRadius;
+
     private Boolean markdown;
 
     public TransformControl() {
     }
+
 }

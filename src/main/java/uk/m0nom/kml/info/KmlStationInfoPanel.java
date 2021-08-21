@@ -9,20 +9,14 @@ import uk.m0nom.qrz.QrzCallsign;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KmlStationInfoPanel {
-    private Map<ActivityType, KmlStationActivityInfo> infoMap;
-
+public class KmlStationInfoPanel implements KmlInfoPanel {
+    private KmlInfoMap infoMap;
 
     public KmlStationInfoPanel() {
-        infoMap = new HashMap<>();
-        infoMap.put(ActivityType.SOTA, new KmlStationSotaInfo());
-        infoMap.put(ActivityType.WOTA, new KmlStationWotaInfo());
-        infoMap.put(ActivityType.POTA, new KmlStationPotaInfo());
-        infoMap.put(ActivityType.HEMA, new KmlStationHemaInfo());
-        infoMap.put(ActivityType.WWFF, new KmlStationWwffInfo());
+        infoMap = new KmlInfoMap();
     }
 
-    public String getPanelContentForStation(Station station) {
+    public String getPanelContent(Station station) {
         StringBuilder sb = new StringBuilder();
         String callsign = station.getCallsign();
 
@@ -43,19 +37,19 @@ public class KmlStationInfoPanel {
         }
 
         if (station.isDoing(ActivityType.SOTA)) {
-            sb.append(infoMap.get(ActivityType.SOTA).getInfo(station));
+            sb.append(infoMap.get(ActivityType.SOTA).getInfo(station.getActivity(ActivityType.SOTA)));
         }
         if (station.isDoing(ActivityType.HEMA)) {
-            sb.append(infoMap.get(ActivityType.HEMA).getInfo(station));
+            sb.append(infoMap.get(ActivityType.HEMA).getInfo(station.getActivity(ActivityType.HEMA)));
         }
         if (station.isDoing(ActivityType.WOTA)) {
-            sb.append(infoMap.get(ActivityType.WOTA).getInfo(station));
+            sb.append(infoMap.get(ActivityType.WOTA).getInfo(station.getActivity(ActivityType.WOTA)));
         }
         if (station.isDoing(ActivityType.POTA)) {
-            sb.append(infoMap.get(ActivityType.POTA).getInfo(station));
+            sb.append(infoMap.get(ActivityType.POTA).getInfo(station.getActivity(ActivityType.POTA)));
         }
         if (station.isDoing(ActivityType.WWFF)) {
-            sb.append(infoMap.get(ActivityType.WWFF).getInfo(station));
+            sb.append(infoMap.get(ActivityType.WWFF).getInfo(station.getActivity(ActivityType.WWFF)));
         }
 
         if (qrzInfo != null) {

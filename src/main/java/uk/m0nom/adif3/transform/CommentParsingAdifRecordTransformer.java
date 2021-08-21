@@ -5,6 +5,8 @@ import com.amihaiemil.eoyaml.YamlNode;
 import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
+import org.marsik.ham.adif.enums.AntPath;
+import org.marsik.ham.adif.enums.Propagation;
 import org.marsik.ham.adif.enums.QslSent;
 import org.marsik.ham.adif.enums.QslVia;
 import org.marsik.ham.adif.types.Iota;
@@ -568,6 +570,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     case "Fists":
                         rec.setFists(value);
                         break;
+                    case "Skcc":
+                        rec.setSkcc(value);
+                        break;
                     case "Qsl":
                         rec.setQslSDate(LocalDate.now());
                         rec.setQslSent(QslSent.SENT);
@@ -594,6 +599,24 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         } catch (NumberFormatException e) {
                             logger.severe(String.format("Callsign: %s at %s has invalid longitude: %s", rec.getCall(), rec.getTimeOn().toString(), value));
                         }
+                        break;
+                    case "AntPath":
+                        AntPath path = AntPath.SHORT;
+                        try {
+                            path = AntPath.valueOf(value);
+                        } catch (Exception e) {
+                            logger.severe(String.format("AntPath: %s isn't one of 'G': GRAYLINE, 'S': SHORT, 'L': LONG, 'O': OTHER", value));
+                        }
+                        rec.setAntPath(path);
+                        break;
+                    case "Propagation":
+                        Propagation mode = Propagation.IONOSCATTER;
+                        try {
+                            mode = Propagation.valueOf(value);
+                        } catch (Exception e) {
+                            logger.severe(String.format("Propagation: %s isn't one of the supported values for ADIF field PROP_MODE", value));
+                        }
+                        rec.setPropMode(mode);
                         break;
                 }
             } else {

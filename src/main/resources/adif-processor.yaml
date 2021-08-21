@@ -16,3 +16,6 @@ LAT: Latitude
 LONG: Longitude
 POTA: PotaRef
 WWFF: WwffRef
+PATH: AntPath
+PROP: Propagation
+SKCC: Skcc

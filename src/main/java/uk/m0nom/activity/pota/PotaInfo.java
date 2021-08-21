@@ -18,4 +18,8 @@ public class PotaInfo extends Activity {
         super(ActivityType.POTA);
     }
 
+    @Override
+    public String getUrl() {
+        return String.format("https://pota.app/#/park/%s", getRef());
+    }
 }

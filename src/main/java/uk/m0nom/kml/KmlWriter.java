@@ -12,7 +12,7 @@ import uk.m0nom.propagation.Ionosphere;
 import uk.m0nom.activity.sota.SotaSummitInfo;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.kml.info.KmlContactInfoPanel;
-import uk.m0nom.kml.info.KmlIcon;
+import uk.m0nom.kml.info.KmlStationIcon;
 import uk.m0nom.kml.info.KmlStationInfoPanel;
 
 import java.io.File;
@@ -23,8 +23,11 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
+import static uk.m0nom.kml.KmlUtils.getStyleId;
+import static uk.m0nom.kml.KmlUtils.getStyleUrl;
+
 public class KmlWriter {
-    private final static double DEFAULT_RANGE_METRES = 500.0;
+    public final static double DEFAULT_RANGE_METRES = 500.0;
     private static final Logger logger = Logger.getLogger(KmlWriter.class.getName());
     private ActivityDatabases activities;
     private Ionosphere ionosphere;
@@ -40,6 +43,8 @@ public class KmlWriter {
     }
 
     public void write(String pathname, String name, ActivityDatabases activities, Qsos qsos, TransformResults results) {
+        KmlLocalActivities kmlLocalActivities = new KmlLocalActivities();
+
         this.activities = activities;
 
         final Kml kml = new Kml();
@@ -57,6 +62,9 @@ public class KmlWriter {
                 if (error != null) {
                     results.setError(error);
                 }
+                if (qso.getFrom().hasActivity() && control.getKmlShowLocalActivationSites()) {
+                    kmlLocalActivities.addLocalActivities(doc, folder, qso.getFrom(), control.getKmlLocalActivationSitesRadius(), activities);
+                }
                 first = false;
             }
             GlobalCoordinates coords = qso.getRecord().getCoordinates();
@@ -64,6 +72,10 @@ public class KmlWriter {
                 String error = createStationMarker(doc, folder, qso);
                 if (error != null) {
                     results.setError(error);
+                }
+
+                if (qso.getTo().hasActivity() && control.getKmlShowLocalActivationSites()) {
+                    kmlLocalActivities.addLocalActivities(doc, folder, qso.getTo(), control.getKmlLocalActivationSitesRadius(), activities);
                 }
                 error = createCommsLink(doc, folder, qso);
                 if (error != null) {
@@ -96,7 +108,7 @@ public class KmlWriter {
         double latitude = coords.getLatitude();
         String station = qso.getFrom().getCallsign();
 
-        Icon icon = new Icon().withHref(new KmlIcon().getIconFromStation(control, qso.getFrom()));
+        Icon icon = new Icon().withHref(new KmlStationIcon().getIconFromStation(control, qso.getFrom()));
         Style style = document.createAndAddStyle()
                 .withId(getStyleId(station));
 
@@ -105,7 +117,7 @@ public class KmlWriter {
         style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the continent name
 
         Placemark placemark = folder.createAndAddPlacemark();
-        String htmlPanelContent = new KmlStationInfoPanel().getPanelContentForStation(qso.getFrom());
+        String htmlPanelContent = new KmlStationInfoPanel().getPanelContent(qso.getFrom());
         // use the style for each continent
         placemark.withName(station)
                 .withStyleUrl(getStyleUrl(station))
@@ -115,6 +127,7 @@ public class KmlWriter {
                 .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(0).withRange(DEFAULT_RANGE_METRES);
 
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
+
         return null;
     }
 
@@ -136,7 +149,7 @@ public class KmlWriter {
         String station = rec.getCall();
 
         Icon icon = new Icon()
-                .withHref(new KmlIcon().getIconFromStation(control, qso.getTo()));
+                .withHref(new KmlStationIcon().getIconFromStation(control, qso.getTo()));
 
         Style style = document.createAndAddStyle()
                 .withId(getStyleId(id));
@@ -147,7 +160,7 @@ public class KmlWriter {
         style.createAndSetLineStyle().withColor("ffb343ff").withWidth(5);
 
         Placemark placemark = folder.createAndAddPlacemark();
-        String htmlPanelContent = new KmlStationInfoPanel().getPanelContentForStation(qso.getTo());
+        String htmlPanelContent = new KmlStationInfoPanel().getPanelContent(qso.getTo());
         // use the style for each continent
         placemark.withName(name)
                 .withId(id)
@@ -159,15 +172,30 @@ public class KmlWriter {
 
         placemark.createAndSetLineString().addToCoordinates(myLongitude, myLatitude).addToCoordinates(longitude, latitude).setExtrude(true);
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
+
+        String modeIconUrl = new KmlStationIcon().getIconFromMode(control, qso.getRecord().getMode());
+        if (modeIconUrl != null) {
+            Icon modeIcon = new Icon().withHref(modeIconUrl);
+            Placemark modePlaceMark = folder.createAndAddPlacemark();
+            Style modeStyle = document.createAndAddStyle()
+                    .withId(getStyleId(id + "_mode"));
+
+            modeStyle.createAndSetIconStyle()
+                    .withScale(1.0)
+                    .withIcon(modeIcon);
+            modeStyle.createAndSetLabelStyle().withColor("ff43b3ff").withScale(0.75); // set color and size of the station marker
+            modeStyle.createAndSetLineStyle().withColor("ffb343ff").withWidth(3);
+            modePlaceMark.withId(id + "_mode")
+                    .withName(getModeLabel(qso))
+                    .withStyleUrl(getStyleUrl(id + "_mode"));
+
+            modePlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
+        }
         return null;
     }
 
-    private String getStyleId(String id) {
-        return String.format("style_%s", id);
-    }
-
-    private String getStyleUrl(String id) {
-        return String.format("#%s", getStyleId(id));
+    private String getModeLabel(Qso qso) {
+        return String.format("%s %s", qso.getRecord().getBand().adifCode(), qso.getRecord().getMode().adifCode());
     }
 
     /** In order to be unique the station marker name must contain the date and time of the contact **/
@@ -271,6 +299,10 @@ public class KmlWriter {
             }
         }
         HfLineResult result = KmlGeodesicUtils.getHfLine(hfLine, myCoords, coords, ionosphere, rec.getFreq(), rec.getBand(), rec.getTimeOn(), myAltitude, theirAltitude);
+
+        // Set the contact distance in the ADIF output file
+        rec.setDistance(result.getDistance());
+
         placemark.withDescription(new KmlContactInfoPanel().getPanelContentForCommsLink(qso, result));
         if (control.getKmlContactShadow()) {
             placemark = folder.createAndAddPlacemark();

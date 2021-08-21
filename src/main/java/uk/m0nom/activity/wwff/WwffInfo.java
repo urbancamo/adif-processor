@@ -25,4 +25,9 @@ public class WwffInfo extends Activity {
     public WwffInfo() {
         super(ActivityType.WWFF);
     }
+
+    @Override
+    public String getUrl() {
+        return null;
+    }
 }

@@ -1,10 +1,11 @@
 package uk.m0nom.kml.info;
 
+import org.marsik.ham.adif.enums.Mode;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Station;
 
-public class KmlIcon {
+public class KmlStationIcon {
 
     public String getIconFromStation(TransformControl control, Station station) {
         String cs = station.getCallsign();
@@ -38,5 +39,19 @@ public class KmlIcon {
             return control.getKmlMaritimeIconUrl();
         }
         return icon;
+    }
+
+    public String getIconFromMode(TransformControl control, Mode mode) {
+        String iconUrl = null;
+        switch (mode) {
+            case CW:
+                iconUrl = control.getKmlCwIconUrl();
+                break;
+            default:
+                iconUrl = "";
+                break;
+
+        }
+        return iconUrl;
     }
 }

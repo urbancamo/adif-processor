@@ -5,13 +5,9 @@ import uk.m0nom.activity.ActivityType;
 import uk.m0nom.activity.hema.HemaSummitInfo;
 import uk.m0nom.adif3.contacts.Station;
 
-public class KmlStationHemaInfo extends KmlStationActivityInfo {
+public class KmlHemaInfo extends KmlActivityInfo {
     @Override
-    public String getInfo(Station station) {
-        return appendHemaInfo(station.getActivity(ActivityType.HEMA));
-    }
-
-    private String appendHemaInfo(Activity activity) {
+    public String getInfo(Activity activity) {
         StringBuilder sb = new StringBuilder();
         HemaSummitInfo summitInfo = (HemaSummitInfo) activity;
         sb.append(String.format("HEMA: <a href=\"http://hema.org.uk/fullSummit.jsp?summitKey=%d\">%s</a><br/>",

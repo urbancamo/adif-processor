@@ -7,12 +7,12 @@ import uk.m0nom.propagation.PropagationMode;
 @Getter
 @Setter
 public class HfLineResult {
-    int bounces;
-    double altitude;
-    double distance;
-    double angle;
-    double skyDistance;
-    PropagationMode mode;
+    private int bounces;
+    private double altitude;
+    private double distance;
+    private double angle;
+    private double skyDistance;
+    private PropagationMode mode;
 
     public HfLineResult() {
     }

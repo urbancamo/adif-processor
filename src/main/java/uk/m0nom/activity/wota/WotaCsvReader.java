@@ -56,7 +56,7 @@ public class WotaCsvReader extends ActivityReader {
 
             info.setBook(record.get("book"));
             info.setName(record.get("name"));
-            info.setHeight(Integer.parseInt(record.get("height")));
+            info.setAltitude(Double.valueOf(record.get("height")));
             info.setReference(record.get("reference"));
 
             String humpId = record.get("humpid");

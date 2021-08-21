@@ -9,11 +9,16 @@ import uk.m0nom.activity.ActivityType;
 @Getter
 @Setter
 public class HemaSummitInfo extends Activity {
-    int key;
-    double altitude;
-    boolean active;
+
+    private int key;
+    private boolean active;
 
     public HemaSummitInfo() {
         super(ActivityType.HEMA);
+    }
+
+    @Override
+    public String getUrl() {
+        return null;
     }
 }

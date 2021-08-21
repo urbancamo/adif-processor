@@ -56,6 +56,8 @@ public class Station {
         return activities.get(type);
     }
 
+    public boolean hasActivity() { return activities.size() > 0; }
+
     public boolean doingSameActivityAs(Station other) {
         for (Activity activity : activities.values()) {
             if (other.isDoing(activity.getType())) {

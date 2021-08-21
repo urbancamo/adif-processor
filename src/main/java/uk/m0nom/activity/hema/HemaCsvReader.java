@@ -31,14 +31,14 @@ public class HemaCsvReader extends ActivityReader {
         Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(reader);
         for (CSVRecord record : records) {
             HemaSummitInfo info = new HemaSummitInfo();
-            info.key = Integer.parseInt(record.get("hHillKey"));
+            info.setKey(Integer.parseInt(record.get("hHillKey")));
 
             info.setRef(record.get("hFullReference"));
-            info.altitude = Double.parseDouble(record.get("hHeightM"));
+            info.setAltitude(Double.parseDouble(record.get("hHeightM")));
 
             info.setCoords(readCoords(record, "hLatitude", "hLongitude"));
 
-            info.active = StringUtils.equals(record.get("hActive"), "Y");
+            info.setActive(StringUtils.equals(record.get("hActive"), "Y"));
             info.setName(record.get("hName"));
 
             summitInfo.put(info.getRef(), info);
