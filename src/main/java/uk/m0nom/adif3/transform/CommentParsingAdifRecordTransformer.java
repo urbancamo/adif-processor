@@ -201,8 +201,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
 
         if (StringUtils.isNotEmpty(control.getMyLatitude()) && StringUtils.isNotEmpty(control.getMyLongitude())) {
-            double latitude = Double.parseDouble(StringUtils.remove(control.getMyLatitude(),'\''));
-            double longitude = Double.parseDouble(StringUtils.remove(control.getMyLongitude(),'\''));
+            double latitude = Double.parseDouble(StringUtils.remove(control.getMyLatitude(), '\''));
+            double longitude = Double.parseDouble(StringUtils.remove(control.getMyLongitude(), '\''));
             rec.setMyCoordinates(new GlobalCoordinates(latitude, longitude));
             locationOverride = true;
             reportLocationOverride(rec.getStationCallsign(), latitude, longitude);
@@ -239,10 +239,10 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     setMyLocationFromActivity(rec, ActivityType.POTA, control.getPota().toUpperCase());
                 }
             } else if (StringUtils.isNotEmpty(control.getWwff())) {
-            if (!locationOverride) {
-                setMyLocationFromActivity(rec, ActivityType.WWFF, control.getWwff().toUpperCase());
-            }
-        } else if (StringUtils.isNotEmpty(control.getMyGrid())) {
+                if (!locationOverride) {
+                    setMyLocationFromActivity(rec, ActivityType.WWFF, control.getWwff().toUpperCase());
+                }
+            } else if (StringUtils.isNotEmpty(control.getMyGrid())) {
                 /* If user has supplied a maidenhead location, use that in preference */
                 if (MaidenheadLocatorConversion.isAValidGridSquare(control.getMyGrid())) {
                     rec.setMyGridSquare(control.getMyGrid());
@@ -265,6 +265,13 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     GlobalCoordinates myLoc = MaidenheadLocatorConversion.locatorToCoords(rec.getMyGridSquare());
                     rec.setMyCoordinates(myLoc);
                 }
+            } else if (callsignData != null && callsignData.getLat() != null && callsignData.getLon() != null) {
+                GlobalCoordinates coord = new GlobalCoordinates(callsignData.getLat(), callsignData.getLon());
+                rec.setMyCoordinates(coord);
+                qso.getFrom().setCoordinates(coord);
+            } else if (callsignData != null && callsignData.getGrid() != null) {
+                rec.setMyGridSquare(callsignData.getGrid());
+                setMyLocationFromGrid(qso, callsignData.getGrid());
             }
         }
         return callsignData;

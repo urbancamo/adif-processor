@@ -49,10 +49,12 @@ public class Adif3PrintFormatter {
         resetPrintState();
 
         for (Adif3Record rec : log.getRecords()) {
-            if (atPageBreak()) {
-                handlePageBreak(log);
+            if (rec.getCall() != null && rec.getStationCallsign() != null) {
+                if (atPageBreak()) {
+                    handlePageBreak(log);
+                }
+                printRecord(rec);
             }
-            printRecord(rec);
         }
         return state.sb;
     }

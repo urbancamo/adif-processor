@@ -8,6 +8,7 @@ import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.kml.info.KmlInfoMap;
 
 import java.util.Collection;
+import java.util.Locale;
 
 import static uk.m0nom.kml.KmlUtils.getStyleId;
 import static uk.m0nom.kml.KmlUtils.getStyleUrl;
@@ -45,7 +46,7 @@ public class KmlLocalActivities {
                 altitude = activity.getAltitude() + 100.0;
             }
             Icon icon = new Icon()
-                    .withHref("http://maps.google.com/mapfiles/kml/paddle/orange-blank.png");
+                    .withHref(String.format("http://maps.google.com/mapfiles/kml/paddle/%c.png", activity.getType().name().toUpperCase(Locale.ROOT).charAt(0)));
 
             Style style = document.createAndAddStyle()
                     .withId(getStyleId(id));
