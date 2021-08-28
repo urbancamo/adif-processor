@@ -20,7 +20,7 @@ public class KmlGeodesicUtils
         hfLine.addToCoordinates(endGc.getLongitude(), endGc.getLatitude(), 0);
     }
 
-    public static HfLineResult getHfLine(LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc, Ionosphere ionosphere, Double frequency, Band band, LocalTime timeOfDay, double myAltitude, double theirAltitude) {
+    public static HfLineResult getHfLine(LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc, Ionosphere ionosphere, Double frequency, Band band, LocalTime timeOfDay, double myAltitude, double theirAltitude, double hfAntennaTakeoffAngle) {
         /* assume daytime propagation if we don't have a QSO time */
         HfLineResult result = new HfLineResult();
 
@@ -53,7 +53,7 @@ public class KmlGeodesicUtils
         double avgAltitude = 0.0;
         double avgAngle = 0.0;
         PropagationMode mode = null;
-        List<PropagationBounce> bounces = ionosphere.getBounces(frequencyInKhz, distanceInKm, time, myAltitude, theirAltitude);
+        List<PropagationBounce> bounces = ionosphere.getBounces(frequencyInKhz, distanceInKm, time, myAltitude, theirAltitude, hfAntennaTakeoffAngle);
 
         double skyDistance = addBouncesToLineString(hfLine, bounces, start, end, azimuth, calculator);
         result.setSkyDistance(skyDistance);

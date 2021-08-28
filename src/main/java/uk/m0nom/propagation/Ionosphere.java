@@ -7,13 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 public class Ionosphere {
+    public final static double HF_ANTENNA_DEFAULT_TAKEOFF_ANGLE = 6;
+
     private Map<String, IonosphericLayer> dayTimeLayers;
     private Map<String, IonosphericLayer> nightTimeLayers;
 
     /** Height at which we map ground wave comms, per 1000m */
     private final static double GROUNDWAVE_BOUNCE_ALT = 6;
-    private final static double MINIMUM_TAKEOFF_ANGLE = 6;
-    private final static double MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM = 400;
+    private final static double MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM = 200;
     private final static double MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM = 50;
 
     public Ionosphere() {
@@ -49,7 +50,7 @@ public class Ionosphere {
     }
 
     public List<PropagationBounce> getBounces(double frequencyInKhz, double distanceInKm, LocalTime timeOfDay,
-                                              double myAltitude, double theirAltitude) {
+                                              double myAltitude, double theirAltitude, double hfAntennaTakeoffAngle) {
         List<PropagationBounce> bounces = new LinkedList<>();
 
         PropagationMode mode = getPropagationMode(frequencyInKhz, distanceInKm);
@@ -65,7 +66,7 @@ public class Ionosphere {
                 Map<String, IonosphericLayer> layers = getLayerForTimeOfDay(timeOfDay);
                 IonosphericLayer bounceLayer = layers.get("F2");
                 double alt = bounceLayer.getAverageHeight();
-                int hops = calculateNumberOfHops(distanceInKm, alt / 1000);
+                int hops = calculateNumberOfHops(distanceInKm, alt / 1000, hfAntennaTakeoffAngle);
                 for (int i = 0; i < hops; i++) {
                     double hopDistance = distanceInKm / hops;
                     bounce = new PropagationBounce(mode, hopDistance, alt, 0.0);
@@ -88,12 +89,12 @@ public class Ionosphere {
      * @param altInKm
      * @return
      */
-    private int calculateNumberOfHops(double distanceInKm, double altInKm) {
+    private int calculateNumberOfHops(double distanceInKm, double altInKm, double hfAntennaTakeoffAngle) {
         /** Work out the single hop angle of radiation */
         double angleOfRadiationSingleHop = 90.0 - Math.toDegrees(Math.atan(distanceInKm / altInKm));
-        if (angleOfRadiationSingleHop < MINIMUM_TAKEOFF_ANGLE) {
+        if (angleOfRadiationSingleHop < hfAntennaTakeoffAngle) {
             /* We need to break up the propagation into hops */
-            return (int) (Math.floor(MINIMUM_TAKEOFF_ANGLE / angleOfRadiationSingleHop)) + 1;
+            return (int) (Math.floor(hfAntennaTakeoffAngle / angleOfRadiationSingleHop)) + 1;
         }
         return 1;
     }

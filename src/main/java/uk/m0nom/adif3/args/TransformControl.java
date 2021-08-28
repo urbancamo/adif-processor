@@ -1,6 +1,8 @@
 package uk.m0nom.adif3.args;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -8,6 +10,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@EqualsAndHashCode
+@NoArgsConstructor
 public class TransformControl {
     private String myLatitude;
     private String myLongitude;
@@ -55,7 +59,5 @@ public class TransformControl {
 
     private Boolean markdown;
 
-    public TransformControl() {
-    }
-
+    private Double hfAntennaTakeoffAngle;
 }

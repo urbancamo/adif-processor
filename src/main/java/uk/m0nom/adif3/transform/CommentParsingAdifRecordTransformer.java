@@ -491,9 +491,21 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         break;
                     case "GridSquare":
                         if (MaidenheadLocatorConversion.isAValidGridSquare(value)) {
-                            rec.setGridsquare(value.substring(0,6));
+                            switch (value.length()) {
+                                case 4:
+                                case 6:
+                                case 8:
+                                case 10:
+                                    rec.setGridsquare(value.substring(0, value.length()));
+                                    rec.setCoordinates(MaidenheadLocatorConversion.locatorToCoords(value));
+                                    break;
+                                default:
+                                    logger.severe(String.format("Gridsquare %s isn't valid", value));
+                                    break;
+                            }
+                        } else {
+                            logger.severe(String.format("Gridsquare %s isn't valid", value));
                         }
-                        rec.setCoordinates(MaidenheadLocatorConversion.locatorToCoords(value));
                         break;
                     case "RxPwr":
                         String pwr = value.toLowerCase(Locale.ROOT).trim();

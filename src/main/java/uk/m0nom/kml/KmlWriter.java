@@ -67,17 +67,19 @@ public class KmlWriter {
                 }
                 first = false;
             }
+            Folder contactFolder = folder.createAndAddFolder().withName(qso.getTo().getCallsign()).withOpen(false);
             GlobalCoordinates coords = qso.getRecord().getCoordinates();
             if (coords != null) {
-                String error = createStationMarker(doc, folder, qso);
+                String error = createStationMarker(doc, contactFolder, qso);
                 if (error != null) {
                     results.setError(error);
                 }
 
                 if (qso.getTo().hasActivity() && control.getKmlShowLocalActivationSites()) {
-                    kmlLocalActivities.addLocalActivities(doc, folder, qso.getTo(), control.getKmlLocalActivationSitesRadius(), activities);
+                    Folder localActivityFolder = contactFolder.createAndAddFolder().withName("Local Activity").withOpen(false);
+                    kmlLocalActivities.addLocalActivities(doc, localActivityFolder, qso.getTo(), control.getKmlLocalActivationSitesRadius(), activities);
                 }
-                error = createCommsLink(doc, folder, qso);
+                error = createCommsLink(doc, contactFolder, qso, control);
                 if (error != null) {
                     results.setError(error);
                 }
@@ -100,6 +102,7 @@ public class KmlWriter {
    }
 
     private String createMyStationMarker(Document document, Folder folder, Qso qso) {
+        // Create a folder for this information
         GlobalCoordinates coords = qso.getRecord().getMyCoordinates();
         if (qso.getFrom().getCoordinates() == null && coords == null) {
             return String.format("Cannot determine coordinates for station %s, please specify a location override", qso.getFrom().getCallsign());
@@ -107,6 +110,7 @@ public class KmlWriter {
         double longitude = coords.getLongitude();
         double latitude = coords.getLatitude();
         String station = qso.getFrom().getCallsign();
+        Folder myFolder = folder.createAndAddFolder().withName(station).withOpen(false);
 
         Icon icon = new Icon().withHref(new KmlStationIcon().getIconFromStation(control, qso.getFrom()));
         Style style = document.createAndAddStyle()
@@ -116,7 +120,7 @@ public class KmlWriter {
         style.createAndSetIconStyle().withScale(1.0).withIcon(icon); // set size and icon
         style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the continent name
 
-        Placemark placemark = folder.createAndAddPlacemark();
+        Placemark placemark = myFolder.createAndAddPlacemark();
         String htmlPanelContent = new KmlStationInfoPanel().getPanelContent(qso.getFrom());
         // use the style for each continent
         placemark.withName(station)
@@ -240,7 +244,7 @@ public class KmlWriter {
     }
 
 
-    private String createCommsLink(Document document, Folder folder, Qso qso) {
+    private String createCommsLink(Document document, Folder folder, Qso qso, TransformControl control) {
         String commsLinkId = getCommsLinkId(qso);
         String commsLinkName = getCommsLinkName(qso);
         String commsLinkShadowId = getCommsLinkShadowId(qso);
@@ -298,7 +302,8 @@ public class KmlWriter {
                 theirAltitude = summitInfo.getAltitude();
             }
         }
-        HfLineResult result = KmlGeodesicUtils.getHfLine(hfLine, myCoords, coords, ionosphere, rec.getFreq(), rec.getBand(), rec.getTimeOn(), myAltitude, theirAltitude);
+        HfLineResult result = KmlGeodesicUtils.getHfLine(hfLine, myCoords, coords, ionosphere,
+                rec.getFreq(), rec.getBand(), rec.getTimeOn(), myAltitude, theirAltitude, control.getHfAntennaTakeoffAngle());
 
         // Set the contact distance in the ADIF output file
         rec.setDistance(result.getDistance());
