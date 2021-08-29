@@ -58,6 +58,7 @@ public class TransformControl {
     private Double kmlLocalActivationSitesRadius;
 
     private Boolean markdown;
+    private Boolean contestResults;
 
     private Double hfAntennaTakeoffAngle;
 }

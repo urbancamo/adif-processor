@@ -39,7 +39,6 @@ public class Adif3Transformer {
             }
         }
 
-        // Change the header
         log.getHeader().setProgramId("M0NOM ADIF Transformer");
         log.getHeader().setProgramVersion("1.0");
         return qsos;
