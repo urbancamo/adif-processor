@@ -66,25 +66,21 @@ columns:
       header: 'SOTA-TX'
       length: 9
   - column:
-      adif: 'SOTA_REF'
-      header: 'SOTA-RX'
-      length: 9
-  - column:
       adif: 'NAME'
       header: 'OPERATOR'
-      length: 10
+      length: 19
   - column:
       adif: 'SIG'
       header: 'SIG'
-      length: 5
+      length: 4
   - column:
       adif: 'SIG_INFO'
       header: 'REF'
-      length: 8
+      length: 10
   - column:
       adif: 'COMMENT'
       header: 'COMMENT'
-      length: 29
+      length: 28
   - column:
       adif: 'GRIDSQUARE'
       header: 'MHL'

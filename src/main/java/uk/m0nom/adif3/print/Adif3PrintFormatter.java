@@ -131,7 +131,7 @@ public class Adif3PrintFormatter {
     }
 
     private void printColumnHeaderUnderline(ColumnConfig column, StringBuilder line) {
-        String separator = StringUtils.repeat(printJobConfig.pageConfig.getHeaderSeparator().charAt(0), column.getLength()-1);
+        String separator = StringUtils.repeat(printJobConfig.pageConfig.getHeaderSeparator().charAt(0), column.getLength());
         printValueToColumn(column, separator, line);
     }
 

@@ -340,7 +340,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 if (callsignData.getLat() != null && callsignData.getLon() != null && !invalidGridBasedLoc) {
                     GlobalCoordinates coord = new GlobalCoordinates(callsignData.getLat(), callsignData.getLon());
                     rec.setCoordinates(coord);
-                } else if (rec.getGridsquare() == null && !invalidGridBasedLoc) {
+                }
+                if (rec.getGridsquare() == null && !invalidGridBasedLoc) {
                     rec.setGridsquare(callsignData.getGrid());
                 }
             }
@@ -408,7 +409,11 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 Activity activity = database.get(activityLocation);
                 if (activity != null) {
                     qso.getTo().addActivity(activity);
-                    setTheirLocationFromActivity(qso, activity);
+
+                    // Make sure if they have a SOTA reference this takes precedence over any other reference
+                    if (rec.getSotaRef() == null) {
+                        setTheirLocationFromActivity(qso, activity);
+                    }
                     unmapped.put(activityType, activityLocation);
                 }
             }
@@ -644,7 +649,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             issueWarnings(rec);
         }
         if (latitude != null && longitude != null) {
-            rec.setCoordinates(new GlobalCoordinates(latitude, longitude));
+            GlobalCoordinates coords = new GlobalCoordinates(latitude, longitude);
+            rec.setCoordinates(coords);
+            rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(coords));
             logger.info(String.format("Override location of %s: %s", rec.getCall(), rec.getCoordinates().toString()));
         }
     }
