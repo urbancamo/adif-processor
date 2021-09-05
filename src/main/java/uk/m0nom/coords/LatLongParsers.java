@@ -9,7 +9,11 @@ public class LatLongParsers {
     private List<LatLongParser> parsers = new ArrayList<>();
 
     public LatLongParsers() {
-         parsers.add(new CommaSeparatedDecimalLatLongParser());
+        parsers.add(new CommaSeparatedDecimalLatLongParser());
+        parsers.add(new CommaSeparatedDecimalWithNsewLatLongParser());
+        parsers.add(new DecimalWithNsewLatLongParser());
+        parsers.add(new DegreesDecimalMinutesLatLongParser());
+        parsers.add(new DegreesMinutesSecondsLatLongParser());
     }
 
     public GlobalCoordinates parseStringLatLong(String value) {

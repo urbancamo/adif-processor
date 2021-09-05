@@ -11,6 +11,7 @@ import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityReader;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.activity.wwff.WwffInfo;
+import uk.m0nom.coords.LatLongParsers;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.io.IOException;
@@ -29,9 +30,11 @@ import java.util.logging.Logger;
 
 public class CotaCsvReader extends ActivityReader {
     private static final Logger logger = Logger.getLogger(CotaCsvReader.class.getName());
+    private final LatLongParsers latLongParsers;
 
     public CotaCsvReader(String sourceFile) {
         super(ActivityType.WWFF, sourceFile);
+        latLongParsers = new LatLongParsers();
     }
 
     public ActivityDatabase read(InputStream inputStream) throws IOException {
