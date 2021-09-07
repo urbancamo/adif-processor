@@ -567,6 +567,12 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         setTheirCoordFromActivity(rec, ActivityType.POTA, potaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.POTA).get(potaId));
                         break;
+                    case "CotaRef":
+                        // Strip off any S2s reference
+                        String cotaId = StringUtils.split(value, ' ')[0];
+                        setTheirCoordFromActivity(rec, ActivityType.COTA, cotaId.toUpperCase(), unmapped);
+                        qso.getTo().addActivity(activities.getDatabase(ActivityType.COTA).get(cotaId));
+                        break;
                     case "WwffRef":
                         // Strip off any S2s reference
                         String wwffId = StringUtils.split(value, ' ')[0];

@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DegreesDecimalMinutesLatLongParser implements LatLongParser {
-    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d]+([\\d\\.]+).*([NnSs])[^\\d]*(\\d+)[^\\d]+([\\d\\.]+).*([EeWw])");
+    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d]+(\\d+\\.\\d+).*([NnSs])[^\\d]*(\\d+)[^\\d]+(\\d+\\.\\d+).*([EeWw])");
 
     @Override
     public Pattern getPattern() {
@@ -27,6 +27,9 @@ public class DegreesDecimalMinutesLatLongParser implements LatLongParser {
 
             Double latitude = LatLongUtils.parseDegDecimalMinLatitude(latDegrees, latMinutes, latNorthSouth);
             Double longitude = LatLongUtils.parseDegDecimalMinLongitude(longDegrees, longMinutes, longEastWest);
+            if (latitude == null || longitude == null) {
+                throw new UnsupportedOperationException();
+            }
             return new GlobalCoordinates(latitude, longitude);
         }
         return null;

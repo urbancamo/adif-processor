@@ -29,6 +29,9 @@ public class KmlStationIcon {
         if (station.isDoing(ActivityType.WWFF)) {
             return control.getKmlWwffIconUrl();
         }
+        if (station.isDoing(ActivityType.COTA)) {
+            return control.getKmlCotaIconUrl();
+        }
         if (cs.endsWith("/P")) {
             return control.getKmlPortableIconUrl();
         }

@@ -50,6 +50,7 @@ public class TransformControl {
     private String kmlWotaIconUrl;
     private String kmlHemaIconUrl;
     private String kmlWwffIconUrl;
+    private String kmlCotaIconUrl;
 
     private String kmlCwIconUrl;
 

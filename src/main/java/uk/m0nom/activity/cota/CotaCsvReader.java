@@ -33,7 +33,7 @@ public class CotaCsvReader extends ActivityReader {
     private final LatLongParsers latLongParsers;
 
     public CotaCsvReader(String sourceFile) {
-        super(ActivityType.WWFF, sourceFile);
+        super(ActivityType.COTA, sourceFile);
         latLongParsers = new LatLongParsers();
     }
 
@@ -58,7 +58,7 @@ public class CotaCsvReader extends ActivityReader {
                 logger.severe(String.format("Error reading line %d: %s", line, e.getMessage()));
             }
             // The database is all over the place, so we have to do some serious post-processing here.
-            if (attemptToExtractLocationInformation(info)) {
+            if (extractLocationInformation(info)) {
                 foundLocationsCount++;
             }
             cotaInfo.put(info.getRef(), info);
@@ -68,22 +68,21 @@ public class CotaCsvReader extends ActivityReader {
         return new ActivityDatabase(ActivityType.COTA, cotaInfo);
     }
 
-    private boolean attemptToExtractLocationInformation(CotaInfo cota) {
+    private boolean extractLocationInformation(CotaInfo cota) {
         // The location information is stored in all sorts of ways, so we have to go through each one
         // Start with the most accurate attempting to parse Latitude/Longitude in all the variants
+        String locationAndInfo = cota.getLocation() + " " + cota.getInformation();
 
-        // Maidenhead location in location column
-        try {
-            GlobalCoordinates coords = MaidenheadLocatorConversion.locatorToCoords(cota.getInformation());
+        // Try location field
+        GlobalCoordinates coords = latLongParsers.parseStringLatLong(locationAndInfo);
+        if (coords != null) {
             cota.setCoords(coords);
             return true;
-        } catch (UnsupportedOperationException e) {
-            // Nothing to do here, keep information as is
         }
 
-        // Maidenhead location in information column
+        // Maidenhead location in there?
         try {
-            GlobalCoordinates coords = MaidenheadLocatorConversion.locatorToCoords(cota.getInformation());
+            coords = MaidenheadLocatorConversion.locatorToCoords(locationAndInfo);
             cota.setCoords(coords);
             return true;
         } catch (UnsupportedOperationException e) {

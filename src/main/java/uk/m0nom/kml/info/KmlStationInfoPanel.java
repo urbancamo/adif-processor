@@ -36,20 +36,10 @@ public class KmlStationInfoPanel implements KmlInfoPanel {
             sb.append(String.format("Callsign: %s<br/>", callsign));
         }
 
-        if (station.isDoing(ActivityType.SOTA)) {
-            sb.append(infoMap.get(ActivityType.SOTA).getInfo(station.getActivity(ActivityType.SOTA)));
-        }
-        if (station.isDoing(ActivityType.HEMA)) {
-            sb.append(infoMap.get(ActivityType.HEMA).getInfo(station.getActivity(ActivityType.HEMA)));
-        }
-        if (station.isDoing(ActivityType.WOTA)) {
-            sb.append(infoMap.get(ActivityType.WOTA).getInfo(station.getActivity(ActivityType.WOTA)));
-        }
-        if (station.isDoing(ActivityType.POTA)) {
-            sb.append(infoMap.get(ActivityType.POTA).getInfo(station.getActivity(ActivityType.POTA)));
-        }
-        if (station.isDoing(ActivityType.WWFF)) {
-            sb.append(infoMap.get(ActivityType.WWFF).getInfo(station.getActivity(ActivityType.WWFF)));
+        for (ActivityType activityType : ActivityType.values()) {
+            if (station.isDoing(activityType)) {
+                sb.append(infoMap.get(activityType).getInfo(station.getActivity(activityType)));
+            }
         }
 
         if (qrzInfo != null) {

@@ -140,7 +140,7 @@ public class KmlWriter {
         String id = getStationMarkerId(qso);
         String name = getStationMarkerName(qso);
         Adif3Record rec = qso.getRecord();
-        if (qso.getFrom().getCoordinates() == null && rec.getMyCoordinates() == null) {
+        if (qso.getTo().getCoordinates() == null && rec.getCoordinates() == null) {
             return String.format("Cannot determine coordinates for station %s, please specify a location override", qso.getFrom().getCallsign());
         }
         GlobalCoordinates myCoords = rec.getMyCoordinates();
