@@ -93,7 +93,7 @@ public class LatLongUtils {
     }
 
     public static Double parseDegMinSecLatitude(String latDegrees, String latMinutes, String latSeconds, String latNorthSouth) {
-        Double decimal = parseDegreesMinutesSeconds(latDegrees, latMinutes, latSeconds, "N".equalsIgnoreCase(latNorthSouth));
+        Double decimal = parseDegreesMinutesSeconds(latDegrees, latMinutes, latSeconds, "S".equalsIgnoreCase(latNorthSouth));
         if (decimal != null && checkLatitudeRange(decimal)) {
             return decimal;
         }
@@ -101,17 +101,17 @@ public class LatLongUtils {
     }
 
     public static Double parseDegMinSecLongitude(String longDegrees, String longMinutes, String longSeconds, String longEastWest) {
-        Double decimal = parseDegreesMinutesSeconds(longDegrees, longMinutes, longSeconds, "E".equalsIgnoreCase(longEastWest));
+        Double decimal = parseDegreesMinutesSeconds(longDegrees, longMinutes, longSeconds, "W".equalsIgnoreCase(longEastWest));
         if (decimal != null && checkLatitudeRange(decimal)) {
             return decimal;
         }
         return null;
     }
 
-    private static Double parseDegreesMinutesSeconds(String degrees, String minutes, String seconds, boolean positive) {
+    private static Double parseDegreesMinutesSeconds(String degrees, String minutes, String seconds, boolean negative) {
         try {
             Double d = Double.parseDouble(degrees);
-            if (!positive) {
+            if (negative) {
                 d = -d;
             }
             Double m = Double.parseDouble(minutes);
@@ -124,7 +124,7 @@ public class LatLongUtils {
 
 
     public static Double parseDegDecimalMinLatitude(String latDegrees, String latMinutes, String latNorthSouth) {
-        Double decimal = parseDegreesMinutesSeconds(latDegrees, latMinutes, "0.0", "N".equalsIgnoreCase(latNorthSouth));
+        Double decimal = parseDegreesMinutesSeconds(latDegrees, latMinutes, "0.0", "S".equalsIgnoreCase(latNorthSouth));
         if (decimal != null && checkLatitudeRange(decimal)) {
             return decimal;
         }
@@ -132,7 +132,7 @@ public class LatLongUtils {
     }
 
     public static Double parseDegDecimalMinLongitude(String longDegrees, String longMinutes, String longEastWest) {
-        Double decimal = parseDegreesMinutesSeconds(longDegrees, longMinutes, "0.0", "E".equalsIgnoreCase(longEastWest));
+        Double decimal = parseDegreesMinutesSeconds(longDegrees, longMinutes, "0.0", "W".equalsIgnoreCase(longEastWest));
         if (decimal != null && checkLatitudeRange(decimal)) {
             return decimal;
         }

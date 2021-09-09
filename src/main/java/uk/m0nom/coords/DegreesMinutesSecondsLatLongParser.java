@@ -1,12 +1,10 @@
 package uk.m0nom.coords;
 
-import org.gavaghan.geodesy.GlobalCoordinates;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DegreesMinutesSecondsLatLongParser  implements LocationParser {
-    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+).*([NnSs])[^\\d]+(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+).*([EeWwOo])");
+    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+)[\\s\"]+([NnSs])[^\\d]+(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+)[\\s\"]*([EeWwOo])");
 
     @Override
     public Pattern getPattern() {
@@ -14,8 +12,8 @@ public class DegreesMinutesSecondsLatLongParser  implements LocationParser {
     }
 
     @Override
-    public GlobalCoordinatesWithAccuracy parse(String latLongString) {
-        Matcher matcher = getPattern().matcher(latLongString);
+    public GlobalCoordinatesWithLocationSource parse(String location) {
+        Matcher matcher = getPattern().matcher(location);
         if (matcher.find()) {
             String latDegrees = matcher.group(1);
             String latMinutes = matcher.group(2);
@@ -29,7 +27,7 @@ public class DegreesMinutesSecondsLatLongParser  implements LocationParser {
 
             Double latitude = LatLongUtils.parseDegMinSecLatitude(latDegrees, latMinutes, latSeconds, latNorthSouth);
             Double longitude = LatLongUtils.parseDegMinSecLongitude(longDegrees, longMinutes, longSeconds, longEastWest);
-            return new GlobalCoordinatesWithAccuracy(latitude, longitude);
+            return new GlobalCoordinatesWithLocationSource(latitude, longitude);
         }
         return null;
     }

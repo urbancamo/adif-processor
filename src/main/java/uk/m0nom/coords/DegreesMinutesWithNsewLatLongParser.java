@@ -3,8 +3,8 @@ package uk.m0nom.coords;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DegreesDecimalMinutesLatLongParser implements LocationParser {
-    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d]+(\\d+\\.\\d+).*([NnSs])[^\\d]*(\\d+)[^\\d]+(\\d+\\.\\d+).*([EeWwOo])");
+public class DegreesMinutesWithNsewLatLongParser implements LocationParser {
+    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d]+(\\d+)[^NnSs]*([NnSs])[^\\d]+(\\d+)[^\\d]+(\\d+)[^EeWwOo]*([EeWwOo])");
 
     @Override
     public Pattern getPattern() {
@@ -14,6 +14,7 @@ public class DegreesDecimalMinutesLatLongParser implements LocationParser {
     @Override
     public GlobalCoordinatesWithLocationSource parse(String location) {
         Matcher matcher = getPattern().matcher(location);
+
         if (matcher.find()) {
             String latDegrees = matcher.group(1);
             String latMinutes = matcher.group(2);
@@ -25,6 +26,7 @@ public class DegreesDecimalMinutesLatLongParser implements LocationParser {
 
             Double latitude = LatLongUtils.parseDegDecimalMinLatitude(latDegrees, latMinutes, latNorthSouth);
             Double longitude = LatLongUtils.parseDegDecimalMinLongitude(longDegrees, longMinutes, longEastWest);
+
             if (latitude == null || longitude == null) {
                 throw new UnsupportedOperationException();
             }

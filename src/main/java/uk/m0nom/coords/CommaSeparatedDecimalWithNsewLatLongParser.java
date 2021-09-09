@@ -1,12 +1,10 @@
 package uk.m0nom.coords;
 
-import org.gavaghan.geodesy.GlobalCoordinates;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommaSeparatedDecimalWithNsewLatLongParser implements LocationParser {
-    private final static Pattern PATTERN = Pattern.compile("([+-]*\\d+\\.\\d+)\\s*([NnSs])\\s*,\\s*([+-]*\\d+\\.\\d+)\\s*([EeWw])");
+    private final static Pattern PATTERN = Pattern.compile("([+-]*\\d+\\.\\d+)\\s*([NnSs])\\s*,\\s*([+-]*\\d+\\.\\d+)\\s*([EeWwOo])");
 
     @Override
     public Pattern getPattern() {
@@ -14,8 +12,8 @@ public class CommaSeparatedDecimalWithNsewLatLongParser implements LocationParse
     }
 
     @Override
-    public GlobalCoordinatesWithAccuracy parse(String latLongString) {
-        Matcher matcher = getPattern().matcher(latLongString);
+    public GlobalCoordinatesWithLocationSource parse(String location) {
+        Matcher matcher = getPattern().matcher(location);
         if (matcher.find()) {
             String latString = matcher.group(1);
             String latNorthSouth = matcher.group(2);
@@ -23,7 +21,7 @@ public class CommaSeparatedDecimalWithNsewLatLongParser implements LocationParse
             String longEastWest = matcher.group(4);
             Double latitude = LatLongUtils.parseDecimalLatitude(latString, latNorthSouth);
             Double longitude = LatLongUtils.parseDecimalLongitude(longString, longEastWest);
-            return new GlobalCoordinatesWithAccuracy(latitude, longitude);
+            return new GlobalCoordinatesWithLocationSource(latitude, longitude);
         }
         return null;
     }

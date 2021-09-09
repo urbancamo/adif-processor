@@ -1,13 +1,13 @@
 package uk.m0nom.activity.cota;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.input.BOMInputStream;
 import org.gavaghan.geodesy.GlobalCoordinates;
-import uk.m0nom.activity.Activity;
-import uk.m0nom.activity.ActivityDatabase;
-import uk.m0nom.activity.ActivityReader;
-import uk.m0nom.activity.ActivityType;
+import uk.m0nom.activity.*;
+import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
 import uk.m0nom.coords.LocationParsers;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
@@ -20,20 +20,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+@Getter
+@Setter
 public class CotaCsvReader extends ActivityReader {
     private static final Logger logger = Logger.getLogger(CotaCsvReader.class.getName());
-    private final LocationParsers locationParsers;
 
     public CotaCsvReader(String sourceFile) {
         super(ActivityType.COTA, sourceFile);
-        locationParsers = new LocationParsers();
-    }
+     }
+
 
     public ActivityDatabase read(InputStream inputStream) throws IOException {
         Map<String, Activity> cotaInfo = new HashMap<>();
 
         final Reader reader = new InputStreamReader(new BOMInputStream(inputStream), StandardCharsets.ISO_8859_1);
-        int line = 1;
+        int line = 0;
         int foundLocationsCount = 0;
         Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(reader);
         for (CSVRecord record : records) {
@@ -50,37 +51,10 @@ public class CotaCsvReader extends ActivityReader {
             } catch (IllegalArgumentException e) {
                 logger.severe(String.format("Error reading line %d: %s", line, e.getMessage()));
             }
-            // The database is all over the place, so we have to do some serious post-processing here.
-            if (extractLocationInformation(info)) {
-                foundLocationsCount++;
-            }
             cotaInfo.put(info.getRef(), info);
         }
+        logger.info(String.format("Loaded %d castles", line));
 
-        logger.info(String.format("Found %d castle locations out of the total %d loaded", foundLocationsCount, line-1));
         return new ActivityDatabase(ActivityType.COTA, cotaInfo);
-    }
-
-    private boolean extractLocationInformation(CotaInfo cota) {
-        // The location information is stored in all sorts of ways, so we have to go through each one
-        // Start with the most accurate attempting to parse Latitude/Longitude in all the variants
-        String locationAndInfo = cota.getLocation() + " " + cota.getInformation();
-
-        // Try location field
-        GlobalCoordinates coords = locationParsers.parseStringLatLong(locationAndInfo);
-        if (coords != null) {
-            cota.setCoords(coords);
-            return true;
-        }
-
-        // Maidenhead location in there?
-        try {
-            coords = MaidenheadLocatorConversion.locatorToCoords(locationAndInfo);
-            cota.setCoords(coords);
-            return true;
-        } catch (UnsupportedOperationException e) {
-            // Nothing to do here, keep information as is
-        }
-        return false;
     }
 }

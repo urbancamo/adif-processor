@@ -1,7 +1,5 @@
 package uk.m0nom.coords;
 
-import org.gavaghan.geodesy.GlobalCoordinates;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,14 +12,14 @@ public class CommaSeparatedDecimalLatLongParser implements LocationParser {
     }
 
     @Override
-    public GlobalCoordinatesWithAccuracy parse(String latLongString) {
-        Matcher matcher = getPattern().matcher(latLongString);
+    public GlobalCoordinatesWithLocationSource parse(String location) {
+        Matcher matcher = getPattern().matcher(location);
         if (matcher.find()) {
             String latString = matcher.group(1);
             String longString = matcher.group(2);
             Double latitude = LatLongUtils.parseDecimalLatitude(latString);
             Double longitude = LatLongUtils.parseDecimalLongitude(longString);
-            return new GlobalCoordinatesWithAccuracy(latitude, longitude);
+            return new GlobalCoordinatesWithLocationSource(latitude, longitude);
         }
         return null;
     }

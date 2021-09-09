@@ -5,6 +5,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang3.ArrayUtils;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
+import uk.m0nom.coords.LocationSource;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -32,7 +33,7 @@ public class CotaCsvWriter {
             cotaBasedOnCountry.get(country).add(cota);
         }
 
-        String[] HEADERS = { "COTA WCA", "CASTLES", "PREFIX", "NAME OF CASTLE", "LOCATION", "INFORMATION", "LAT LONG"};
+        String[] HEADERS = { "COTA WCA", "CASTLES", "PREFIX", "NAME OF CASTLE", "LOCATION", "INFORMATION", "LAT LONG", "LOCATION SOURCE"};
 
         // Now process each country in turn
         for (String country : cotaBasedOnCountry.keySet()) {
@@ -47,10 +48,12 @@ public class CotaCsvWriter {
                     int record = 1;
                     for (CotaInfo info : cotaBasedOnCountry.get(country)) {
                         String coordsString ="";
+                        String locationSource = "";
                         if (info.getCoords() != null) {
                             coordsString = String.format("%.5f, %.5f", info.getCoords().getLatitude(), info.getCoords().getLongitude());
+                            locationSource = info.getCoords().getSource().toString();
                         }
-                        printer.printRecord(info.getRef(), info.getNoCastles(), info.getPrefix(), info.getName(), info.getLocation(), info.getInformation(), coordsString);
+                        printer.printRecord(info.getRef(), info.getNoCastles(), info.getPrefix(), info.getName(), info.getLocation(), info.getInformation(), coordsString, locationSource);
                         record++;
                     }
                     logger.info(String.format("Wrote %d records to %s", record, outFile.getAbsolutePath()));

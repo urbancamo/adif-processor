@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
+import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,8 +32,8 @@ public abstract class ActivityReader {
      * @param longColName name of Longitude column in CSV record
      * @return Global Coordinate for lat/long, or null if neither specified
      */
-    protected GlobalCoordinates readCoords(CSVRecord record, String latColName, String longColName) {
-        GlobalCoordinates location = null;
+    protected GlobalCoordinatesWithLocationSource readCoords(CSVRecord record, String latColName, String longColName) {
+        GlobalCoordinatesWithLocationSource location = null;
 
         String longitudeStr = record.get(latColName);
 
@@ -51,8 +52,8 @@ public abstract class ActivityReader {
 
 
             }
-            if (latitude != null && longitude != null) {
-                location = new GlobalCoordinates(longitude, latitude);
+            if ((latitude != null && longitude != null) && (latitude != 0 && longitude != 0)) {
+                location = new GlobalCoordinatesWithLocationSource(longitude, latitude);
             }
         }
         return location;

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
+import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
 
 @Getter
 @Setter
@@ -11,7 +12,7 @@ public abstract class Activity {
     private ActivityType type;
     private String name;
     private String ref;
-    private GlobalCoordinates coords;
+    private GlobalCoordinatesWithLocationSource coords;
     private String grid;
     private Double altitude;
 

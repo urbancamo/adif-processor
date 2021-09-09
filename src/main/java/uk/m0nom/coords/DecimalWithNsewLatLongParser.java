@@ -1,12 +1,10 @@
 package uk.m0nom.coords;
 
-import org.gavaghan.geodesy.GlobalCoordinates;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DecimalWithNsewLatLongParser implements LocationParser {
-    private final static Pattern PATTERN = Pattern.compile("(\\d+\\.\\d+)\\s*([NnSs])\\s*(\\d+\\.\\d+)\\s*([EeWw])");
+    private final static Pattern PATTERN = Pattern.compile("(\\d+\\.\\d+)\\s*°*\\s*([NnSs])\\s*(\\d+\\.\\d+)\\s*°*\\s([EeWwOo])");
 
     @Override
     public Pattern getPattern() {
@@ -14,8 +12,8 @@ public class DecimalWithNsewLatLongParser implements LocationParser {
     }
 
     @Override
-    public GlobalCoordinatesWithAccuracy parse(String latLongString) {
-        Matcher matcher = getPattern().matcher(latLongString);
+    public GlobalCoordinatesWithLocationSource parse(String location) {
+        Matcher matcher = getPattern().matcher(location);
         if (matcher.find()) {
             String latString = matcher.group(1);
             String latNorthSouth = matcher.group(2).toUpperCase();
@@ -25,7 +23,7 @@ public class DecimalWithNsewLatLongParser implements LocationParser {
 
             Double latitude = LatLongUtils.parseDecimalLatitudeWithNs(latString, latNorthSouth);
             Double longitude = LatLongUtils.parseDecimalLongitudeWithEw(longString, longEastWest);
-            return new GlobalCoordinatesWithAccuracy(latitude, longitude);
+            return new GlobalCoordinatesWithLocationSource(latitude, longitude);
         }
         return null;
     }
