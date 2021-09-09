@@ -5,7 +5,7 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CommaSeparatedDecimalWithNsewLatLongParser implements LatLongParser {
+public class CommaSeparatedDecimalWithNsewLatLongParser implements LocationParser {
     private final static Pattern PATTERN = Pattern.compile("([+-]*\\d+\\.\\d+)\\s*([NnSs])\\s*,\\s*([+-]*\\d+\\.\\d+)\\s*([EeWw])");
 
     @Override
@@ -14,7 +14,7 @@ public class CommaSeparatedDecimalWithNsewLatLongParser implements LatLongParser
     }
 
     @Override
-    public GlobalCoordinates parse(String latLongString) {
+    public GlobalCoordinatesWithAccuracy parse(String latLongString) {
         Matcher matcher = getPattern().matcher(latLongString);
         if (matcher.find()) {
             String latString = matcher.group(1);
@@ -23,7 +23,7 @@ public class CommaSeparatedDecimalWithNsewLatLongParser implements LatLongParser
             String longEastWest = matcher.group(4);
             Double latitude = LatLongUtils.parseDecimalLatitude(latString, latNorthSouth);
             Double longitude = LatLongUtils.parseDecimalLongitude(longString, longEastWest);
-            return new GlobalCoordinates(latitude, longitude);
+            return new GlobalCoordinatesWithAccuracy(latitude, longitude);
         }
         return null;
     }

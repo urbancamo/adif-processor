@@ -23,6 +23,10 @@ public class ActivityDatabase {
     public Activity get(String ref) { return database.get(ref);
     }
 
+    public Collection<Activity> getValues() {
+        return database.values();
+    }
+
     public Collection<Activity> findActivitiesInRadius(Activity activity, double radius) {
         List<Activity> matches = new ArrayList<>(10);
 

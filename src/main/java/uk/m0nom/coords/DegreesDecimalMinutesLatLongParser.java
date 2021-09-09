@@ -5,7 +5,7 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DegreesDecimalMinutesLatLongParser implements LatLongParser {
+public class DegreesDecimalMinutesLatLongParser implements LocationParser {
     private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d]+(\\d+\\.\\d+).*([NnSs])[^\\d]*(\\d+)[^\\d]+(\\d+\\.\\d+).*([EeWw])");
 
     @Override
@@ -14,7 +14,7 @@ public class DegreesDecimalMinutesLatLongParser implements LatLongParser {
     }
 
     @Override
-    public GlobalCoordinates parse(String latLongString) {
+    public GlobalCoordinatesWithAccuracy parse(String latLongString) {
         Matcher matcher = getPattern().matcher(latLongString);
         if (matcher.find()) {
             String latDegrees = matcher.group(1);
@@ -30,7 +30,7 @@ public class DegreesDecimalMinutesLatLongParser implements LatLongParser {
             if (latitude == null || longitude == null) {
                 throw new UnsupportedOperationException();
             }
-            return new GlobalCoordinates(latitude, longitude);
+            return new GlobalCoordinatesWithAccuracy(latitude, longitude);
         }
         return null;
     }

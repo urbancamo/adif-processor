@@ -1,17 +1,14 @@
 package uk.m0nom.activity.cota;
 
-import kotlin.text.Regex;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.input.BOMInputStream;
-import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityReader;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.activity.wwff.WwffInfo;
-import uk.m0nom.coords.LatLongParsers;
+import uk.m0nom.coords.LocationParsers;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.io.IOException;
@@ -19,28 +16,23 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 public class CotaCsvReader extends ActivityReader {
     private static final Logger logger = Logger.getLogger(CotaCsvReader.class.getName());
-    private final LatLongParsers latLongParsers;
+    private final LocationParsers locationParsers;
 
     public CotaCsvReader(String sourceFile) {
         super(ActivityType.COTA, sourceFile);
-        latLongParsers = new LatLongParsers();
+        locationParsers = new LocationParsers();
     }
 
     public ActivityDatabase read(InputStream inputStream) throws IOException {
         Map<String, Activity> cotaInfo = new HashMap<>();
 
-        final Reader reader = new InputStreamReader(new BOMInputStream(inputStream), StandardCharsets.UTF_8);
+        final Reader reader = new InputStreamReader(new BOMInputStream(inputStream), StandardCharsets.ISO_8859_1);
         int line = 1;
         int foundLocationsCount = 0;
         Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(reader);
@@ -49,11 +41,12 @@ public class CotaCsvReader extends ActivityReader {
             //COTA WCA	CASTLES	PREFIX	NAME OF CASTLE	LOCATION	INFORMATION
             CotaInfo info = new CotaInfo();
             try {
-                info.setRef(record.get("COTA WCA"));
-                info.setNoCastles(record.get("CASTLES"));
-                info.setName(record.get("NAME OF CASTLE"));
-                info.setLocation(record.get("LOCATION"));
-                info.setInformation(record.get("INFORMATION"));
+                info.setRef(record.get("COTA WCA").trim());
+                info.setNoCastles(record.get("CASTLES").trim());
+                info.setPrefix(record.get("PREFIX").trim());
+                info.setName(record.get("NAME OF CASTLE").trim());
+                info.setLocation(record.get("LOCATION").trim());
+                info.setInformation(record.get("INFORMATION").trim());
             } catch (IllegalArgumentException e) {
                 logger.severe(String.format("Error reading line %d: %s", line, e.getMessage()));
             }
@@ -74,7 +67,7 @@ public class CotaCsvReader extends ActivityReader {
         String locationAndInfo = cota.getLocation() + " " + cota.getInformation();
 
         // Try location field
-        GlobalCoordinates coords = latLongParsers.parseStringLatLong(locationAndInfo);
+        GlobalCoordinates coords = locationParsers.parseStringLatLong(locationAndInfo);
         if (coords != null) {
             cota.setCoords(coords);
             return true;
