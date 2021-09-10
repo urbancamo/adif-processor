@@ -4,9 +4,11 @@ import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Band;
 import org.marsik.ham.adif.enums.Mode;
+import org.marsik.ham.adif.enums.Propagation;
 import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
+import uk.m0nom.propagation.PropagationMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +16,7 @@ import java.util.Map;
 public class JackOfAllTradesResultCalculator implements ContestResultCalculator {
     private Map<Band, Integer> bandPointsMap = new HashMap<>();
     private Map<Mode, Integer> modePointsMap = new HashMap<>();
+    private Map<Propagation, Integer> propPointsMap = new HashMap<>();
 
     public JackOfAllTradesResultCalculator() {
         bandPointsMap.put(Band.BAND_2190m, 7);
@@ -95,6 +98,25 @@ public class JackOfAllTradesResultCalculator implements ContestResultCalculator 
         modePointsMap.put(Mode.VOI, 1);
         modePointsMap.put(Mode.WINMOR, 1);
         modePointsMap.put(Mode.WSPR, 0);
+
+        propPointsMap.put(Propagation.AIRCRAFT_SCATTER, 6); // Aicraft Scatter
+        propPointsMap.put(Propagation.AURORA_E, 6); // Aurora-E
+        propPointsMap.put(Propagation.AURORA, 6); // Aurora
+        propPointsMap.put(Propagation.BACK_SCATTER, 1); //Backscatter
+        propPointsMap.put(Propagation.ECHOLINK, 0); // Echolink
+        propPointsMap.put(Propagation.EARTH_MOON_EARTH, 12); //	Earth-Moon-Earth
+        propPointsMap.put(Propagation.SPORADIC_E, 2); //	Sporadic E
+        propPointsMap.put(Propagation.F2_REFLECTION, 1); //F2	F2 Reflection
+        propPointsMap.put(Propagation.FIELD_ALIGNED_IRREGULARITIES, 1); //FAI	Field Aligned Irregularities
+        propPointsMap.put(Propagation.INTERNET, 0); //INTERNET	Internet-assisted
+        propPointsMap.put(Propagation.IONOSCATTER, 1); //ION	Ionoscatter
+        propPointsMap.put(Propagation.IRLP, 0); //IRL	IRLP
+        propPointsMap.put(Propagation.METEOR_SCATTER, 6); //MS	Meteor scatter
+        propPointsMap.put(Propagation.REPEATER, 0); //RPT	Terrestrial or atmospheric repeater or transponder
+        propPointsMap.put(Propagation.RAIN_SCATTER, 1); //RS	Rain scatter
+        propPointsMap.put(Propagation.SATELLITE, 6); //SAT	Satellite
+        propPointsMap.put(Propagation.TRANSEQUATORIAL, 1); //TEP	Trans-equatorial
+        propPointsMap.put(Propagation.TROPOSPHERIC_DUCTING, 1); //,TR	Tropospheric ducting
     }
 
     @Override
@@ -113,9 +135,21 @@ public class JackOfAllTradesResultCalculator implements ContestResultCalculator 
     }
 
     private int calculatePoints(Adif3Record record) {
-        int bandPoints = bandPointsMap.get(record.getBand());
-        int modePoints = modePointsMap.get(record.getMode());
+        int bandPoints = 1;
+        if (record.getBand() != null) {
+            bandPoints = bandPointsMap.get(record.getBand());
+        };
 
-        return bandPoints * modePoints;
+        int modePoints = 1;
+        if (record.getMode() != null) {
+            modePoints = modePointsMap.get(record.getMode());
+        }
+
+        int propPoints = 1;
+        if (record.getPropMode() != null) {
+            propPoints = propPointsMap.get(record.getPropMode());
+        }
+
+        return bandPoints * modePoints * propPoints;
     }
 }
