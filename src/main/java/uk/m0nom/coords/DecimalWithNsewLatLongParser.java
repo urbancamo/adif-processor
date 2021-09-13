@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DecimalWithNsewLatLongParser implements LocationParser {
-    private final static Pattern PATTERN = Pattern.compile("(\\d+\\.\\d+)\\s*°*\\s*([NnSs])\\s*(\\d+\\.\\d+)\\s*°*\\s([EeWwOo])");
+    private final static Pattern PATTERN = Pattern.compile("(\\d+\\.\\d+)\\s*°*\\s*([NnSs])\\s+(\\d+\\.\\d+)\\s*°*\\s*([EeWwOo])");
 
     @Override
     public Pattern getPattern() {

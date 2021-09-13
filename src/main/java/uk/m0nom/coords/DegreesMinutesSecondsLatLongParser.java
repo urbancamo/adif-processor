@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DegreesMinutesSecondsLatLongParser  implements LocationParser {
-    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+)[\\s\"]+([NnSs])[^\\d]+(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+)[\\s\"]*([EeWwOo])");
+    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+)\\s*[^NnSs]*\\s*([NnSs])[^\\d]+(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+)\\s*[^NnSs]*\\s*([EeWwOo])");
 
     @Override
     public Pattern getPattern() {
