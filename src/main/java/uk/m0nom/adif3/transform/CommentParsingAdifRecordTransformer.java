@@ -200,6 +200,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             qso.getFrom().addActivity(activities.getDatabase(ActivityType.WWFF).get(control.getWwff().toUpperCase()));
         }
 
+        // Update my SIG/SIG_INFO if there is an activity defined
+        updateMySigInfoFromActivity(qso);
+
         if (StringUtils.isNotEmpty(control.getMyLatitude()) && StringUtils.isNotEmpty(control.getMyLongitude())) {
             double latitude = Double.parseDouble(StringUtils.remove(control.getMyLatitude(), '\''));
             double longitude = Double.parseDouble(StringUtils.remove(control.getMyLongitude(), '\''));
@@ -275,6 +278,21 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             }
         }
         return callsignData;
+    }
+
+    private void updateMySigInfoFromActivity(Qso qso) {
+        if (qso.getRecord().getMySig() == null && qso.getFrom().getActivities() != null) {
+            // We don't bother with SOTA here because it has its own ADIF record
+            for (Activity activity : qso.getFrom().getActivities().values()) {
+                if (activity.getType() != ActivityType.SOTA) {
+                    // Can only process one, however. If required the transformer will have to be run multiple times with each SIG defined separately
+                    qso.getRecord().setMySig(activity.getType().getActivityName());
+                    qso.getRecord().setMySigInfo(activity.getRef());
+                    logger.info(String.format("Setting MYSIG to be: %s with MY_SIGINFO: %s", qso.getRecord().getMySig(), qso.getRecord().getMySigInfo()));
+                    return;
+                }
+            }
+        }
     }
 
     private void reportLocationOverride(String stationCallsign, String grid) {

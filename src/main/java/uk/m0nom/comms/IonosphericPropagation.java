@@ -42,7 +42,7 @@ public class IonosphericPropagation implements CommsLinkGenerator {
         GeodeticCurve curve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, start, end);
         double distance = curve.getEllipsoidalDistance();
 
-        /** work out the ionospheric propagation for this contact */
+        /* work out the ionospheric propagation for this contact */
         double distanceInKm = distance / 1000;
         result.setDistance(distanceInKm);
 
