@@ -1,9 +1,8 @@
 package uk.m0nom.satellite;
 
-import java.time.OffsetDateTime;
+import java.time.LocalTime;
 
 public interface Satellite {
     String getName();
-
-    SatellitePosition getPosition(OffsetDateTime dateTime);
+    SatellitePosition getPosition(LocalTime dateTime);
 }

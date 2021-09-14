@@ -1,4 +1,6 @@
-package uk.m0nom.propagation;
+package uk.m0nom.comms;
+
+import org.marsik.ham.adif.enums.Propagation;
 
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -14,8 +16,8 @@ public class Ionosphere {
 
     /** Height at which we map ground wave comms, per 1000m */
     private final static double GROUNDWAVE_BOUNCE_ALT = 6;
-    private final static double MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM = 200;
-    private final static double MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM = 50;
+    public final static double MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM = 200;
+    public final static double MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM = 50;
 
     public Ionosphere() {
         dayTimeLayers = new HashMap<>();
@@ -30,55 +32,42 @@ public class Ionosphere {
         dayTimeLayers.put("F1", new IonosphericLayer("F1", metersFromKm(150), metersFromKm(250)));
         dayTimeLayers.put("F2", new IonosphericLayer("F2", metersFromKm(250), metersFromKm(500)));
     }
+
     private double metersFromKm(double kms) {
         return kms * 1000;
-    }
-
-    public PropagationMode getPropagationMode(double frequencyInKhz, double distanceInKm) {
-        if (frequencyInKhz > 50000 && distanceInKm < MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM) {
-            return PropagationMode.GROUND_WAVE;
-        } else if (frequencyInKhz > 50000 && distanceInKm >= MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM) {
-            return PropagationMode.SPORADIC_E;
-        } else if (frequencyInKhz < 50000 && frequencyInKhz > 7000 && distanceInKm < MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM) {
-            return PropagationMode.GROUND_WAVE;
-        } else if (frequencyInKhz < 50000 && frequencyInKhz < 7000 && distanceInKm < MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM) {
-            return PropagationMode.GROUND_WAVE;
-        } else if (frequencyInKhz < 50000 && distanceInKm >= MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM) {
-            return PropagationMode.SKY_WAVE;
-        }
-        return PropagationMode.SKY_WAVE;
     }
 
     public List<PropagationBounce> getBounces(double frequencyInKhz, double distanceInKm, LocalTime timeOfDay,
                                               double myAltitude, double theirAltitude, double hfAntennaTakeoffAngle) {
         List<PropagationBounce> bounces = new LinkedList<>();
 
-        PropagationMode mode = getPropagationMode(frequencyInKhz, distanceInKm);
-        switch (mode) {
-            case GROUND_WAVE:
-                // Single hop with nominal altitude that increases as the distance increases
-                double adjustAlt = Math.max(myAltitude, theirAltitude);
-                double apexHeight = Math.max(GROUNDWAVE_BOUNCE_ALT * distanceInKm, adjustAlt);
-                PropagationBounce bounce = new PropagationBounce(mode, distanceInKm, apexHeight, 0.0);
-                bounces.add(bounce);
-                break;
-            case SKY_WAVE:
-                Map<String, IonosphericLayer> layers = getLayerForTimeOfDay(timeOfDay);
-                IonosphericLayer bounceLayer = layers.get("F2");
-                double alt = bounceLayer.getAverageHeight();
-                int hops = calculateNumberOfHops(distanceInKm, alt / 1000, hfAntennaTakeoffAngle);
-                for (int i = 0; i < hops; i++) {
-                    double hopDistance = distanceInKm / hops;
-                    bounce = new PropagationBounce(mode, hopDistance, alt, 0.0);
-                    bounces.add(bounce);
-                }
-                break;
-            case SPORADIC_E:
-                layers = getLayerForTimeOfDay(timeOfDay);
-                bounceLayer = layers.get("E");
-                alt = bounceLayer.getAverageHeight();
-                bounces.add(new PropagationBounce(mode, distanceInKm, alt, 0.0));
-                break;
+        Propagation mode = PropagationModePredictor.predictPropagationMode(frequencyInKhz, distanceInKm);
+        if (mode != null) {
+            switch (mode) {
+                case F2_REFLECTION:
+                    Map<String, IonosphericLayer> layers = getLayerForTimeOfDay(timeOfDay);
+                    IonosphericLayer bounceLayer = layers.get("F2");
+                    double alt = bounceLayer.getAverageHeight();
+                    int hops = calculateNumberOfHops(distanceInKm, alt / 1000, hfAntennaTakeoffAngle);
+                    for (int i = 0; i < hops; i++) {
+                        double hopDistance = distanceInKm / hops;
+                        PropagationBounce bounce = new PropagationBounce(mode, hopDistance, alt, 0.0);
+                        bounces.add(bounce);
+                    }
+                    break;
+                case SPORADIC_E:
+                    layers = getLayerForTimeOfDay(timeOfDay);
+                    bounceLayer = layers.get("E");
+                    alt = bounceLayer.getAverageHeight();
+                    bounces.add(new PropagationBounce(mode, distanceInKm, alt, 0.0));
+                    break;
+            }
+        } else {
+            // Single hop with nominal altitude that increases as the distance increases
+            double adjustAlt = Math.max(myAltitude, theirAltitude);
+            double apexHeight = Math.max(GROUNDWAVE_BOUNCE_ALT * distanceInKm, adjustAlt);
+            PropagationBounce bounce = new PropagationBounce(mode, distanceInKm, apexHeight, 0.0);
+            bounces.add(bounce);
         }
         return bounces;
     }

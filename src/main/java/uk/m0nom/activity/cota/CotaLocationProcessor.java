@@ -4,7 +4,6 @@ import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.activity.wwff.WwffCsvReader;
 import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
 import uk.m0nom.coords.LocationParsers;
 
@@ -18,7 +17,7 @@ public class CotaLocationProcessor {
 
     private static LocationParsers locationParsers = null;
 
-     public static void main(String args[]) throws FileNotFoundException {
+     public static void main(String[] args) throws FileNotFoundException {
         ActivityDatabases summits = new ActivityDatabases();
 
         summits.loadData();
@@ -44,14 +43,14 @@ public class CotaLocationProcessor {
     private static boolean extractLocationInformation(CotaInfo cota) {
         // The location information is stored in all sorts of ways, so we have to go through each one
         // Start with the most accurate attempting to parse Latitude/Longitude in all the variants
-        if (!isUrl(cota.getLocation())) {
+        if (isNotUrl(cota.getLocation())) {
             GlobalCoordinatesWithLocationSource coords = locationParsers.parseStringForCoordinates(cota.getLocation());
             if (coords != null) {
                 cota.setCoords(coords);
                 return true;
             }
         }
-        if (!isUrl(cota.getInformation())) {
+        if (isNotUrl(cota.getInformation())) {
             GlobalCoordinatesWithLocationSource coords = locationParsers.parseStringForCoordinates(cota.getInformation());
             if (coords != null) {
                 cota.setCoords(coords);
@@ -61,8 +60,8 @@ public class CotaLocationProcessor {
         return false;
     }
 
-    private static boolean isUrl(String str) {
+    private static boolean isNotUrl(String str) {
          String toCheck = str.trim().toLowerCase(Locale.ROOT);
-         return (toCheck.startsWith("http://") || toCheck.startsWith("https://"));
+         return (!toCheck.startsWith("http://") && !toCheck.startsWith("https://"));
     }
 }

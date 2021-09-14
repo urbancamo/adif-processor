@@ -1,77 +1,26 @@
-package uk.m0nom.kml;
+package uk.m0nom.geodesic;
 
 import de.micromata.opengis.kml.v_2_2_0.AltitudeMode;
 import de.micromata.opengis.kml.v_2_2_0.LineString;
 import org.gavaghan.geodesy.*;
+import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Band;
-import uk.m0nom.propagation.Ionosphere;
-import uk.m0nom.propagation.PropagationBounce;
-import uk.m0nom.propagation.PropagationMode;
+import org.marsik.ham.adif.enums.Propagation;
+import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.comms.*;
 
 import java.time.LocalTime;
 import java.util.List;
 
-public class KmlGeodesicUtils
+public class GeodesicUtils
 {
-    private final static LocalTime MIDDAY = LocalTime.of(12,0);
-
     public static void getSurfaceLine(LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc) {
         hfLine.addToCoordinates(startGc.getLongitude(), startGc.getLatitude(), 0);
         hfLine.addToCoordinates(endGc.getLongitude(), endGc.getLatitude(), 0);
     }
 
-    public static HfLineResult getHfLine(LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc, Ionosphere ionosphere, Double frequency, Band band, LocalTime timeOfDay, double myAltitude, double theirAltitude, double hfAntennaTakeoffAngle) {
-        /* assume daytime propagation if we don't have a QSO time */
-        HfLineResult result = new HfLineResult();
 
-        LocalTime time = MIDDAY;
-        if (timeOfDay != null) {
-            time = timeOfDay;
-        }
-
-        double frequencyInKhz = 145 * 1000;
-
-        /* Get Frequency from Band */
-        if (frequency != null) {
-            frequencyInKhz = frequency * 1000;
-        }
-        else if (band != null) {
-                frequencyInKhz = (band.getLowerFrequency() + ((band.getUpperFrequency() - band.getLowerFrequency()) / 2.0)) * 1000.0;
-        }
-        GlobalCoordinates start = new GlobalCoordinates(startGc.getLatitude(), startGc.getLongitude());
-        GlobalCoordinates end = new GlobalCoordinates(endGc.getLatitude(), endGc.getLongitude());
-
-        GeodeticCalculator calculator = new GeodeticCalculator();
-        GeodeticCurve curve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, start, end);
-        double distance = curve.getEllipsoidalDistance();
-
-        /** work out the ionospheric propagation for this contact */
-        double distanceInKm = distance / 1000;
-        result.setDistance(distanceInKm);
-
-        double azimuth = curve.getAzimuth();
-        double avgAltitude = 0.0;
-        double avgAngle = 0.0;
-        PropagationMode mode = null;
-        List<PropagationBounce> bounces = ionosphere.getBounces(frequencyInKhz, distanceInKm, time, myAltitude, theirAltitude, hfAntennaTakeoffAngle);
-
-        double skyDistance = addBouncesToLineString(hfLine, bounces, start, end, azimuth, calculator);
-        result.setSkyDistance(skyDistance);
-
-        for (PropagationBounce bounce : bounces) {
-            avgAltitude += bounce.getHeight();
-            avgAngle += bounce.getAngle();
-            mode = bounce.getMode();
-        }
-        result.setMode(mode);
-        result.setAltitude(avgAltitude / bounces.size());
-        result.setAngle(avgAngle / bounces.size());
-        result.setBounces(bounces.size());
-
-        return result;
-    }
-
-    private static double addBouncesToLineString(LineString hfLine, List<PropagationBounce> bounces, GlobalCoordinates start, GlobalCoordinates end, double initialAzimuth, GeodeticCalculator calculator) {
+    public static double addBouncesToLineString(LineString hfLine, List<PropagationBounce> bounces, GlobalCoordinates start, GlobalCoordinates end, double initialAzimuth, GeodeticCalculator calculator) {
         hfLine.addToCoordinates(start.getLongitude(), start.getLatitude(), 0);
         GlobalCoordinates previous = start;
         double azimuth = initialAzimuth;
@@ -118,5 +67,26 @@ public class KmlGeodesicUtils
         hfLine.setExtrude(false);
 
         return skyDistance;
+    }
+
+    private final static double EARTH_RADIUS_IN_METRES = 6378 * 1000;
+    private final static double EARTH_CIRCUMFERENCE_IN_METRES = 40075 * 1000;
+
+    /**
+     * It is assumed the Earth is round for this calculation, so there will be a margin of error.
+     * As the result is used in a calculation of angle shown to the nearest degree, it's probably OK for now
+     * This calculates the straight line distance between two points on the Earth, through the Earth, using the
+     * geodesic distance on the surface of the Earth.
+     *
+     * @param geodesicDistance distance between two points traversing across the Earth surface
+     * @return straight line distance between two points, direct, through the Earth.
+     */
+    public static double geodesicDistanceToStraightLineDistance(double geodesicDistance) {
+        double r = EARTH_RADIUS_IN_METRES;
+        double a = geodesicDistance;
+
+        double d = 2 * r * Math.sin(a / (2 * r));
+
+        return d;
     }
 }

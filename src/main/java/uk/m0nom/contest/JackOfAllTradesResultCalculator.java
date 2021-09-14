@@ -5,10 +5,7 @@ import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Band;
 import org.marsik.ham.adif.enums.Mode;
 import org.marsik.ham.adif.enums.Propagation;
-import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityDatabases;
-import uk.m0nom.activity.ActivityType;
-import uk.m0nom.propagation.PropagationMode;
 
 import java.util.HashMap;
 import java.util.Map;

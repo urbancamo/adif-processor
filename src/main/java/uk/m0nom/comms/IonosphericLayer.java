@@ -1,4 +1,4 @@
-package uk.m0nom.propagation;
+package uk.m0nom.comms;
 
 import lombok.Getter;
 import lombok.Setter;

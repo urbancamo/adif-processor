@@ -1,11 +1,14 @@
-package uk.m0nom.kml;
+package uk.m0nom.kml.activity;
 
 import de.micromata.opengis.kml.v_2_2_0.*;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.adif3.contacts.Station;
+import uk.m0nom.kml.KmlWriter;
+import uk.m0nom.kml.comms.KmlCommsUtils;
 import uk.m0nom.kml.info.KmlInfoMap;
+import uk.m0nom.kml.station.KmlStationUtils;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -64,7 +67,7 @@ public class KmlLocalActivities {
                     .withDescription(htmlPanelContent)
                     .withStyleUrl(getStyleUrl(id))
                     // coordinates and distance (zoom level) of the viewer
-                    .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(altitude).withRange(KmlWriter.DEFAULT_RANGE_METRES);
+                    .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(altitude).withRange(KmlStationUtils.DEFAULT_RANGE_METRES);
            placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
         }
         return null;
