@@ -364,7 +364,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         enricher.enrichAdifForThem(qso.getRecord(), theirQrzData);
 
         // Duplicate references into the comment
-        if (rec.getSotaRef() != null) {
+        if (rec.getSotaRef() != null && StringUtils.isNotBlank(rec.getSotaRef().getValue())) {
             String sotaId = rec.getSotaRef().getValue();
             setTheirCoordFromActivity(rec, ActivityType.SOTA, sotaId, unmapped);
             qso.getTo().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaId));
@@ -374,18 +374,18 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             transformComment(qso, rec.getComment(), unmapped);
         }
 
-        if (rec.getCoordinates() == null && rec.getGridsquare() == null) {
+        if (rec.getCoordinates() == null && StringUtils.isBlank(rec.getGridsquare())) {
             theirQrzData = lookupLocationFromQrz(rec);
             qso.getTo().setQrzInfo(theirQrzData);
         }
         // IF qrz.com can't fill in the coordinates, and the gridsquare is set, fill in coordinates from that
-        if (rec.getCoordinates() == null && rec.getGridsquare() != null) {
+        if (rec.getCoordinates() == null && StringUtils.isNotBlank(rec.getGridsquare())) {
             // Set Coordinates from GridSquare that has been supplied in the input file
             rec.setCoordinates(MaidenheadLocatorConversion.locatorToCoords(rec.getGridsquare()));
         }
 
         // Look to see if there is anything in the SIG/SIGINFO fields
-        if (StringUtils.isNotEmpty(rec.getSig())) {
+        if (StringUtils.isNotBlank(rec.getSig())) {
             processSig(qso, unmapped);
         }
 
@@ -402,7 +402,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         String activityType = rec.getSig().toUpperCase();
         String activityLocation = rec.getSigInfo().toUpperCase();
 
-        if (StringUtils.isNotEmpty(activityType)) {
+        if (StringUtils.isNotBlank(activityType)) {
             // See if it is an activity we support
             ActivityDatabase database = activities.getDatabase(activityType);
             if (database != null) {
@@ -411,7 +411,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     qso.getTo().addActivity(activity);
 
                     // Make sure if they have a SOTA reference this takes precedence over any other reference
-                    if (rec.getSotaRef() == null) {
+                    if (rec.getSotaRef() == null || StringUtils.isBlank(rec.getSotaRef().getValue())) {
                         setTheirLocationFromActivity(qso, activity);
                     }
                     unmapped.put(activityType, activityLocation);
