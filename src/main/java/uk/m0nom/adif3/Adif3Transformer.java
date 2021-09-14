@@ -34,7 +34,7 @@ public class Adif3Transformer {
         transformer = new CommentParsingAdifRecordTransformer(config, summits, qrzXmlService, control);
         int index = 1;
         for (Adif3Record rec : log.getRecords()) {
-            if (rec.getStationCallsign() != null && rec.getCall() != null) {
+            if ((rec.getStationCallsign() != null || rec.getOperator() != null) && rec.getCall() != null) {
                 transformer.transform(qsos, rec, index++);
             }
         }
