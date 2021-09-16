@@ -30,9 +30,11 @@ public class TransformControl {
     private String sota;
     private String pota;
     private String wwff;
+    private String cota;
 
     private String satelliteName;
     private String satelliteMode;
+    private String satelliteBand;
     private Boolean sotaMicrowaveAwardComment;
 
     private Boolean generateKml;

@@ -2,10 +2,7 @@ package uk.m0nom.coords;
 
 import org.junit.Assert;
 import org.junit.Test;
-import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityDatabases;
-
-import static org.junit.Assert.assertEquals;
 
 public class LocationParsersTest {
 

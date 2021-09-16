@@ -5,10 +5,7 @@ import com.amihaiemil.eoyaml.YamlNode;
 import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
-import org.marsik.ham.adif.enums.AntPath;
-import org.marsik.ham.adif.enums.Propagation;
-import org.marsik.ham.adif.enums.QslSent;
-import org.marsik.ham.adif.enums.QslVia;
+import org.marsik.ham.adif.enums.*;
 import org.marsik.ham.adif.types.Iota;
 import org.marsik.ham.adif.types.Sota;
 import uk.m0nom.activity.Activity;
@@ -120,18 +117,6 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
     }
 
-    private void setMyLocationFromHemaId(Adif3Record rec, String hemaId) {
-        Activity hemaInfo = activities.getDatabase(ActivityType.HEMA).get(hemaId);
-        if (hemaInfo != null) {
-            rec.setMyCoordinates(hemaInfo.getCoords());
-
-            // Also set the GridSquare as a fallback
-            rec.setMyGridSquare(MaidenheadLocatorConversion.coordsToLocator(hemaInfo.getCoords()));
-        } else {
-            logger.warning(String.format("Suspicious HEMA reference %s for your callsign %s", hemaId, rec.getStationCallsign()));
-        }
-    }
-
     private void setMyLocationFromActivity(Adif3Record rec, ActivityType activity, String ref) {
         Activity info = activities.getDatabase(activity).get(ref);
         if (info != null) {
@@ -202,6 +187,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         if (StringUtils.isNotEmpty(control.getWwff())) {
             qso.getFrom().addActivity(activities.getDatabase(ActivityType.WWFF).get(control.getWwff().toUpperCase()));
         }
+        if (StringUtils.isNotEmpty(control.getCota())) {
+            qso.getFrom().addActivity(activities.getDatabase(ActivityType.COTA).get(control.getCota().toUpperCase()));
+        }
 
         // Update my SIG/SIG_INFO if there is an activity defined
         updateMySigInfoFromActivity(qso);
@@ -233,21 +221,25 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 }
             } else if (StringUtils.isNotEmpty(control.getHema())) {
                 if (!locationOverride) {
-                    setMyLocationFromHemaId(rec, control.getHema().toUpperCase());
+                    setMyLocationFromActivity(rec, ActivityType.HEMA, control.getHema().toUpperCase());
+                }
+            } else if (StringUtils.isNotEmpty(control.getPota())) {
+                if (!locationOverride) {
+                    setMyLocationFromActivity(rec, ActivityType.POTA, control.getCota().toUpperCase());
+                }
+            } else if (StringUtils.isNotEmpty(control.getCota())) {
+                if (!locationOverride) {
+                    setMyLocationFromActivity(rec, ActivityType.COTA, control.getCota().toUpperCase());
+                }
+            } else if (StringUtils.isNotEmpty(control.getWwff())) {
+                if (!locationOverride) {
+                    setMyLocationFromActivity(rec, ActivityType.WWFF, control.getWwff().toUpperCase());
                 }
             } else if (rec.getMySotaRef() != null) {
                 if (!locationOverride) {
                     setMyLocationFromActivity(rec, ActivityType.SOTA, rec.getMySotaRef().getValue());
                 }
                 setWotaFromSotaId(qso.getFrom(), rec.getMySotaRef().getValue());
-            } else if (StringUtils.isNotEmpty(control.getPota())) {
-                if (!locationOverride) {
-                    setMyLocationFromActivity(rec, ActivityType.POTA, control.getPota().toUpperCase());
-                }
-            } else if (StringUtils.isNotEmpty(control.getWwff())) {
-                if (!locationOverride) {
-                    setMyLocationFromActivity(rec, ActivityType.WWFF, control.getWwff().toUpperCase());
-                }
             } else if (StringUtils.isNotEmpty(control.getMyGrid())) {
                 /* If user has supplied a maidenhead location, use that in preference */
                 if (MaidenheadLocatorConversion.isAValidGridSquare(control.getMyGrid())) {
@@ -394,13 +386,15 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             qso.getTo().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaId));
         }
 
-        if (StringUtils.isNotBlank(control.getSatelliteMode())) {
-            rec.setSatMode(control.getSatelliteMode().toUpperCase());
-        }
-        if (StringUtils.isNotBlank(control.getSatelliteName())) {
-            rec.setSatName(control.getSatelliteName().toUpperCase());
-            // Set Propagation Mode Automagically
-            rec.setPropMode(Propagation.SATELLITE);
+        if (StringUtils.isBlank(control.getSatelliteBand()) || rec.getBand() == Band.findByCode(control.getSatelliteBand().toLowerCase())) {
+            if (StringUtils.isNotBlank(control.getSatelliteMode())) {
+                rec.setSatMode(control.getSatelliteMode().toUpperCase());
+            }
+            if (StringUtils.isNotBlank(control.getSatelliteName())) {
+                rec.setSatName(control.getSatelliteName().toUpperCase());
+                // Set Propagation Mode Automagically
+                rec.setPropMode(Propagation.SATELLITE);
+            }
         }
 
         if (StringUtils.isNotBlank(rec.getComment())) {
@@ -446,8 +440,12 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 additionalComment = String.format("%s %%QRA%%%.3f, %.3f%%", rec.getSatName().toUpperCase(), rec.getCoordinates().getLatitude(), rec.getCoordinates().getLongitude());
             }
             if (StringUtils.isNotBlank(additionalComment)) {
-                String newComment = String.format("%s %s", rec.getComment(), additionalComment);
-                rec.setComment(newComment);
+                if (StringUtils.isBlank(rec.getComment())) {
+                    rec.setComment(additionalComment);
+                } else {
+                    String newComment = String.format("%s %s", rec.getComment(), additionalComment);
+                    rec.setComment(newComment);
+                }
             }
         }
     }
