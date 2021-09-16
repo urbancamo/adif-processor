@@ -20,3 +20,5 @@ PATH: AntPath
 PROP: Propagation
 SKCC: Skcc
 COTA: CotaRef
+SAT_NAME: SatelliteName
+SAT_MODE: SatelliteMode

@@ -24,6 +24,7 @@ import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.qrz.QrzXmlService;
+import uk.m0nom.satellite.Satellites;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -34,6 +35,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
     private final YamlMapping fieldMap;
     private final ActivityDatabases activities;
+    private final Satellites satellites;
     private final QrzXmlService qrzXmlService;
     private final TransformControl control;
     private final AdifQrzEnricher enricher;
@@ -47,6 +49,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         this.qrzXmlService = qrzXmlService;
         this.control = control;
         this.enricher = new AdifQrzEnricher();
+        this.satellites = new Satellites();
     }
 
     private void setTheirCoordFromActivity(Adif3Record rec, ActivityType activity, String reference, Map<String, String> unmapped) {
@@ -391,6 +394,15 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             qso.getTo().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaId));
         }
 
+        if (StringUtils.isNotBlank(control.getSatelliteMode())) {
+            rec.setSatMode(control.getSatelliteMode().toUpperCase());
+        }
+        if (StringUtils.isNotBlank(control.getSatelliteName())) {
+            rec.setSatName(control.getSatelliteName().toUpperCase());
+            // Set Propagation Mode Automagically
+            rec.setPropMode(Propagation.SATELLITE);
+        }
+
         if (StringUtils.isNotBlank(rec.getComment())) {
             transformComment(qso, rec.getComment(), unmapped);
         }
@@ -416,8 +428,29 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             // done a good job and slotted all the key/value pairs in the right place
             rec.setComment("");
         }
+
+        // Add the SOTA Microwave Award data to the end of the comment field
+        if (control.getSotaMicrowaveAwardComment() != null && control.getSotaMicrowaveAwardComment()) {
+            addSotaMicrowaveAwardToComment(rec);
+        }
+
     }
 
+    private void addSotaMicrowaveAwardToComment(Adif3Record rec) {
+        if (StringUtils.isNotBlank(rec.getSatName())) {
+            String additionalComment = "";
+            // Are we to use MHL or Coordinates?
+            if (rec.getGridsquare() != null) {
+                additionalComment = String.format("%s %%QRA%%%s%%", rec.getSatName().toUpperCase(), rec.getGridsquare().toUpperCase());
+            } else if (rec.getCoordinates() != null) {
+                additionalComment = String.format("%s %%QRA%%%.3f, %.3f%%", rec.getSatName().toUpperCase(), rec.getCoordinates().getLatitude(), rec.getCoordinates().getLongitude());
+            }
+            if (StringUtils.isNotBlank(additionalComment)) {
+                String newComment = String.format("%s %s", rec.getComment(), additionalComment);
+                rec.setComment(newComment);
+            }
+        }
+    }
     private void processSig(Qso qso, Map<String, String> unmapped) {
         Adif3Record rec = qso.getRecord();
         String activityType = rec.getSig().toUpperCase();
@@ -668,6 +701,16 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                             logger.severe(String.format("Propagation: %s isn't one of the supported values for ADIF field PROP_MODE", value));
                         }
                         rec.setPropMode(mode);
+                        break;
+                    case "SatelliteName":
+                        if (satellites.getSatellite(value.toUpperCase()) != null) {
+                            rec.setSatName(value.toUpperCase());
+                        } else {
+                            logger.warning(String.format("Satellite: %s isn't currently supported", value));
+                        }
+                        break;
+                    case "SatelliteMode":
+                        rec.setSatMode(value);
                         break;
                 }
             } else {

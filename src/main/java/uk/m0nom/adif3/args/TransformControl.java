@@ -31,6 +31,10 @@ public class TransformControl {
     private String pota;
     private String wwff;
 
+    private String satelliteName;
+    private String satelliteMode;
+    private Boolean sotaMicrowaveAwardComment;
+
     private Boolean generateKml;
     private Integer kmlContactWidth;
     private Integer kmlContactTransparency;
