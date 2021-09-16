@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DegreesMinutesSecondsLatLongParser  implements LocationParser {
-    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+)\\s*[^NnSs]*\\s*([NnSs])[^\\d]+(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+)\\s*[^NnSs]*\\s*([EeWwOo])");
+    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d\\,)]+(\\d+)[^\\d]+(\\d+)\\s*[^NnSs]*\\s*([NnSs])[^\\d]+(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+)\\s*[^NnSs]*\\s*([EeWwOo])");
 
     @Override
     public Pattern getPattern() {
@@ -23,7 +23,7 @@ public class DegreesMinutesSecondsLatLongParser  implements LocationParser {
             String longDegrees = matcher.group(5);
             String longMinutes = matcher.group(6);
             String longSeconds = matcher.group(7);
-            String longEastWest = matcher.group(8).toUpperCase().replace('O','W');
+            String longEastWest = matcher.group(8).toUpperCase();
 
             Double latitude = LatLongUtils.parseDegMinSecLatitude(latDegrees, latMinutes, latSeconds, latNorthSouth);
             Double longitude = LatLongUtils.parseDegMinSecLongitude(longDegrees, longMinutes, longSeconds, longEastWest);
