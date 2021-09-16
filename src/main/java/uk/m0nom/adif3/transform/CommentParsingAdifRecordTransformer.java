@@ -288,8 +288,11 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     // Can only process one, however. If required the transformer will have to be run multiple times with each SIG defined separately
                     qso.getRecord().setMySig(activity.getType().getActivityName());
                     qso.getRecord().setMySigInfo(activity.getRef());
-                    logger.info(String.format("Setting MYSIG to be: %s with MY_SIGINFO: %s", qso.getRecord().getMySig(), qso.getRecord().getMySigInfo()));
+                    //logger.info(String.format("Setting MYSIG to be: %s with MY_SIGINFO: %s", qso.getRecord().getMySig(), qso.getRecord().getMySigInfo()));
                     return;
+                } else if (qso.getRecord().getMySotaRef() == null){
+                    Sota sota = Sota.valueOf(activity.getRef().toUpperCase());
+                    qso.getRecord().setMySotaRef(sota);
                 }
             }
         }
