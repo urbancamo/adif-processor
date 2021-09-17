@@ -89,4 +89,15 @@ public class GeodesicUtils
 
         return d;
     }
+
+    /**
+     * Check that coordinates are equal or at least very close
+     * @param myCoords my coordinates
+     * @param coords their coordinates
+     * @return true if the latitude and longitude are within 0.0001 of each other
+     */
+    public static boolean areCoordsEqual(GlobalCoordinates myCoords, GlobalCoordinates coords) {
+        final double tolerance = 0.0001;
+        return Math.abs(myCoords.getLatitude() - coords.getLatitude()) < tolerance && Math.abs(myCoords.getLongitude() - coords.getLongitude()) < tolerance;
+    }
 }

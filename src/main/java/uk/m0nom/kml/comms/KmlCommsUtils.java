@@ -71,6 +71,10 @@ public class KmlCommsUtils {
 
         GlobalCoordinates coords = rec.getCoordinates();
 
+        // Sanity check - if their coords and our coords are the same then the geodesic calculations are going to stall
+        if (GeodesicUtils.areCoordsEqual(myCoords, coords)) {
+            return String.format("Your location and the location of station %s at %.3f, %.3f are equal - check the log!", qso.getTo().getCallsign(), coords.getLatitude(), coords.getLongitude());
+        }
         Style style = document.createAndAddStyle()
                 .withId(getStyleId(commsLinkId));
 

@@ -443,7 +443,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 if (StringUtils.isBlank(rec.getComment())) {
                     rec.setComment(additionalComment);
                 } else {
-                    String newComment = String.format("%s %s", rec.getComment(), additionalComment);
+                    String newComment = String.format("%s, %s", rec.getComment(), additionalComment);
                     rec.setComment(newComment);
                 }
             }
@@ -756,7 +756,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             String token = tokenizer.nextToken().trim();
             if (token.contains(":")) {
                 String[] pair = StringUtils.split(token, ":");
-                tokens.put(pair[0].trim(), pair[1].trim());
+                tokens.put(pair[0].trim().toUpperCase(), pair[1].trim());
             }
         }
         return tokens;
