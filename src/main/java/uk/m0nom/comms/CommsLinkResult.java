@@ -9,6 +9,7 @@ import org.marsik.ham.adif.enums.Propagation;
 public class CommsLinkResult {
     private int bounces;
     private double altitude;
+    private double base;
     private double distance;
     private double fromAngle;
     private double toAngle;

@@ -28,26 +28,34 @@ public class KmlContactInfoPanel {
             sb.append(String.format("TX Pwr: %.1f Watts<br/>", rec.getTxPwr()));
         }
         sb.append(String.format("Gnd dist: %.0f km<br/>", result.getDistance()));
-        if (result.getMode() == Propagation.F2_REFLECTION) {
-            sb.append(String.format("Sky dist: %.0f km<br/>", result.getSkyDistance()));
-            sb.append(String.format("Bounces: %d<br/>", result.getBounces()));
-            if (result.getAltitude() > 9999.99) {
-                sb.append(String.format("Avg Alt: %.0f km<br/>", result.getAltitude() / 1000));
-            } else {
-                sb.append(String.format("Avg Alt: %.0f metres<br/>", result.getAltitude()));
+        if (result.getMode() != null) {
+            switch (result.getMode()) {
+                case F2_REFLECTION:
+                    sb.append(String.format("Sky dist: %.0f km<br/>", result.getSkyDistance()));
+                    sb.append(String.format("Bounces: %d<br/>", result.getBounces()));
+                    if (result.getAltitude() > 9999.99) {
+                        sb.append(String.format("Avg Alt: %.0f km<br/>", result.getAltitude() / 1000));
+                    } else {
+                        sb.append(String.format("Avg Alt: %.0f metres<br/>", result.getAltitude()));
+                    }
+                    sb.append(String.format("Avg Angle: %.0f°<br/>", result.getFromAngle()));
+                    break;
+                case SATELLITE:
+                    sb.append(String.format("Satellite: %s<br/>", qso.getRecord().getSatName()));
+                    /*sb.append(String.format("Sky dist: %.0f km<br/>", result.getSkyDistance()));*/
+                    sb.append(String.format("Sat Alt: %.0f km<br/>", result.getAltitude() / 1000));
+                    /** need to take into account difference in longitude between station and satellite longitude for these to be accurate
+                     sb.append(String.format("From Angle: %.0f°<br/>", result.getFromAngle()));
+                     sb.append(String.format("To Angle: %.0f°<br/>", result.getToAngle()));
+                     */
+                    break;
+                case TROPOSPHERIC_DUCTING:
+                    sb.append(String.format("Bounces: %d<br/>", result.getBounces()));
+                    sb.append(String.format("Duct Top: %.0f metres<br/>", result.getAltitude()));
+                    sb.append(String.format("Duct Base: %.0f metres<br/>", result.getBase()));
+                    break;
             }
-            sb.append(String.format("Avg Angle: %.0f°<br/>", result.getFromAngle()));
         }
-        if (result.getMode() == Propagation.SATELLITE) {
-            sb.append(String.format("Satellite: %s<br/>", qso.getRecord().getSatName()));
-            /*sb.append(String.format("Sky dist: %.0f km<br/>", result.getSkyDistance()));*/
-            sb.append(String.format("Sat Alt: %.0f km<br/>", result.getAltitude() / 1000));
-            /** need to take into account difference in longitude between station and satellite longitude for these to be accurate
-            sb.append(String.format("From Angle: %.0f°<br/>", result.getFromAngle()));
-            sb.append(String.format("To Angle: %.0f°<br/>", result.getToAngle()));
-             */
-        }
-
         String mode = (result.getMode() != null) ? result.getMode().toString() : "GROUND WAVE";
         sb.append(String.format("Propagation Mode: %s", mode));
 
