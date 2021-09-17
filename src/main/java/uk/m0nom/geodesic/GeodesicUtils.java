@@ -20,7 +20,8 @@ public class GeodesicUtils
     }
 
 
-    public static double addBouncesToLineString(LineString hfLine, List<PropagationBounce> bounces, GlobalCoordinates start, GlobalCoordinates end, double initialAzimuth, GeodeticCalculator calculator) {
+    public static double addBouncesToLineString(LineString hfLine, List<PropagationBounce> bounces, GlobalCoordinates start, GlobalCoordinates end,
+                                                double initialAzimuth, GeodeticCalculator calculator) {
         hfLine.addToCoordinates(start.getLongitude(), start.getLatitude(), 0);
         GlobalCoordinates previous = start;
         double azimuth = initialAzimuth;
@@ -34,9 +35,11 @@ public class GeodesicUtils
 
             double distanceAcrossGlobal = bounce.getDistance() * 1000;
             double reflectionHeight = bounce.getHeight();
+            double baseHeight = bounce.getBase();
             double distanceOfHalfHop = distanceAcrossGlobal / 2.0;
-            /* need to make sure we take into account both sides of the hop into space and back again */
-            double halfCommsDistance = Math.sqrt((distanceOfHalfHop * distanceOfHalfHop) + (reflectionHeight * reflectionHeight));
+
+            /* need to make sure we take into account both sides of the hop */
+            double halfCommsDistance = Math.sqrt((distanceOfHalfHop * distanceOfHalfHop) + ((reflectionHeight * reflectionHeight) - (baseHeight * baseHeight)));
             skyDistance += halfCommsDistance * 2.0 / 1000.0;
 
             /* set the angle of the bounce */
@@ -56,7 +59,7 @@ public class GeodesicUtils
                 hfLine.addToCoordinates(end.getLongitude(), end.getLatitude(), 0);
             } else {
                 GlobalCoordinates rtn = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, apex, azimuth, distanceAcrossGlobal / 2.0);
-                hfLine.addToCoordinates(rtn.getLongitude(), rtn.getLatitude(), 0);
+                hfLine.addToCoordinates(rtn.getLongitude(), rtn.getLatitude(), baseHeight);
                 /* Recalculate Azimuth between Apex and End Point */
                 curve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, rtn, end);
                 azimuth = curve.getAzimuth();

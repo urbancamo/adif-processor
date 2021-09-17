@@ -51,7 +51,7 @@ public class Ionosphere {
                     int hops = calculateNumberOfHops(distanceInKm, alt / 1000, hfAntennaTakeoffAngle);
                     for (int i = 0; i < hops; i++) {
                         double hopDistance = distanceInKm / hops;
-                        PropagationBounce bounce = new PropagationBounce(mode, hopDistance, alt, 0.0);
+                        PropagationBounce bounce = new PropagationBounce(mode, hopDistance, alt, 0,0.0);
                         bounces.add(bounce);
                     }
                     break;
@@ -59,14 +59,14 @@ public class Ionosphere {
                     layers = getLayerForTimeOfDay(timeOfDay);
                     bounceLayer = layers.get("E");
                     alt = bounceLayer.getAverageHeight();
-                    bounces.add(new PropagationBounce(mode, distanceInKm, alt, 0.0));
+                    bounces.add(new PropagationBounce(mode, distanceInKm, alt, 0,0.0));
                     break;
             }
         } else {
             // Single hop with nominal altitude that increases as the distance increases
             double adjustAlt = Math.max(myAltitude, theirAltitude);
             double apexHeight = Math.max(GROUNDWAVE_BOUNCE_ALT * distanceInKm, adjustAlt);
-            PropagationBounce bounce = new PropagationBounce(mode, distanceInKm, apexHeight, 0.0);
+            PropagationBounce bounce = new PropagationBounce(mode, distanceInKm, apexHeight, 0,0.0);
             bounces.add(bounce);
         }
         return bounces;

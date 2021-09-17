@@ -18,8 +18,14 @@ public class CommsVisualizer implements CommsLinkGenerator {
         // See if the propagation mode used is defined in the record
         if (rec.getPropMode() != null) {
             // We honour satellite mode here
-            if (rec.getPropMode() == Propagation.SATELLITE) {
-                result = new SatellitePropagation().getCommsLink(control, commsLine, startGc, endGc, rec, myAltitude, theirAltitude);
+            switch (rec.getPropMode()) {
+                case SATELLITE:
+                    result = new SatellitePropagation().getCommsLink(control, commsLine, startGc, endGc, rec, myAltitude, theirAltitude);
+                    break;
+                case TROPOSPHERIC_DUCTING:
+                        result = new TroposphericDuctingPropagation().getCommsLink(control, commsLine, startGc, endGc, rec, myAltitude, theirAltitude);
+                        break;
+                default:
             }
         } else {
             result = new IonosphericPropagation().getCommsLink(control, commsLine, startGc, endGc, rec, myAltitude, theirAltitude);

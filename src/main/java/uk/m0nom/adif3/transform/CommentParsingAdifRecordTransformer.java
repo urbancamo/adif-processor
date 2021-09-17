@@ -685,7 +685,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     case "AntPath":
                         AntPath path = AntPath.SHORT;
                         try {
-                            path = AntPath.valueOf(value);
+                            path = AntPath.findByCode(value.toUpperCase());
                         } catch (Exception e) {
                             logger.severe(String.format("AntPath: %s isn't one of 'G': GRAYLINE, 'S': SHORT, 'L': LONG, 'O': OTHER", value));
                         }
@@ -694,7 +694,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     case "Propagation":
                         Propagation mode = Propagation.IONOSCATTER;
                         try {
-                            mode = Propagation.valueOf(value);
+                            mode = Propagation.findByCode(value.toUpperCase());
                         } catch (Exception e) {
                             logger.severe(String.format("Propagation: %s isn't one of the supported values for ADIF field PROP_MODE", value));
                         }

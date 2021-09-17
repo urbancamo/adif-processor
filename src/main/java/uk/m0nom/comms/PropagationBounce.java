@@ -12,5 +12,6 @@ public class PropagationBounce {
     private Propagation mode;
     private double distance;
     private double height;
+    private double base;
     private double angle;
 }
