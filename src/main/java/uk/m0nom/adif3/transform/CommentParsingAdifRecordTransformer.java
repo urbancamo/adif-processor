@@ -710,6 +710,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     case "SatelliteMode":
                         rec.setSatMode(value);
                         break;
+                    case "Notes":
+                        rec.setNotes(value);
+                        break;
                 }
             } else {
                 unmapped.put(key, value);
