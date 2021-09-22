@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.activity.cota.CotaCsvReader;
+import uk.m0nom.activity.lota.LotaCsvReader;
 import uk.m0nom.activity.pota.PotaCsvReader;
 import uk.m0nom.activity.hema.HemaCsvReader;
 import uk.m0nom.activity.sota.SotaCsvReader;
@@ -34,6 +35,7 @@ public class ActivityDatabases {
         readers.put(ActivityType.WOTA, new WotaCsvReader( "wota/summits.csv"));
         readers.put(ActivityType.WWFF, new WwffCsvReader("wwff/wwff_directory.csv"));
         readers.put(ActivityType.COTA, new CotaCsvReader("cota/cota.csv"));
+        readers.put(ActivityType.LOTA, new LotaCsvReader("lota/lighthouses.csv"));
     }
 
     public void loadData() {

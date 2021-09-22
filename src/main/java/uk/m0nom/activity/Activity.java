@@ -8,7 +8,7 @@ import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
 
 @Getter
 @Setter
-public abstract class Activity {
+public abstract class Activity implements Comparable<Activity> {
     private ActivityType type;
     private String name;
     private String ref;
@@ -40,5 +40,12 @@ public abstract class Activity {
             rtn = otherActivity.getRef().equals(ref);
         }
         return rtn;
+    }
+
+    @Override
+    public int compareTo(Activity other) {
+        String ref = getRef() != null ? getRef() : "";
+        String otherRef = other.getRef() != null ? other.getRef() : "";
+        return ref.compareTo(otherRef);
     }
 }

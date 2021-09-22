@@ -13,6 +13,7 @@ public class LocationParsers {
      * The order of these parsers is important, they should run from most to least accurate
      */
     public LocationParsers(ActivityDatabases databases) {
+        parsers.add(new CommaSeparatedDecimalLatLongWithAltitudeParser());
         parsers.add(new DegreesDecimalWithNsewLatLongParser());
         parsers.add(new NsewWithDegreesDecimalLatLongParser());
         parsers.add(new DegreesDecimalLatLongParser());
