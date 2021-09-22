@@ -27,17 +27,13 @@ public class FileTransformerApp implements Runnable
     private static final String MARKDOWN_CONTROL_FILE = "adif-printer-132-markdown.yaml";
     private static final Logger logger = Logger.getLogger(FileTransformerApp.class.getName());
 
-    private static FileTransformerApp instance;
+    private final CommandLineArgs cli;
+    private final Adif3Transformer transformer;
+    private final Adif3FileReaderWriter readerWriter;
 
-    private CommandLineArgs cli;
-    private Adif3Transformer transformer;
-    private Adif3FileReaderWriter readerWriter;
-    private KmlWriter kmlWriter;
+    private final ActivityDatabases summits;
 
-    private ActivityDatabases summits;
-    private QrzXmlService qrzXmlService;
-
-    private Adif3PrintFormatter formatter;
+    private final Adif3PrintFormatter formatter;
 
     private Qsos qsos;
 
@@ -68,7 +64,7 @@ public class FileTransformerApp implements Runnable
 
     public static void main( String[] args )
     {
-        instance = new FileTransformerApp(args);
+        FileTransformerApp instance = new FileTransformerApp(args);
         instance.run();
     }
 
@@ -76,8 +72,8 @@ public class FileTransformerApp implements Runnable
     public void run() {
         TransformResults results = new TransformResults();
         TransformControl control = cli.parseArgs(args);
-        qrzXmlService = new QrzXmlService(control.getQrzUsername(), control.getQrzPassword());
-        kmlWriter = new KmlWriter(control);
+        QrzXmlService qrzXmlService = new QrzXmlService(control.getQrzUsername(), control.getQrzPassword());
+        KmlWriter kmlWriter = new KmlWriter(control);
 
 
         String inPath = control.getPathname();
@@ -106,7 +102,7 @@ public class FileTransformerApp implements Runnable
                     qrzXmlService.disable();
                 }
             }
-            transformer.configure(new FileInputStream(new File(configFilePath)), summits, qrzXmlService);
+            transformer.configure(new FileInputStream(configFilePath), summits, qrzXmlService);
 
             logger.info(String.format("Reading input file %s with encoding %s", inPath, control.getEncoding()));
             Adif3 log = readerWriter.read(inPath, control.getEncoding(), false);
@@ -115,7 +111,6 @@ public class FileTransformerApp implements Runnable
             if (control.getGenerateKml()) {
                 kmlWriter.write(kml, inBasename, summits, qsos, results);
                 if (results.getError() != null) {
-                    kml = "";
                     logger.severe(results.getError());
                 }
             }
@@ -133,7 +128,7 @@ public class FileTransformerApp implements Runnable
                         }
                     }
                     if (markdownFile.createNewFile()) {
-                        formatter.getPrintJobConfig().configure(new FileInputStream(new File(MARKDOWN_CONTROL_FILE)));
+                        formatter.getPrintJobConfig().configure(new FileInputStream(MARKDOWN_CONTROL_FILE));
                         logger.info(String.format("Writing Markdown to: %s", markdown));
                         StringBuilder sb = formatter.format(log);
                         markdownWriter = Files.newBufferedWriter(markdownFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);

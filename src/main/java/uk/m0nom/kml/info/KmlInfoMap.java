@@ -17,6 +17,7 @@ public class KmlInfoMap {
         infoMap.put(ActivityType.HEMA, new KmlHemaInfo());
         infoMap.put(ActivityType.WWFF, new KmlWwffInfo());
         infoMap.put(ActivityType.COTA, new KmlCotaInfo());
+        infoMap.put(ActivityType.LOTA, new KmlLotaInfo());
     }
 
     public KmlActivityInfo get(ActivityType activityType) {

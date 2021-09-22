@@ -5,6 +5,9 @@ import net.sourceforge.argparse4j.impl.Arguments;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
+import uk.m0nom.activity.ActivityType;
+
+import java.util.Locale;
 
 public class CommandLineArgs {
     public TransformControl parseArgs(String[] args) {
@@ -99,21 +102,18 @@ public class CommandLineArgs {
             control.setKmlFixedIconUrl(ns.getString("kml_fixed_station"));
             control.setKmlMobileIconUrl(ns.getString("kml_mobile_station"));
             control.setKmlPortableIconUrl(ns.getString("kml_portable_station"));
-            control.setKmlSotaIconUrl(ns.getString("kml_sota_station"));
-            control.setKmlWotaIconUrl(ns.getString("kml_wota_station"));
-            control.setKmlHemaIconUrl(ns.getString("kml_hema_station"));
-            control.setKmlWwffIconUrl(ns.getString("kml_wwff_station"));
-            control.setKmlCotaIconUrl(ns.getString("kml_cota_station"));
+
+            for (ActivityType activity : ActivityType.values()) {
+                control.setActivityIcon(activity, String.format("kml_%s_station", activity.getActivityName().toLowerCase()));
+                if (ns.getString(activity.getActivityName()) != null) {
+                    control.setActivityRef(activity, ns.getString(activity.getActivityName()).toLowerCase());
+                }
+            }
+
             control.setKmlMaritimeIconUrl(ns.getString("kml_maritime_station"));
-            control.setKmlParkIconUrl(ns.getString("kml_park_station"));
             control.setKmlContactTransparency(100-ns.getInt("kml_contact_transparency"));
             control.setKmlContactWidth(ns.getInt("kml_contact_width"));
             control.setKmlContactColourByBand(ns.getBoolean("kml_contact_colour_band"));
-
-            control.setHema(ns.getString("hema"));
-            control.setWota(ns.getString("wota"));
-            control.setSota(ns.getString("sota"));
-            control.setPota(ns.getString("pota"));
 
             control.setMarkdown(ns.getBoolean("markdown"));
 

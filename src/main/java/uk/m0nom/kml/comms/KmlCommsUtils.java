@@ -14,23 +14,17 @@ import uk.m0nom.geodesic.GeodesicUtils;
 import uk.m0nom.kml.KmlBandLineStyles;
 import uk.m0nom.kml.KmlLineStyle;
 import uk.m0nom.kml.KmlStyling;
-import uk.m0nom.kml.KmlWriter;
 import uk.m0nom.kml.info.KmlContactInfoPanel;
 import uk.m0nom.kml.station.KmlStationUtils;
-
-import java.util.logging.Logger;
 
 import static uk.m0nom.kml.KmlUtils.getStyleId;
 import static uk.m0nom.kml.KmlUtils.getStyleUrl;
 
 public class KmlCommsUtils {
-    private static final Logger logger = Logger.getLogger(KmlCommsUtils.class.getName());
-    private ActivityDatabases activities;
-    private TransformControl control;
-    private KmlBandLineStyles bandLineStyles;
+    private final ActivityDatabases activities;
+    private final KmlBandLineStyles bandLineStyles;
 
     public KmlCommsUtils(TransformControl control, ActivityDatabases activities) {
-        this.control = control;
         this.activities = activities;
         bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());
     }
@@ -57,7 +51,7 @@ public class KmlCommsUtils {
         return id.replaceAll(" ", "_");
     }
 
-    public String createCommsLink(KmlWriter kmlWriter, Document document, Folder folder, Qso qso, TransformControl control) {
+    public String createCommsLink(Document document, Folder folder, Qso qso, TransformControl control) {
         String commsLinkId = getCommsLinkId(qso);
         String commsLinkName = getCommsLinkName(qso);
         String commsLinkShadowId = getCommsLinkShadowId(qso);
@@ -134,7 +128,7 @@ public class KmlCommsUtils {
                     .withStyleUrl(getStyleUrl(commsLinkShadowId));
 
             commsLine = placemark.createAndSetLineString();
-            new GeodesicUtils().getSurfaceLine(commsLine, myCoords, coords);
+            GeodesicUtils.getSurfaceLine(commsLine, myCoords, coords);
         }
         return null;
 

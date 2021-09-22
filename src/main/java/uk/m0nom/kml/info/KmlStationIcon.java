@@ -13,25 +13,12 @@ public class KmlStationIcon {
         String icon = control.getKmlFixedIconUrl();
 
         // SOTA icon overrides WOTA, so is above it in this list
-        if (station.isDoing(ActivityType.SOTA)) {
-            return control.getKmlSotaIconUrl();
+        for (ActivityType activity : ActivityType.values()) {
+            if (station.isDoing(activity)) {
+                return control.getActivityIcon(activity);
+            }
         }
-        if (station.isDoing(ActivityType.POTA)) {
-            return control.getKmlParkIconUrl();
-        }
-        // HEMA icon overrides WOTA, so is above it in this list
-        if (station.isDoing(ActivityType.HEMA)) {
-            return control.getKmlHemaIconUrl();
-        }
-        if (station.isDoing(ActivityType.WOTA)) {
-            return control.getKmlWotaIconUrl();
-        }
-        if (station.isDoing(ActivityType.WWFF)) {
-            return control.getKmlWwffIconUrl();
-        }
-        if (station.isDoing(ActivityType.COTA)) {
-            return control.getKmlCotaIconUrl();
-        }
+
         if (cs.endsWith("/P")) {
             return control.getKmlPortableIconUrl();
         }
@@ -45,15 +32,11 @@ public class KmlStationIcon {
     }
 
     public String getIconFromMode(TransformControl control, Mode mode) {
-        String iconUrl = null;
-        switch (mode) {
-            case CW:
-                iconUrl = control.getKmlCwIconUrl();
-                break;
-            default:
-                iconUrl = "";
-                break;
-
+        String iconUrl;
+        if (mode == Mode.CW) {
+            iconUrl = control.getKmlCwIconUrl();
+        } else {
+            iconUrl = "";
         }
         return iconUrl;
     }

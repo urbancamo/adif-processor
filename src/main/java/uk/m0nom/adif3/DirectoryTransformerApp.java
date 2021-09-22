@@ -17,13 +17,11 @@ public class DirectoryTransformerApp implements Runnable
 {
     private static final Logger logger = Logger.getLogger(DirectoryTransformerApp.class.getName());
 
-    private static DirectoryTransformerApp instance;
-
-    private Adif3Transformer transformer;
-    private Adif3FileReaderWriter readerWriter;
-    private ActivityDatabases summits;
-    private QrzXmlService qrzXmlService;
-    private TransformControl control;
+    private final Adif3Transformer transformer;
+    private final Adif3FileReaderWriter readerWriter;
+    private final ActivityDatabases summits;
+    private final QrzXmlService qrzXmlService;
+    private final TransformControl control;
 
     private final String[] args;
 
@@ -40,7 +38,7 @@ public class DirectoryTransformerApp implements Runnable
 
     public static void main( String[] args )
     {
-        instance = new DirectoryTransformerApp(args);
+        DirectoryTransformerApp instance = new DirectoryTransformerApp(args);
         instance.run();
     }
 
@@ -58,7 +56,7 @@ public class DirectoryTransformerApp implements Runnable
                     if (!qrzXmlService.getSessionKey()) {
                         logger.warning("Could not connect to QRZ.COM, continuing...");
                     }
-                    transformer.configure(new FileInputStream(new File(configFilePath)), summits, qrzXmlService);
+                    transformer.configure(new FileInputStream(configFilePath), summits, qrzXmlService);
 
                     Collection<File> files = FileUtils.listFiles(new File(dir), new String[]{"adi"}, false);
                     for (File in: files) {

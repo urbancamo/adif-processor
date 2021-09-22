@@ -11,7 +11,8 @@ import uk.m0nom.adif3.transform.CommentParsingAdifRecordTransformer;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.activity.ActivityDatabases;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Logger;
 
 public class Adif3Transformer {
@@ -21,7 +22,8 @@ public class Adif3Transformer {
     private ActivityDatabases summits;
     private QrzXmlService qrzXmlService;
 
-    public void configure(InputStream yamlConfigFile, ActivityDatabases summits, QrzXmlService qrzXmlService) throws IOException {
+    public void configure(InputStream yamlConfigFile, ActivityDatabases summits, QrzXmlService qrzXmlService)
+            throws IOException {
         config = Yaml.createYamlInput(yamlConfigFile).readYamlMapping();
         this.summits = summits;
         this.qrzXmlService = qrzXmlService;

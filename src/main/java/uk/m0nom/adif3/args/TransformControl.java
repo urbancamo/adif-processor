@@ -4,6 +4,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uk.m0nom.activity.ActivityType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Configure the processing of files
@@ -25,12 +29,7 @@ public class TransformControl {
     private String qrzUsername;
     private String qrzPassword;
 
-    private String hema;
-    private String wota;
-    private String sota;
-    private String pota;
-    private String wwff;
-    private String cota;
+    private Map<ActivityType, String> activityRefs = new HashMap<>();
 
     // Active satellites from https://www.eqsl.cc/QSLCard/SatelliteInfo.cfm
     //    Common Name	Alias	NORAD ID	Active
@@ -102,12 +101,7 @@ public class TransformControl {
     private String kmlMobileIconUrl;
     private String kmlMaritimeIconUrl;
 
-    private String kmlParkIconUrl;
-    private String kmlSotaIconUrl;
-    private String kmlWotaIconUrl;
-    private String kmlHemaIconUrl;
-    private String kmlWwffIconUrl;
-    private String kmlCotaIconUrl;
+    private Map<ActivityType, String> activityIcons = new HashMap<>();
 
     private String kmlCwIconUrl;
 
@@ -119,4 +113,20 @@ public class TransformControl {
     private Boolean contestResults;
 
     private Double hfAntennaTakeoffAngle;
+
+    public String getActivityRef(ActivityType type) {
+        return activityRefs.get(type);
+    }
+
+    public String getActivityIcon(ActivityType activity) {
+        return activityIcons.get(activity);
+    }
+
+    public void setActivityIcon(ActivityType activity, String iconUrl) {
+        activityIcons.put(activity, iconUrl);
+    }
+
+    public void setActivityRef(ActivityType activity, String ref) {
+        activityRefs.put(activity, ref);
+    }
 }

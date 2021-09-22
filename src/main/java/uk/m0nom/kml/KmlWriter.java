@@ -6,7 +6,6 @@ import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.transform.TransformResults;
-import uk.m0nom.comms.Ionosphere;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.kml.activity.KmlLocalActivities;
 import uk.m0nom.kml.comms.KmlCommsUtils;
@@ -65,7 +64,7 @@ public class KmlWriter {
                     Folder localActivityFolder = contactFolder.createAndAddFolder().withName("Local Activity").withOpen(false);
                     kmlLocalActivities.addLocalActivities(doc, localActivityFolder, qso.getTo(), control.getKmlLocalActivationSitesRadius(), activities);
                 }
-                error = kmlCommsUtils.createCommsLink(this, doc, contactFolder, qso, control);
+                error = kmlCommsUtils.createCommsLink(doc, contactFolder, qso, control);
                 if (error != null) {
                     results.setError(error);
                 }
