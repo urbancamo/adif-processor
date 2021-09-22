@@ -8,7 +8,7 @@ import org.gavaghan.geodesy.GeodeticCurve;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Propagation;
-import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.geodesic.GeodesicUtils;
 import uk.m0nom.satellite.Satellite;
 import uk.m0nom.satellite.SatellitePosition;

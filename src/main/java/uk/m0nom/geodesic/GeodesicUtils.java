@@ -3,13 +3,8 @@ package uk.m0nom.geodesic;
 import de.micromata.opengis.kml.v_2_2_0.AltitudeMode;
 import de.micromata.opengis.kml.v_2_2_0.LineString;
 import org.gavaghan.geodesy.*;
-import org.marsik.ham.adif.Adif3Record;
-import org.marsik.ham.adif.enums.Band;
-import org.marsik.ham.adif.enums.Propagation;
-import uk.m0nom.adif3.args.TransformControl;
 import uk.m0nom.comms.*;
 
-import java.time.LocalTime;
 import java.util.List;
 
 public class GeodesicUtils

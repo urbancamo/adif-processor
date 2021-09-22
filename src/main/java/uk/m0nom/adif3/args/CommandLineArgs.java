@@ -6,8 +6,7 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 import uk.m0nom.activity.ActivityType;
-
-import java.util.Locale;
+import uk.m0nom.adif3.control.TransformControl;
 
 public class CommandLineArgs {
     public TransformControl parseArgs(String[] args) {

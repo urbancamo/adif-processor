@@ -7,7 +7,7 @@ import org.marsik.ham.adif.types.Sota;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
@@ -58,12 +58,9 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
 
     private boolean setMyLocationFromActivities(Qso qso) {
         boolean locationSetFromActivity = false;
-        for (ActivityType activity : ActivityType.values()) {
-            String activityRef = control.getActivityRef(activity);
-            if (StringUtils.isNotBlank(activityRef)) {
-                setMyLocationFromActivity(qso.getFrom(), qso.getRecord(), activity, control.getActivityRef(activity).toUpperCase());
-                locationSetFromActivity = true;
-            }
+        for (Activity activity : qso.getFrom().getActivities().values()) {
+            setMyLocationFromActivity(qso.getFrom(), qso.getRecord(), activity);
+            locationSetFromActivity = true;
         }
         return locationSetFromActivity;
     }
@@ -80,19 +77,16 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
         station.setCoordinates(coords);
     }
 
-    private void setMyLocationFromActivity(Station station, Adif3Record rec, ActivityType activity, String ref) {
-        Activity info = activities.getDatabase(activity).get(ref);
-        if (info != null) {
-            if (info.hasCoords()) {
-                rec.setMyCoordinates(info.getCoords());
-                station.setCoordinates(info.getCoords());
-                setMyGridFromCoords(station, rec, info.getCoords());
-            } else if (info.hasGrid()) {
-                rec.setMyGridSquare(info.getGrid());
-                setMyCoordsFromGrid(station, rec, info.getGrid());
-            } else {
-                logger.warning(String.format("Your activity %s at %s doesn't have a location defined", activity.getActivityName(), ref));
-            }
+    private void setMyLocationFromActivity(Station station, Adif3Record rec, Activity info) {
+        if (info.hasCoords()) {
+            rec.setMyCoordinates(info.getCoords());
+            station.setCoordinates(info.getCoords());
+            setMyGridFromCoords(station, rec, info.getCoords());
+        } else if (info.hasGrid()) {
+            rec.setMyGridSquare(info.getGrid());
+            setMyCoordsFromGrid(station, rec, info.getGrid());
+        } else {
+            logger.warning(String.format("Your activity %s at %s doesn't have a location defined", info.getType().getActivityName(), info.getRef()));
         }
     }
 
@@ -136,15 +130,10 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
         // Attempt a lookup from QRZ.com
         QrzCallsign callsignData = qrzXmlService.getCallsignData(rec.getStationCallsign());
 
-        for (ActivityType activity : ActivityType.values()) {
-            processActivity(activity, qso.getFrom());
-        }
-
         // Query the record MYSOTA_REF field - if this isn't empty add it as an activity for onward processing
         if (rec.getMySotaRef() != null) {
             String sotaRef = rec.getMySotaRef().getValue().toUpperCase();
             qso.getFrom().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaRef));
-            setWotaFromSotaId(qso.getFrom(), sotaRef);
         }
 
         // Update my SIG/SIG_INFO if there is an activity defined

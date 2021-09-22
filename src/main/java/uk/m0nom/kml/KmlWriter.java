@@ -2,14 +2,16 @@ package uk.m0nom.kml;
 
 import de.micromata.opengis.kml.v_2_2_0.*;
 import org.gavaghan.geodesy.GlobalCoordinates;
-import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.transform.TransformResults;
 import uk.m0nom.activity.ActivityDatabases;
+import uk.m0nom.coords.LatLongUtils;
 import uk.m0nom.kml.activity.KmlLocalActivities;
 import uk.m0nom.kml.comms.KmlCommsUtils;
 import uk.m0nom.kml.station.KmlStationUtils;
+import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -54,7 +56,7 @@ public class KmlWriter {
             }
             Folder contactFolder = folder.createAndAddFolder().withName(qso.getTo().getCallsign()).withOpen(false);
             GlobalCoordinates coords = qso.getRecord().getCoordinates();
-            if (coords != null) {
+            if (LatLongUtils.isCoordinateValid(coords)) {
                 String error = KmlStationUtils.createStationMarker(control, doc, contactFolder, qso);
                 if (error != null) {
                     results.setError(error);
@@ -67,6 +69,9 @@ public class KmlWriter {
                 error = kmlCommsUtils.createCommsLink(doc, contactFolder, qso, control);
                 if (error != null) {
                     results.setError(error);
+                }
+                if (MaidenheadLocatorConversion.isADubiousGridSquare(qso.getTo().getGrid())) {
+                    results.addContactWithDubiousLocation(qso.getTo().getCallsign());
                 }
             } else {
                 results.addContactWithoutLocation(qso.getTo().getCallsign());

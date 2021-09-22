@@ -15,9 +15,11 @@ public class TransformResults {
     private String markdownFile;
     private String error = "";
     private Collection<String> contactsWithoutLocation;
+    private Collection<String> contactsWithDubiousLocation;
 
     public TransformResults() {
         contactsWithoutLocation = new ArrayList<>();
+        contactsWithDubiousLocation = new ArrayList<>();
     }
 
     public TransformResults(String errorMessage) {
@@ -27,5 +29,9 @@ public class TransformResults {
 
     public void addContactWithoutLocation(String callsign) {
         contactsWithoutLocation.add(callsign);
+    }
+
+    public void addContactWithDubiousLocation(String callsign) {
+        contactsWithDubiousLocation.add(callsign);
     }
 }

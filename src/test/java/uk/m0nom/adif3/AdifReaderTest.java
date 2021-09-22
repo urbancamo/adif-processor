@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.marsik.ham.adif.AdiReader;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
-import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.transform.Adif3RecordTransformer;
 import uk.m0nom.adif3.transform.CommentParsingAdifRecordTransformer;

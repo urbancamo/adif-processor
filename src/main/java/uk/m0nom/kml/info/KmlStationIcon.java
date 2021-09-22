@@ -2,7 +2,7 @@ package uk.m0nom.kml.info;
 
 import org.marsik.ham.adif.enums.Mode;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Station;
 
 public class KmlStationIcon {

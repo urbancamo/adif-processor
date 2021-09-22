@@ -1,4 +1,4 @@
-package uk.m0nom.adif3.args;
+package uk.m0nom.adif3.control;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -6,7 +6,7 @@ import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.activity.sota.SotaSummitInfo;
-import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.comms.CommsLinkResult;
 import uk.m0nom.comms.CommsVisualizer;

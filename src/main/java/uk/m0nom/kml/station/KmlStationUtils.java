@@ -3,13 +3,11 @@ package uk.m0nom.kml.station;
 import de.micromata.opengis.kml.v_2_2_0.*;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
-import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
-import uk.m0nom.kml.KmlWriter;
 import uk.m0nom.kml.info.KmlStationIcon;
 import uk.m0nom.kml.info.KmlStationInfoPanel;
 
-import javax.xml.crypto.dsig.Transform;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

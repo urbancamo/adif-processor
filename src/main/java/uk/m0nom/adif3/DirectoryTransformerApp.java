@@ -3,7 +3,7 @@ package uk.m0nom.adif3;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.marsik.ham.adif.Adif3;
-import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.activity.ActivityDatabases;
 

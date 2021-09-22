@@ -12,7 +12,7 @@ import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.location.FromLocationDeterminer;
@@ -37,6 +37,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private final AdifQrzEnricher enricher;
     private final FromLocationDeterminer fromLocationDeterminer;
     private final ToLocationDeterminer toLocationDeterminer;
+    private final ActivityProcessor activityProcessor;
 
     public CommentParsingAdifRecordTransformer(YamlMapping config, ActivityDatabases activities, QrzXmlService qrzXmlService, TransformControl control) {
         fieldMap = config.asMapping();
@@ -47,6 +48,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         this.satellites = new Satellites();
         this.fromLocationDeterminer = new FromLocationDeterminer(control, qrzXmlService, activities);
         this.toLocationDeterminer = new ToLocationDeterminer(control, qrzXmlService, activities);
+        this.activityProcessor = new ActivityProcessor(control, qrzXmlService, activities);
     }
 
     private void issueWarnings(Adif3Record rec) {
@@ -62,6 +64,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     public void transform(Qsos qsos, Adif3Record rec, int index) {
         /* Add Adif3Record details to the Qsos meta structure */
         Qso qso = createQsoFromAdif3Record(qsos, rec, index);
+
+        activityProcessor.processActivities(qso.getFrom());
 
         Map<String, String> unmapped = new HashMap<>();
         QrzCallsign myQrzData = fromLocationDeterminer.setMyLocation(qso);

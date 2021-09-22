@@ -1,5 +1,7 @@
 package uk.m0nom.coords;
 
+import org.gavaghan.geodesy.GlobalCoordinates;
+
 public class LatLongUtils {
 
     public static Double parseDecimalLatitude(String latString) {
@@ -139,6 +141,16 @@ public class LatLongUtils {
         return null;
     }
 
+    public static boolean isCoordinateValid(GlobalCoordinates coords) {
+        boolean valid = false;
+
+        if (coords != null) {
+            if (checkLatitudeRange(coords.getLatitude()) && checkLongitudeRange(coords.getLongitude())) {
+                valid = coords.getLatitude() != 0.0 && coords.getLongitude() != 0.0;
+            }
+        }
+        return valid;
+    }
 
     private static boolean checkLatitudeRange(double latitude) {
         return (latitude >= -90.0 || latitude <= 90.0) ;

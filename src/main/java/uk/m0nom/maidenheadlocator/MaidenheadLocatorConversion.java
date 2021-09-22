@@ -6,6 +6,8 @@ import org.gavaghan.geodesy.GlobalPosition;
 import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
 import uk.m0nom.coords.LocationSource;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -224,5 +226,15 @@ public class MaidenheadLocatorConversion {
         if (az < 0) az = az + 2 * Math.PI;
 
         return Math.toDegrees(az);
+    }
+
+    public static boolean isADubiousGridSquare(String grid) {
+        return grid != null && DUBIOUS_GRIDSQUARES.contains(grid.toUpperCase());
+    }
+
+    private final static Collection<String> DUBIOUS_GRIDSQUARES = new ArrayList<>();
+
+    static {
+        DUBIOUS_GRIDSQUARES.add("IO91VL");
     }
 }
