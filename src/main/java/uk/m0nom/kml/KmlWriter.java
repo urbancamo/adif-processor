@@ -70,7 +70,7 @@ public class KmlWriter {
                 if (error != null) {
                     results.setError(error);
                 }
-                if (MaidenheadLocatorConversion.isADubiousGridSquare(qso.getTo().getGrid())) {
+                if (MaidenheadLocatorConversion.isADubiousGridSquare(qso.getRecord().getGridsquare())) {
                     results.addContactWithDubiousLocation(qso.getTo().getCallsign());
                 }
             } else {

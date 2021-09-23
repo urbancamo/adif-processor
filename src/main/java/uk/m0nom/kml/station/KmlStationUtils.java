@@ -133,7 +133,11 @@ public class KmlStationUtils {
     }
 
     public static String getModeLabel(Qso qso) {
-        return String.format("%s %s", qso.getRecord().getBand().adifCode(), qso.getRecord().getMode().adifCode());
+        if (qso.getRecord().getBand() != null && qso.getRecord().getMode() != null) {
+            return String.format("%s %s", qso.getRecord().getBand().adifCode(), qso.getRecord().getMode().adifCode());
+        } else {
+            return "";
+        }
     }
 
     /** In order to be unique the station marker name must contain the date and time of the contact **/

@@ -77,10 +77,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         qso.getTo().setQrzInfo(theirQrzData);
         enricher.enrichAdifForThem(qso.getRecord(), theirQrzData);
 
-        // Duplicate references into the comment
         if (rec.getSotaRef() != null && StringUtils.isNotBlank(rec.getSotaRef().getValue())) {
             String sotaId = rec.getSotaRef().getValue();
-            toLocationDeterminer.setTheirLocationFromActivity(rec, ActivityType.SOTA, sotaId, unmapped);
+            toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.SOTA, sotaId, unmapped);
             qso.getTo().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaId));
         }
 
@@ -254,7 +253,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         try {
                             Sota sota = Sota.valueOf(sotaRef.toUpperCase());
                             rec.setSotaRef(sota);
-                            toLocationDeterminer.setTheirCoordFromSotaId(rec, sotaRef, unmapped);
+                            toLocationDeterminer.setTheirCoordFromSotaId(qso, sotaRef, unmapped);
                             qso.getTo().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaRef));
                         } catch (IllegalArgumentException iae) {
                             // something we can't work out about the reference, so put it in the unmapped list instead
@@ -267,31 +266,31 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     case "WotaRef":
                         // Strip off any S2s reference
                         String wotaId = StringUtils.split(value, ' ')[0];
-                        toLocationDeterminer.setTheirCoordFromWotaId(rec, wotaId.toUpperCase(), unmapped);
+                        toLocationDeterminer.setTheirCoordFromWotaId(qso, wotaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.WOTA).get(wotaId));
                         break;
                     case "HemaRef":
                         // Strip off any S2s reference
                         String hemaId = StringUtils.split(value, ' ')[0];
-                        toLocationDeterminer.setTheirLocationFromActivity(rec, ActivityType.HEMA, hemaId.toUpperCase(), unmapped);
+                        toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.HEMA, hemaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.HEMA).get(hemaId));
                         break;
                     case "PotaRef":
                         // Strip off any S2s reference
                         String potaId = StringUtils.split(value, ' ')[0];
-                        toLocationDeterminer.setTheirLocationFromActivity(rec, ActivityType.POTA, potaId.toUpperCase(), unmapped);
+                        toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.POTA, potaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.POTA).get(potaId));
                         break;
                     case "CotaRef":
                         // Strip off any S2s reference
                         String cotaId = StringUtils.split(value, ' ')[0];
-                        toLocationDeterminer.setTheirLocationFromActivity(rec, ActivityType.COTA, cotaId.toUpperCase(), unmapped);
+                        toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.COTA, cotaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.COTA).get(cotaId));
                         break;
                     case "WwffRef":
                         // Strip off any S2s reference
                         String wwffId = StringUtils.split(value, ' ')[0];
-                        toLocationDeterminer.setTheirLocationFromActivity(rec, ActivityType.WWFF, wwffId.toUpperCase(), unmapped);
+                        toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.WWFF, wwffId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.WWFF).get(wwffId));
                         break;
                     case "SerialTx":

@@ -19,8 +19,12 @@ public class KmlContactInfoPanel {
         sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>",
                 rec.getCall(), rec.getCall()));
 
-        sb.append(String.format("Band: %s<br/>", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase(Locale.ROOT)));
-        sb.append(String.format("Mode: %s<br/>", rec.getMode().toString()));
+        if (rec.getBand() != null) {
+            sb.append(String.format("Band: %s<br/>", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase(Locale.ROOT)));
+        }
+        if (rec.getMode() != null) {
+            sb.append(String.format("Mode: %s<br/>", rec.getMode().toString()));
+        }
         if (rec.getFreq() != null) {
             sb.append(String.format("Freq: %.3f Mhz<br/>", rec.getFreq()));
         }

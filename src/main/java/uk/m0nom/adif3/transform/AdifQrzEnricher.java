@@ -55,10 +55,6 @@ public class AdifQrzEnricher {
             }
             rec.setName(name);
         }
-        /* deal with location separately.
-        if (rec.getGridsquare() == null) {
-            rec.setGridsquare(qrzData.getGrid());
-        }*/
         if (rec.getQth() == null) {
             StringBuilder addr = new StringBuilder();
             if (qrzData.getAddr1() != null) {
