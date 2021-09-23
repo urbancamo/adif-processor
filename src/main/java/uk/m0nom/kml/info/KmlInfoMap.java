@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class KmlInfoMap {
-    private Map<ActivityType, KmlActivityInfo> infoMap;
+    private final Map<ActivityType, KmlActivityInfo> infoMap;
 
 
     public KmlInfoMap() {
@@ -18,6 +18,7 @@ public class KmlInfoMap {
         infoMap.put(ActivityType.WWFF, new KmlWwffInfo());
         infoMap.put(ActivityType.COTA, new KmlCotaInfo());
         infoMap.put(ActivityType.LOTA, new KmlLotaInfo());
+        infoMap.put(ActivityType.ROTA, new KmlRotaInfo());
     }
 
     public KmlActivityInfo get(ActivityType activityType) {

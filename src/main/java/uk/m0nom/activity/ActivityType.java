@@ -10,7 +10,8 @@ public enum ActivityType {
     HEMA("HEMA", "Humps on the Air"),
     WWFF("WWFF", "World Wide Flora & Fauna"),
     COTA("COTA", "Castles on the Air"),
-    LOTA("LOTA", "Lighthouses on the Air");
+    LOTA("LOTA", "Lighthouses on the Air"),
+    ROTA("ROTA", "Railways on the Air");
 
     private final String activityName;
     private final String activityDescription;

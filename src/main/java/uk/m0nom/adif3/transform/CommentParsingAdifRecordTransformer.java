@@ -12,6 +12,7 @@ import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
+import uk.m0nom.activity.rota.RotaInfo;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
@@ -81,6 +82,13 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             String sotaId = rec.getSotaRef().getValue();
             toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.SOTA, sotaId, unmapped);
             qso.getTo().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaId));
+        }
+
+        // Check the callsign for a Railways on the Air
+        Activity rotaInfo = activities.getDatabase(ActivityType.ROTA).get(rec.getCall().toUpperCase());
+        if (rotaInfo != null) {
+            toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.ROTA, rotaInfo.getRef(), unmapped);
+            qso.getTo().addActivity(rotaInfo);
         }
 
         if (StringUtils.isBlank(control.getSatelliteBand()) || rec.getBand() == Band.findByCode(control.getSatelliteBand().toLowerCase())) {

@@ -7,6 +7,7 @@ import uk.m0nom.activity.cota.CotaCsvReader;
 import uk.m0nom.activity.lota.LotaCsvReader;
 import uk.m0nom.activity.pota.PotaCsvReader;
 import uk.m0nom.activity.hema.HemaCsvReader;
+import uk.m0nom.activity.rota.RotaCsvReader;
 import uk.m0nom.activity.sota.SotaCsvReader;
 import uk.m0nom.activity.wota.WotaCsvReader;
 import uk.m0nom.activity.wwff.WwffCsvReader;
@@ -36,6 +37,7 @@ public class ActivityDatabases {
         readers.put(ActivityType.WWFF, new WwffCsvReader("wwff/wwff_directory.csv"));
         readers.put(ActivityType.COTA, new CotaCsvReader("cota/cota.csv"));
         readers.put(ActivityType.LOTA, new LotaCsvReader("lota/lighthouses.csv"));
+        readers.put(ActivityType.ROTA, new RotaCsvReader("rota/2021-rota.csv"));
     }
 
     public void loadData() {
