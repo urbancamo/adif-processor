@@ -1,7 +1,6 @@
 package uk.m0nom.kml;
 
 import org.apache.commons.lang3.StringUtils;
-import uk.m0nom.qrz.QrzXmlService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +14,7 @@ public class KmlStyling {
 
     private final static String SEPARATOR_CHAR = ":";
 
-    private static Map<String, KmlColour> colors;
+    private static final Map<String, KmlColour> colors;
 
     public static KmlColour get(String name) {
         return colors.get(name);
@@ -30,7 +29,7 @@ public class KmlStyling {
     public static KmlLineStyle getKmlLineStyle(String specifier) {
 
         if (StringUtils.contains(specifier, ":")) {
-            String components[] = StringUtils.split(specifier, SEPARATOR_CHAR);
+            String[] components = StringUtils.split(specifier, SEPARATOR_CHAR);
             if (components.length != 3) {
                 logger.warning(String.format("Bad colour specifier: %s, use format: html_colour%stransparency%swidth", specifier, SEPARATOR_CHAR, SEPARATOR_CHAR));
             } else {
@@ -38,8 +37,7 @@ public class KmlStyling {
                 String transparency = components[1];
                 String width = components[2];
                 KmlColour colour = get(colourName, convertTransparencySpecifier(transparency));
-                KmlLineStyle lineStyle = new KmlLineStyle(colour, convertWidthSpecifier(width));
-                return lineStyle;
+                return new KmlLineStyle(colour, convertWidthSpecifier(width));
 
             }
         }

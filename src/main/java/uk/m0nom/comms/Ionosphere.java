@@ -11,8 +11,8 @@ import java.util.Map;
 public class Ionosphere {
     public final static double HF_ANTENNA_DEFAULT_TAKEOFF_ANGLE = 6;
 
-    private Map<String, IonosphericLayer> dayTimeLayers;
-    private Map<String, IonosphericLayer> nightTimeLayers;
+    private final Map<String, IonosphericLayer> dayTimeLayers;
+    private final Map<String, IonosphericLayer> nightTimeLayers;
 
     /** Height at which we map ground wave comms, per 1000m */
     private final static double GROUNDWAVE_BOUNCE_ALT = 6;
@@ -66,7 +66,7 @@ public class Ionosphere {
             // Single hop with nominal altitude that increases as the distance increases
             double adjustAlt = Math.max(myAltitude, theirAltitude);
             double apexHeight = Math.max(GROUNDWAVE_BOUNCE_ALT * distanceInKm, adjustAlt);
-            PropagationBounce bounce = new PropagationBounce(mode, distanceInKm, apexHeight, 0,0.0);
+            PropagationBounce bounce = new PropagationBounce(null, distanceInKm, apexHeight, 0,0.0);
             bounces.add(bounce);
         }
         return bounces;
@@ -74,12 +74,8 @@ public class Ionosphere {
 
     /**
      * This is pure magic here, no science involved.
-     * @param distanceInKm
-     * @param altInKm
-     * @return
      */
     private int calculateNumberOfHops(double distanceInKm, double altInKm, double hfAntennaTakeoffAngle) {
-        /** Work out the single hop angle of radiation */
         double angleOfRadiationSingleHop = 90.0 - Math.toDegrees(Math.atan(distanceInKm / altInKm));
         if (angleOfRadiationSingleHop < hfAntennaTakeoffAngle) {
             /* We need to break up the propagation into hops */

@@ -68,7 +68,6 @@ public class GeodesicUtils
     }
 
     private final static double EARTH_RADIUS_IN_METRES = 6378 * 1000;
-    private final static double EARTH_CIRCUMFERENCE_IN_METRES = 40075 * 1000;
 
     /**
      * It is assumed the Earth is round for this calculation, so there will be a margin of error.
@@ -81,9 +80,8 @@ public class GeodesicUtils
      */
     public static double geodesicDistanceToStraightLineDistance(double geodesicDistance) {
         double r = EARTH_RADIUS_IN_METRES;
-        double a = geodesicDistance;
 
-        double d = 2 * r * Math.sin(a / (2 * r));
+        double d = 2 * r * Math.sin(geodesicDistance / (2 * r));
 
         return d;
     }

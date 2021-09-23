@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JackOfAllTradesResultCalculator implements ContestResultCalculator {
-    private Map<Band, Integer> bandPointsMap = new HashMap<>();
-    private Map<Mode, Integer> modePointsMap = new HashMap<>();
-    private Map<Propagation, Integer> propPointsMap = new HashMap<>();
+    private final Map<Band, Integer> bandPointsMap = new HashMap<>();
+    private final Map<Mode, Integer> modePointsMap = new HashMap<>();
+    private final Map<Propagation, Integer> propPointsMap = new HashMap<>();
 
     public JackOfAllTradesResultCalculator() {
         bandPointsMap.put(Band.BAND_2190m, 7);
@@ -135,7 +135,7 @@ public class JackOfAllTradesResultCalculator implements ContestResultCalculator 
         int bandPoints = 1;
         if (record.getBand() != null) {
             bandPoints = bandPointsMap.get(record.getBand());
-        };
+        }
 
         int modePoints = 1;
         if (record.getMode() != null) {

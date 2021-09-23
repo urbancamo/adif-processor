@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocationParsers {
-    private List<LocationParser> parsers = new ArrayList<>();
+    private final List<LocationParser> parsers = new ArrayList<>();
 
     /**
      * The order of these parsers is important, they should run from most to least accurate

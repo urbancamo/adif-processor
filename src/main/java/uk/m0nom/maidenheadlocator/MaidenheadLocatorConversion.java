@@ -2,7 +2,6 @@ package uk.m0nom.maidenheadlocator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
-import org.gavaghan.geodesy.GlobalPosition;
 import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
 import uk.m0nom.coords.LocationSource;
 
@@ -92,7 +91,6 @@ public class MaidenheadLocatorConversion {
      * @return Locator string
      */
     public static String coordsToLocator(GlobalCoordinates coords, int ext) {
-        int v;
         String locator = "";
 
         double latitude = coords.getLatitude() + 90;

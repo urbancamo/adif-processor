@@ -9,7 +9,6 @@ import uk.m0nom.coords.LocationParsers;
 
 import java.io.FileNotFoundException;
 import java.util.Collection;
-import java.util.Locale;
 import java.util.logging.Logger;
 
 public class LotaLocationProcessor {
@@ -52,8 +51,4 @@ public class LotaLocationProcessor {
         return false;
     }
 
-    private static boolean isNotUrl(String str) {
-         String toCheck = str.trim().toLowerCase(Locale.ROOT);
-         return (!toCheck.startsWith("http://") && !toCheck.startsWith("https://"));
-    }
 }

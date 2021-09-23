@@ -2,15 +2,11 @@ package uk.m0nom.adif3.contacts;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.marsik.ham.adif.Adif3;
-import uk.m0nom.kml.KmlWriter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 @Getter

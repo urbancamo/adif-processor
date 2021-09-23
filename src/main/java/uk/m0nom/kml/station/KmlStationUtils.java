@@ -3,8 +3,8 @@ package uk.m0nom.kml.station;
 import de.micromata.opengis.kml.v_2_2_0.*;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
-import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.kml.info.KmlStationIcon;
 import uk.m0nom.kml.info.KmlStationInfoPanel;
 
@@ -12,15 +12,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.logging.Logger;
 
 import static uk.m0nom.kml.KmlUtils.getStyleId;
 import static uk.m0nom.kml.KmlUtils.getStyleUrl;
 
 public class KmlStationUtils {
     public final static double DEFAULT_RANGE_METRES = 500.0;
-    private static final Logger logger = Logger.getLogger(KmlStationUtils.class.getName());
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm");
 
     public static String addMyStationToMap(TransformControl control, Document doc, Folder folder, Qso qso) {
         return createMyStationMarker(control, doc, folder, qso);
@@ -84,7 +82,6 @@ public class KmlStationUtils {
         GlobalCoordinates coords = rec.getCoordinates();
         double longitude = coords.getLongitude();
         double latitude = coords.getLatitude();
-        String station = rec.getCall();
 
         Icon icon = new Icon()
                 .withHref(new KmlStationIcon().getIconFromStation(control, qso.getTo()));

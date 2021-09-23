@@ -18,14 +18,13 @@ import java.util.logging.Logger;
 public class PrintFormatApp implements Runnable
 {
     private static final Logger logger = Logger.getLogger(PrintFormatApp.class.getName());
-    private static PrintFormatApp instance;
 
-    private Adif3PrintFormatter formatter;
-    private Adif3FileReaderWriter readerWriter;
+    private final Adif3PrintFormatter formatter;
+    private final Adif3FileReaderWriter readerWriter;
 
-    private String args[];
+    private final String[] args;
 
-    public PrintFormatApp(String args[]) {
+    public PrintFormatApp(String[] args) {
         this.args = args;
         formatter = new Adif3PrintFormatter();
         readerWriter = new Adif3FileReaderWriter();
@@ -33,7 +32,7 @@ public class PrintFormatApp implements Runnable
 
     public static void main( String[] args )
     {
-        instance = new PrintFormatApp(args);
+        PrintFormatApp instance = new PrintFormatApp(args);
         instance.run();
     }
 
@@ -47,8 +46,8 @@ public class PrintFormatApp implements Runnable
                 logger.config(String.format("Usage: %s <inputFile>.adi <config-file>.yaml", this.getClass().getName()));
             } else {
                 in = args[0];
-                out = String.format("%s.%s", FilenameUtils.removeExtension(in.toString()), "prn");
-                formatter.getPrintJobConfig().configure(new FileInputStream(new File(args[1])));
+                out = String.format("%s.%s", FilenameUtils.removeExtension(in), "prn");
+                formatter.getPrintJobConfig().configure(new FileInputStream(args[1]));
                 Adif3 log = readerWriter.read(in, formatter.getPrintJobConfig().getInEncoding(), true);
                 StringBuilder sb = formatter.format(log);
                 File outFile = new File(out);

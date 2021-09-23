@@ -6,7 +6,7 @@ public class LatLongUtils {
 
     public static Double parseDecimalLatitude(String latString) {
         try {
-            Double latitude = Double.parseDouble(latString);
+            double latitude = Double.parseDouble(latString);
             // Check in range
             if (checkLatitudeRange(latitude)) {
                 return latitude;
@@ -19,7 +19,7 @@ public class LatLongUtils {
 
     public static Double parseDecimalLatitude(String latString, String latNorthSouth) {
         try {
-            Double latitude = Double.parseDouble(latString);
+            double latitude = Double.parseDouble(latString);
             if ("S".equalsIgnoreCase(latNorthSouth)) {
                 return -latitude;
             }
@@ -35,7 +35,7 @@ public class LatLongUtils {
 
     public static Double parseDecimalLongitude(String longString) {
         try {
-            Double longitude = Double.parseDouble(longString);
+            double longitude = Double.parseDouble(longString);
             // Check in range
             if (checkLongitudeRange(longitude)) {
                 return longitude;
@@ -48,7 +48,7 @@ public class LatLongUtils {
 
     public static Double parseDecimalLongitude(String longString, String longEastWest) {
         try {
-            Double longitude = Double.parseDouble(longString);
+            double longitude = Double.parseDouble(longString);
             if ("W".equalsIgnoreCase(longEastWest)) {
                 longitude = -longitude;
             }
@@ -64,7 +64,7 @@ public class LatLongUtils {
 
     public static Double parseDecimalLatitudeWithNs(String latString, String latNorthSouth) {
         try {
-            Double latitude = Double.parseDouble(latString);
+            double latitude = Double.parseDouble(latString);
             if ("S".equalsIgnoreCase(latNorthSouth)) {
                 latitude = -latitude;
             }
@@ -80,7 +80,7 @@ public class LatLongUtils {
 
     public static Double parseDecimalLongitudeWithEw(String longString, String longEastWest) {
         try {
-            Double longitude = Double.parseDouble(longString);
+            double longitude = Double.parseDouble(longString);
             if ("W".equalsIgnoreCase(longEastWest)) {
                 longitude = -longitude;
             }
@@ -112,12 +112,12 @@ public class LatLongUtils {
 
     private static Double parseDegreesMinutesSeconds(String degrees, String minutes, String seconds, boolean negative) {
         try {
-            Double d = Double.parseDouble(degrees);
+            double d = Double.parseDouble(degrees);
             if (negative) {
                 d = -d;
             }
-            Double m = Double.parseDouble(minutes);
-            Double s = Double.parseDouble(seconds);
+            double m = Double.parseDouble(minutes);
+            double s = Double.parseDouble(seconds);
             return Math.signum(d) * (Math.abs(d) + (m / 60.0) + (s / 3600.0));
         } catch (NumberFormatException e) {
             return null;

@@ -2,10 +2,8 @@ package uk.m0nom.adif3.contacts;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.gavaghan.geodesy.GlobalCoordinates;
-import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.qrz.QrzCallsign;
@@ -49,7 +47,7 @@ public class Station {
     }
 
     public boolean isDoing(ActivityType type) {
-        return activities.keySet().contains(type);
+        return activities.containsKey(type);
     }
 
     public Activity getActivity(ActivityType type) {

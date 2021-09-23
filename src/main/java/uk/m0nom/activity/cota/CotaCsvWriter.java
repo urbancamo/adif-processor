@@ -2,16 +2,17 @@ package uk.m0nom.activity.cota;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.lang3.ArrayUtils;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
-import uk.m0nom.coords.LocationSource;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class CotaCsvWriter {

@@ -15,7 +15,7 @@ import uk.m0nom.satellite.SatellitePosition;
 import uk.m0nom.satellite.Satellites;
 
 public class SatellitePropagation implements CommsLinkGenerator {
-    private Satellites satellites;
+    private final Satellites satellites;
 
     public SatellitePropagation() {
         satellites = new Satellites();

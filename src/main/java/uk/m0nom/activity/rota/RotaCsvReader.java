@@ -3,12 +3,10 @@ package uk.m0nom.activity.rota;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.input.BOMInputStream;
-import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityReader;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.io.IOException;
 import java.io.InputStream;

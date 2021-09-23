@@ -1,23 +1,13 @@
 package uk.m0nom.adif3.print;
 
-import com.amihaiemil.eoyaml.Yaml;
-import com.amihaiemil.eoyaml.YamlMapping;
-import com.amihaiemil.eoyaml.YamlNode;
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.types.Sota;
-import uk.m0nom.adif3.print.ColumnConfig;
-import uk.m0nom.adif3.print.LineConfig;
-import uk.m0nom.adif3.print.PageConfig;
-import uk.m0nom.adif3.print.PrintJobConfig;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
@@ -25,7 +15,7 @@ import java.util.logging.Logger;
 public class Adif3PrintFormatter {
     private static final Logger logger = Logger.getLogger(Adif3PrintFormatter.class.getName());
 
-    class PrintState {
+    static class PrintState {
         StringBuilder sb;
         int currentPage;
         int currentLine;
@@ -37,8 +27,7 @@ public class Adif3PrintFormatter {
         printJobConfig = new PrintJobConfig();
     }
 
-    private YamlMapping config = null;
-    private PrintJobConfig printJobConfig;
+    private final PrintJobConfig printJobConfig;
 
     private PrintState state;
 
@@ -51,7 +40,7 @@ public class Adif3PrintFormatter {
         for (Adif3Record rec : log.getRecords()) {
             if (rec.getCall() != null && rec.getStationCallsign() != null) {
                 if (atPageBreak()) {
-                    handlePageBreak(log);
+                    handlePageBreak();
                 }
                 printRecord(rec);
             }
@@ -73,7 +62,7 @@ public class Adif3PrintFormatter {
         return (state.currentLine == 1 || state.currentLine % printJobConfig.pageConfig.getPageHeight() == 0);
     }
 
-    private void handlePageBreak(Adif3 log) {
+    private void handlePageBreak() {
         if (state.currentLine != 1) {
             // Need to end the previous page
             // Add a Control-L
@@ -82,7 +71,7 @@ public class Adif3PrintFormatter {
         for (int i = 0; i < printJobConfig.pageConfig.getTopMargin(); i++) {
             printLineEnd();
         }
-        printHeader(log);
+        printHeader();
         for (int i = 0; i < printJobConfig.pageConfig.getHeaderMargin(); i++) {
             printLineEnd();
         }
@@ -96,7 +85,7 @@ public class Adif3PrintFormatter {
         state.currentPage++;
     }
 
-    private void printHeader(Adif3 log) {
+    private void printHeader() {
         if (printJobConfig.pageConfig.getHeaderLine().length() > 0) {
             if ("COLUMN_NAMES".equals(printJobConfig.pageConfig.getHeaderLine())) {
                 printColumnHeaders();
@@ -188,12 +177,10 @@ public class Adif3PrintFormatter {
     }
 
     private void printLineEnd() {
-        switch (printJobConfig.pageConfig.getLineEnd()) {
-            case "unix":
-                state.sb.append("\n");
-                break;
-            default:
-                state.sb.append("\r\n");
+        if ("unix".equals(printJobConfig.pageConfig.getLineEnd())) {
+            state.sb.append("\n");
+        } else {
+            state.sb.append("\r\n");
         }
         state.currentLine++;
         state.currentColumn = 1;
@@ -201,7 +188,7 @@ public class Adif3PrintFormatter {
 
     public void printRecord(Adif3Record rec) {
         StringBuilder line = new StringBuilder();
-        String value = "";
+        String value;
         for (ColumnConfig column : printJobConfig.pageConfig.getLine().getColumns()) {
             value = getAdif3FieldFromRecord(rec, column);
             printValueToColumn(column, value, line);

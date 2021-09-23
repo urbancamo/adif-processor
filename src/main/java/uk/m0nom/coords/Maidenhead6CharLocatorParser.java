@@ -1,6 +1,5 @@
 package uk.m0nom.coords;
 
-import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.util.regex.Matcher;

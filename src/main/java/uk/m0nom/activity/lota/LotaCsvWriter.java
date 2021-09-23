@@ -4,13 +4,14 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
-import uk.m0nom.activity.lota.LotaInfo;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 public class LotaCsvWriter {
@@ -25,8 +26,7 @@ public class LotaCsvWriter {
         String filePath = String.format("%s/%s.csv", outPath, "lighthouses");
         File outFile = null;
 
-        SortedSet<Activity> activities = new TreeSet<>();
-        activities.addAll(lotaDatabase.getValues());
+        SortedSet<Activity> activities = new TreeSet<>(lotaDatabase.getValues());
 
         try {
             outFile = new File(filePath);
@@ -56,6 +56,7 @@ public class LotaCsvWriter {
                 logger.severe(String.format("Exception writing LOTA file %s: %s", outFile.getAbsolutePath(), e.getMessage()));
         } finally {
             try {
+                assert out != null;
                 out.close();
             } catch (IOException ioe) {
                 logger.severe(String.format("Exception closing LOTA file %s: %s", outFile.getAbsolutePath(), ioe.getMessage()));

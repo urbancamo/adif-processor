@@ -2,7 +2,6 @@ package uk.m0nom.kml.info;
 
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
-import org.marsik.ham.adif.enums.Propagation;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.comms.CommsLinkResult;
 
@@ -48,10 +47,6 @@ public class KmlContactInfoPanel {
                     sb.append(String.format("Satellite: %s<br/>", qso.getRecord().getSatName()));
                     /*sb.append(String.format("Sky dist: %.0f km<br/>", result.getSkyDistance()));*/
                     sb.append(String.format("Sat Alt: %.0f km<br/>", result.getAltitude() / 1000));
-                    /** need to take into account difference in longitude between station and satellite longitude for these to be accurate
-                     sb.append(String.format("From Angle: %.0f°<br/>", result.getFromAngle()));
-                     sb.append(String.format("To Angle: %.0f°<br/>", result.getToAngle()));
-                     */
                     break;
                 case TROPOSPHERIC_DUCTING:
                     sb.append(String.format("Bounces: %d<br/>", result.getBounces()));

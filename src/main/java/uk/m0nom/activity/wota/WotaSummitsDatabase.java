@@ -2,15 +2,14 @@ package uk.m0nom.activity.wota;
 
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
-import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class WotaSummitsDatabase extends ActivityDatabase {
-    private Map<String, Activity> summitsWithSotaKey;
-    private Map<String, Activity> summitsWithHemaKey;
+    private final Map<String, Activity> summitsWithSotaKey;
+    private final Map<String, Activity> summitsWithHemaKey;
 
     public WotaSummitsDatabase(ActivityType type, Map<String, Activity> summits) {
         super(type, summits);

@@ -13,7 +13,7 @@ public enum CallsignVariant {
     GW_ALT("W"),
     GD_ALT("D");
 
-    private String modifier;
+    private final String modifier;
 
     CallsignVariant(String modifier) {
         this.modifier = modifier;

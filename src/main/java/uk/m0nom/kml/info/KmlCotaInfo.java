@@ -2,7 +2,6 @@ package uk.m0nom.kml.info;
 
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.cota.CotaInfo;
-import uk.m0nom.activity.pota.PotaInfo;
 
 public class KmlCotaInfo extends KmlActivityInfo {
     @Override

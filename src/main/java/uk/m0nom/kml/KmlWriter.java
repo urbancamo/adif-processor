@@ -19,20 +19,16 @@ import java.util.logging.Logger;
 
 public class KmlWriter {
     private static final Logger logger = Logger.getLogger(KmlWriter.class.getName());
-    private ActivityDatabases activities;
-    private TransformControl control;
-    private KmlBandLineStyles bandLineStyles;
+    private final TransformControl control;
 
     public KmlWriter(TransformControl control) {
         this.control = control;
-        bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());
+        KmlBandLineStyles bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());
     }
 
     public void write(String pathname, String name, ActivityDatabases activities, Qsos qsos, TransformResults results) {
         KmlLocalActivities kmlLocalActivities = new KmlLocalActivities();
         KmlCommsUtils kmlCommsUtils = new KmlCommsUtils(control, activities);
-
-        this.activities = activities;
 
         final Kml kml = new Kml();
         Document doc = kml.createAndSetDocument().withName(name).withOpen(true);

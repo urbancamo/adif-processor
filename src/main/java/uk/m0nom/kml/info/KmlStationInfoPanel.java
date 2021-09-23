@@ -6,11 +6,8 @@ import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.qrz.QrzCallsign;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class KmlStationInfoPanel implements KmlInfoPanel {
-    private KmlInfoMap infoMap;
+    private final KmlInfoMap infoMap;
 
     public KmlStationInfoPanel() {
         infoMap = new KmlInfoMap();

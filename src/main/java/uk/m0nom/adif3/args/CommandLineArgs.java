@@ -59,21 +59,21 @@ public class CommandLineArgs {
                 .help("Set the colour of contact line for Summit to Summit contacts of the form html_color:transparency:width, default is: brick_red:50:2");
         parser.addArgument("-kcls", "--kml-contact-line-style").required(false).setDefault("baby_blue:50:2")
                 .help("Set the colour of contact line for contacts of the form html_color:transparency:width, default is: baby_blue:50:2");
-        parser.addArgument("-kfi", "--kml-fixed-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/ranger_station.png")
+        parser.addArgument("-kfi", "--kml-fixed-station").required(false).setDefault("https://maps.google.com/mapfiles/kml/shapes/ranger_station.png")
                 .help("URL of the icon to use for fixed/home station locations");
-        parser.addArgument("-kpi", "--kml-portable-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/hiker.png")
+        parser.addArgument("-kpi", "--kml-portable-station").required(false).setDefault("https://maps.google.com/mapfiles/kml/shapes/hiker.png")
                 .help("URL of the icon to use for fixed/home station locations");
-        parser.addArgument("-kmi", "--kml-mobile-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/cabs.png")
+        parser.addArgument("-kmi", "--kml-mobile-station").required(false).setDefault("https://maps.google.com/mapfiles/kml/shapes/cabs.png")
                 .help("URL of the icon to use for fixed/home station locations");
-        parser.addArgument("-kmmi", "--kml-maritime-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/sailing.png")
+        parser.addArgument("-kmmi", "--kml-maritime-station").required(false).setDefault("https://maps.google.com/mapfiles/kml/shapes/sailing.png")
                 .help("URL of the icon to use for maritime mobile station locations");
-        parser.addArgument("-kparki", "--kml-park-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/picnic.png")
+        parser.addArgument("-kparki", "--kml-park-station").required(false).setDefault("https://maps.google.com/mapfiles/kml/shapes/picnic.png")
                 .help("URL of the icon to use for Parks on the Air station locations");
-        parser.addArgument("-ksotai", "--kml-sota-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/mountains.png")
+        parser.addArgument("-ksotai", "--kml-sota-station").required(false).setDefault("https://maps.google.com/mapfiles/kml/shapes/mountains.png")
                 .help("URL of the icon to use for SOTA station locations");
-        parser.addArgument("-khemai", "--kml-hema-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/hospitals.png")
+        parser.addArgument("-khemai", "--kml-hema-station").required(false).setDefault("https://maps.google.com/mapfiles/kml/shapes/hospitals.png")
                 .help("URL of the icon to use for SOTA station locations");
-        parser.addArgument("-kwotai", "--kml-wota-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/trail.png")
+        parser.addArgument("-kwotai", "--kml-wota-station").required(false).setDefault("https://maps.google.com/mapfiles/kml/shapes/trail.png")
                 .help("URL of the icon to use for SOTA station locations");
 
         parser.addArgument("-md", "--markdown").required(false).action(Arguments.storeTrue())

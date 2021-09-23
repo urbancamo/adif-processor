@@ -3,7 +3,6 @@ package uk.m0nom.coords;
 import lombok.Getter;
 import lombok.Setter;
 import uk.m0nom.activity.ActivityDatabase;
-import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.wwff.WwffInfo;
 
 import java.util.regex.Pattern;

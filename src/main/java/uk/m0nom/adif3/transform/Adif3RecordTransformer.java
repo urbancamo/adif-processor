@@ -1,6 +1,5 @@
 package uk.m0nom.adif3.transform;
 
-import com.amihaiemil.eoyaml.YamlMapping;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.contacts.Qsos;
 

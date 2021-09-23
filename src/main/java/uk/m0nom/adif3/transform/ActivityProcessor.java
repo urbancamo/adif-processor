@@ -12,7 +12,6 @@ import uk.m0nom.qrz.QrzXmlService;
 import java.util.logging.Logger;
 
 public class ActivityProcessor {
-    private static final Logger logger = Logger.getLogger(ActivityProcessor.class.getName());
 
     protected final TransformControl control;
     protected final QrzXmlService qrzXmlService;

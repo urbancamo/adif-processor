@@ -6,11 +6,9 @@ public enum CallsignSuffix {
     MARITIME_MOBILE("/MM", "Maritime Mobile"),
     PEDESTRIAN_MOBILE("/PM", "Pedestrian Mobile");
 
-    private final String name;
     private final String description;
 
     CallsignSuffix(String name, String description) {
-        this.name = name;
         this.description = description;
     }
 }

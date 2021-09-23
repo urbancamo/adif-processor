@@ -10,11 +10,9 @@ import org.marsik.ham.adif.enums.Propagation;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.geodesic.GeodesicUtils;
 
-import java.time.LocalTime;
 import java.util.List;
 
 public class TroposphericDuctingPropagation implements CommsLinkGenerator {
-    private final static LocalTime MIDDAY = LocalTime.of(12,0);
 
     @Override
     public CommsLinkResult getCommsLink(TransformControl control, LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc, Adif3Record rec, double myAltitude, double theirAltitude) {
@@ -36,7 +34,7 @@ public class TroposphericDuctingPropagation implements CommsLinkGenerator {
         double avgAngle = 0.0;
         double avgBase = 0.0;
         Propagation mode = null;
-        List<PropagationBounce> bounces = new Troposphere().getBounces(distanceInKm, myAltitude, theirAltitude);
+        List<PropagationBounce> bounces = new Troposphere().getBounces(distanceInKm);
         double skyDistance = GeodesicUtils.addBouncesToLineString(hfLine, bounces, start, end, azimuth, calculator);
         result.setSkyDistance(skyDistance);
 

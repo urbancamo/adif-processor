@@ -39,9 +39,9 @@ public class CallsignUtils {
         String callsign = ukVariant.getCallsign();
         
         if (ukVariant.getVariant() == CallsignVariant.G_ALT) {
-            variantCallsign = String.format("%s%s%s", callsign.substring(0, 1), variant.getModifier(), callsign.substring(1, callsign.length()));
+            variantCallsign = String.format("%s%s%s", callsign.charAt(0), variant.getModifier(), callsign.substring(1));
         } else {
-            variantCallsign = String.format("%s%s%s", callsign.substring(0, 1), variant.getModifier(), callsign.substring(2, callsign.length()));
+            variantCallsign = String.format("%s%s%s", callsign.charAt(0), variant.getModifier(), callsign.substring(2));
         }
         return new Callsign(variantCallsign, variant);
     }
@@ -140,7 +140,7 @@ public class CallsignUtils {
         }
         if (fixedInCountry != null) {
             fixedInHomeCountry = getOperatorWithoutCountryPrefix(fixedInCountry.getCallsign());
-            if (fixedInHomeCountry != null && !fixedInCountry.getCallsign().equals(fixedInHomeCountry.getCallsign())) {
+            if (!fixedInCountry.getCallsign().equals(fixedInHomeCountry.getCallsign())) {
                 variants.add(fixedInHomeCountry);
             }
         }
@@ -222,7 +222,7 @@ public class CallsignUtils {
     public static CallsignSuffix getSuffix(String callsign) {
         int loc = callsign.lastIndexOf('/');
         if (loc != -1) {
-            String suffix = callsign.substring(loc, callsign.length());
+            String suffix = callsign.substring(loc);
             for (CallsignSuffix match : SUFFIXES) {
                 if (StringUtils.equalsIgnoreCase(match.getSuffix(), suffix)) {
                     return match;
@@ -232,17 +232,13 @@ public class CallsignUtils {
         return null;
     }
 
-    public static boolean isValidSuffix(String suffix) {
-        return SUFFIXES.contains(suffix.toUpperCase());
-    }
-
     // TODO these methods are very crude and need refactoring to include cty.dat lookups
     public static boolean isAbroad(String callsign) {
         int loc = callsign.indexOf('/');
         if (loc != -1) {
             CallsignSuffix suffix = getSuffix(callsign);
             if (suffix != null) {
-                return !StringUtils.equals(callsign.substring(loc, callsign.length()), suffix.getSuffix());
+                return !StringUtils.equals(callsign.substring(loc), suffix.getSuffix());
             }
             return true;
         }
@@ -252,7 +248,7 @@ public class CallsignUtils {
     public static String stripCountryPrefix(String callsign) {
         if (isAbroad(callsign)) {
             int loc = callsign.indexOf('/');
-            return callsign.substring(loc+1, callsign.length());
+            return callsign.substring(loc+1);
         }
         return callsign;
     }

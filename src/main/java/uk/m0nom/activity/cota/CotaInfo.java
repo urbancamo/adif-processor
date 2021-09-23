@@ -13,6 +13,7 @@ public class CotaInfo extends Activity {
     private Boolean active;
     private String noCastles, prefix;
     private String location, information;
+
     public CotaInfo() {
         super(ActivityType.COTA);
     }

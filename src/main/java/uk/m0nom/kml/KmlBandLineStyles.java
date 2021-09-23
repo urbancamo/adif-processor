@@ -8,7 +8,7 @@ import java.util.Map;
 
 
 public class KmlBandLineStyles {
-    private Map<Band, KmlLineStyle> bandLineStyles;
+    private final Map<Band, KmlLineStyle> bandLineStyles;
     
     public KmlBandLineStyles(int width, int transparency) {
         bandLineStyles = new HashMap<>();

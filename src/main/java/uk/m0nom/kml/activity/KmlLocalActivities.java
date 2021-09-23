@@ -5,8 +5,6 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.adif3.contacts.Station;
-import uk.m0nom.kml.KmlWriter;
-import uk.m0nom.kml.comms.KmlCommsUtils;
 import uk.m0nom.kml.info.KmlInfoMap;
 import uk.m0nom.kml.station.KmlStationUtils;
 
@@ -18,7 +16,7 @@ import static uk.m0nom.kml.KmlUtils.getStyleUrl;
 
 public class KmlLocalActivities {
     public final static String DEFAULT_RADIUS = "5000";
-    private KmlInfoMap infoMap;
+    private final KmlInfoMap infoMap;
 
     public KmlLocalActivities() {
         infoMap = new KmlInfoMap();
@@ -26,7 +24,6 @@ public class KmlLocalActivities {
 
     public void addLocalActivities(Document doc, Folder folder, Station to, double radius, ActivityDatabases activities) {
         // Determine activities within the pre-defined radius
-        GlobalCoordinates centre = to.getCoordinates();
         for (Activity activity : to.getActivities().values()) {
             Collection<Activity> localActivities = activities.getDatabase(activity.getType()).findActivitiesInRadius(activity, radius);
             for (Activity localActivity : localActivities) {
@@ -35,9 +32,8 @@ public class KmlLocalActivities {
         }
     }
 
-    public String addActivityMarker(Document document, Folder folder, Activity activity) {
+    public void addActivityMarker(Document document, Folder folder, Activity activity) {
         String id = activity.getRef();
-        String name = id;
 
         GlobalCoordinates coords = activity.getCoords();
         if (coords != null) {
@@ -62,7 +58,7 @@ public class KmlLocalActivities {
             String htmlPanelContent = infoMap.get(activity.getType()).getInfo(activity);
             Placemark placemark = folder.createAndAddPlacemark();
             // use the style for each continent
-            placemark.withName(name)
+            placemark.withName(id)
                     .withId(id)
                     .withDescription(htmlPanelContent)
                     .withStyleUrl(getStyleUrl(id))
@@ -70,6 +66,5 @@ public class KmlLocalActivities {
                     .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(altitude).withRange(KmlStationUtils.DEFAULT_RANGE_METRES);
            placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
         }
-        return null;
     }
 }

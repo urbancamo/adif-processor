@@ -3,7 +3,6 @@ package uk.m0nom.activity;
 import lombok.Getter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
-import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
 
 import java.io.IOException;

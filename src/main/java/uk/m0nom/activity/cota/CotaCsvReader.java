@@ -29,17 +29,14 @@ public class CotaCsvReader extends ActivityReader {
         super(ActivityType.COTA, sourceFile);
      }
 
-
     public ActivityDatabase read(InputStream inputStream) throws IOException {
         Map<String, Activity> cotaInfo = new HashMap<>();
 
         final Reader reader = new InputStreamReader(new BOMInputStream(inputStream), StandardCharsets.UTF_8);
         int line = 0;
-        int foundLocationsCount = 0;
         Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(reader);
         for (CSVRecord record : records) {
             line++;
-            //COTA WCA	CASTLES	PREFIX	NAME OF CASTLE	LOCATION	INFORMATION
             CotaInfo info = new CotaInfo();
             try {
                 info.setRef(record.get("COTA WCA").trim());
@@ -53,7 +50,6 @@ public class CotaCsvReader extends ActivityReader {
             }
             cotaInfo.put(info.getRef(), info);
         }
-        logger.info(String.format("Loaded %d castles", line));
 
         return new ActivityDatabase(ActivityType.COTA, cotaInfo);
     }

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Satellites {
 
-    private Map<String, Satellite> satelliteMap = new HashMap<>();
+    private final Map<String, Satellite> satelliteMap = new HashMap<>();
 
     public Satellites() {
         QO100 qo100 = new QO100();

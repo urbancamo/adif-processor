@@ -50,7 +50,7 @@ public class ActivityDatabases {
                 logger.info(String.format("Loading %s data from: %s", reader.getType().getActivityDescription(), reader.getSourceFile()));
                 ActivityDatabase database = reader.read(csvStream);
                 databases.put(reader.getType(), database);
-                logger.info(String.format("%d %s records loaded", database.size(), reader.getType().getActivityName()));
+                logger.info(String.format("%d %s records loaded", database.size(), reader.getType().getActivityDescription()));
             } catch (IOException e) {
                 e.printStackTrace();
             }

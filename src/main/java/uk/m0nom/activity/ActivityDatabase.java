@@ -1,17 +1,18 @@
 package uk.m0nom.activity;
 
-import lombok.val;
 import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
 import org.gavaghan.geodesy.GlobalCoordinates;
-import uk.m0nom.activity.hema.HemaSummitInfo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public class ActivityDatabase {
-    private ActivityType type;
-    private Map<String, Activity> database;
+    private final ActivityType type;
+    private final Map<String, Activity> database;
 
     public ActivityDatabase(ActivityType type, Map<String, Activity> database) {
         this.type = type;
