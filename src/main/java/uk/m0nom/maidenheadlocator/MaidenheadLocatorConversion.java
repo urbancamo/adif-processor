@@ -234,5 +234,6 @@ public class MaidenheadLocatorConversion {
 
     static {
         DUBIOUS_GRIDSQUARES.add("IO91VL");
+        DUBIOUS_GRIDSQUARES.add("JJ00AA");
     }
 }
