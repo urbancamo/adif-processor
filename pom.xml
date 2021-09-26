@@ -19,6 +19,12 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>fr.dudie</groupId>
+      <artifactId>nominatim-api</artifactId>
+      <version>3.4</version>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/net.sf.geographiclib/GeographicLib-Java -->
     <dependency>
       <groupId>net.sf.geographiclib</groupId>
@@ -116,6 +122,11 @@
       <artifactId>lombok</artifactId>
       <version>1.18.20</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.9</version>
     </dependency>
   </dependencies>
 

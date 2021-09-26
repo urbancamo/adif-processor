@@ -97,7 +97,7 @@ public class AdifQrzEnricher {
             if (rec.getCoordinates() == null) {
                 boolean gridBasedGeoloc = StringUtils.equalsIgnoreCase("grid", callsignData.getGeoloc());
                 String gridSquare = callsignData.getGrid();
-                boolean invalidGridBasedLoc = gridBasedGeoloc && !MaidenheadLocatorConversion.isAValidGridSquare(gridSquare);
+                boolean invalidGridBasedLoc = gridBasedGeoloc && (!MaidenheadLocatorConversion.isAValidGridSquare(gridSquare) || MaidenheadLocatorConversion.isADubiousGridSquare(gridSquare));
 
                 if (callsignData.getLat() != null && callsignData.getLon() != null && !invalidGridBasedLoc) {
                     GlobalCoordinates coord = new GlobalCoordinates(callsignData.getLat(), callsignData.getLon());

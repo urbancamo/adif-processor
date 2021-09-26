@@ -15,6 +15,8 @@ import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.geocoding.GeocodingProvider;
+import uk.m0nom.geocoding.NominatimGeocodingProvider;
 import uk.m0nom.location.FromLocationDeterminer;
 import uk.m0nom.location.ToLocationDeterminer;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
@@ -22,6 +24,7 @@ import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.satellite.Satellites;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Logger;
@@ -38,6 +41,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private final FromLocationDeterminer fromLocationDeterminer;
     private final ToLocationDeterminer toLocationDeterminer;
     private final ActivityProcessor activityProcessor;
+    private final GeocodingProvider geocodingProvider;
 
     public CommentParsingAdifRecordTransformer(YamlMapping config, ActivityDatabases activities, QrzXmlService qrzXmlService, TransformControl control) {
         fieldMap = config.asMapping();
@@ -49,6 +53,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         this.fromLocationDeterminer = new FromLocationDeterminer(control, qrzXmlService, activities);
         this.toLocationDeterminer = new ToLocationDeterminer(control, qrzXmlService, activities);
         this.activityProcessor = new ActivityProcessor(control, qrzXmlService, activities);
+        this.geocodingProvider = new NominatimGeocodingProvider();
     }
 
     private void issueWarnings(Adif3Record rec) {
@@ -109,10 +114,26 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             theirQrzData = enricher.lookupLocationFromQrz(rec);
             qso.getTo().setQrzInfo(theirQrzData);
         }
+
         // IF qrz.com can't fill in the coordinates, and the gridsquare is set, fill in coordinates from that
-        if (rec.getCoordinates() == null && StringUtils.isNotBlank(rec.getGridsquare())) {
+        if (rec.getCoordinates() == null && MaidenheadLocatorConversion.isAValidGridSquare(rec.getGridsquare()) && !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare())) {
             // Set Coordinates from GridSquare that has been supplied in the input file
             rec.setCoordinates(MaidenheadLocatorConversion.locatorToCoords(rec.getGridsquare()));
+        }
+
+        // Last resort, attempt to find location from qrz.com address data via geolocation provider
+        if (rec.getCoordinates() == null &&
+                (!MaidenheadLocatorConversion.isAValidGridSquare(rec.getGridsquare()) ||
+                MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare())) &&
+                theirQrzData != null) {
+            try {
+                rec.setCoordinates(geocodingProvider.getLocationFromAddress(theirQrzData));
+                if (rec.getCoordinates() != null) {
+                    logger.info(String.format("Setting location for %s based on geolocation data to: %s", rec.getCall(), rec.getCoordinates()));
+                }
+            } catch (Exception e) {
+                logger.severe(String.format("Caught Exception from Geolocation Provider looking up %s: %s", rec.getCall(), e.getMessage()));
+            }
         }
 
         // Look to see if there is anything in the SIG/SIGINFO fields
