@@ -20,14 +20,14 @@ public class PrintFormatApp implements Runnable
     private static final Logger logger = Logger.getLogger(PrintFormatApp.class.getName());
 
     private final Adif3PrintFormatter formatter;
-    private final Adif3FileReaderWriter readerWriter;
+    private final Adif3FileReader readerWriter;
 
     private final String[] args;
 
     public PrintFormatApp(String[] args) {
         this.args = args;
         formatter = new Adif3PrintFormatter();
-        readerWriter = new Adif3FileReaderWriter();
+        readerWriter = new Adif3FileReader();
     }
 
     public static void main( String[] args )

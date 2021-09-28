@@ -18,7 +18,8 @@ public class DirectoryTransformerApp implements Runnable
     private static final Logger logger = Logger.getLogger(DirectoryTransformerApp.class.getName());
 
     private final Adif3Transformer transformer;
-    private final Adif3FileReaderWriter readerWriter;
+    private final Adif3FileReader reader;
+    private final Adif3FileWriter writer;
     private final ActivityDatabases summits;
     private final QrzXmlService qrzXmlService;
     private final TransformControl control;
@@ -30,7 +31,8 @@ public class DirectoryTransformerApp implements Runnable
     public DirectoryTransformerApp(String[] args) {
         this.args = args;
         transformer = new Adif3Transformer();
-        readerWriter = new Adif3FileReaderWriter();
+        reader = new Adif3FileReader();
+        writer = new Adif3FileWriter();
         summits = new ActivityDatabases();
         qrzXmlService = new QrzXmlService(null, null);
         control = new TransformControl();
@@ -61,13 +63,13 @@ public class DirectoryTransformerApp implements Runnable
                     Collection<File> files = FileUtils.listFiles(new File(dir), new String[]{"adi"}, false);
                     for (File in: files) {
                         try {
-                            Adif3 log = readerWriter.read(in.getAbsolutePath(), "windows-1252", false);
+                            Adif3 log = reader.read(in.getAbsolutePath(), "windows-1252", false);
                             transformer.transform(log, control);
 
                             // Create output file name from input file name
                             String out = String.format("%s-%s.%s", FilenameUtils.removeExtension(in.toString()),
                                     "fta", "adi");
-                            readerWriter.write(out, "windows-1252", log);
+                            writer.write(out, "windows-1252", log);
                              logger.info(String.format("Wrote: %s", out));
                         } catch (UnsupportedHeaderException ushe) {
                             logger.warning(String.format("Unknown header, skipping file: %s", in.getAbsolutePath()));

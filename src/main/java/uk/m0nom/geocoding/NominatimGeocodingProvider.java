@@ -1,10 +1,8 @@
 package uk.m0nom.geocoding;
 
 import fr.dudie.nominatim.client.JsonNominatimClient;
-import fr.dudie.nominatim.client.NominatimClient;
 import fr.dudie.nominatim.model.Address;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.qrz.QrzCallsign;
@@ -26,7 +24,7 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
     @Override
     public GlobalCoordinates getLocationFromAddress(QrzCallsign qrzData) throws IOException, InterruptedException {
         String searchString = "";
-        String substring = "";
+        String substring;
         searchString = addIfNotNull(searchString, qrzData.getAddr1());
         searchString = addIfNotNull(searchString, qrzData.getAddr2());
         searchString = addIfNotNull(searchString, qrzData.getCounty());

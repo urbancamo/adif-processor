@@ -4,6 +4,7 @@ import org.marsik.ham.adif.AdiReader;
 import org.marsik.ham.adif.AdiWriter;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
+import uk.m0nom.qsofile.QsoFileReader;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -11,8 +12,8 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class Adif3FileReaderWriter {
-    private static final Logger logger = Logger.getLogger(Adif3FileReaderWriter.class.getName());
+public class Adif3FileReader implements QsoFileReader {
+    private static final Logger logger = Logger.getLogger(Adif3FileReader.class.getName());
 
     public Adif3 read(String filename, String encoding, boolean sort) throws IOException {
         AdiReader reader = new AdiReader();
@@ -33,32 +34,5 @@ public class Adif3FileReaderWriter {
             return adif;
         }
         return null;
-    }
-
-    public void write(String filename, String encoding, Adif3 log) throws IOException {
-        AdiWriter writer = new AdiWriter();
-        if (log.getHeader() != null) {
-            writer.append(log.getHeader(), true);
-        }
-
-        for (Adif3Record rec : log.getRecords()) {
-            writer.append(rec);
-        }
-
-        FileWriter fileWriter = null;
-        BufferedWriter out = null;
-        try {
-            fileWriter = new FileWriter(filename, Charset.forName(encoding));
-            out = new BufferedWriter(fileWriter);
-        } finally {
-            assert out != null;
-            out.write(writer.toString());
-            out.close();
-            try {
-                fileWriter.close();
-            } catch (Exception e) {
-                logger.severe(String.format("Eror closing output file: %s, error is: %s", filename, e.getMessage()));
-            }
-        }
     }
 }
