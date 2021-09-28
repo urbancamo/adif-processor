@@ -49,8 +49,8 @@ public class IonosphericPropagation implements CommsLinkGenerator {
         double azimuth = curve.getAzimuth();
         double avgAltitude = 0.0;
         double avgAngle = 0.0;
-        Propagation mode = null;
-        List<PropagationBounce> bounces = new Ionosphere().getBounces(frequencyInKhz, distanceInKm, time, myAltitude, theirAltitude, control.getHfAntennaTakeoffAngle());
+        Propagation mode = rec.getPropMode();
+        List<PropagationBounce> bounces = new Ionosphere().getBounces(mode, frequencyInKhz, distanceInKm, time, myAltitude, theirAltitude, control.getHfAntennaTakeoffAngle());
 
         double skyDistance = GeodesicUtils.addBouncesToLineString(hfLine, bounces, start, end, azimuth, calculator);
         result.setSkyDistance(skyDistance);

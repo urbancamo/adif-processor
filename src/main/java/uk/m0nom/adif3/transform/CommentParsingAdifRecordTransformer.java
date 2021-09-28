@@ -70,7 +70,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         /* Add Adif3Record details to the Qsos meta structure */
         Qso qso = createQsoFromAdif3Record(qsos, rec, index);
 
-        activityProcessor.processActivities(qso.getFrom());
+        activityProcessor.processActivities(qso.getFrom(), rec);
 
         Map<String, String> unmapped = new HashMap<>();
         QrzCallsign myQrzData = fromLocationDeterminer.setMyLocation(qso);

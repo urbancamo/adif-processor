@@ -8,9 +8,9 @@ public class PropagationModePredictor {
             return null;
         } else if (frequencyInKhz > 50000 && distanceInKm >= Ionosphere.MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM) {
             return Propagation.SPORADIC_E;
-        } else if (frequencyInKhz < 50000 && frequencyInKhz > 7000 && distanceInKm < Ionosphere.MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM) {
+        } else if (frequencyInKhz < 50000 && frequencyInKhz > 15000 && distanceInKm < Ionosphere.MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM) {
             return null;
-        } else if (frequencyInKhz < 7000 && distanceInKm < Ionosphere.MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM) {
+        } else if (frequencyInKhz < 15000 && distanceInKm < Ionosphere.MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM) {
             return null;
         } else if (frequencyInKhz < 50000 && distanceInKm >= Ionosphere.MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM) {
             return Propagation.F2_REFLECTION;

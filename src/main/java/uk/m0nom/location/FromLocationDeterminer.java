@@ -25,7 +25,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
 
     private void setMyLocationFromGrid(Qso qso, String myGrid) {
         Adif3Record rec = qso.getRecord();
-        qso.getRecord().setMyGridSquare(myGrid.substring(4));
+        qso.getRecord().setMyGridSquare(myGrid.substring(0, 6));
         qso.getFrom().setGrid(myGrid);
         rec.setMyCoordinates(MaidenheadLocatorConversion.locatorToCoords(myGrid));
         qso.getFrom().setCoordinates(rec.getMyCoordinates());

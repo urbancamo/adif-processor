@@ -1,6 +1,8 @@
 package uk.m0nom.adif3.transform;
 
 import org.apache.commons.lang3.StringUtils;
+import org.marsik.ham.adif.Adif3;
+import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.activity.wota.WotaSummitInfo;
@@ -8,8 +10,6 @@ import uk.m0nom.activity.wota.WotaSummitsDatabase;
 import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.qrz.QrzXmlService;
-
-import java.util.logging.Logger;
 
 public class ActivityProcessor {
 
@@ -40,29 +40,50 @@ public class ActivityProcessor {
         station.addActivity(wotaDatabase.getFromSotaId(sotaId));
     }
 
-    protected void processActivity(ActivityType type, Station station) {
+    protected void processActivityFromControl(ActivityType type, Station station) {
         String ref = control.getActivityRef(type);
         if (StringUtils.isNotBlank(ref)) {
             ref = ref.toUpperCase();
-            station.addActivity(activities.getDatabase(type).get(ref.toUpperCase()));
-            // Special handling where there can be multiple activities from the same location
-            switch (type) {
-                case WOTA:
-                    setHemaOrSotaFromWota(station, ref);
-                    break;
-                case SOTA:
-                    setWotaFromSotaId(station, ref);
-                    break;
-                case HEMA:
-                    setWotaFromHemaId(station, ref);
-                    break;
-            }
+            processActivity(type, station, ref);
         }
     }
 
-    public void processActivities(Station station) {
-        for (ActivityType activity : ActivityType.values()) {
-            processActivity(activity, station);
+    protected void processActivity(ActivityType type, Station station, String ref) {
+        station.addActivity(activities.getDatabase(type).get(ref.toUpperCase()));
+        // Special handling where there can be multiple activities from the same location
+        switch (type) {
+            case WOTA:
+                setHemaOrSotaFromWota(station, ref);
+                break;
+            case SOTA:
+                setWotaFromSotaId(station, ref);
+                break;
+            case HEMA:
+                setWotaFromHemaId(station, ref);
+                break;
         }
     }
+
+    protected void processActivityFromSigInfo(ActivityType type, Station station, Adif3Record rec) {
+        String sig = rec.getMySig();
+        if (sig == null) {
+            sig = rec.getMySigIntl();
+        }
+        String sigInfo = rec.getMySigInfo();
+        if (sigInfo == null) {
+            sigInfo = rec.getMySigInfoIntl();
+        }
+
+        if (StringUtils.equalsIgnoreCase(type.getActivityName(), sig) && StringUtils.isNotBlank(sigInfo)) {
+            processActivity(type, station, sigInfo);
+        }
+    }
+
+    public void processActivities(Station station, Adif3Record rec) {
+        for (ActivityType activity : ActivityType.values()) {
+            processActivityFromSigInfo(activity, station, rec);
+            processActivityFromControl(activity, station);
+        }
+    }
+
 }

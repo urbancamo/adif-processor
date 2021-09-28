@@ -2,6 +2,7 @@ package uk.m0nom.comms;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.marsik.ham.adif.enums.Propagation;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -17,12 +18,12 @@ public class IonosphericBounceTest {
     public void HfSkywaveTest() {
 
         /** Contact on 20m at 1000 km in the DAY */
-        List<PropagationBounce> bounces = ionosphere.getBounces(1430, 1000,
+        List<PropagationBounce> bounces = ionosphere.getBounces(Propagation.F2_REFLECTION, 1430, 1000,
                 AFTERNOON, 0.0, 0.0, Ionosphere.HF_ANTENNA_DEFAULT_TAKEOFF_ANGLE);
         Assert.assertEquals(bounces.size(), 1);
 
         /** Contact on 20m at 5000 km in the DAY */
-        bounces = ionosphere.getBounces(1430, 5000,
+        bounces = ionosphere.getBounces(Propagation.F2_REFLECTION, 1430, 5000,
                 AFTERNOON, 0.0, 0.0, Ionosphere.HF_ANTENNA_DEFAULT_TAKEOFF_ANGLE);
         Assert.assertEquals(bounces.size(), 2);
     }

@@ -37,11 +37,13 @@ public class Ionosphere {
         return kms * 1000;
     }
 
-    public List<PropagationBounce> getBounces(double frequencyInKhz, double distanceInKm, LocalTime timeOfDay,
+    public List<PropagationBounce> getBounces(Propagation mode, double frequencyInKhz, double distanceInKm, LocalTime timeOfDay,
                                               double myAltitude, double theirAltitude, double hfAntennaTakeoffAngle) {
         List<PropagationBounce> bounces = new LinkedList<>();
 
-        Propagation mode = PropagationModePredictor.predictPropagationMode(frequencyInKhz, distanceInKm);
+        if (mode == null) {
+            mode = PropagationModePredictor.predictPropagationMode(frequencyInKhz, distanceInKm);
+        }
         if (mode != null) {
             switch (mode) {
                 case F2_REFLECTION:
@@ -51,7 +53,7 @@ public class Ionosphere {
                     int hops = calculateNumberOfHops(distanceInKm, alt / 1000, hfAntennaTakeoffAngle);
                     for (int i = 0; i < hops; i++) {
                         double hopDistance = distanceInKm / hops;
-                        PropagationBounce bounce = new PropagationBounce(mode, hopDistance, alt, 0,0.0);
+                        PropagationBounce bounce = new PropagationBounce(mode, hopDistance, alt, 0, 0.0);
                         bounces.add(bounce);
                     }
                     break;
@@ -59,14 +61,16 @@ public class Ionosphere {
                     layers = getLayerForTimeOfDay(timeOfDay);
                     bounceLayer = layers.get("E");
                     alt = bounceLayer.getAverageHeight();
-                    bounces.add(new PropagationBounce(mode, distanceInKm, alt, 0,0.0));
+                    bounces.add(new PropagationBounce(mode, distanceInKm, alt, 0, 0.0));
                     break;
             }
-        } else {
+        }
+
+        if (mode == null || bounces.size() == 0) {
             // Single hop with nominal altitude that increases as the distance increases
             double adjustAlt = Math.max(myAltitude, theirAltitude);
             double apexHeight = Math.max(GROUNDWAVE_BOUNCE_ALT * distanceInKm, adjustAlt);
-            PropagationBounce bounce = new PropagationBounce(null, distanceInKm, apexHeight, 0,0.0);
+            PropagationBounce bounce = new PropagationBounce(null, distanceInKm, apexHeight, 0, 0.0);
             bounces.add(bounce);
         }
         return bounces;
