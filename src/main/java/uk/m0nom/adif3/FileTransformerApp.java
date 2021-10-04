@@ -29,7 +29,8 @@ public class FileTransformerApp implements Runnable
 
     private final CommandLineArgs cli;
     private final Adif3Transformer transformer;
-    private final Adif3FileReaderWriter readerWriter;
+    private final Adif3FileReader reader;
+    private final Adif3FileWriter writer;
 
     private final ActivityDatabases summits;
 
@@ -55,7 +56,8 @@ public class FileTransformerApp implements Runnable
     public FileTransformerApp(String[] args) {
         this.args = args;
         transformer = new Adif3Transformer();
-        readerWriter = new Adif3FileReaderWriter();
+        reader = new Adif3FileReader();
+        writer = new Adif3FileWriter();
         summits = new ActivityDatabases();
         cli = new CommandLineArgs();
         qsos = new Qsos();
@@ -105,7 +107,7 @@ public class FileTransformerApp implements Runnable
             transformer.configure(new FileInputStream(configFilePath), summits, qrzXmlService);
 
             logger.info(String.format("Reading input file %s with encoding %s", inPath, control.getEncoding()));
-            Adif3 log = readerWriter.read(inPath, control.getEncoding(), false);
+            Adif3 log = reader.read(inPath, control.getEncoding(), false);
             qsos = transformer.transform(log, control);
             logger.info(String.format("Writing output file %s with encoding %s", out, control.getEncoding()));
             if (control.getGenerateKml()) {
@@ -117,7 +119,7 @@ public class FileTransformerApp implements Runnable
             // Contest Calculations
             log.getHeader().setPreamble(new ContestResultsCalculator(summits).calculateResults(log));
 
-            readerWriter.write(out, control.getEncoding(), log);
+            writer.write(out, control.getEncoding(), log);
             if (control.getMarkdown()) {
                 BufferedWriter markdownWriter = null;
                 try {
