@@ -8,6 +8,7 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.qrz.QrzCallsign;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -16,42 +17,75 @@ import java.util.logging.Logger;
  * partial match of their QRZ.com address details.
  */
 public class NominatimGeocodingProvider implements GeocodingProvider {
+    private final static long DELAY = 1000L;
+
     private static final Logger logger = Logger.getLogger(NominatimGeocodingProvider.class.getName());
+    private long lastTimestamp;
+    private final GeocodingCache cache;
 
     public NominatimGeocodingProvider() {
+        lastTimestamp = new Date().getTime();
+        this.cache = new GeocodingCache();
     }
 
     @Override
     public GlobalCoordinates getLocationFromAddress(QrzCallsign qrzData) throws IOException, InterruptedException {
+        GlobalCoordinates coords = null;
+
+        String addressToCheck = addressStringFromQrzData(qrzData);
+        if (addressToCheck != null) {
+            coords = cache.get(addressToCheck);
+            if (coords == null) {
+                coords = queryUsingAddressSubstring(qrzData.getCall(), addressToCheck);
+                if (coords != null) {
+                    // Stick in the cache with the original search string
+                    cache.put(addressToCheck, coords);
+                }
+            } else {
+                logger.info(String.format("Geocoding cache hit for address: %s", addressToCheck));
+            }
+        }
+        return coords;
+    }
+
+    private String addressStringFromQrzData(QrzCallsign qrzData) {
+        String addressToCheck = null;
         String searchString = "";
-        String substring;
         searchString = addIfNotNull(searchString, qrzData.getAddr1());
         searchString = addIfNotNull(searchString, qrzData.getAddr2());
         searchString = addIfNotNull(searchString, qrzData.getCounty());
         searchString = addIfNotNull(searchString, qrzData.getCountry());
         if (searchString.length() > 2) {
             searchString = searchString.substring(2);
-            substring = searchString.replace(",,", ",");
-        } else {
-            return null;
+            addressToCheck = searchString.replace(",,", ",");
         }
+        return addressToCheck;
+    }
 
+    private GlobalCoordinates queryUsingAddressSubstring(String callsign, String addressToCheck) throws IOException, InterruptedException {
+        String substring = addressToCheck;
         GlobalCoordinates coords = null;
 
         while (StringUtils.isNotBlank(substring) && coords == null) {
             // Start cutting down the address, with the most specific information first
-            coords = addressSearch(qrzData.getCall(), substring);
+            coords = addressSearch(callsign, substring);
             substring = StringUtils.trim(substring.substring(substring.indexOf(',')+1));
         }
         return coords;
     }
 
     private GlobalCoordinates addressSearch(String callsign, String searchString) throws IOException, InterruptedException {
+        long timeDiff = new Date().getTime() - lastTimestamp;
+        if (timeDiff < DELAY) {
+            long pause = DELAY - timeDiff;
+            // Ensure at least a second between calls to comply with fair usage policy
+            logger.info(String.format("Pausing for a %d ms to comply with NominatimGeocodingProvider fair usage policy", pause));
+            Thread.sleep(pause);
+        }
         logger.info(String.format("Searching for a location for %s based on address search string: %s", callsign, searchString));
         List<Address> addressMatches = new JsonNominatimClient(HttpClientBuilder.create().build(), "mark@wickensonline.co.uk").search(StringUtils.trim(searchString));
-        // Pause for a second to comply with fair usage policy
-        logger.info("Pausing for a second to comply with NominatimGeocodingProvider fair usage policy");
-        Thread.sleep(1000);
+        lastTimestamp = new Date().getTime();
+
         if (addressMatches.size() > 0) {
             Address match = addressMatches.get(0);
             return new GlobalCoordinates(match.getLatitude(), match.getLongitude());
