@@ -24,9 +24,8 @@ public class CachingQrzXmlService implements QrzService {
                 logger.info(String.format("Caching qrz info for %s", callsign));
                 cache.put(callsign, callsignData);
             }
-        } else {
-            //logger.info(String.format("Cache hit on qrz info for %s", callsign));
-        }
+        }  //logger.info(String.format("Cache hit on qrz info for %s", callsign));
+
         return callsignData;
     }
 
