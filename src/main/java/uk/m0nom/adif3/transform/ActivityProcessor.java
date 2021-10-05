@@ -10,17 +10,17 @@ import uk.m0nom.activity.wota.WotaSummitInfo;
 import uk.m0nom.activity.wota.WotaSummitsDatabase;
 import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.adif3.control.TransformControl;
-import uk.m0nom.qrz.QrzXmlService;
+import uk.m0nom.qrz.QrzService;
 
 public class ActivityProcessor {
 
     protected final TransformControl control;
-    protected final QrzXmlService qrzXmlService;
+    protected final QrzService qrzService;
     protected final ActivityDatabases activities;
 
-    public ActivityProcessor(TransformControl control, QrzXmlService qrzXmlService, ActivityDatabases activities) {
+    public ActivityProcessor(TransformControl control, QrzService qrzService, ActivityDatabases activities) {
         this.control = control;
-        this.qrzXmlService = qrzXmlService;
+        this.qrzService = qrzService;
         this.activities = activities;
     }
 

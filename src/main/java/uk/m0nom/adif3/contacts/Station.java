@@ -3,6 +3,7 @@ package uk.m0nom.adif3.contacts;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityType;
@@ -32,7 +33,7 @@ public class Station {
 
     public Station(String callsign, Qso initialQso) {
         this();
-        this.callsign = callsign;
+        this.callsign = StringUtils.trim(callsign).toUpperCase();
         addQso(initialQso);
     }
 
@@ -63,5 +64,29 @@ public class Station {
             }
         }
         return false;
+    }
+
+    /**
+     * Stations are considered equal if they have the same callsign and are in the same
+     * location (or have no location set)
+     * @param other Other instance to compare
+     * @return true if same callsign and same location
+     */
+    @Override
+    public boolean equals(Object other) {
+        boolean equals = false;
+        if (other instanceof Station) {
+            Station otherStation = (Station) other;
+            return otherStation.getKey().equals(getKey());
+        }
+        return equals;
+    }
+
+    /**
+     * Unique key for this station including callsign and either coords/grid or both/neither
+     * @return unique key for this station
+     */
+    public String getKey() {
+        return String.format("%s %s %s", getCallsign(), getCoordinates(), getGrid());
     }
 }

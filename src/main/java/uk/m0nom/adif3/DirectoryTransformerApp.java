@@ -4,6 +4,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.marsik.ham.adif.Adif3;
 import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.qrz.CachingQrzXmlService;
+import uk.m0nom.qrz.QrzService;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.activity.ActivityDatabases;
 
@@ -21,7 +23,7 @@ public class DirectoryTransformerApp implements Runnable
     private final Adif3FileReader reader;
     private final Adif3FileWriter writer;
     private final ActivityDatabases summits;
-    private final QrzXmlService qrzXmlService;
+    private final QrzService qrzService;
     private final TransformControl control;
 
     private final String[] args;
@@ -34,7 +36,7 @@ public class DirectoryTransformerApp implements Runnable
         reader = new Adif3FileReader();
         writer = new Adif3FileWriter();
         summits = new ActivityDatabases();
-        qrzXmlService = new QrzXmlService(null, null);
+        qrzService = new CachingQrzXmlService(null, null);
         control = new TransformControl();
     }
 
@@ -54,11 +56,11 @@ public class DirectoryTransformerApp implements Runnable
             String dir = args[0];
                 try {
                     summits.loadData();
-                    qrzXmlService.disable();
-                    if (!qrzXmlService.getSessionKey()) {
+                    qrzService.disable();
+                    if (!qrzService.getSessionKey()) {
                         logger.warning("Could not connect to QRZ.COM, continuing...");
                     }
-                    transformer.configure(new FileInputStream(configFilePath), summits, qrzXmlService);
+                    transformer.configure(new FileInputStream(configFilePath), summits, qrzService);
 
                     Collection<File> files = FileUtils.listFiles(new File(dir), new String[]{"adi"}, false);
                     for (File in: files) {

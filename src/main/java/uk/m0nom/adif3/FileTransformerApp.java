@@ -11,7 +11,8 @@ import uk.m0nom.adif3.print.Adif3PrintFormatter;
 import uk.m0nom.adif3.transform.TransformResults;
 import uk.m0nom.contest.ContestResultsCalculator;
 import uk.m0nom.kml.KmlWriter;
-import uk.m0nom.qrz.QrzXmlService;
+import uk.m0nom.qrz.CachingQrzXmlService;
+import uk.m0nom.qrz.QrzService;
 import uk.m0nom.activity.ActivityDatabases;
 
 import java.io.*;
@@ -74,7 +75,7 @@ public class FileTransformerApp implements Runnable
     public void run() {
         TransformResults results = new TransformResults();
         TransformControl control = cli.parseArgs(args);
-        QrzXmlService qrzXmlService = new QrzXmlService(control.getQrzUsername(), control.getQrzPassword());
+        QrzService qrzService = new CachingQrzXmlService(control.getQrzUsername(), control.getQrzPassword());
         KmlWriter kmlWriter = new KmlWriter(control);
 
 
@@ -98,13 +99,13 @@ public class FileTransformerApp implements Runnable
         try {
             summits.loadData();
             if (control.getUseQrzDotCom()) {
-                qrzXmlService.enable();
-                if (!qrzXmlService.getSessionKey()) {
+                qrzService.enable();
+                if (!qrzService.getSessionKey()) {
                     logger.warning("Could not connect to QRZ.COM, disabling lookups and continuing...");
-                    qrzXmlService.disable();
+                    qrzService.disable();
                 }
             }
-            transformer.configure(new FileInputStream(configFilePath), summits, qrzXmlService);
+            transformer.configure(new FileInputStream(configFilePath), summits, qrzService);
 
             logger.info(String.format("Reading input file %s with encoding %s", inPath, control.getEncoding()));
             Adif3 log = reader.read(inPath, control.getEncoding(), false);

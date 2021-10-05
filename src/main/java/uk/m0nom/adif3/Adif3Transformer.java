@@ -8,6 +8,8 @@ import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.transform.Adif3RecordTransformer;
 import uk.m0nom.adif3.transform.CommentParsingAdifRecordTransformer;
+import uk.m0nom.qrz.CachingQrzXmlService;
+import uk.m0nom.qrz.QrzService;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.activity.ActivityDatabases;
 
@@ -20,20 +22,20 @@ public class Adif3Transformer {
 
     private YamlMapping config = null;
     private ActivityDatabases summits;
-    private QrzXmlService qrzXmlService;
+    private QrzService qrzService;
 
-    public void configure(InputStream yamlConfigFile, ActivityDatabases summits, QrzXmlService qrzXmlService)
+    public void configure(InputStream yamlConfigFile, ActivityDatabases summits, QrzService qrzService)
             throws IOException {
         config = Yaml.createYamlInput(yamlConfigFile).readYamlMapping();
         this.summits = summits;
-        this.qrzXmlService = qrzXmlService;
+        this.qrzService = qrzService;
     }
 
     public Qsos transform(Adif3 log, TransformControl control) throws UnsupportedHeaderException {
         Adif3RecordTransformer transformer;
         Qsos qsos = new Qsos(log);
 
-        transformer = new CommentParsingAdifRecordTransformer(config, summits, qrzXmlService, control);
+        transformer = new CommentParsingAdifRecordTransformer(config, summits, qrzService, control);
         int index = 1;
         for (Adif3Record rec : log.getRecords()) {
             if ((rec.getStationCallsign() != null || rec.getOperator() != null) && rec.getCall() != null) {
@@ -41,7 +43,7 @@ public class Adif3Transformer {
             }
         }
 
-        log.getHeader().setProgramId("M0NOM ADIF Transformer");
+        log.getHeader().setProgramId("M0NOM ADIF Processor");
         log.getHeader().setProgramVersion("1.0");
         return qsos;
     }

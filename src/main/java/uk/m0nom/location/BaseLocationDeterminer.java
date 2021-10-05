@@ -2,6 +2,7 @@ package uk.m0nom.location;
 
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.qrz.QrzService;
 import uk.m0nom.qrz.QrzXmlService;
 
 import java.util.logging.Logger;
@@ -12,12 +13,12 @@ public class BaseLocationDeterminer {
     protected boolean reportedLocationOverride = false;
 
     protected final TransformControl control;
-    protected final QrzXmlService qrzXmlService;
+    protected final QrzService qrzService;
     protected final ActivityDatabases activities;
 
-    public BaseLocationDeterminer(TransformControl control, QrzXmlService qrzXmlService, ActivityDatabases activities) {
+    public BaseLocationDeterminer(TransformControl control, QrzService qrzService, ActivityDatabases activities) {
         this.control = control;
-        this.qrzXmlService = qrzXmlService;
+        this.qrzService = qrzService;
         this.activities = activities;
     }
 

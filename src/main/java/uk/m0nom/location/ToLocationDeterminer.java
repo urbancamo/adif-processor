@@ -11,13 +11,14 @@ import uk.m0nom.activity.wota.WotaSummitsDatabase;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
+import uk.m0nom.qrz.QrzService;
 import uk.m0nom.qrz.QrzXmlService;
 
 import java.util.Map;
 
 public class ToLocationDeterminer extends BaseLocationDeterminer {
-    public ToLocationDeterminer(TransformControl control, QrzXmlService qrzXmlService, ActivityDatabases activities) {
-        super(control, qrzXmlService, activities);
+    public ToLocationDeterminer(TransformControl control, QrzService qrzService, ActivityDatabases activities) {
+        super(control, qrzService, activities);
     }
 
     public void setTheirLocationFromActivity(Qso qso, ActivityType activity, String reference, Map<String, String> unmapped) {

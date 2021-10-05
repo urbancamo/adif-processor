@@ -5,6 +5,7 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;
+import uk.m0nom.qrz.QrzService;
 import uk.m0nom.qrz.QrzXmlService;
 
 import java.util.logging.Logger;
@@ -15,10 +16,10 @@ import java.util.logging.Logger;
 public class AdifQrzEnricher {
     private static final Logger logger = Logger.getLogger(AdifQrzEnricher.class.getName());
 
-    private final QrzXmlService qrzXmlService;
+    private final QrzService qrzService;
 
-    public AdifQrzEnricher(QrzXmlService qrzXmlService) {
-        this.qrzXmlService = qrzXmlService;
+    public AdifQrzEnricher(QrzService qrzService) {
+        this.qrzService = qrzService;
     }
 
     public void enrichAdifForMe(Adif3Record rec, QrzCallsign qrzData) {
@@ -76,14 +77,14 @@ public class AdifQrzEnricher {
 
     QrzCallsign lookupLocationFromQrz(Adif3Record rec) {
         String callsign = rec.getCall();
-        QrzCallsign callsignData = qrzXmlService.getCallsignData(callsign);
+        QrzCallsign callsignData = qrzService.getCallsignData(callsign);
         if (callsignData != null) {
             updateRecordFromQrzLocation(rec, callsignData);
             logger.info(String.format("Retrieved %s from QRZ.COM", callsign));
         } else if (CallsignUtils.isNotFixed(callsign)) {
             // Try stripping off any portable callsign information and querying that as a last resort
             String fixedCallsign = callsign.substring(0, StringUtils.lastIndexOf(callsign, "/"));
-            callsignData = qrzXmlService.getCallsignData(fixedCallsign);
+            callsignData = qrzService.getCallsignData(fixedCallsign);
             if (callsignData != null) {
                 logger.info(String.format("Retrieved %s from QRZ.COM using FIXED station callsign %s", callsign, fixedCallsign));
                 updateRecordFromQrzLocation(rec, callsignData);

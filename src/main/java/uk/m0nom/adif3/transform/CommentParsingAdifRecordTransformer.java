@@ -21,10 +21,10 @@ import uk.m0nom.location.FromLocationDeterminer;
 import uk.m0nom.location.ToLocationDeterminer;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;
+import uk.m0nom.qrz.QrzService;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.satellite.Satellites;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Logger;
@@ -35,7 +35,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private final YamlMapping fieldMap;
     private final ActivityDatabases activities;
     private final Satellites satellites;
-    private final QrzXmlService qrzXmlService;
+    private final QrzService qrzService;
     private final TransformControl control;
     private final AdifQrzEnricher enricher;
     private final FromLocationDeterminer fromLocationDeterminer;
@@ -43,16 +43,16 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private final ActivityProcessor activityProcessor;
     private final GeocodingProvider geocodingProvider;
 
-    public CommentParsingAdifRecordTransformer(YamlMapping config, ActivityDatabases activities, QrzXmlService qrzXmlService, TransformControl control) {
+    public CommentParsingAdifRecordTransformer(YamlMapping config, ActivityDatabases activities, QrzService qrzService, TransformControl control) {
         fieldMap = config.asMapping();
         this.activities = activities;
-        this.qrzXmlService = qrzXmlService;
+        this.qrzService = qrzService;
         this.control = control;
-        this.enricher = new AdifQrzEnricher(qrzXmlService);
+        this.enricher = new AdifQrzEnricher(qrzService);
         this.satellites = new Satellites();
-        this.fromLocationDeterminer = new FromLocationDeterminer(control, qrzXmlService, activities);
-        this.toLocationDeterminer = new ToLocationDeterminer(control, qrzXmlService, activities);
-        this.activityProcessor = new ActivityProcessor(control, qrzXmlService, activities);
+        this.fromLocationDeterminer = new FromLocationDeterminer(control, qrzService, activities);
+        this.toLocationDeterminer = new ToLocationDeterminer(control, qrzService, activities);
+        this.activityProcessor = new ActivityProcessor(control, qrzService, activities);
         this.geocodingProvider = new NominatimGeocodingProvider();
     }
 
@@ -78,7 +78,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         enricher.enrichAdifForMe(qso.getRecord(), myQrzData);
 
         /* Load QRZ.COM info for the worked station as a fixed station, for information */
-        QrzCallsign theirQrzData = qrzXmlService.getCallsignData(qso.getTo().getCallsign());
+        QrzCallsign theirQrzData = qrzService.getCallsignData(qso.getTo().getCallsign());
         qso.getTo().setQrzInfo(theirQrzData);
         enricher.enrichAdifForThem(qso.getRecord(), theirQrzData);
 

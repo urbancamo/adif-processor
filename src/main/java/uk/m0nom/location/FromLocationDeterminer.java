@@ -12,6 +12,7 @@ import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;
+import uk.m0nom.qrz.QrzService;
 import uk.m0nom.qrz.QrzXmlService;
 
 import java.util.logging.Logger;
@@ -19,8 +20,8 @@ import java.util.logging.Logger;
 public class FromLocationDeterminer extends BaseLocationDeterminer {
     protected static final Logger logger = Logger.getLogger(FromLocationDeterminer.class.getName());
 
-    public FromLocationDeterminer(TransformControl control, QrzXmlService qrzXmlService, ActivityDatabases activities) {
-        super(control, qrzXmlService, activities);
+    public FromLocationDeterminer(TransformControl control, QrzService qrzService, ActivityDatabases activities) {
+        super(control, qrzService, activities);
     }
 
     private void setMyLocationFromGrid(Qso qso, String myGrid) {
@@ -128,7 +129,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
     public QrzCallsign setMyLocation(Qso qso) {
         Adif3Record rec = qso.getRecord();
         // Attempt a lookup from QRZ.com
-        QrzCallsign callsignData = qrzXmlService.getCallsignData(rec.getStationCallsign());
+        QrzCallsign callsignData = qrzService.getCallsignData(rec.getStationCallsign());
 
         // Query the record MYSOTA_REF field - if this isn't empty add it as an activity for onward processing
         if (rec.getMySotaRef() != null) {
