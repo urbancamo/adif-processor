@@ -41,6 +41,6 @@ public class RotaCsvReader extends ActivityReader {
             rotaInfo.put(info.getRef(), info);
         }
 
-        return new ActivityDatabase(ActivityType.ROTA, rotaInfo);
+        return new ActivityDatabase(ActivityType.ROTA, rotaInfo, true);
     }
 }

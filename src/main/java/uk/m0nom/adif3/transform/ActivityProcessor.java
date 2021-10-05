@@ -1,8 +1,9 @@
 package uk.m0nom.adif3.transform;
 
 import org.apache.commons.lang3.StringUtils;
-import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
+import uk.m0nom.activity.Activity;
+import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.activity.wota.WotaSummitInfo;
@@ -83,6 +84,21 @@ public class ActivityProcessor {
         for (ActivityType activity : ActivityType.values()) {
             processActivityFromSigInfo(activity, station, rec);
             processActivityFromControl(activity, station);
+
+            // Some activities are 'special events' where the station callsign is the activity ref
+            // So need to check our callsign against the list in these cases
+            processSpecialEventActivity(activity, station);
+        }
+
+    }
+
+    private void processSpecialEventActivity(ActivityType type, Station station) {
+        ActivityDatabase db = activities.getDatabase(type);
+        if (db.isSpecialEventActivity()) {
+            Activity activity = db.get(station.getCallsign().toUpperCase().trim());
+            if (activity != null) {
+                station.addActivity(activity);
+            }
         }
     }
 

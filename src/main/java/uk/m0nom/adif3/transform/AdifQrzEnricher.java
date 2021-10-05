@@ -20,6 +20,7 @@ public class AdifQrzEnricher {
     public AdifQrzEnricher(QrzXmlService qrzXmlService) {
         this.qrzXmlService = qrzXmlService;
     }
+
     public void enrichAdifForMe(Adif3Record rec, QrzCallsign qrzData) {
         if (qrzData == null) {
             return;
@@ -29,7 +30,7 @@ public class AdifQrzEnricher {
             rec.setMyCountry(qrzData.getCountry());
         }
         if (rec.getMyName() == null) {
-            rec.setMyName(qrzData.getName());
+            rec.setMyName(getNameFromQrzData(qrzData));
         }
     }
 
@@ -43,18 +44,9 @@ public class AdifQrzEnricher {
         }
 
         if (rec.getName() == null) {
-            String name = "";
-            if (StringUtils.isNotEmpty(qrzData.getFname())) {
-                name = qrzData.getFname();
-            }
-            if (StringUtils.isNotEmpty(qrzData.getName())) {
-                if (StringUtils.isNotEmpty(name)) {
-                    name = name + " ";
-                }
-                name = name + qrzData.getName();
-            }
-            rec.setName(name);
+            rec.setName(getNameFromQrzData(qrzData));
         }
+
         if (rec.getQth() == null) {
             StringBuilder addr = new StringBuilder();
             if (qrzData.getAddr1() != null) {
@@ -66,6 +58,20 @@ public class AdifQrzEnricher {
             }
             rec.setQth(addr.toString());
         }
+    }
+
+    private String getNameFromQrzData(QrzCallsign qrzData) {
+        String name = "";
+        if (StringUtils.isNotEmpty(qrzData.getFname())) {
+            name = qrzData.getFname();
+        }
+        if (StringUtils.isNotEmpty(qrzData.getName())) {
+            if (StringUtils.isNotEmpty(name)) {
+                name = name + " ";
+            }
+            name = name + qrzData.getName();
+        }
+        return name;
     }
 
     QrzCallsign lookupLocationFromQrz(Adif3Record rec) {

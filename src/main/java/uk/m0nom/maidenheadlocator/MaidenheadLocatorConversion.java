@@ -29,6 +29,11 @@ public class MaidenheadLocatorConversion {
 
     private final static String[] INVALID_GRIDSQUARES = new String[]{"AA00AA"};
 
+    public static boolean isEmptyOrInvalid(String gridSquare) {
+        return gridSquare == null || !MaidenheadLocatorConversion.isAValidGridSquare(gridSquare) ||
+                MaidenheadLocatorConversion.isADubiousGridSquare(gridSquare);
+    }
+
     public static boolean isAValidGridSquare(String gridSquare) {
         for (String invalidGridsquare : INVALID_GRIDSQUARES) {
             if (StringUtils.equalsIgnoreCase(gridSquare, invalidGridsquare)) {

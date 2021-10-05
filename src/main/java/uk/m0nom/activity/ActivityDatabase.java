@@ -13,15 +13,27 @@ import java.util.Map;
 public class ActivityDatabase {
     private final ActivityType type;
     private final Map<String, Activity> database;
+    private final boolean specialEventActivity;
 
     public ActivityDatabase(ActivityType type, Map<String, Activity> database) {
         this.type = type;
         this.database = database;
+        this.specialEventActivity = false;
+    }
+
+    public ActivityDatabase(ActivityType type, Map<String, Activity> database, boolean specialEventActivity) {
+        this.type = type;
+        this.database = database;
+        this.specialEventActivity = specialEventActivity;
     }
 
     public ActivityType getType() { return type; }
 
     public Activity get(String ref) { return database.get(ref);
+    }
+
+    public boolean isSpecialEventActivity() {
+        return specialEventActivity;
     }
 
     public Collection<Activity> getValues() {

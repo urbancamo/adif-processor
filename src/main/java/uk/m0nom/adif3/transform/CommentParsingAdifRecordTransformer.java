@@ -129,7 +129,10 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             try {
                 rec.setCoordinates(geocodingProvider.getLocationFromAddress(theirQrzData));
                 if (rec.getCoordinates() != null) {
-                    logger.info(String.format("Setting location for %s based on geolocation data to: %s", rec.getCall(), rec.getCoordinates()));
+                    logger.info(String.format("Location for %s set based on geolocation data to: %s", rec.getCall(), rec.getCoordinates()));
+                    if (MaidenheadLocatorConversion.isEmptyOrInvalid(rec.getGridsquare())) {
+                        rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(rec.getCoordinates()));
+                    }
                 }
             } catch (Exception e) {
                 logger.severe(String.format("Caught Exception from Geolocation Provider looking up %s: %s", rec.getCall(), e.getMessage()));
