@@ -23,8 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class AdifReaderTest {
-    private ActivityDatabases summits;
-    private TransformControl control;
+    private final TransformControl control;
 
     public AdifReaderTest() {
         control = new TransformControl();
@@ -62,7 +61,7 @@ public class AdifReaderTest {
             Qsos qsos = new Qsos(log);
             assertThat(log.getHeader().getProgramId()).isEqualTo("FLE");
 
-            summits = new ActivityDatabases();
+            ActivityDatabases summits = new ActivityDatabases();
             summits.loadData();
             QrzXmlService qrzXmlService = new QrzXmlService(null, null);
             if (!qrzXmlService.getSessionKey()) {
