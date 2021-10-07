@@ -19,13 +19,23 @@ public class KmlContactInfoPanel {
                 rec.getCall(), rec.getCall()));
 
         if (rec.getBand() != null) {
-            sb.append(String.format("Band: %s<br/>", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase(Locale.ROOT)));
+            if (rec.getBandRx() != null) {
+                sb.append(String.format("Uplink Band: %s<br/>", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase(Locale.ROOT)));
+                sb.append(String.format("Downlink Band: %s<br/>", StringUtils.replace(rec.getBandRx().name(), "BAND_", "").toLowerCase(Locale.ROOT)));
+            } else {
+                sb.append(String.format("Band: %s<br/>", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase(Locale.ROOT)));
+            }
         }
         if (rec.getMode() != null) {
             sb.append(String.format("Mode: %s<br/>", rec.getMode().toString()));
         }
         if (rec.getFreq() != null) {
-            sb.append(String.format("Freq: %.3f Mhz<br/>", rec.getFreq()));
+            if (rec.getFreqRx() != null) {
+                sb.append(String.format("Uplink Freq: %.3f Mhz<br/>", rec.getFreq()));
+                sb.append(String.format("Downlink Freq: %.3f Mhz<br/>", rec.getFreqRx()));
+            } else {
+                sb.append(String.format("Freq: %.3f Mhz<br/>", rec.getFreq()));
+            }
         }
         if (rec.getTxPwr() != null) {
             sb.append(String.format("TX Pwr: %.1f Watts<br/>", rec.getTxPwr()));

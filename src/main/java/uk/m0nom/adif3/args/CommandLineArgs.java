@@ -7,6 +7,7 @@ import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.icons.IconResource;
 
 public class CommandLineArgs {
     public TransformControl parseArgs(String[] args) {
@@ -98,18 +99,18 @@ public class CommandLineArgs {
             control.setQrzUsername(ns.getString("qrz_username"));
             control.setQrzPassword(ns.getString("qrz_password"));
             control.setKmlContactShadow(ns.getBoolean("kml_contact_shadow"));
-            control.setKmlFixedIconUrl(ns.getString("kml_fixed_station"));
-            control.setKmlMobileIconUrl(ns.getString("kml_mobile_station"));
-            control.setKmlPortableIconUrl(ns.getString("kml_portable_station"));
+            control.setIcon(IconResource.FIXED_ICON_NAME, ns.getString("kml_fixed_station"));
+            control.setIcon(IconResource.MOBILE_ICON_NAME, ns.getString("kml_mobile_station"));
+            control.setIcon(IconResource.PORTABLE_ICON_NAME, ns.getString("kml_portable_station"));
 
             for (ActivityType activity : ActivityType.values()) {
-                control.setActivityIcon(activity, String.format("kml_%s_station", activity.getActivityName().toLowerCase()));
+                control.setIcon(activity.getActivityName(), String.format("kml_%s_station", activity.getActivityName().toLowerCase()));
                 if (ns.getString(activity.getActivityName()) != null) {
                     control.setActivityRef(activity, ns.getString(activity.getActivityName()).toLowerCase());
                 }
             }
 
-            control.setKmlMaritimeIconUrl(ns.getString("kml_maritime_station"));
+            control.setIcon(IconResource.MARITIME_MOBILE_ICON_NAME, ns.getString("kml_maritime_station"));
             control.setKmlContactTransparency(100-ns.getInt("kml_contact_transparency"));
             control.setKmlContactWidth(ns.getInt("kml_contact_width"));
             control.setKmlContactColourByBand(ns.getBoolean("kml_contact_colour_band"));

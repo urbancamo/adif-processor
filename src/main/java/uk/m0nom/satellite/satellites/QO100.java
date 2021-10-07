@@ -1,6 +1,10 @@
 package uk.m0nom.satellite.satellites;
 
 import org.gavaghan.geodesy.GlobalCoordinates;
+import org.marsik.ham.adif.Adif3Record;
+import org.marsik.ham.adif.enums.Band;
+import uk.m0nom.adif3.contacts.Qso;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.satellite.Satellite;
 import uk.m0nom.satellite.SatellitePosition;
 
@@ -21,5 +25,11 @@ public class QO100 implements Satellite {
     @Override
     public SatellitePosition getPosition(LocalTime dateTime) {
         return ESHAIL2_POSITION;
+    }
+
+    @Override
+    public void updateAdifRec(TransformControl control, Adif3Record rec) {
+        rec.setBand(Band.BAND_13cm);
+        rec.setBandRx(Band.BAND_3cm);
     }
 }

@@ -28,6 +28,7 @@ public class SatellitePropagation implements CommsLinkGenerator {
 
         if (rec.getSatName() != null) {
             Satellite satellite = satellites.getSatellite(rec.getSatName());
+            satellite.updateAdifRec(control, rec);
             SatellitePosition satelliteLocation = satellite.getPosition(rec.getTimeOn());
 
             // Calculate ground distance between two stations

@@ -258,23 +258,35 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         }
                         break;
                     case "RxPwr":
-                        String pwr = value.toLowerCase(Locale.ROOT).trim();
-                        if (pwr.endsWith("w")) {
-                            pwr = StringUtils.replace(pwr, "w", "");
-                        } else if (pwr.endsWith(" w")) {
-                            pwr = StringUtils.replace(pwr, " w", "");
-                        } else if (pwr.endsWith(" watt")) {
-                            pwr = StringUtils.replace(pwr, " watt", "");
-                        } else if (pwr.endsWith(" watts")) {
-                            pwr = StringUtils.replace(pwr, " watts", "");
-                        }
-                        if (pwr.endsWith("k")) {
-                            pwr = StringUtils.replace(pwr, "k", "000");
-                        }
                         try {
-                            rec.setRxPwr(Double.parseDouble(pwr));
+                            rec.setRxPwr(parsePwr(value));
                         } catch (NumberFormatException nfe) {
                             logger.warning(String.format("Couldn't parse RxPwr field: %s, leaving it unmapped", value));
+                            unmapped.put(key, value);
+                        }
+                        break;
+                    case "BandRx":
+                        try {
+                            Band band = Band.findByCode(value);
+                            rec.setBandRx(band);
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            logger.severe(String.format("Couldn't parse BandRx field %s for call %s at %s, please check, leaving it unmapped", value, rec.getCall(), rec.getTimeOn()));
+                            unmapped.put(key, value);
+                        }
+                        break;
+                    case "FrequencyRx":
+                        try {
+                            rec.setFreqRx(Double.parseDouble(value));
+                        } catch (NumberFormatException nfe) {
+                            logger.severe(String.format("Couldn't parse FrequencyRx field %s for call %s at %s, please check, leaving it unmapped", value, rec.getCall(), rec.getTimeOn()));
+                            unmapped.put(key, value);
+                        }
+                        break;
+                    case "TxPwr":
+                        try {
+                            rec.setTxPwr(parsePwr(value));
+                        } catch (NumberFormatException nfe) {
+                            logger.warning(String.format("Couldn't parse TxPwr field: %s, leaving it unmapped", value));
                             unmapped.put(key, value);
                         }
                         break;
@@ -418,6 +430,26 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(coords));
             logger.info(String.format("Override location of %s: %s", rec.getCall(), rec.getCoordinates().toString()));
         }
+    }
+
+    /**
+     * Process a power string into a double
+     */
+    private double parsePwr(String value) throws NumberFormatException {
+        String pwr = value.toLowerCase().trim();
+        if (pwr.endsWith("w")) {
+            pwr = StringUtils.replace(pwr, "w", "");
+        } else if (pwr.endsWith(" w")) {
+            pwr = StringUtils.replace(pwr, " w", "");
+        } else if (pwr.endsWith(" watt")) {
+            pwr = StringUtils.replace(pwr, " watt", "");
+        } else if (pwr.endsWith(" watts")) {
+            pwr = StringUtils.replace(pwr, " watts", "");
+        }
+        if (pwr.endsWith("k")) {
+            pwr = StringUtils.replace(pwr, "k", "000");
+        }
+        return Double.parseDouble(pwr);
     }
 
     /**

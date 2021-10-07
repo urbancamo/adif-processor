@@ -5,13 +5,15 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.control.TransformControl;
-import uk.m0nom.kml.info.KmlStationIcon;
+import uk.m0nom.icons.IconResource;
 import uk.m0nom.kml.info.KmlStationInfoPanel;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
 
 import static uk.m0nom.kml.KmlUtils.getStyleId;
 import static uk.m0nom.kml.KmlUtils.getStyleUrl;
@@ -19,9 +21,17 @@ import static uk.m0nom.kml.KmlUtils.getStyleUrl;
 public class KmlStationUtils {
     public final static double DEFAULT_RANGE_METRES = 500.0;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm");
+    private final Set<String> stationIcons = new HashSet<>();
+    private final Set<String> modeIcons = new HashSet<>();
 
-    public static String addMyStationToMap(TransformControl control, Document doc, Folder folder, Qso qso) {
-        return createMyStationMarker(control, doc, folder, qso);
+    private final TransformControl control;
+
+    public KmlStationUtils(TransformControl control) {
+        this.control = control;
+    }
+
+    public String addMyStationToMap(Document doc, Folder folder, Qso qso) {
+        return createMyStationMarker(doc, folder, qso);
     }
 
     public static String getQsoDateTimeAsString(Qso qso) {
@@ -33,7 +43,7 @@ public class KmlStationUtils {
     }
 
 
-    public static String createMyStationMarker(TransformControl control, Document document, Folder folder, Qso qso) {
+    public String createMyStationMarker(Document document, Folder folder, Qso qso) {
         // Create a folder for this information
         GlobalCoordinates coords = qso.getRecord().getMyCoordinates();
         if (qso.getFrom().getCoordinates() == null && coords == null) {
@@ -41,22 +51,25 @@ public class KmlStationUtils {
         }
         double longitude = coords.getLongitude();
         double latitude = coords.getLatitude();
-        String station = qso.getFrom().getCallsign();
-        Folder myFolder = folder.createAndAddFolder().withName(station).withOpen(false);
+        String callsign = qso.getFrom().getCallsign();
+        Folder myFolder = folder.createAndAddFolder().withName(callsign).withOpen(false);
 
-        Icon icon = new Icon().withHref(new KmlStationIcon().getIconFromStation(control, qso.getFrom()));
-        Style style = document.createAndAddStyle()
-                .withId(getStyleId(station));
-
-        // set the stylename to use this style from the placemark
-        style.createAndSetIconStyle().withScale(1.0).withIcon(icon); // set size and icon
-        style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the continent name
+        IconResource icon = IconResource.getIconFromStation(control, qso.getFrom());
+        if (!stationIcons.contains(icon.getName())) {
+            Icon kmlIcon = new Icon().withHref(icon.getUrl());
+            Style style = document.createAndAddStyle()
+                    .withId(getStyleId(icon.getName()));
+            // set the stylename to use this style from the placemark
+            style.createAndSetIconStyle().withScale(1.0).withIcon(kmlIcon); // set size and icon
+            style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the continent name
+            stationIcons.add(icon.getName());
+        }
 
         Placemark placemark = myFolder.createAndAddPlacemark();
         String htmlPanelContent = new KmlStationInfoPanel().getPanelContent(qso.getFrom());
         // use the style for each continent
-        placemark.withName(station)
-                .withStyleUrl(getStyleUrl(station))
+        placemark.withName(callsign)
+                .withStyleUrl(getStyleUrl(icon.getName()))
                 // 3D chart image
                 .withDescription(htmlPanelContent)
                 // coordinates and distance (zoom level) of the viewer
@@ -67,8 +80,7 @@ public class KmlStationUtils {
         return null;
     }
 
-
-    public static String createStationMarker(TransformControl control, Document document, Folder folder, Qso qso) {
+    public String createStationMarker(TransformControl control, Document document, Folder folder, Qso qso) {
         String id = getStationMarkerId(qso);
         String name = getStationMarkerName(qso);
         Adif3Record rec = qso.getRecord();
@@ -83,23 +95,27 @@ public class KmlStationUtils {
         double longitude = coords.getLongitude();
         double latitude = coords.getLatitude();
 
-        Icon icon = new Icon()
-                .withHref(new KmlStationIcon().getIconFromStation(control, qso.getTo()));
+        IconResource icon = IconResource.getIconFromStation(control, qso.getTo());
+        if (!modeIcons.contains(icon.getName())) {
+            Icon kmlIcon = new Icon()
+                    .withHref(icon.getUrl());
 
-        Style style = document.createAndAddStyle()
-                .withId(getStyleId(id));
+            Style style = document.createAndAddStyle()
+                    .withId(getStyleId(icon.getName()));
 
-        // set the stylename to use this style from the placemark
-        style.createAndSetIconStyle().withScale(1.0).withIcon(icon); // set size and icon
-        style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the station marker
-        style.createAndSetLineStyle().withColor("ffb343ff").withWidth(5);
+            // set the stylename to use this style from the placemark
+            style.createAndSetIconStyle().withScale(1.0).withIcon(kmlIcon); // set size and icon
+            style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the station marker
+            style.createAndSetLineStyle().withColor("ffb343ff").withWidth(5);
+            modeIcons.add(icon.getName());
+        }
 
         Placemark placemark = folder.createAndAddPlacemark();
         String htmlPanelContent = new KmlStationInfoPanel().getPanelContent(qso.getTo());
         // use the style for each continent
         placemark.withName(name)
                 .withId(id)
-                .withStyleUrl(getStyleUrl(id))
+                .withStyleUrl(getStyleUrl(icon.getName()))
                 // 3D chart image
                 .withDescription(htmlPanelContent)
                 // coordinates and distance (zoom level) of the viewer
@@ -108,18 +124,18 @@ public class KmlStationUtils {
         placemark.createAndSetLineString().addToCoordinates(myLongitude, myLatitude).addToCoordinates(longitude, latitude).setExtrude(true);
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
 
-        String modeIconUrl = new KmlStationIcon().getIconFromMode(control, qso.getRecord().getMode());
-        if (modeIconUrl != null) {
-            Icon modeIcon = new Icon().withHref(modeIconUrl);
-            Placemark modePlaceMark = folder.createAndAddPlacemark();
+        icon = IconResource.getIconFromMode(control, qso.getRecord().getMode());
+        if (icon != null) {
+            Icon modeIcon = new Icon().withHref(icon.getUrl());
             Style modeStyle = document.createAndAddStyle()
                     .withId(getStyleId(id + "_mode"));
-
             modeStyle.createAndSetIconStyle()
                     .withScale(1.0)
                     .withIcon(modeIcon);
             modeStyle.createAndSetLabelStyle().withColor("ff43b3ff").withScale(0.75); // set color and size of the station marker
             modeStyle.createAndSetLineStyle().withColor("ffb343ff").withWidth(3);
+
+            Placemark modePlaceMark = folder.createAndAddPlacemark();
             modePlaceMark.withId(id + "_mode")
                     .withName(getModeLabel(qso))
                     .withStyleUrl(getStyleUrl(id + "_mode"));

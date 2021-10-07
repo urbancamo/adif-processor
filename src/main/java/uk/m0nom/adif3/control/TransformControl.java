@@ -96,15 +96,6 @@ public class TransformControl {
     private String kmlContactLineStyle;
     private Boolean kmlContactShadow;
 
-    private String kmlFixedIconUrl;
-    private String kmlPortableIconUrl;
-    private String kmlMobileIconUrl;
-    private String kmlMaritimeIconUrl;
-
-    private Map<ActivityType, String> activityIcons = new HashMap<>();
-
-    private String kmlCwIconUrl;
-
     private Boolean kmlShowStationSubLabel;
     private Boolean kmlShowLocalActivationSites;
     private Double kmlLocalActivationSitesRadius;
@@ -114,16 +105,18 @@ public class TransformControl {
 
     private Double hfAntennaTakeoffAngle;
 
+    private Map<String, String> icons = new HashMap<>();
+
     public String getActivityRef(ActivityType type) {
         return activityRefs.get(type);
     }
 
-    public String getActivityIcon(ActivityType activity) {
-        return activityIcons.get(activity);
+    public String getIcon(String iconType) {
+        return icons.get(iconType);
     }
 
-    public void setActivityIcon(ActivityType activity, String iconUrl) {
-        activityIcons.put(activity, iconUrl);
+    public void setIcon(String iconType, String iconUrl) {
+        icons.put(iconType, iconUrl);
     }
 
     public void setActivityRef(ActivityType activity, String ref) {

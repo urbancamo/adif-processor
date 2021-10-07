@@ -29,6 +29,7 @@ public class KmlWriter {
     public void write(String pathname, String name, ActivityDatabases activities, Qsos qsos, TransformResults results) {
         KmlLocalActivities kmlLocalActivities = new KmlLocalActivities();
         KmlCommsUtils kmlCommsUtils = new KmlCommsUtils(control, activities);
+        KmlStationUtils kmlStationUtils = new KmlStationUtils(control);
 
         final Kml kml = new Kml();
         Document doc = kml.createAndSetDocument().withName(name).withOpen(true);
@@ -41,7 +42,7 @@ public class KmlWriter {
         boolean first = true;
         for (Qso qso : qsos.getQsos()) {
             if (first) {
-                String error = KmlStationUtils.addMyStationToMap(control, doc, folder, qso);
+                String error = kmlStationUtils.addMyStationToMap(doc, folder, qso);
                 if (error != null) {
                     results.setError(error);
                 }
@@ -53,7 +54,7 @@ public class KmlWriter {
             Folder contactFolder = folder.createAndAddFolder().withName(qso.getTo().getCallsign()).withOpen(false);
             GlobalCoordinates coords = qso.getRecord().getCoordinates();
             if (LatLongUtils.isCoordinateValid(coords)) {
-                String error = KmlStationUtils.createStationMarker(control, doc, contactFolder, qso);
+                String error = kmlStationUtils.createStationMarker(control, doc, contactFolder, qso);
                 if (error != null) {
                     results.setError(error);
                 }

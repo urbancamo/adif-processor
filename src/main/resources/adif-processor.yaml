@@ -23,3 +23,6 @@ COTA: CotaRef
 SAT_NAME: SatelliteName
 SAT_MODE: SatelliteMode
 NOTES: Notes
+BAND_RX: BandRx
+FREQ_RX: FrequencyRx
+TXPWR: TxPwr
