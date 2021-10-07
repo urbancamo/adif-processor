@@ -16,5 +16,15 @@ public class KmlUtils {
         return String.format("#%s", getStyleId(id));
     }
 
+    public static String getModeStyleId(String id) {
+        return String.format("style_%s_mode", id);
+    }
 
+    public static String getModeStyleUrl(String id) {
+        return String.format("#%s_mode", getStyleId(id));
+    }
+
+    public static String getModeId(String id) {
+        return String.format("%s_mode", id);
+    }
 }

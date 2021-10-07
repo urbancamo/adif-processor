@@ -15,14 +15,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
-import static uk.m0nom.kml.KmlUtils.getStyleId;
-import static uk.m0nom.kml.KmlUtils.getStyleUrl;
+import static uk.m0nom.kml.KmlUtils.*;
 
 public class KmlStationUtils {
     public final static double DEFAULT_RANGE_METRES = 500.0;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm");
-    private final Set<String> stationIcons = new HashSet<>();
-    private final Set<String> modeIcons = new HashSet<>();
+    private final Set<String> iconStyles = new HashSet<>();
 
     private final TransformControl control;
 
@@ -55,14 +53,14 @@ public class KmlStationUtils {
         Folder myFolder = folder.createAndAddFolder().withName(callsign).withOpen(false);
 
         IconResource icon = IconResource.getIconFromStation(control, qso.getFrom());
-        if (!stationIcons.contains(icon.getName())) {
+        if (!iconStyles.contains(icon.getName())) {
             Icon kmlIcon = new Icon().withHref(icon.getUrl());
             Style style = document.createAndAddStyle()
                     .withId(getStyleId(icon.getName()));
             // set the stylename to use this style from the placemark
             style.createAndSetIconStyle().withScale(1.0).withIcon(kmlIcon); // set size and icon
             style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the continent name
-            stationIcons.add(icon.getName());
+            iconStyles.add(icon.getName());
         }
 
         Placemark placemark = myFolder.createAndAddPlacemark();
@@ -96,7 +94,7 @@ public class KmlStationUtils {
         double latitude = coords.getLatitude();
 
         IconResource icon = IconResource.getIconFromStation(control, qso.getTo());
-        if (!modeIcons.contains(icon.getName())) {
+        if (!iconStyles.contains(icon.getName())) {
             Icon kmlIcon = new Icon()
                     .withHref(icon.getUrl());
 
@@ -107,7 +105,7 @@ public class KmlStationUtils {
             style.createAndSetIconStyle().withScale(1.0).withIcon(kmlIcon); // set size and icon
             style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the station marker
             style.createAndSetLineStyle().withColor("ffb343ff").withWidth(5);
-            modeIcons.add(icon.getName());
+            iconStyles.add(icon.getName());
         }
 
         Placemark placemark = folder.createAndAddPlacemark();
@@ -124,23 +122,27 @@ public class KmlStationUtils {
         placemark.createAndSetLineString().addToCoordinates(myLongitude, myLatitude).addToCoordinates(longitude, latitude).setExtrude(true);
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
 
-        icon = IconResource.getIconFromMode(control, qso.getRecord().getMode());
-        if (icon != null) {
-            Icon modeIcon = new Icon().withHref(icon.getUrl());
-            Style modeStyle = document.createAndAddStyle()
-                    .withId(getStyleId(id + "_mode"));
-            modeStyle.createAndSetIconStyle()
-                    .withScale(1.0)
-                    .withIcon(modeIcon);
-            modeStyle.createAndSetLabelStyle().withColor("ff43b3ff").withScale(0.75); // set color and size of the station marker
-            modeStyle.createAndSetLineStyle().withColor("ffb343ff").withWidth(3);
-
-            Placemark modePlaceMark = folder.createAndAddPlacemark();
-            modePlaceMark.withId(id + "_mode")
-                    .withName(getModeLabel(qso))
-                    .withStyleUrl(getStyleUrl(id + "_mode"));
-
-            modePlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
+        if (control.getKmlShowStationSubLabel()) {
+            icon = IconResource.getIconFromMode(control, qso.getRecord().getMode());
+            String modeId = qso.getRecord().getMode().name();
+            if (icon != null) {
+                if (!iconStyles.contains(modeId)) {
+                    Icon modeIcon = new Icon().withHref(icon.getUrl());
+                    Style modeStyle = document.createAndAddStyle()
+                            .withId(getModeStyleId(modeId));
+                    modeStyle.createAndSetIconStyle()
+                            .withScale(1.0)
+                            .withIcon(modeIcon);
+                    modeStyle.createAndSetLabelStyle().withColor("ff43b3ff").withScale(0.75); // set color and size of the station marker
+                    modeStyle.createAndSetLineStyle().withColor("ffb343ff").withWidth(3);
+                    iconStyles.add(modeId);
+                }
+                Placemark modePlaceMark = folder.createAndAddPlacemark();
+                modePlaceMark.withId(getModeId(id))
+                        .withName(getModeLabel(qso))
+                        .withStyleUrl(getModeStyleUrl(modeId));
+                modePlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
+            }
         }
         return null;
     }

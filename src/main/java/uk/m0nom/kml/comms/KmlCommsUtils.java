@@ -6,8 +6,8 @@ import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.activity.sota.SotaSummitInfo;
-import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.comms.CommsLinkResult;
 import uk.m0nom.comms.CommsVisualizer;
 import uk.m0nom.geodesic.GeodesicUtils;
@@ -17,14 +17,23 @@ import uk.m0nom.kml.KmlStyling;
 import uk.m0nom.kml.info.KmlContactInfoPanel;
 import uk.m0nom.kml.station.KmlStationUtils;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static uk.m0nom.kml.KmlUtils.getStyleId;
 import static uk.m0nom.kml.KmlUtils.getStyleUrl;
 
 public class KmlCommsUtils {
+    private final static String S2S_LINE_ID = "s2S";
+    private final static String COMM_LINE_ID = "comm";
+    private final static String SHADOW_LINE_ID = "shadow";
+
     private final ActivityDatabases activities;
     private final KmlBandLineStyles bandLineStyles;
+    private final Set<String> commStyles;
 
     public KmlCommsUtils(TransformControl control, ActivityDatabases activities) {
+        commStyles = new HashSet<>();
         this.activities = activities;
         bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());
     }
@@ -69,34 +78,59 @@ public class KmlCommsUtils {
         if (GeodesicUtils.areCoordsEqual(myCoords, coords)) {
             return String.format("Your location and the location of station %s at %.3f, %.3f are equal - check the log!", qso.getTo().getCallsign(), coords.getLatitude(), coords.getLongitude());
         }
-        Style style = document.createAndAddStyle()
-                .withId(getStyleId(commsLinkId));
 
+        String commsStyleUrl;
+        String shadowStyleUrl = null;
         if (control.getKmlS2s() && qso.doingSameActivity()) {
-            KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlS2sContactLineStyle());
-            assert styling != null;
-            style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
+            if (!commStyles.contains(S2S_LINE_ID)) {
+                String styleId = getStyleId(S2S_LINE_ID);
+                KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlS2sContactLineStyle());
+                Style style = document.createAndAddStyle()
+                        .withId(styleId);
+                assert styling != null;
+                style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
+                commStyles.add(S2S_LINE_ID);
+            }
+            commsStyleUrl = getStyleUrl(S2S_LINE_ID);
         } else if (control.getKmlContactColourByBand()) {
             KmlLineStyle styling = bandLineStyles.getLineStyle(qso.getRecord().getBand());
-            style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
+            String styleId = getStyleId(styling.getStringSpecifier());
+            if (!commStyles.contains(styling.getStringSpecifier())) {
+                Style style = document.createAndAddStyle()
+                        .withId(styleId);
+                style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
+                commStyles.add(styling.getStringSpecifier());
+            }
+            commsStyleUrl = getStyleUrl(styling.getStringSpecifier());
         } else  {
-            KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlContactLineStyle());
-            assert styling != null;
-            style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
+            if (!commStyles.contains(COMM_LINE_ID)) {
+                String styleId = getStyleId(COMM_LINE_ID);
+                KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlContactLineStyle());
+                Style style = document.createAndAddStyle()
+                        .withId(styleId);
+                assert styling != null;
+                style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
+                commStyles.add(COMM_LINE_ID);
+            }
+            commsStyleUrl = getStyleUrl(COMM_LINE_ID);
         }
 
         if (control.getKmlContactShadow()) {
-            style = document.createAndAddStyle()
-                    .withId(getStyleId(commsLinkShadowId));
-
-            style.createAndSetLineStyle().withColor("40000000").withWidth(3);
+            if (!commStyles.contains(SHADOW_LINE_ID)) {
+                String styleId = getStyleId(SHADOW_LINE_ID);
+                Style style = document.createAndAddStyle()
+                        .withId(styleId);
+                style.createAndSetLineStyle().withColor("40000000").withWidth(3);
+                commStyles.add(SHADOW_LINE_ID);
+            }
+            shadowStyleUrl = getStyleUrl(SHADOW_LINE_ID);
         }
 
         Placemark placemark = folder.createAndAddPlacemark();
         // use the style for each line type
         placemark.withName(commsLinkName)
                 .withId(commsLinkId)
-                .withStyleUrl(getStyleUrl(commsLinkId));
+                .withStyleUrl(commsStyleUrl);
 
         LineString commsLine = placemark.createAndSetLineString();
         double myAltitude = 0.0;
@@ -125,7 +159,7 @@ public class KmlCommsUtils {
             // use the style for each line type
             placemark.withName("")
                     .withId(commsLinkShadowId)
-                    .withStyleUrl(getStyleUrl(commsLinkShadowId));
+                    .withStyleUrl(shadowStyleUrl);
 
             commsLine = placemark.createAndSetLineString();
             GeodesicUtils.getSurfaceLine(commsLine, myCoords, coords);

@@ -13,6 +13,7 @@ public class IconResource {
     public final static String MOBILE_ICON_NAME = "mobile";
     public final static String MARITIME_MOBILE_ICON_NAME = "maritime";
     public final static String CW_ICON_NAME = "cw";
+    public final static String SSB_ICON_NAME = "ssb";
 
     public final static String FIXED_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/ranger_station.png";
 	public final static String PORTABLE_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/hiker.png";
@@ -63,10 +64,16 @@ public class IconResource {
 
     public static IconResource getIconFromMode(TransformControl control, Mode mode) {
         IconResource icon;
-        if (mode == Mode.CW) {
-            icon = new IconResource(CW_ICON_NAME, control.getIcon(CW_ICON_NAME));
-        } else {
-            icon = null;
+        switch (mode) {
+            case CW:
+                icon = new IconResource(CW_ICON_NAME, control.getIcon(CW_ICON_NAME));
+                break;
+            case SSB:
+                icon = new IconResource(SSB_ICON_NAME, control.getIcon(SSB_ICON_NAME));
+                break;
+            default:
+                icon = null;
+                break;
         }
         return icon;
     }
