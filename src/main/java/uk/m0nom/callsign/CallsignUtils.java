@@ -17,7 +17,8 @@ public class CallsignUtils {
             CallsignSuffix.MOBILE,
             CallsignSuffix.MARITIME_MOBILE,
             CallsignSuffix.PEDESTRIAN_MOBILE,
-            CallsignSuffix.ALTERNATIVE_ADDRESS
+            CallsignSuffix.ALTERNATIVE_ADDRESS,
+            CallsignSuffix.QRP
     ));
 
     @AllArgsConstructor
