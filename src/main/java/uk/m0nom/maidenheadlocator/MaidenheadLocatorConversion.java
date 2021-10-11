@@ -231,7 +231,8 @@ public class MaidenheadLocatorConversion {
         return Math.toDegrees(az);
     }
 
-    public static boolean isADubiousGridSquare(String grid) {
+    public static boolean
+    isADubiousGridSquare(String grid) {
         return grid != null && DUBIOUS_GRIDSQUARES.contains(grid.toUpperCase());
     }
 
@@ -240,5 +241,6 @@ public class MaidenheadLocatorConversion {
     static {
         DUBIOUS_GRIDSQUARES.add("IO91VL");
         DUBIOUS_GRIDSQUARES.add("JJ00AA");
+        DUBIOUS_GRIDSQUARES.add("AA00AA");
     }
 }
