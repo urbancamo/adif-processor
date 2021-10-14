@@ -121,7 +121,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
 
         if (rec.getCoordinates() == null && StringUtils.isBlank(rec.getGridsquare())) {
-            theirQrzData = enricher.lookupLocationFromQrz(rec);
+            theirQrzData = enricher.lookupLocationFromQrz(qso);
             qso.getTo().setQrzInfo(theirQrzData);
         }
 
@@ -159,15 +159,17 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             processSig(qso, unmapped);
         }
 
-        if (!unmapped.isEmpty()) {
-            addUnmappedToRecord(rec, unmapped);
-        } else {
-            // done a good job and slotted all the key/value pairs in the right place
-            rec.setComment("");
+        if (control.isStripComment()) {
+            if (!unmapped.isEmpty()) {
+                addUnmappedToRecord(rec, unmapped);
+            } else {
+                // done a good job and slotted all the key/value pairs in the right place
+                rec.setComment("");
+            }
         }
 
         // Add the SOTA Microwave Award data to the end of the comment field
-        if (control.getSotaMicrowaveAwardComment() != null && control.getSotaMicrowaveAwardComment()) {
+        if (control.isSotaMicrowaveAwardComment()) {
             SotaMicrowaveAward.addSotaMicrowaveAwardToComment(rec);
         }
 
@@ -261,7 +263,12 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                                 case 6:
                                 case 8:
                                 case 10:
-                                    rec.setGridsquare(value);
+                                    if (value.length() > 6) {
+                                        // Truncate more accurate grid square values to 6 characters
+                                        rec.setGridsquare(value.substring(0, 6));
+                                    } else {
+                                        rec.setGridsquare(value);
+                                    }
                                     rec.setCoordinates(MaidenheadLocatorConversion.locatorToCoords(value));
                                     break;
                                 default:

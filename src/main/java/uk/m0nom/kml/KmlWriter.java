@@ -46,7 +46,7 @@ public class KmlWriter {
                 if (error != null) {
                     results.setError(error);
                 }
-                if (qso.getFrom().hasActivity() && control.getKmlShowLocalActivationSites()) {
+                if (qso.getFrom().hasActivity() && control.isKmlShowLocalActivationSites()) {
                     kmlLocalActivities.addLocalActivities(doc, folder, qso.getFrom(), control.getKmlLocalActivationSitesRadius(), activities);
                 }
                 first = false;
@@ -59,7 +59,7 @@ public class KmlWriter {
                     results.setError(error);
                 }
 
-                if (qso.getTo().hasActivity() && control.getKmlShowLocalActivationSites()) {
+                if (qso.getTo().hasActivity() && control.isKmlShowLocalActivationSites()) {
                     Folder localActivityFolder = contactFolder.createAndAddFolder().withName("Local Activity").withOpen(false);
                     kmlLocalActivities.addLocalActivities(doc, localActivityFolder, qso.getTo(), control.getKmlLocalActivationSitesRadius(), activities);
                 }

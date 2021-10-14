@@ -122,7 +122,7 @@ public class KmlStationUtils {
         placemark.createAndSetLineString().addToCoordinates(myLongitude, myLatitude).addToCoordinates(longitude, latitude).setExtrude(true);
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
 
-        if (control.getKmlShowStationSubLabel()) {
+        if (control.isKmlShowStationSubLabel()) {
             icon = IconResource.getIconFromMode(control, qso.getRecord().getMode());
             String modeId = qso.getRecord().getMode().name();
             if (icon != null) {

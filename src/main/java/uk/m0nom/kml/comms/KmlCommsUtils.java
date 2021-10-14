@@ -81,7 +81,7 @@ public class KmlCommsUtils {
 
         String commsStyleUrl;
         String shadowStyleUrl = null;
-        if (control.getKmlS2s() && qso.doingSameActivity()) {
+        if (control.isKmlS2s() && qso.doingSameActivity()) {
             if (!commStyles.contains(S2S_LINE_ID)) {
                 String styleId = getStyleId(S2S_LINE_ID);
                 KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlS2sContactLineStyle());
@@ -92,7 +92,7 @@ public class KmlCommsUtils {
                 commStyles.add(S2S_LINE_ID);
             }
             commsStyleUrl = getStyleUrl(S2S_LINE_ID);
-        } else if (control.getKmlContactColourByBand()) {
+        } else if (control.isKmlContactColourByBand()) {
             KmlLineStyle styling = bandLineStyles.getLineStyle(qso.getRecord().getBand());
             String styleId = getStyleId(styling.getStringSpecifier());
             if (!commStyles.contains(styling.getStringSpecifier())) {
@@ -115,7 +115,7 @@ public class KmlCommsUtils {
             commsStyleUrl = getStyleUrl(COMM_LINE_ID);
         }
 
-        if (control.getKmlContactShadow()) {
+        if (control.isKmlContactShadow()) {
             if (!commStyles.contains(SHADOW_LINE_ID)) {
                 String styleId = getStyleId(SHADOW_LINE_ID);
                 Style style = document.createAndAddStyle()
@@ -153,14 +153,11 @@ public class KmlCommsUtils {
         // Set the contact distance in the ADIF output file
         rec.setDistance(result.getDistance());
 
-        String commsPanelContent = new KmlContactInfoPanel().getPanelContentForCommsLink(qso, result);
-        placemark.withDescription(commsPanelContent);
-
-        if (control.getKmlContactShadow()) {
+        placemark.withDescription(new KmlContactInfoPanel().getPanelContentForCommsLink(qso, result));
+        if (control.isKmlContactShadow()) {
             placemark = folder.createAndAddPlacemark();
             // use the style for each line type
-            placemark.withName(commsLinkName + " shadow")
-                    .withDescription(commsPanelContent)
+            placemark.withName("")
                     .withId(commsLinkShadowId)
                     .withStyleUrl(shadowStyleUrl);
 

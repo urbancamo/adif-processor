@@ -121,7 +121,7 @@ public class FileTransformerApp implements Runnable
             log.getHeader().setPreamble(new ContestResultsCalculator(summits).calculateResults(log));
 
             writer.write(out, control.getEncoding(), log);
-            if (control.getMarkdown()) {
+            if (control.isMarkdown()) {
                 BufferedWriter markdownWriter = null;
                 try {
                     File markdownFile = new File(markdown);

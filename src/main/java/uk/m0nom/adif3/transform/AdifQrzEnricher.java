@@ -1,14 +1,13 @@
 package uk.m0nom.adif3.transform;
 
 import org.apache.commons.lang3.StringUtils;
-import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
+import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
 import uk.m0nom.coords.LocationSource;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.qrz.QrzService;
-import uk.m0nom.qrz.QrzXmlService;
 
 import java.util.logging.Logger;
 
@@ -77,11 +76,12 @@ public class AdifQrzEnricher {
         return name;
     }
 
-    QrzCallsign lookupLocationFromQrz(Adif3Record rec) {
+    QrzCallsign lookupLocationFromQrz(Qso qso) {
+        Adif3Record rec = qso.getRecord();
         String callsign = rec.getCall();
         QrzCallsign callsignData = qrzService.getCallsignData(callsign);
         if (callsignData != null) {
-            updateRecordFromQrzLocation(rec, callsignData);
+            updateQsoFromQrzLocation(qso, callsignData);
             logger.info(String.format("Retrieved %s from QRZ.COM", callsign));
         } else if (CallsignUtils.isNotFixed(callsign)) {
             // Try stripping off any portable callsign information and querying that as a last resort
@@ -89,7 +89,7 @@ public class AdifQrzEnricher {
             callsignData = qrzService.getCallsignData(fixedCallsign);
             if (callsignData != null) {
                 logger.info(String.format("Retrieved %s from QRZ.COM using FIXED station callsign %s", callsign, fixedCallsign));
-                updateRecordFromQrzLocation(rec, callsignData);
+                updateQsoFromQrzLocation(qso, callsignData);
             }
         }
         return callsignData;
@@ -101,8 +101,9 @@ public class AdifQrzEnricher {
      * grid but then the grid isn't valid. We need to ignore that, or we'll set the station to
      * be antartica.
      */
-    private void updateRecordFromQrzLocation(Adif3Record rec, QrzCallsign callsignData) {
+    private void updateQsoFromQrzLocation(Qso qso, QrzCallsign callsignData) {
         if (callsignData != null) {
+            Adif3Record rec = qso.getRecord();
             if (rec.getCoordinates() == null) {
                 boolean geocodeBasedGeoLoc = StringUtils.equalsIgnoreCase("geocode", callsignData.getGeoloc());
                 boolean gridBasedGeoloc = StringUtils.equalsIgnoreCase("grid", callsignData.getGeoloc());
@@ -118,6 +119,7 @@ public class AdifQrzEnricher {
                         coord.setSource(LocationSource.MHL6);
                     }
                     rec.setCoordinates(coord);
+                    qso.getTo().setCoordinates(coord);
                 }
                 if (rec.getGridsquare() == null && !invalidGridBasedLoc) {
                     rec.setGridsquare(callsignData.getGrid());

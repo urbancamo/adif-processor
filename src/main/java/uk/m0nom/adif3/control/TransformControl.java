@@ -29,6 +29,8 @@ public class TransformControl {
     private String qrzUsername;
     private String qrzPassword;
 
+    private boolean stripComment;
+
     private Map<ActivityType, String> activityRefs = new HashMap<>();
 
     // Active satellites from https://www.eqsl.cc/QSLCard/SatelliteInfo.cfm
@@ -85,23 +87,23 @@ public class TransformControl {
     //    VU = Uplink: 2m Downlink: 70cm
     private String satelliteMode;
     private String satelliteBand;
-    private Boolean sotaMicrowaveAwardComment;
+    private boolean sotaMicrowaveAwardComment;
 
     private Boolean generateKml;
     private Integer kmlContactWidth;
     private Integer kmlContactTransparency;
-    private Boolean kmlContactColourByBand;
-    private Boolean kmlS2s;
+    private boolean kmlContactColourByBand;
+    private boolean kmlS2s;
     private String kmlS2sContactLineStyle;
     private String kmlContactLineStyle;
-    private Boolean kmlContactShadow;
+    private boolean kmlContactShadow;
 
-    private Boolean kmlShowStationSubLabel;
-    private Boolean kmlShowLocalActivationSites;
+    private boolean kmlShowStationSubLabel;
+    private boolean kmlShowLocalActivationSites;
     private Double kmlLocalActivationSitesRadius;
 
-    private Boolean markdown;
-    private Boolean contestResults;
+    private boolean markdown;
+    private boolean contestResults;
 
     private Double hfAntennaTakeoffAngle;
 
