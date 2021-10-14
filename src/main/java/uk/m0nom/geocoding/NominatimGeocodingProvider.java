@@ -21,11 +21,12 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
 
     private static final Logger logger = Logger.getLogger(NominatimGeocodingProvider.class.getName());
     private long lastTimestamp;
-    private final GeocodingCache cache;
+
+    /** Cache is static and lasts for the lifetime of the application on the server */
+    private final static GeocodingCache cache = new GeocodingCache();
 
     public NominatimGeocodingProvider() {
         lastTimestamp = new Date().getTime();
-        this.cache = new GeocodingCache();
     }
 
     @Override

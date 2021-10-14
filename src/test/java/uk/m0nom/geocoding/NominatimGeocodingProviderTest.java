@@ -1,6 +1,7 @@
 package uk.m0nom.geocoding;
 
 import org.gavaghan.geodesy.GlobalCoordinates;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.m0nom.qrz.QrzCallsign;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertTrue;
 
 public class NominatimGeocodingProviderTest {
+    @Ignore
     @Test
     public void test2E0XUP() throws IOException, InterruptedException {
         QrzCallsign qrzData = new QrzCallsign();

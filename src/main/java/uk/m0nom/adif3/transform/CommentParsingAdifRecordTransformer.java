@@ -15,6 +15,11 @@ import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.adif3.transform.tokenizer.ColonTokenizer;
+import uk.m0nom.adif3.transform.tokenizer.CommentTokenizer;
+import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
+import uk.m0nom.coords.LocationParser;
+import uk.m0nom.coords.LocationParsers;
 import uk.m0nom.geocoding.GeocodingProvider;
 import uk.m0nom.geocoding.NominatimGeocodingProvider;
 import uk.m0nom.location.FromLocationDeterminer;
@@ -22,12 +27,14 @@ import uk.m0nom.location.ToLocationDeterminer;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.qrz.QrzService;
-import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.satellite.Satellites;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class CommentParsingAdifRecordTransformer implements Adif3RecordTransformer {
     private static final Logger logger = Logger.getLogger(CommentParsingAdifRecordTransformer.class.getName());
@@ -42,6 +49,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private final ToLocationDeterminer toLocationDeterminer;
     private final ActivityProcessor activityProcessor;
     private final GeocodingProvider geocodingProvider;
+    private final CommentTokenizer tokenizer;
+    private final LocationParsers locationParsers;
 
     public CommentParsingAdifRecordTransformer(YamlMapping config, ActivityDatabases activities, QrzService qrzService, TransformControl control) {
         fieldMap = config.asMapping();
@@ -54,6 +63,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         this.toLocationDeterminer = new ToLocationDeterminer(control, qrzService, activities);
         this.activityProcessor = new ActivityProcessor(control, qrzService, activities);
         this.geocodingProvider = new NominatimGeocodingProvider();
+        this.tokenizer = new ColonTokenizer();
+        this.locationParsers = new LocationParsers(activities);
     }
 
     private void issueWarnings(Adif3Record rec) {
@@ -198,7 +209,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private void transformComment(Qso qso, String comment, Map<String, String> unmapped) {
         Adif3Record rec = qso.getRecord();
         // try and split the comment up into comma separated list
-        Map<String, String> tokens = tokenize(comment);
+        Map<String, String> tokens = tokenizer.tokenize(comment);
 
         // If this is a 'regular comment' then don't tokenize
         if (StringUtils.isNotEmpty(comment) && tokens.size() == 0) {
@@ -373,6 +384,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                                 break;
                         }
                         break;
+                    case "Coordinates":
+                        rec.setCoordinates(locationParsers.parseStringForCoordinates(value));
+                        break;
                     case "Latitude":
                         try {
                             latitude = Double.parseDouble(value);
@@ -475,19 +489,5 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             }
         }
         rec.setComment(sb.toString());
-    }
-
-
-    private Map<String, String> tokenize(String comment) {
-        Map<String, String> tokens = new HashMap<>();
-        StringTokenizer tokenizer = new StringTokenizer(comment, ",");
-        while (tokenizer.hasMoreTokens()) {
-            String token = tokenizer.nextToken().trim();
-            if (token.contains(":")) {
-                String[] pair = StringUtils.split(token, ":");
-                tokens.put(pair[0].trim().toUpperCase(), pair[1].trim());
-            }
-        }
-        return tokens;
     }
 }
