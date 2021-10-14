@@ -219,7 +219,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
         Double latitude = null;
         Double longitude = null;
-
+        GlobalCoordinates coords = null;
         for (String key : tokens.keySet()) {
             String value = tokens.get(key).trim();
 
@@ -385,7 +385,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         }
                         break;
                     case "Coordinates":
-                        rec.setCoordinates(locationParsers.parseStringForCoordinates(value));
+                        coords = locationParsers.parseStringForCoordinates(value);
                         break;
                     case "Latitude":
                         try {
@@ -438,8 +438,10 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             }
             issueWarnings(rec);
         }
-        if (latitude != null && longitude != null) {
-            GlobalCoordinates coords = new GlobalCoordinates(latitude, longitude);
+        if (coords != null || (latitude != null && longitude != null)) {
+            if (coords == null) {
+                coords = new GlobalCoordinates(latitude, longitude);
+            }
             rec.setCoordinates(coords);
             rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(coords));
             logger.info(String.format("Override location of %s: %s", rec.getCall(), rec.getCoordinates().toString()));
