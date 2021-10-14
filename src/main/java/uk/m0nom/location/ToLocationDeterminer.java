@@ -10,9 +10,9 @@ import uk.m0nom.activity.wota.WotaSummitInfo;
 import uk.m0nom.activity.wota.WotaSummitsDatabase;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
+import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzService;
-import uk.m0nom.qrz.QrzXmlService;
 
 import java.util.Map;
 
@@ -30,11 +30,13 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
                 String grid = MaidenheadLocatorConversion.coordsToLocator(info.getCoords());
                 rec.setGridsquare(grid);
                 qso.getTo().setGrid(grid);
+                qso.getTo().setCoordinates(info.getCoords());
             } else if (info.hasGrid()) {
-                GlobalCoordinates coords = MaidenheadLocatorConversion.locatorToCoords(info.getGrid());
-                rec.setMyCoordinates(coords);
+                GlobalCoordinatesWithLocationSource coords = MaidenheadLocatorConversion.locatorToCoords(info.getGrid());
+                rec.setCoordinates(coords);
                 rec.setGridsquare(info.getGrid());
                 qso.getTo().setGrid(info.getGrid());
+                qso.getTo().setCoordinates(coords);
             }
             // If the SIG isn't set, add it here
             if (StringUtils.isEmpty(rec.getSig())) {
@@ -46,7 +48,7 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
         }
     }
 
-    public void setTheirCoordFromSotaId(Qso qso, String sotaId, Map<String, String> unmapped) {
+    public void setTheirLocationFromActivity(Qso qso, String sotaId, Map<String, String> unmapped) {
         setTheirLocationFromActivity(qso, ActivityType.SOTA, sotaId, unmapped);
         Activity sotaInfo = activities.getDatabase(ActivityType.SOTA).get(sotaId);
         if (sotaInfo != null) {
@@ -59,14 +61,14 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
         }
     }
 
-    public void setTheirCoordFromWotaId(Qso qso, String wotaId, Map<String, String> unmapped) {
+    public void setTheirLocationFromWotaId(Qso qso, String wotaId, Map<String, String> unmapped) {
         setTheirLocationFromActivity(qso, ActivityType.WOTA, wotaId, unmapped);
         WotaSummitInfo wotaInfo = (WotaSummitInfo) activities.getDatabase(ActivityType.WOTA).get(wotaId);
         if (wotaInfo != null) {
             String sotaId = wotaInfo.getSotaId();
             if (sotaId != null) {
                 // SOTA Latitude/Longitude is more accurate, so overwrite from that information
-                setTheirCoordFromSotaId(qso, sotaId, unmapped);
+                setTheirLocationFromActivity(qso, sotaId, unmapped);
             } else {
                 unmapped.put("WOTA", wotaInfo.getRef());
             }
@@ -75,7 +77,7 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
 
     public void setTheirLocationFromActivity(Qso qso, Activity activity) {
         if (activity.hasCoords()) {
-            GlobalCoordinates coords = activity.getCoords();
+            GlobalCoordinatesWithLocationSource coords = activity.getCoords();
             String grid = MaidenheadLocatorConversion.coordsToLocator(coords);
 
             qso.getTo().setCoordinates(coords);

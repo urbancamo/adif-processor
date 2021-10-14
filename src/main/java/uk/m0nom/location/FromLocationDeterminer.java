@@ -10,6 +10,7 @@ import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Station;
+import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.qrz.QrzService;
@@ -28,12 +29,13 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
         Adif3Record rec = qso.getRecord();
         qso.getRecord().setMyGridSquare(myGrid.substring(0, 6));
         qso.getFrom().setGrid(myGrid);
-        rec.setMyCoordinates(MaidenheadLocatorConversion.locatorToCoords(myGrid));
-        qso.getFrom().setCoordinates(rec.getMyCoordinates());
+        GlobalCoordinatesWithLocationSource coords = MaidenheadLocatorConversion.locatorToCoords(myGrid);
+        rec.setMyCoordinates(coords);
+        qso.getFrom().setCoordinates(coords);
     }
 
 
-    private void setMyLocationFromCoordinates(Qso qso, GlobalCoordinates coords) {
+    private void setMyLocationFromCoordinates(Qso qso, GlobalCoordinatesWithLocationSource coords) {
         qso.getRecord().setMyCoordinates(coords);
         qso.getFrom().setCoordinates(coords);
     }
@@ -44,7 +46,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
         if (StringUtils.isNotEmpty(control.getMyLatitude()) && StringUtils.isNotEmpty(control.getMyLongitude())) {
             double latitude = Double.parseDouble(StringUtils.remove(control.getMyLatitude(), '\''));
             double longitude = Double.parseDouble(StringUtils.remove(control.getMyLongitude(), '\''));
-            setMyLocationFromCoordinates(qso, new GlobalCoordinates(latitude, longitude));
+            setMyLocationFromCoordinates(qso, new GlobalCoordinatesWithLocationSource(latitude, longitude));
             reportLocationOverride(rec.getStationCallsign(), latitude, longitude);
             locationSet = true;
         } else if (control.getMyGrid() != null) {
@@ -73,7 +75,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
     }
 
     private void setMyCoordsFromGrid(Station station, Adif3Record rec, String grid) {
-        GlobalCoordinates coords = MaidenheadLocatorConversion.locatorToCoords(grid);
+        GlobalCoordinatesWithLocationSource coords = MaidenheadLocatorConversion.locatorToCoords(grid);
         rec.setMyCoordinates(coords);
         station.setCoordinates(coords);
     }
@@ -106,7 +108,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
     private boolean setMyLocationFromQrzLatLong(Qso qso, QrzCallsign callsignData) {
         Adif3Record rec = qso.getRecord();
         if (callsignData != null && callsignData.getLat() != null && callsignData.getLon() != null) {
-            GlobalCoordinates coord = new GlobalCoordinates(callsignData.getLat(), callsignData.getLon());
+            GlobalCoordinatesWithLocationSource coord = new GlobalCoordinatesWithLocationSource(callsignData.getLat(), callsignData.getLon());
             rec.setMyCoordinates(coord);
             qso.getFrom().setCoordinates(coord);
             return true;

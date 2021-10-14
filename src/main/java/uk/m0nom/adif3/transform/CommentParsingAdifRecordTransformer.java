@@ -17,7 +17,9 @@ import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.transform.tokenizer.ColonTokenizer;
 import uk.m0nom.adif3.transform.tokenizer.CommentTokenizer;
+import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
 import uk.m0nom.coords.LocationParsers;
+import uk.m0nom.coords.LocationSource;
 import uk.m0nom.geocoding.GeocodingProvider;
 import uk.m0nom.geocoding.NominatimGeocodingProvider;
 import uk.m0nom.location.FromLocationDeterminer;
@@ -126,7 +128,10 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         // IF qrz.com can't fill in the coordinates, and the gridsquare is set, fill in coordinates from that
         if (rec.getCoordinates() == null && MaidenheadLocatorConversion.isAValidGridSquare(rec.getGridsquare()) && !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare())) {
             // Set Coordinates from GridSquare that has been supplied in the input file
-            rec.setCoordinates(MaidenheadLocatorConversion.locatorToCoords(rec.getGridsquare()));
+            GlobalCoordinatesWithLocationSource coords = MaidenheadLocatorConversion.locatorToCoords(rec.getGridsquare());
+            rec.setCoordinates(coords);
+            qso.getTo().setCoordinates(coords);
+            qso.getTo().setGrid(rec.getGridsquare());
         }
 
         // Last resort, attempt to find location from qrz.com address data via geolocation provider
@@ -135,7 +140,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare())) &&
                 theirQrzData != null) {
             try {
-                rec.setCoordinates(geocodingProvider.getLocationFromAddress(theirQrzData));
+                GlobalCoordinatesWithLocationSource source = geocodingProvider.getLocationFromAddress(theirQrzData);
+                rec.setCoordinates(source);
+                qso.getTo().setCoordinates(source);
                 if (rec.getCoordinates() != null) {
                     logger.info(String.format("Location for %s set based on geolocation data to: %s", rec.getCall(), rec.getCoordinates()));
                     if (MaidenheadLocatorConversion.isEmptyOrInvalid(rec.getGridsquare())) {
@@ -304,7 +311,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         try {
                             Sota sota = Sota.valueOf(sotaRef.toUpperCase());
                             rec.setSotaRef(sota);
-                            toLocationDeterminer.setTheirCoordFromSotaId(qso, sotaRef, unmapped);
+                            toLocationDeterminer.setTheirLocationFromActivity(qso, sotaRef, unmapped);
                             qso.getTo().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaRef));
                         } catch (IllegalArgumentException iae) {
                             // something we can't work out about the reference, so put it in the unmapped list instead
@@ -317,7 +324,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     case "WotaRef":
                         // Strip off any S2s reference
                         String wotaId = StringUtils.split(value, ' ')[0];
-                        toLocationDeterminer.setTheirCoordFromWotaId(qso, wotaId.toUpperCase(), unmapped);
+                        toLocationDeterminer.setTheirLocationFromWotaId(qso, wotaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.WOTA).get(wotaId));
                         break;
                     case "HemaRef":
@@ -437,7 +444,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
         if (coords != null || (latitude != null && longitude != null)) {
             if (coords == null) {
-                coords = new GlobalCoordinates(latitude, longitude);
+                coords = new GlobalCoordinatesWithLocationSource(latitude, longitude, LocationSource.LAT_LONG);
             }
             rec.setCoordinates(coords);
             rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(coords));

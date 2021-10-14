@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.contacts.Station;
+import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
+import uk.m0nom.coords.LocationSource;
 import uk.m0nom.qrz.QrzCallsign;
 
 public class KmlStationInfoPanel implements KmlInfoPanel {
@@ -53,15 +55,46 @@ public class KmlStationInfoPanel implements KmlInfoPanel {
             sb.append(String.format("Grid: %s<br/>", grid));
         }
 
-        GlobalCoordinates coordinates = station.getCoordinates();
+        GlobalCoordinatesWithLocationSource coordinates = station.getCoordinates();
         if (coordinates == null && qrzInfo != null) {
-            coordinates = new GlobalCoordinates(qrzInfo.getLat(), qrzInfo.getLon());
+            coordinates = new GlobalCoordinatesWithLocationSource(qrzInfo.getLat(), qrzInfo.getLon());
         }
+        LocationSource source = coordinates.getSource();
         if (coordinates != null) {
             sb.append(String.format("Lat: %.3f, Long: %.3f<br/>", coordinates.getLatitude(), coordinates.getLongitude()));
         }
+        String sourceString = "";
+        switch (source) {
+            case LAT_LONG:
+                sourceString = "Latitude/Longitude";
+                break;
+            case MHL10:
+                sourceString = "10 char Maidenhead Locator";
+                break;
+            case MHL8:
+                sourceString = "8 char Maidenhead Locator";
+                break;
+            case MHL6:
+                sourceString = "6 char Maidenhead Locator";
+                break;
+            case MHL4:
+                sourceString = "4 char Maidenhead Locator";
+                break;
+            case GEOLOCATION_VERY_GOOD:
+                sourceString = "Geolocation - Very Good";
+                break;
+            case GEOLOCATION_GOOD:
+                sourceString = "Geolocation - Good";
+                break;
+            case GEOLOCATION_POOR:
+                sourceString = "Geolocation - Poor";
+                break;
+            case GEOLOCATION_VERY_POOR:
+                sourceString = "Geolocation - Very Poor";
+                break;
+            }
+        sb.append(String.format("Location Source: %s<br/>", sourceString));
         sb.append("</div>");
         return sb.toString();
     }
-
 }

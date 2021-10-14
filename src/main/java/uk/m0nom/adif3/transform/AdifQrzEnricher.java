@@ -3,6 +3,8 @@ package uk.m0nom.adif3.transform;
 import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
+import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
+import uk.m0nom.coords.LocationSource;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.qrz.QrzService;
@@ -102,12 +104,19 @@ public class AdifQrzEnricher {
     private void updateRecordFromQrzLocation(Adif3Record rec, QrzCallsign callsignData) {
         if (callsignData != null) {
             if (rec.getCoordinates() == null) {
+                boolean geocodeBasedGeoLoc = StringUtils.equalsIgnoreCase("geocode", callsignData.getGeoloc());
                 boolean gridBasedGeoloc = StringUtils.equalsIgnoreCase("grid", callsignData.getGeoloc());
+
                 String gridSquare = callsignData.getGrid();
                 boolean invalidGridBasedLoc = gridBasedGeoloc && (!MaidenheadLocatorConversion.isAValidGridSquare(gridSquare) || MaidenheadLocatorConversion.isADubiousGridSquare(gridSquare));
 
                 if (callsignData.getLat() != null && callsignData.getLon() != null && !invalidGridBasedLoc) {
-                    GlobalCoordinates coord = new GlobalCoordinates(callsignData.getLat(), callsignData.getLon());
+                    GlobalCoordinatesWithLocationSource coord = new GlobalCoordinatesWithLocationSource(callsignData.getLat(), callsignData.getLon(), LocationSource.LAT_LONG);
+                    if (geocodeBasedGeoLoc) {
+                        coord.setSource(LocationSource.GEOLOCATION_GOOD);
+                    } else if (gridBasedGeoloc) {
+                        coord.setSource(LocationSource.MHL6);
+                    }
                     rec.setCoordinates(coord);
                 }
                 if (rec.getGridsquare() == null && !invalidGridBasedLoc) {
