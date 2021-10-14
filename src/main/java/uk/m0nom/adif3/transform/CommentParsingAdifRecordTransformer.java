@@ -17,8 +17,6 @@ import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.transform.tokenizer.ColonTokenizer;
 import uk.m0nom.adif3.transform.tokenizer.CommentTokenizer;
-import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
-import uk.m0nom.coords.LocationParser;
 import uk.m0nom.coords.LocationParsers;
 import uk.m0nom.geocoding.GeocodingProvider;
 import uk.m0nom.geocoding.NominatimGeocodingProvider;
@@ -34,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 public class CommentParsingAdifRecordTransformer implements Adif3RecordTransformer {
     private static final Logger logger = Logger.getLogger(CommentParsingAdifRecordTransformer.class.getName());
