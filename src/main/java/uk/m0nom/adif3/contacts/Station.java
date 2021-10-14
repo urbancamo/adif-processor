@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
+import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 import uk.m0nom.qrz.QrzCallsign;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class Station {
 
     private Map<ActivityType, Activity> activities;
     private String grid;
-    private GlobalCoordinatesWithLocationSource coordinates;
+    private GlobalCoordinatesWithSourceAccuracy coordinates;
 
     public Station() {
         activities = new HashMap<>();

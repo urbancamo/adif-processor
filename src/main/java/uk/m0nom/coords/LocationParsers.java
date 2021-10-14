@@ -32,9 +32,9 @@ public class LocationParsers {
         parsers.add(new WwffLocationParser(databases.getDatabase(ActivityType.WWFF)));
     }
 
-    public GlobalCoordinatesWithLocationSource parseStringForCoordinates(String value) {
+    public GlobalCoordinatesWithSourceAccuracy parseStringForCoordinates(LocationSource source, String value) {
         for (LocationParser parser : parsers) {
-            GlobalCoordinatesWithLocationSource coords = parser.parse(value);
+            GlobalCoordinatesWithSourceAccuracy coords = parser.parse(source, value);
             if (coords != null) {
                 return coords;
             }

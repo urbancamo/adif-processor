@@ -2,7 +2,8 @@ package uk.m0nom.maidenheadlocator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
-import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
+import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.LocationAccuracy;
 import uk.m0nom.coords.LocationSource;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class MaidenheadLocatorConversion {
         return gridSquare != null;
     }
 
-    public static GlobalCoordinatesWithLocationSource locatorToCoords(String locStr) {
+    public static GlobalCoordinatesWithSourceAccuracy locatorToCoords(LocationSource source, String locStr) {
 
         String locatorTrimmed = locStr.trim().toUpperCase();
         Matcher matcher4Char = LOC_4CHAR.matcher(locatorTrimmed);
@@ -58,19 +59,19 @@ public class MaidenheadLocatorConversion {
         if (matcher10Char.matches()) {
             longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.0) / 12 + (locator[6] - '0' + 0.0) / 120 + (locator[8] - 'A' + 0.5) / 120 / 24 - 180;
             latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.0) / 24 + (locator[7] - '0' + 0.0) / 240 + (locator[9] - 'A' + 0.5) / 240 / 24 - 90;
-            return new GlobalCoordinatesWithLocationSource(latitude, longitude, LocationSource.MHL10);
+            return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.MHL10);
         } else if (matcher8Char.matches()) {
             longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.0) / 12 + (locator[6] - '0' + 0.5) / 120 - 180;
             latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.0) / 24 + (locator[7] - '0' + 0.5) / 240 - 90;
-            return new GlobalCoordinatesWithLocationSource(latitude, longitude, LocationSource.MHL8);
+            return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.MHL8);
         } else if (matcher6Char.matches()) {
             longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.5) / 12 - 180;
             latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.5) / 24 - 90;
-            return new GlobalCoordinatesWithLocationSource(latitude, longitude, LocationSource.MHL6);
+            return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.MHL6);
         } else if (matcher4Char.matches()) {
             latitude = (locator[1] - 'A') * 10 + (locator[3] - '0' + 0.5) - 90;
             longitude = (locator[0] - 'A') * 20 + (locator[2] - '0' + 0.5) * 2 - 180;
-            return new GlobalCoordinatesWithLocationSource(latitude, longitude, LocationSource.MHL4);
+            return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.MHL4);
         } else {
             throw new UnsupportedOperationException(String.format("Invalid locator format: %s", locatorTrimmed));
         }
@@ -164,7 +165,7 @@ public class MaidenheadLocatorConversion {
      * @return Distance in km<
      */
     public static double distance(String a, String b) {
-        return distance(locatorToCoords(a), locatorToCoords(b));
+        return distance(locatorToCoords(LocationSource.UNDEFINED, a), locatorToCoords(LocationSource.UNDEFINED, b));
     }
 
 
@@ -198,7 +199,7 @@ public class MaidenheadLocatorConversion {
      * @return Azimuth in degrees
      */
     public static double azimuth(String a, String b) {
-        return azimuth(locatorToCoords(a), locatorToCoords(b));
+        return azimuth(locatorToCoords(LocationSource.UNDEFINED, a), locatorToCoords(LocationSource.UNDEFINED, b));
     }
 
 

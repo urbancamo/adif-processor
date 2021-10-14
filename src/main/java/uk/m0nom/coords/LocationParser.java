@@ -4,5 +4,5 @@ import java.util.regex.Pattern;
 
 public interface LocationParser {
     Pattern getPattern();
-    GlobalCoordinatesWithLocationSource parse(String location);
+    GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String location);
 }

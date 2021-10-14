@@ -44,7 +44,7 @@ public class LotaCsvWriter {
                     if (info.getCoords() != null) {
                         latitude = String.format("%.5f", info.getCoords().getLatitude());
                         longitude = String.format("%.5f", info.getCoords().getLongitude());
-                        locationSource = info.getCoords().getSource().toString();
+                        locationSource = info.getCoords().getLocationInfo().toString();
                     }
                     printer.printRecord(info.getCountry(), info.getName(), info.getDxcc(), info.getContinent(), info.getLocation(), info.getRef(), info.getStatus(),
                             latitude, longitude, locationSource);

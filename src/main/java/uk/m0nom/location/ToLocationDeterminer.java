@@ -1,7 +1,6 @@
 package uk.m0nom.location;
 
 import org.apache.commons.lang3.StringUtils;
-import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabases;
@@ -10,7 +9,8 @@ import uk.m0nom.activity.wota.WotaSummitInfo;
 import uk.m0nom.activity.wota.WotaSummitsDatabase;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
-import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
+import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.LocationSource;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzService;
 
@@ -32,7 +32,7 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
                 qso.getTo().setGrid(grid);
                 qso.getTo().setCoordinates(info.getCoords());
             } else if (info.hasGrid()) {
-                GlobalCoordinatesWithLocationSource coords = MaidenheadLocatorConversion.locatorToCoords(info.getGrid());
+                GlobalCoordinatesWithSourceAccuracy coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.ACTIVITY, info.getGrid());
                 rec.setCoordinates(coords);
                 rec.setGridsquare(info.getGrid());
                 qso.getTo().setGrid(info.getGrid());
@@ -77,7 +77,7 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
 
     public void setTheirLocationFromActivity(Qso qso, Activity activity) {
         if (activity.hasCoords()) {
-            GlobalCoordinatesWithLocationSource coords = activity.getCoords();
+            GlobalCoordinatesWithSourceAccuracy coords = activity.getCoords();
             String grid = MaidenheadLocatorConversion.coordsToLocator(coords);
 
             qso.getTo().setCoordinates(coords);

@@ -13,11 +13,11 @@ public class Maidenhead4CharLocatorParser implements LocationParser {
     }
 
     @Override
-    public GlobalCoordinatesWithLocationSource parse(String locationString) {
+    public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String locationString) {
         Matcher matcher = getPattern().matcher(locationString);
         if (matcher.find()) {
             String locator = matcher.group(1);
-            return MaidenheadLocatorConversion.locatorToCoords(locator);
+            return MaidenheadLocatorConversion.locatorToCoords(source, locator);
         }
         return null;
     }

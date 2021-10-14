@@ -16,7 +16,7 @@ public class DegreesMinutesSecondsLatLongParserTest {
     }
 
     private void check(String input, Double latitude, Double longitude) {
-        GlobalCoordinates coords = new DegreesMinutesSecondsLatLongParser().parse(input);
+        GlobalCoordinates coords = new DegreesMinutesSecondsLatLongParser().parse(LocationSource.UNDEFINED, input);
         assertNotNull("Coords is null", coords);
         assertTrue(Math.abs(coords.getLatitude() - latitude) < 0.0001);
         assertTrue(Math.abs(coords.getLongitude() - longitude) < 0.0001);

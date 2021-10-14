@@ -4,8 +4,9 @@ import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
+import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 import uk.m0nom.coords.LocationParsers;
+import uk.m0nom.coords.LocationSource;
 
 import java.io.FileNotFoundException;
 import java.util.Collection;
@@ -44,14 +45,14 @@ public class CotaLocationProcessor {
         // The location information is stored in all sorts of ways, so we have to go through each one
         // Start with the most accurate attempting to parse Latitude/Longitude in all the variants
         if (isNotUrl(cota.getLocation())) {
-            GlobalCoordinatesWithLocationSource coords = locationParsers.parseStringForCoordinates(cota.getLocation());
+            GlobalCoordinatesWithSourceAccuracy coords = locationParsers.parseStringForCoordinates(LocationSource.ACTIVITY, cota.getLocation());
             if (coords != null) {
                 cota.setCoords(coords);
                 return true;
             }
         }
         if (isNotUrl(cota.getInformation())) {
-            GlobalCoordinatesWithLocationSource coords = locationParsers.parseStringForCoordinates(cota.getInformation());
+            GlobalCoordinatesWithSourceAccuracy coords = locationParsers.parseStringForCoordinates(LocationSource.ACTIVITY, cota.getInformation());
             if (coords != null) {
                 cota.setCoords(coords);
                 return true;

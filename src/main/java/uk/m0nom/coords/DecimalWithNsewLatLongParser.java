@@ -12,7 +12,7 @@ public class DecimalWithNsewLatLongParser implements LocationParser {
     }
 
     @Override
-    public GlobalCoordinatesWithLocationSource parse(String location) {
+    public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String location) {
         Matcher matcher = getPattern().matcher(location);
         if (matcher.find()) {
             String latString = matcher.group(1);
@@ -23,7 +23,7 @@ public class DecimalWithNsewLatLongParser implements LocationParser {
 
             Double latitude = LatLongUtils.parseDecimalLatitudeWithNs(latString, latNorthSouth);
             Double longitude = LatLongUtils.parseDecimalLongitudeWithEw(longString, longEastWest);
-            return new GlobalCoordinatesWithLocationSource(latitude, longitude);
+            return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.LAT_LONG);
         }
         return null;
     }

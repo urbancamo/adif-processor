@@ -4,8 +4,8 @@ import fr.dudie.nominatim.client.JsonNominatimClient;
 import fr.dudie.nominatim.model.Address;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.gavaghan.geodesy.GlobalCoordinates;
-import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
+import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.LocationAccuracy;
 import uk.m0nom.coords.LocationSource;
 import uk.m0nom.qrz.QrzCallsign;
 
@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+
+import static uk.m0nom.coords.LocationAccuracy.*;
 
 /**
  * Use the Open Streetmap Nominatim API to try and determine a station's location based on a full or
@@ -32,8 +34,8 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
     }
 
     @Override
-    public GlobalCoordinatesWithLocationSource getLocationFromAddress(QrzCallsign qrzData) throws IOException, InterruptedException {
-        GlobalCoordinatesWithLocationSource coords = null;
+    public GlobalCoordinatesWithSourceAccuracy getLocationFromAddress(QrzCallsign qrzData) throws IOException, InterruptedException {
+        GlobalCoordinatesWithSourceAccuracy coords = null;
 
         String addressToCheck = addressStringFromQrzData(qrzData);
         if (addressToCheck != null) {
@@ -65,9 +67,9 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
         return addressToCheck;
     }
 
-    private GlobalCoordinatesWithLocationSource queryUsingAddressSubstring(String callsign, String addressToCheck) throws IOException, InterruptedException {
+    private GlobalCoordinatesWithSourceAccuracy queryUsingAddressSubstring(String callsign, String addressToCheck) throws IOException, InterruptedException {
         String substring = addressToCheck;
-        GlobalCoordinatesWithLocationSource coords = null;
+        GlobalCoordinatesWithSourceAccuracy coords = null;
         int accuracy = 0;
         while (StringUtils.isNotBlank(substring) && coords == null) {
             // Start cutting down the address, with the most specific information first
@@ -77,7 +79,7 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
         return coords;
     }
 
-    private GlobalCoordinatesWithLocationSource addressSearch(String callsign, String searchString, int accuracy) throws IOException, InterruptedException {
+    private GlobalCoordinatesWithSourceAccuracy addressSearch(String callsign, String searchString, int accuracy) throws IOException, InterruptedException {
         long timeDiff = new Date().getTime() - lastTimestamp;
         if (timeDiff < DELAY) {
             long pause = DELAY - timeDiff;
@@ -91,17 +93,17 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
 
         if (addressMatches.size() > 0) {
             Address match = addressMatches.get(0);
-            LocationSource source = getLocationSourceFromAccuracy(accuracy);
-            return new GlobalCoordinatesWithLocationSource(match.getLatitude(), match.getLongitude(), source);
+            LocationAccuracy locationAccuracy = getLocationAccuracy(accuracy);
+            return new GlobalCoordinatesWithSourceAccuracy(match.getLatitude(), match.getLongitude(), LocationSource.GEOCODING, locationAccuracy);
         }
         return null;
     }
 
-    private LocationSource getLocationSourceFromAccuracy(int accuracy) {
-        if (accuracy == 0) return LocationSource.GEOLOCATION_VERY_GOOD;
-        if (accuracy == 1) return LocationSource.GEOLOCATION_GOOD;
-        if (accuracy == 2) return LocationSource.GEOLOCATION_POOR;
-        return LocationSource.GEOLOCATION_VERY_POOR;
+    private LocationAccuracy getLocationAccuracy(int accuracy) {
+        if (accuracy == 0) return GEOLOCATION_VERY_GOOD;
+        if (accuracy == 1) return GEOLOCATION_GOOD;
+        if (accuracy == 2) return GEOLOCATION_POOR;
+        return GEOLOCATION_VERY_POOR;
     }
 
     private String addIfNotNull(String current, String toAdd) {

@@ -17,9 +17,7 @@ import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.transform.tokenizer.ColonTokenizer;
 import uk.m0nom.adif3.transform.tokenizer.CommentTokenizer;
-import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
-import uk.m0nom.coords.LocationParsers;
-import uk.m0nom.coords.LocationSource;
+import uk.m0nom.coords.*;
 import uk.m0nom.geocoding.GeocodingProvider;
 import uk.m0nom.geocoding.NominatimGeocodingProvider;
 import uk.m0nom.location.FromLocationDeterminer;
@@ -128,7 +126,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         // IF qrz.com can't fill in the coordinates, and the gridsquare is set, fill in coordinates from that
         if (rec.getCoordinates() == null && MaidenheadLocatorConversion.isAValidGridSquare(rec.getGridsquare()) && !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare())) {
             // Set Coordinates from GridSquare that has been supplied in the input file
-            GlobalCoordinatesWithLocationSource coords = MaidenheadLocatorConversion.locatorToCoords(rec.getGridsquare());
+            GlobalCoordinatesWithSourceAccuracy coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.QRZ, rec.getGridsquare());
             rec.setCoordinates(coords);
             qso.getTo().setCoordinates(coords);
             qso.getTo().setGrid(rec.getGridsquare());
@@ -140,7 +138,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare())) &&
                 theirQrzData != null) {
             try {
-                GlobalCoordinatesWithLocationSource source = geocodingProvider.getLocationFromAddress(theirQrzData);
+                GlobalCoordinatesWithSourceAccuracy source = geocodingProvider.getLocationFromAddress(theirQrzData);
                 rec.setCoordinates(source);
                 qso.getTo().setCoordinates(source);
                 if (rec.getCoordinates() != null) {
@@ -225,7 +223,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
         Double latitude = null;
         Double longitude = null;
-        GlobalCoordinates coords = null;
+        GlobalCoordinatesWithSourceAccuracy coords = null;
         for (String key : tokens.keySet()) {
             String value = tokens.get(key).trim();
 
@@ -269,7 +267,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                                     } else {
                                         rec.setGridsquare(value);
                                     }
-                                    rec.setCoordinates(MaidenheadLocatorConversion.locatorToCoords(value));
+                                    rec.setCoordinates(MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, value));
                                     break;
                                 default:
                                     logger.severe(String.format("Gridsquare %s isn't valid", value));
@@ -396,7 +394,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         }
                         break;
                     case "Coordinates":
-                        coords = locationParsers.parseStringForCoordinates(value);
+                        coords = locationParsers.parseStringForCoordinates(LocationSource.OVERRIDE, value);
                         break;
                     case "Latitude":
                         try {
@@ -451,8 +449,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
         if (coords != null || (latitude != null && longitude != null)) {
             if (coords == null) {
-                coords = new GlobalCoordinatesWithLocationSource(latitude, longitude, LocationSource.LAT_LONG);
+                coords = new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, LocationSource.OVERRIDE, LocationAccuracy.LAT_LONG);
             }
+            qso.getTo().setCoordinates(coords);
             rec.setCoordinates(coords);
             rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(coords));
             logger.info(String.format("Override location of %s: %s", rec.getCall(), rec.getCoordinates().toString()));

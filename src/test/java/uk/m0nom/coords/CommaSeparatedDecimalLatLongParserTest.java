@@ -10,10 +10,10 @@ public class CommaSeparatedDecimalLatLongParserTest {
     @Test
     public void test() {
         String input = "54.370985339290684,-2.9098945771236493";
-        Double latitude = 54.370985339290684;
-        Double longitude = -2.9098945771236493;
+        double latitude = 54.370985339290684;
+        double longitude = -2.9098945771236493;
 
-        GlobalCoordinates coords = new CommaSeparatedDecimalLatLongParser().parse(input);
+        GlobalCoordinates coords = new CommaSeparatedDecimalLatLongParser().parse(LocationSource.UNDEFINED, input);
         assertNotNull("Coords is null", coords);
         assertTrue(Math.abs(coords.getLatitude() - latitude) < 0.0001);
         assertTrue(Math.abs(coords.getLongitude() - longitude) < 0.0001);

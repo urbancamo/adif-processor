@@ -12,7 +12,7 @@ public class DegreesMinutesWithNsewLatLongParser implements LocationParser {
     }
 
     @Override
-    public GlobalCoordinatesWithLocationSource parse(String location) {
+    public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String location) {
         Matcher matcher = getPattern().matcher(location);
 
         if (matcher.find()) {
@@ -30,7 +30,7 @@ public class DegreesMinutesWithNsewLatLongParser implements LocationParser {
             if (latitude == null || longitude == null) {
                 throw new UnsupportedOperationException();
             }
-            return new GlobalCoordinatesWithLocationSource(latitude, longitude);
+            return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.LAT_LONG);
         }
         return null;
     }

@@ -5,11 +5,7 @@ import lombok.Setter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.input.BOMInputStream;
-import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.activity.*;
-import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
-import uk.m0nom.coords.LocationParsers;
-import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.io.IOException;
 import java.io.InputStream;

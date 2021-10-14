@@ -4,8 +4,9 @@ import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
+import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 import uk.m0nom.coords.LocationParsers;
+import uk.m0nom.coords.LocationSource;
 
 import java.io.FileNotFoundException;
 import java.util.Collection;
@@ -42,7 +43,7 @@ public class LotaLocationProcessor {
     private static boolean extractLocationInformation(LotaInfo lota) {
         // The location information is stored in all sorts of ways, so we have to go through each one
         // Start with the most accurate attempting to parse Latitude/Longitude in all the variants
-        GlobalCoordinatesWithLocationSource coords = locationParsers.parseStringForCoordinates(lota.getLocation());
+        GlobalCoordinatesWithSourceAccuracy coords = locationParsers.parseStringForCoordinates(LocationSource.ACTIVITY, lota.getLocation());
         if (coords != null) {
             lota.setCoords(coords);
             //lota.setAltitude(coords.getAltitude());

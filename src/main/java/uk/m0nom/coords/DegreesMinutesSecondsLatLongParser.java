@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DegreesMinutesSecondsLatLongParser  implements LocationParser {
-    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d\\,)]+(\\d+)[^\\d]+(\\d+)\\s*[^NnSs]*\\s*([NnSs])[^\\d]+(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+)\\s*[^NnSs]*\\s*([EeWwOo])");
+    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d,)]+(\\d+)[^\\d]+(\\d+)\\s*[^NnSs]*\\s*([NnSs])[^\\d]+(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+)\\s*[^NnSs]*\\s*([EeWwOo])");
 
     @Override
     public Pattern getPattern() {
@@ -12,7 +12,7 @@ public class DegreesMinutesSecondsLatLongParser  implements LocationParser {
     }
 
     @Override
-    public GlobalCoordinatesWithLocationSource parse(String location) {
+    public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String location) {
         Matcher matcher = getPattern().matcher(location);
         if (matcher.find()) {
             String latDegrees = matcher.group(1);
@@ -27,7 +27,7 @@ public class DegreesMinutesSecondsLatLongParser  implements LocationParser {
 
             Double latitude = LatLongUtils.parseDegMinSecLatitude(latDegrees, latMinutes, latSeconds, latNorthSouth);
             Double longitude = LatLongUtils.parseDegMinSecLongitude(longDegrees, longMinutes, longSeconds, longEastWest);
-            return new GlobalCoordinatesWithLocationSource(latitude, longitude);
+            return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.LAT_LONG);
         }
         return null;
     }

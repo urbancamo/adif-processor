@@ -52,7 +52,7 @@ public class CotaCsvWriter {
                         String locationSource = "";
                         if (info.getCoords() != null) {
                             coordsString = String.format("%.5f, %.5f", info.getCoords().getLatitude(), info.getCoords().getLongitude());
-                            locationSource = info.getCoords().getSource().toString();
+                            locationSource = info.getCoords().getLocationInfo().toString();
                         }
                         printer.printRecord(info.getRef(), info.getNoCastles(), info.getPrefix(), info.getName(), info.getLocation(), info.getInformation(), coordsString, locationSource);
                         record++;
@@ -63,6 +63,7 @@ public class CotaCsvWriter {
                     logger.severe(String.format("Exception writing COTA country file %s: %s", country, e.getMessage()));
             } finally {
                 try {
+                    assert out != null;
                     out.close();
                 } catch (IOException ioe) {
                     logger.severe(String.format("Exception closing COTA country file %s: %s", country, ioe.getMessage()));

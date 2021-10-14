@@ -3,7 +3,7 @@ package uk.m0nom.activity;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import uk.m0nom.coords.GlobalCoordinatesWithLocationSource;
+import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 
 @Getter
 @Setter
@@ -11,7 +11,7 @@ public abstract class Activity implements Comparable<Activity> {
     private ActivityType type;
     private String name;
     private String ref;
-    private GlobalCoordinatesWithLocationSource coords;
+    private GlobalCoordinatesWithSourceAccuracy coords;
     private String grid;
     private Double altitude;
 

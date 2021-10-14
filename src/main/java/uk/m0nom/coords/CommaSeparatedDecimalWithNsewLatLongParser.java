@@ -12,7 +12,7 @@ public class CommaSeparatedDecimalWithNsewLatLongParser implements LocationParse
     }
 
     @Override
-    public GlobalCoordinatesWithLocationSource parse(String location) {
+    public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String location) {
         Matcher matcher = getPattern().matcher(location);
         if (matcher.find()) {
             String latString = matcher.group(1);
@@ -21,7 +21,7 @@ public class CommaSeparatedDecimalWithNsewLatLongParser implements LocationParse
             String longEastWest = matcher.group(4);
             Double latitude = LatLongUtils.parseDecimalLatitude(latString, latNorthSouth);
             Double longitude = LatLongUtils.parseDecimalLongitude(longString, longEastWest);
-            return new GlobalCoordinatesWithLocationSource(latitude, longitude);
+            return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.LAT_LONG);
         }
         return null;
     }
