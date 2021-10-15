@@ -54,6 +54,4 @@ public class GlobalCoordinatesWithSourceAccuracy extends GlobalCoordinates {
     public void setLocationInfo(LocationSource source, LocationAccuracy accuracy) {
         setLocationInfo(new LocationInfo(accuracy, source));
     }
-
-    public boolean hasAltitude() { return altitude != null; }
 }

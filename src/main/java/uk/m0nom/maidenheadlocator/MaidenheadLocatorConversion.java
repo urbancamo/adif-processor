@@ -85,7 +85,7 @@ public class MaidenheadLocatorConversion {
      * @return Locator string
      */
     public static String coordsToLocator(GlobalCoordinates coords) {
-        return coordsToLocator(coords, 0);
+        return coordsToLocator(coords, 6);
     }
 
 
@@ -93,10 +93,10 @@ public class MaidenheadLocatorConversion {
      * Convert latitude and longitude in degrees to a locator
      *
      * @param coords GlobalCoordinates structure to convert
-     * @param ext    Extra precision (0, 1, 2)
+     * @param len    Length of the locator (4/6/8/10)
      * @return Locator string
      */
-    public static String coordsToLocator(GlobalCoordinates coords, int ext) {
+    public static String coordsToLocator(GlobalCoordinates coords, int len) {
         String locator = "";
 
         double latitude = coords.getLatitude() + 90;
@@ -117,25 +117,27 @@ public class MaidenheadLocatorConversion {
         latitude = Math.IEEEremainder(latitude, 1);
         if (latitude < 0) latitude += 1;
 
-        locator += (char) ('A' + Math.floor(longitude * 12));
-        locator += (char) ('A' + Math.floor(latitude * 24));
-        longitude = Math.IEEEremainder(longitude, (double) 1 / 12);
-        if (longitude < 0) longitude += (double) 1 / 12;
-        latitude = Math.IEEEremainder(latitude, (double) 1 / 24);
-        if (latitude < 0) latitude += (double) 1 / 24;
+        if (len > 4) {
+            locator += (char) ('A' + Math.floor(longitude * 12));
+            locator += (char) ('A' + Math.floor(latitude * 24));
+            longitude = Math.IEEEremainder(longitude, (double) 1 / 12);
+            if (longitude < 0) longitude += (double) 1 / 12;
+            latitude = Math.IEEEremainder(latitude, (double) 1 / 24);
+            if (latitude < 0) latitude += (double) 1 / 24;
 
-        if (ext >= 1) {
-            locator += (char) ('0' + Math.floor(longitude * 120));
-            locator += (char) ('0' + Math.floor(latitude * 240));
-            longitude = Math.IEEEremainder(longitude, (double) 1 / 120);
-            if (longitude < 0) longitude += (double) 1 / 120;
-            latitude = Math.IEEEremainder(latitude, (double) 1 / 240);
-            if (latitude < 0) latitude += (double) 1 / 240;
-        }
+            if (len > 6) {
+                locator += (char) ('0' + Math.floor(longitude * 120));
+                locator += (char) ('0' + Math.floor(latitude * 240));
+                longitude = Math.IEEEremainder(longitude, (double) 1 / 120);
+                if (longitude < 0) longitude += (double) 1 / 120;
+                latitude = Math.IEEEremainder(latitude, (double) 1 / 240);
+                if (latitude < 0) latitude += (double) 1 / 240;
 
-        if (ext >= 2) {
-            locator += (char) ('A' + Math.floor(longitude * 120 * 24));
-            locator += (char) ('A' + Math.floor(latitude * 240 * 24));
+                if (len > 8) {
+                    locator += (char) ('A' + Math.floor(longitude * 120 * 24));
+                    locator += (char) ('A' + Math.floor(latitude * 240 * 24));
+                }
+            }
         }
 
         return locator;

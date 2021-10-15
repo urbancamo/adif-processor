@@ -1,9 +1,11 @@
 package uk.m0nom.coords;
 
+import org.gavaghan.geodesy.GlobalCoordinates;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DegreesMinutesDecimalSecondsLatLongParser implements LocationParser {
+public class DegreesMinutesDecimalSecondsLatLongParser implements LocationParser, LocationFormatter {
     private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+[\\.,]\\d+)[^NnSs]*([NnSs])[^\\d]+(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+[\\.,]\\d+)[^EeWwOo]*([EeWwOo])");
 
     @Override
@@ -30,5 +32,21 @@ public class DegreesMinutesDecimalSecondsLatLongParser implements LocationParser
             return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.LAT_LONG);
         }
         return null;
+    }
+
+    @Override
+    public String format(GlobalCoordinates coords) {
+        return String.format("%.0f° %.0f' %.3f\", %.0f° %.0f' %.3f\"",
+                LatLongUtils.getDegreesLat(coords),
+                Math.floor(LatLongUtils.getMinutesLat(coords)),
+                LatLongUtils.getSecondsLat(coords),
+                LatLongUtils.getDegreesLong(coords),
+                Math.floor(LatLongUtils.getMinutesLong(coords)),
+                LatLongUtils.getSecondsLong(coords));
+    }
+
+    @Override
+    public String getName() {
+        return "Degrees Minutes Decimal Seconds";
     }
 }

@@ -1,9 +1,11 @@
 package uk.m0nom.coords;
 
+import org.gavaghan.geodesy.GlobalCoordinates;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DecimalWithNsewLatLongParser implements LocationParser {
+public class DecimalWithNsewLatLongParser implements LocationParser, LocationFormatter {
     private final static Pattern PATTERN = Pattern.compile("(\\d+\\.\\d+)\\s*°*\\s*([NnSs])\\s+(\\d+\\.\\d+)\\s*°*\\s*([EeWwOo])");
 
     @Override
@@ -27,4 +29,15 @@ public class DecimalWithNsewLatLongParser implements LocationParser {
         }
         return null;
     }
+
+    @Override
+    public String format(GlobalCoordinates coords) {
+        return String.format("%.6f %s %.6f %s", Math.abs(coords.getLatitude()), LatLongUtils.getNorthSouth(coords), Math.abs(coords.getLongitude()), LatLongUtils.getEastWest(coords));
+    }
+
+    @Override
+    public String getName() {
+        return "Decimal with NSEW";
+    }
+
 }

@@ -1,11 +1,12 @@
 package uk.m0nom.coords;
 
+import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Maidenhead4CharLocatorParser implements LocationParser {
+public class Maidenhead4CharLocatorParser implements LocationParser, LocationFormatter {
     private final static Pattern PATTERN = Pattern.compile("([A-R]{2}[0-9]{2})");
     @Override
     public Pattern getPattern() {
@@ -20,5 +21,15 @@ public class Maidenhead4CharLocatorParser implements LocationParser {
             return MaidenheadLocatorConversion.locatorToCoords(source, locator);
         }
         return null;
+    }
+
+    @Override
+    public String format(GlobalCoordinates coords) {
+        return MaidenheadLocatorConversion.coordsToLocator(coords, 4);
+    }
+
+    @Override
+    public String getName() {
+        return "Maidenhead Locator 4";
     }
 }

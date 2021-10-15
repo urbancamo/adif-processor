@@ -74,12 +74,11 @@ public class Station {
      */
     @Override
     public boolean equals(Object other) {
-        boolean equals = false;
         if (other instanceof Station) {
             Station otherStation = (Station) other;
             return otherStation.getKey().equals(getKey());
         }
-        return equals;
+        return false;
     }
 
     /**

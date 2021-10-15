@@ -1,9 +1,11 @@
 package uk.m0nom.coords;
 
+import org.gavaghan.geodesy.GlobalCoordinates;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DegreesDecimalWithNsewLatLongParser implements LocationParser {
+public class DegreesDecimalWithNsewLatLongParser implements LocationParser, LocationFormatter {
     private final static Pattern PATTERN = Pattern.compile("(\\d+\\.\\d+)[°]*([NnSs])\\s+(\\d+\\.\\d+)[°]*([EeWwOo])");
 
     @Override
@@ -30,5 +32,22 @@ public class DegreesDecimalWithNsewLatLongParser implements LocationParser {
             return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.LAT_LONG);
         }
         return null;
+    }
+
+
+    @Override
+    public String format(GlobalCoordinates coords) {
+        return String.format("%.0f° %.3f' %s, %.0f° %.3f' %s",
+                Math.abs(LatLongUtils.getDegreesLat(coords)),
+                LatLongUtils.getMinutesLat(coords),
+                LatLongUtils.getNorthSouth(coords),
+                Math.abs(LatLongUtils.getDegreesLong(coords)),
+                LatLongUtils.getMinutesLong(coords),
+                LatLongUtils.getEastWest(coords));
+    }
+
+    @Override
+    public String getName() {
+        return "Degrees Decimal Minutes with NSEW";
     }
 }

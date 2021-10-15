@@ -5,7 +5,6 @@ import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 import uk.m0nom.coords.LocationAccuracy;
-import uk.m0nom.coords.LocationInfo;
 import uk.m0nom.coords.LocationSource;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;

@@ -1,5 +1,6 @@
 package uk.m0nom.coords;
 
+import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
 
@@ -28,8 +29,12 @@ public class LocationParsers {
         parsers.add(new Maidenhead8CharLocatorParser());
         parsers.add(new Maidenhead6CharLocatorParser());
         // Doesn't work due to WAB references clashing
-        // parsers.add(new Maidenhead4CharLocatorParser());
-        parsers.add(new WwffLocationParser(databases.getDatabase(ActivityType.WWFF)));
+        // TODO Check This comment!
+        parsers.add(new Maidenhead4CharLocatorParser());
+
+        if (databases != null) {
+            parsers.add(new WwffLocationParser(databases.getDatabase(ActivityType.WWFF)));
+        }
     }
 
     public GlobalCoordinatesWithSourceAccuracy parseStringForCoordinates(LocationSource source, String value) {
@@ -40,5 +45,16 @@ public class LocationParsers {
             }
         }
         return null;
+    }
+
+    public List<String> format(GlobalCoordinates coords) {
+        List<String> results = new ArrayList<>(10);
+
+        for (LocationParser parser : parsers) {
+            if (parser instanceof LocationFormatter) {
+                results.add(((LocationFormatter) parser).format(coords));
+            }
+        }
+        return results;
     }
 }

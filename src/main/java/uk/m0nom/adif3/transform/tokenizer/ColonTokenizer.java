@@ -1,7 +1,5 @@
 package uk.m0nom.adif3.transform.tokenizer;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -22,7 +20,7 @@ public class ColonTokenizer implements CommentTokenizer{
 
         String previousToken = "";
         while (tokenizer.hasMoreTokens()) {
-            String key = "";
+            String key;
             String token = tokenizer.nextToken().trim();
             if ("".equals(previousToken)) {
                 key = token;

@@ -1,9 +1,11 @@
 package uk.m0nom.coords;
 
+import org.gavaghan.geodesy.GlobalCoordinates;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DegreesDecimalLatLongParser implements LocationParser {
+public class DegreesDecimalLatLongParser implements LocationParser, LocationFormatter {
     private final static Pattern PATTERN = Pattern.compile("([+-]*)(\\d+\\.\\d+)\\s+([+-]*)(\\d+\\.\\d+)");
 
     @Override
@@ -38,4 +40,15 @@ public class DegreesDecimalLatLongParser implements LocationParser {
         }
         return null;
     }
+
+    @Override
+    public String format(GlobalCoordinates coords) {
+        return String.format("%.6f %.6f", coords.getLatitude(), coords.getLongitude());
+    }
+
+    @Override
+    public String getName() {
+        return "Degrees Decimal";
+    }
+
 }

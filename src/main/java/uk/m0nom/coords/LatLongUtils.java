@@ -159,4 +159,46 @@ public class LatLongUtils {
     private static boolean checkLongitudeRange(double longitude) {
         return (longitude >= -180.0 || longitude <= 180.0);
     }
+
+    public static String getNorthSouth(GlobalCoordinates coords) {
+        String northSouth = "N";
+        if (coords.getLatitude() < 0) {
+            northSouth = "S";
+        }
+        return northSouth;
+    }
+
+    public static String getEastWest(GlobalCoordinates coords) {
+        String eastWest = "W";
+        if (coords.getLongitude() < 0) {
+            eastWest = "E";
+        }
+        return eastWest;
+    }
+
+    public static double getDegreesLat(GlobalCoordinates coords) {
+        return Math.floor(coords.getLatitude());
+    }
+
+    public static double getMinutesLat(GlobalCoordinates coords) {
+        return (coords.getLatitude() - getDegreesLat(coords)) * 60.0;
+    }
+
+    public static double getSecondsLat(GlobalCoordinates coords) {
+        return (getMinutesLat(coords) - Math.floor(getMinutesLat(coords))) * 60.0;
+    }
+
+    public static double getDegreesLong(GlobalCoordinates coords) {
+        return Math.floor(coords.getLongitude());
+    }
+
+    public static double getMinutesLong(GlobalCoordinates coords) {
+        return (coords.getLongitude() - getDegreesLong(coords)) * 60.0;
+    }
+
+    public static double getSecondsLong(GlobalCoordinates coords) {
+        return (getMinutesLong(coords) - Math.floor(getMinutesLong(coords))) * 60.0;
+    }
 }
+
+
