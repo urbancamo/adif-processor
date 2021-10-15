@@ -126,7 +126,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         // IF qrz.com can't fill in the coordinates, and the gridsquare is set, fill in coordinates from that
         if (rec.getCoordinates() == null && MaidenheadLocatorConversion.isAValidGridSquare(rec.getGridsquare()) && !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare())) {
             // Set Coordinates from GridSquare that has been supplied in the input file
-            GlobalCoordinatesWithSourceAccuracy coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.QRZ, rec.getGridsquare());
+            GlobalCoordinatesWithSourceAccuracy coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, rec.getGridsquare());
             rec.setCoordinates(coords);
             qso.getTo().setCoordinates(coords);
             qso.getTo().setGrid(rec.getGridsquare());

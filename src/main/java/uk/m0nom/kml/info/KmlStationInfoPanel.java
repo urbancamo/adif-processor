@@ -67,10 +67,13 @@ public class KmlStationInfoPanel implements KmlInfoPanel {
                     sourceString = "Activity";
                     break;
                 case OVERRIDE:
-                    sourceString = "Override";
+                    sourceString = "Overridden";
                     break;
                 case QRZ:
                     sourceString = "QRZ.COM";
+                    break;
+                case GEOCODING:
+                    sourceString = "Geocoding";
                     break;
                 case UNDEFINED:
                     break;
@@ -81,16 +84,16 @@ public class KmlStationInfoPanel implements KmlInfoPanel {
                     accuracyString = "Latitude/Longitude";
                     break;
                 case MHL10:
-                    accuracyString = "10 char Maidenhead";
+                    accuracyString = "10-CHAR Maidenhead";
                     break;
                 case MHL8:
-                    accuracyString = "8 char Maidenhead";
+                    accuracyString = "8-CHAR Maidenhead";
                     break;
                 case MHL6:
-                    accuracyString = "6 char Maidenhead";
+                    accuracyString = "6-CHAR Maidenhead";
                     break;
                 case MHL4:
-                    accuracyString = "4 char Maidenhead";
+                    accuracyString = "4-CHAR Maidenhead";
                     break;
                 case GEOLOCATION_VERY_GOOD:
                     accuracyString = "Geolocation - Very Good";
