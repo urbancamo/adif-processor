@@ -14,16 +14,17 @@ public class LocationParsers {
      * The order of these parsers is important, they should run from most to least accurate
      */
     public LocationParsers(ActivityDatabases databases) {
-        parsers.add(new CommaSeparatedDecimalLatLongWithAltitudeParser());
-        parsers.add(new DegreesDecimalWithNsewLatLongParser());
-        parsers.add(new NsewWithDegreesDecimalLatLongParser());
         parsers.add(new DegreesDecimalLatLongParser());
+        parsers.add(new DegreesDecimalMinutesLatLongParser());
+        parsers.add(new DegreesDecimalMinutesWithNsewLatLongParser());
+        parsers.add(new CommaSeparatedDecimalLatLongWithAltitudeParser());
+        parsers.add(new NsewWithDegreesDecimalLatLongParser());
         parsers.add(new DegreesMinutesSecondsLatLongParser());
+        parsers.add(new DegreesMinutesSecondsWithNsewLatLongParser());
         parsers.add(new CommaSeparatedDecimalLatLongParser());
         parsers.add(new CommaSeparatedDecimalWithNsewLatLongParser());
         parsers.add(new DecimalWithNsewLatLongParser());
-        parsers.add(new DegreesDecimalMinutesLatLongParser());
-        parsers.add(new DegreesMinutesDecimalSecondsLatLongParser());
+        parsers.add(new DegreesMinutesDecimalSecondsWithNsewLatLongParser());
         parsers.add(new DegreesMinutesWithNsewLatLongParser());
         parsers.add(new Maidenhead10CharLocatorParser());
         parsers.add(new Maidenhead8CharLocatorParser());

@@ -14,6 +14,8 @@ public class IconResource {
     public final static String MARITIME_MOBILE_ICON_NAME = "maritime";
     public final static String CW_ICON_NAME = "cw";
     public final static String SSB_ICON_NAME = "ssb";
+    public final static String FM_ICON_NAME = "fm";
+    public final static String DEFAULT_MODE_ICON_NAME = "mode";
 
     public final static String FIXED_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/ranger_station.png";
 	public final static String PORTABLE_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/hiker.png";
@@ -71,8 +73,11 @@ public class IconResource {
             case SSB:
                 icon = new IconResource(SSB_ICON_NAME, control.getIcon(SSB_ICON_NAME));
                 break;
+            case FM:
+                icon = new IconResource(FM_ICON_NAME, control.getIcon(FM_ICON_NAME));
+                break;
             default:
-                icon = null;
+                icon = new IconResource(DEFAULT_MODE_ICON_NAME, control.getIcon(DEFAULT_MODE_ICON_NAME));
                 break;
         }
         return icon;

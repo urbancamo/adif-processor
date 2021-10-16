@@ -5,8 +5,8 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DegreesMinutesDecimalSecondsLatLongParser implements LocationParser, LocationFormatter {
-    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+[\\.,]\\d+)[^NnSs]*([NnSs])[^\\d]+(\\d+)[^\\d]+(\\d+)[^\\d]+(\\d+[\\.,]\\d+)[^EeWwOo]*([EeWwOo])");
+public class DegreesMinutesSecondsWithNsewLatLongParser implements LocationParser, LocationFormatter {
+    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d,)]+(\\d+)[^\\d\\.]+(\\d+)\\s*[^NnSs]*\\s*([NnSs])[^\\d]+(\\d+)[^\\d]+(\\d+)[^\\d\\.]+(\\d+)\\s*[^NnSs]*\\s*([EeWwOo])");
 
     @Override
     public Pattern getPattern() {
@@ -19,13 +19,13 @@ public class DegreesMinutesDecimalSecondsLatLongParser implements LocationParser
         if (matcher.find()) {
             String latDegrees = matcher.group(1);
             String latMinutes = matcher.group(2);
-            String latSeconds = matcher.group(3).replace(',', '.');
+            String latSeconds = matcher.group(3);
             String latNorthSouth = matcher.group(4).toUpperCase();
 
             String longDegrees = matcher.group(5);
             String longMinutes = matcher.group(6);
-            String longSeconds = matcher.group(7).replace(',', '.');
-            String longEastWest = matcher.group(8);
+            String longSeconds = matcher.group(7);
+            String longEastWest = matcher.group(8).toUpperCase();
 
             Double latitude = LatLongUtils.parseDegMinSecLatitude(latDegrees, latMinutes, latSeconds, latNorthSouth);
             Double longitude = LatLongUtils.parseDegMinSecLongitude(longDegrees, longMinutes, longSeconds, longEastWest);
@@ -36,17 +36,19 @@ public class DegreesMinutesDecimalSecondsLatLongParser implements LocationParser
 
     @Override
     public String format(GlobalCoordinates coords) {
-        return String.format("%.0f° %.0f' %.3f\", %.0f° %.0f' %.3f\"",
-                LatLongUtils.getDegreesLat(coords),
+        return String.format("%.0f° %.0f' %d\" %s, %.0f° %.0f' %d\" %s",
+                Math.abs(LatLongUtils.getDegreesLat(coords)),
                 Math.floor(LatLongUtils.getMinutesLat(coords)),
-                LatLongUtils.getSecondsLat(coords),
+                Math.round(LatLongUtils.getSecondsLat(coords)),
+                LatLongUtils.getNorthSouth(coords),
                 LatLongUtils.getDegreesLong(coords),
                 Math.floor(LatLongUtils.getMinutesLong(coords)),
-                LatLongUtils.getSecondsLong(coords));
+                Math.round(LatLongUtils.getSecondsLong(coords)),
+                LatLongUtils.getEastWest(coords));
     }
 
     @Override
     public String getName() {
-        return "Degrees Minutes Decimal Seconds";
+        return "Degrees Minutes Seconds with NSEW";
     }
 }

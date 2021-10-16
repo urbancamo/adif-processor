@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DegreesDecimalMinutesLatLongParser implements LocationParser, LocationFormatter {
-    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d]+(\\d+\\.\\d+).*([NnSs])[^\\d]*(\\d+)[^\\d]+(\\d+\\.\\d+).*([EeWwOo])");
+    private final static Pattern PATTERN = Pattern.compile("([-+]*)(\\d+)[^\\d]+(\\d+\\.\\d+)[^\\d]+([-+]*)([-+]*)(\\d+)[^\\d]+(\\d+\\.\\d+)");
 
     @Override
     public Pattern getPattern() {
@@ -17,19 +17,16 @@ public class DegreesDecimalMinutesLatLongParser implements LocationParser, Locat
     public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String location) {
         Matcher matcher = getPattern().matcher(location);
         if (matcher.find()) {
-            String latDegrees = matcher.group(1);
-            String latMinutes = matcher.group(2);
-            String latNorthSouth = matcher.group(3).toUpperCase();
+            String latNegative = matcher.group(1);
+            String latDegrees = matcher.group(2);
+            String latMinutes = matcher.group(3);
 
-            String longDegrees = matcher.group(4);
-            String longMinutes = matcher.group(5);
-            String longEastWest = matcher.group(6).toUpperCase();
+            String longNegative = matcher.group(5);
+            String longDegrees = matcher.group(6);
+            String longMinutes = matcher.group(7);
 
-            Double latitude = LatLongUtils.parseDegDecimalMinLatitude(latDegrees, latMinutes, latNorthSouth);
-            Double longitude = LatLongUtils.parseDegDecimalMinLongitude(longDegrees, longMinutes, longEastWest);
-            if (latitude == null || longitude == null) {
-                throw new UnsupportedOperationException();
-            }
+            Double latitude = LatLongUtils.parseDegreesMinutes(latDegrees, latMinutes, "-".equalsIgnoreCase(latNegative));
+            Double longitude = LatLongUtils.parseDegreesMinutes(longDegrees, longMinutes, "-".equalsIgnoreCase(longNegative));
             return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.LAT_LONG);
         }
         return null;
@@ -37,15 +34,17 @@ public class DegreesDecimalMinutesLatLongParser implements LocationParser, Locat
 
     @Override
     public String format(GlobalCoordinates coords) {
-        return String.format("%.0f° %.3f', %.0f° %.3f'",
+        return String.format("%.0f° %.0f' %d\", %.0f° %.0f' %d\"",
                 LatLongUtils.getDegreesLat(coords),
-                LatLongUtils.getMinutesLat(coords),
+                Math.floor(LatLongUtils.getMinutesLat(coords)),
+                Math.round(LatLongUtils.getSecondsLat(coords)),
                 LatLongUtils.getDegreesLong(coords),
-                LatLongUtils.getMinutesLong(coords));
+                Math.floor(LatLongUtils.getMinutesLong(coords)),
+                Math.round(LatLongUtils.getSecondsLong(coords)));
     }
 
     @Override
     public String getName() {
-        return "Degrees Decimal Minutes";
+        return "Degrees Minutes Seconds";
     }
 }

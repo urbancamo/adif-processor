@@ -34,23 +34,28 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
     }
 
     @Override
-    public GlobalCoordinatesWithSourceAccuracy getLocationFromAddress(QrzCallsign qrzData) throws IOException, InterruptedException {
-        GlobalCoordinatesWithSourceAccuracy coords = null;
+    public GeocodingResult getLocationFromAddress(QrzCallsign qrzData) throws IOException, InterruptedException {
+        GeocodingResult result = null;
 
         String addressToCheck = addressStringFromQrzData(qrzData);
         if (addressToCheck != null) {
-            coords = cache.get(addressToCheck);
-            if (coords == null) {
-                coords = queryUsingAddressSubstring(qrzData.getCall(), addressToCheck);
-                if (coords != null) {
+            result = cache.get(addressToCheck);
+            if (result == null) {
+                result = queryUsingAddressSubstring(qrzData.getCall(), addressToCheck);
+                if (result != null) {
                     // Stick in the cache with the original search string
-                    cache.put(addressToCheck, coords);
+                    cache.put(addressToCheck, result);
                 }
             } else {
                 logger.info(String.format("Geocoding cache hit for address: %s", addressToCheck));
             }
         }
-        return coords;
+        return result;
+    }
+
+    @Override
+    public GeocodingResult getLocationFromAddress(String address) throws IOException, InterruptedException {
+        return queryUsingAddressSubstring("CoordinateConverterController", address);
     }
 
     private String addressStringFromQrzData(QrzCallsign qrzData) {
@@ -67,7 +72,7 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
         return addressToCheck;
     }
 
-    private GlobalCoordinatesWithSourceAccuracy queryUsingAddressSubstring(String callsign, String addressToCheck) throws IOException, InterruptedException {
+    private GeocodingResult queryUsingAddressSubstring(String callsign, String addressToCheck) throws IOException, InterruptedException {
         String substring = addressToCheck;
         GlobalCoordinatesWithSourceAccuracy coords = null;
         int accuracy = 0;
@@ -76,7 +81,7 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
             coords = addressSearch(callsign, substring, accuracy++);
             substring = StringUtils.trim(substring.substring(substring.indexOf(',')+1));
         }
-        return coords;
+        return new GeocodingResult(coords, substring);
     }
 
     private GlobalCoordinatesWithSourceAccuracy addressSearch(String callsign, String searchString, int accuracy) throws IOException, InterruptedException {

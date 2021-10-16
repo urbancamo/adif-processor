@@ -61,6 +61,17 @@ public class ActivityDatabases {
         return databases.get(type);
     }
 
+    public Activity findActivity(String reference) {
+        for (ActivityType activityType : databases.keySet()) {
+            ActivityDatabase database = getDatabase(activityType);
+            Activity activity = database.get(reference);
+            if (activity != null) {
+                return activity;
+            }
+        }
+        return null;
+    }
+
     public ActivityDatabase getDatabase(String requested) {
         for (ActivityType type : databases.keySet()) {
             if (StringUtils.equals(requested, type.getActivityName())) {

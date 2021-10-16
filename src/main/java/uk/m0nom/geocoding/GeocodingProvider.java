@@ -6,5 +6,6 @@ import uk.m0nom.qrz.QrzCallsign;
 import java.io.IOException;
 
 public interface GeocodingProvider {
-    GlobalCoordinatesWithSourceAccuracy getLocationFromAddress(QrzCallsign qrzData) throws IOException, InterruptedException;
+    GeocodingResult getLocationFromAddress(QrzCallsign qrzData) throws IOException, InterruptedException;
+    GeocodingResult getLocationFromAddress(String address) throws IOException, InterruptedException;
 }

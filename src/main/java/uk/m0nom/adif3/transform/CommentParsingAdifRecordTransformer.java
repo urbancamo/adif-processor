@@ -19,6 +19,7 @@ import uk.m0nom.adif3.transform.tokenizer.ColonTokenizer;
 import uk.m0nom.adif3.transform.tokenizer.CommentTokenizer;
 import uk.m0nom.coords.*;
 import uk.m0nom.geocoding.GeocodingProvider;
+import uk.m0nom.geocoding.GeocodingResult;
 import uk.m0nom.geocoding.NominatimGeocodingProvider;
 import uk.m0nom.location.FromLocationDeterminer;
 import uk.m0nom.location.ToLocationDeterminer;
@@ -138,9 +139,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare())) &&
                 theirQrzData != null) {
             try {
-                GlobalCoordinatesWithSourceAccuracy source = geocodingProvider.getLocationFromAddress(theirQrzData);
-                rec.setCoordinates(source);
-                qso.getTo().setCoordinates(source);
+                GeocodingResult result = geocodingProvider.getLocationFromAddress(theirQrzData);
+                rec.setCoordinates(result.getCoordinates());
+                qso.getTo().setCoordinates(result.getCoordinates());
                 if (rec.getCoordinates() != null) {
                     logger.info(String.format("Location for %s set based on geolocation data to: %s", rec.getCall(), rec.getCoordinates()));
                     if (MaidenheadLocatorConversion.isEmptyOrInvalid(rec.getGridsquare())) {

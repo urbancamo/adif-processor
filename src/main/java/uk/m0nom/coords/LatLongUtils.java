@@ -1,5 +1,6 @@
 package uk.m0nom.coords;
 
+import lombok.SneakyThrows;
 import org.gavaghan.geodesy.GlobalCoordinates;
 
 public class LatLongUtils {
@@ -110,7 +111,11 @@ public class LatLongUtils {
         return null;
     }
 
-    private static Double parseDegreesMinutesSeconds(String degrees, String minutes, String seconds, boolean negative) {
+    public static Double parseDegreesMinutes(String degrees, String minutes, boolean negative) {
+        return parseDegreesMinutesSeconds(degrees, minutes, "0.0", negative);
+    }
+
+        public static Double parseDegreesMinutesSeconds(String degrees, String minutes, String seconds, boolean negative) {
         try {
             double d = Double.parseDouble(degrees);
             if (negative) {
@@ -169,9 +174,9 @@ public class LatLongUtils {
     }
 
     public static String getEastWest(GlobalCoordinates coords) {
-        String eastWest = "W";
+        String eastWest = "E";
         if (coords.getLongitude() < 0) {
-            eastWest = "E";
+            eastWest = "W";
         }
         return eastWest;
     }

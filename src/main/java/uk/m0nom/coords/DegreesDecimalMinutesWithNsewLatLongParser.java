@@ -5,7 +5,7 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DegreesDecimalWithNsewLatLongParser implements LocationParser, LocationFormatter {
+public class DegreesDecimalMinutesWithNsewLatLongParser implements LocationParser, LocationFormatter {
     private final static Pattern PATTERN = Pattern.compile("(\\d+\\.\\d+)[°]*([NnSs])\\s+(\\d+\\.\\d+)[°]*([EeWwOo])");
 
     @Override
