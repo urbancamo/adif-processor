@@ -31,9 +31,11 @@ public class OsGb36Parser implements LocationParser, LocationFormatter{
     public String format(GlobalCoordinates coords) {
         OsGb36Converter converter = new OsGb36Converter();
         OsGb36ConverterResult result = converter.convertCoordsToOsGb36(coords);
-        String loc = result.getOsGb36();
-        String formatted = String.format("%s %s %s", loc.substring(0, 2), loc.substring(2, 7), loc.substring(7,12));
-        return formatted;
+        if (result.isSuccess()) {
+            String loc = result.getOsGb36();
+            return String.format("%s %s %s", loc.substring(0, 2), loc.substring(2, 7), loc.substring(7, 12));
+        }
+        return "OSGB36: undefined";
     }
 
     @Override

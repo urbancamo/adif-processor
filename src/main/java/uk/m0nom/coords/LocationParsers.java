@@ -27,12 +27,12 @@ public class LocationParsers {
         parsers.add(new DegreesMinutesDecimalSecondsWithNsewLatLongParser());
         parsers.add(new DegreesMinutesWithNsewLatLongParser());
         parsers.add(new Maidenhead10CharLocatorParser());
-        parsers.add(new OsGb36Parser());
         parsers.add(new Maidenhead8CharLocatorParser());
         parsers.add(new Maidenhead6CharLocatorParser());
         // Doesn't work due to WAB references clashing
         // TODO Check This comment!
         parsers.add(new Maidenhead4CharLocatorParser());
+        parsers.add(new OsGb36Parser());
 
         if (databases != null) {
             parsers.add(new WwffLocationParser(databases.getDatabase(ActivityType.WWFF)));
