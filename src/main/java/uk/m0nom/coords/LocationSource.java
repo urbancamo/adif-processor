@@ -5,5 +5,6 @@ public enum LocationSource {
     OVERRIDE,
     QRZ,
     GEOCODING,
+    OSGB36_CONVERTER,
     UNDEFINED
 }

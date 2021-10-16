@@ -7,8 +7,9 @@ public enum LocationAccuracy {
     MHL10,
     LAT_LONG,
     WWFF,
+    OSGB36,
     GEOLOCATION_VERY_GOOD,
     GEOLOCATION_GOOD,
     GEOLOCATION_POOR,
-    GEOLOCATION_VERY_POOR
+    GEOLOCATION_VERY_POOR;
 }
