@@ -79,9 +79,17 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
         while (StringUtils.isNotBlank(substring) && coords == null) {
             // Start cutting down the address, with the most specific information first
             coords = addressSearch(callsign, substring, accuracy++);
-            substring = StringUtils.trim(substring.substring(substring.indexOf(',')+1));
+            if (coords == null) {
+                String newSubstring = StringUtils.trim(substring.substring(substring.indexOf(',') + 1));
+                // Make sure we don't get caught in an endless loop.
+                if (StringUtils.equals(newSubstring, substring)) {
+                    return new GeocodingResult(null, substring, "No location found");
+                } else {
+                    substring = newSubstring;
+                }
+            }
         }
-        return new GeocodingResult(coords, substring);
+        return new GeocodingResult(coords, substring, null);
     }
 
     private GlobalCoordinatesWithSourceAccuracy addressSearch(String callsign, String searchString, int accuracy) throws IOException, InterruptedException {

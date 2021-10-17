@@ -11,4 +11,5 @@ import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 public class GeocodingResult {
     private GlobalCoordinatesWithSourceAccuracy coordinates;
     private String matchedOn;
+    private String error;
 }

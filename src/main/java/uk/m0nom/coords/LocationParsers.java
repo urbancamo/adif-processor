@@ -32,7 +32,8 @@ public class LocationParsers {
         // Doesn't work due to WAB references clashing
         // TODO Check This comment!
         parsers.add(new Maidenhead4CharLocatorParser());
-        parsers.add(new OsGb36Parser());
+        parsers.add(new OsGb36Parser5Digit());
+        parsers.add(new OsGb36Parser4Digit());
 
         if (databases != null) {
             parsers.add(new WwffLocationParser(databases.getDatabase(ActivityType.WWFF)));
