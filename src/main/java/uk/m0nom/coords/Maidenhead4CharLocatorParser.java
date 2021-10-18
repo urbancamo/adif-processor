@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Maidenhead4CharLocatorParser implements LocationParser, LocationFormatter {
-    private final static Pattern PATTERN = Pattern.compile("^([A-R]{2}[0-9]{2})$");
+    private final static Pattern PATTERN = Pattern.compile("^([A-Ra-r]{2}[0-9]{2})$");
     @Override
     public Pattern getPattern() {
         return PATTERN;
