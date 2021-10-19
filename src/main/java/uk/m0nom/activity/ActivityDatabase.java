@@ -27,9 +27,12 @@ public class ActivityDatabase {
         this.specialEventActivity = specialEventActivity;
     }
 
-    public ActivityType getType() { return type; }
+    public ActivityType getType() {
+        return type;
+    }
 
-    public Activity get(String ref) { return database.get(ref);
+    public Activity get(String ref) {
+        return database.get(ref);
     }
 
     public boolean isSpecialEventActivity() {
