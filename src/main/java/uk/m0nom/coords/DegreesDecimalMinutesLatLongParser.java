@@ -45,6 +45,6 @@ public class DegreesDecimalMinutesLatLongParser implements LocationParser, Locat
 
     @Override
     public String getName() {
-        return "Degrees Minutes Seconds";
+        return "Degrees Minutes Seconds Lat/Long";
     }
 }

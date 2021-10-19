@@ -33,6 +33,6 @@ public class CommaSeparatedDecimalLatLongParser implements LocationParser, Locat
 
     @Override
     public String getName() {
-        return "Comma Separated Decimal Latitude/Longitude";
+        return "Comma Separated Decimal Lat/Long";
     }
 }

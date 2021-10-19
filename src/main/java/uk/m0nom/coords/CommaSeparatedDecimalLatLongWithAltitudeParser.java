@@ -25,4 +25,9 @@ public class CommaSeparatedDecimalLatLongWithAltitudeParser implements LocationP
         }
         return null;
     }
+
+    @Override
+    public String getName() {
+        return "Comma Separated Decimal Lat/Long with Altitude";
+    }
 }

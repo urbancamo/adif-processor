@@ -395,7 +395,10 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         }
                         break;
                     case "Coordinates":
-                        coords = locationParsers.parseStringForCoordinates(LocationSource.OVERRIDE, value);
+                        LocationParserResult result = locationParsers.parseStringForCoordinates(LocationSource.OVERRIDE, value);
+                        if (result != null) {
+                            coords = result.getCoords();
+                        }
                         break;
                     case "Latitude":
                         try {

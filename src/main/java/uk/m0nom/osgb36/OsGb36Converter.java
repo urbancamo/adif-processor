@@ -68,4 +68,65 @@ public class OsGb36Converter {
 
         return result;
     }
+
+    public OsGb36ConverterResult convertOsGb36EastingNorthingToCoords(String easting, String northing) {
+        OsGb36ConverterResult result = new OsGb36ConverterResult();
+        result.setOsGb36Easting(Double.parseDouble(easting));
+        result.setOsGb36Northing(Double.parseDouble(northing));
+
+        engine.deletestringbuffers();
+        engine.bngeastingscoordinatesstringbuffer.append(easting);
+        engine.bngnorthingscoordinatesstringbuffer.append(northing);
+        engine.bngoldheightstringbuffer.append("0.0");
+
+        engine.convertnewbngtolonglatosgb36();
+        if (engine.stopcalculating) {
+            engine.showerrormessage("Calculation stopped!");
+        } else {
+            engine.convertlonglatdecosgb36tolonglatosgb36();
+            engine.convertlonglatosgb36cartesianosgb36();
+            engine.helmerttransformation(false);
+            engine.convertcartesianwgs84longlatwgs84();
+            engine.convertlonglatdecwgs84tolonglatwgs84();
+            engine.convertlatlongwgs84todbx();
+            engine.calcconvandscale();
+            engine.showresults();
+        }
+        result.setError(engine.messagestextareastringbuffer.toString().replace('\n', ' '));
+        result.setSuccess(StringUtils.isEmpty(result.getError()));
+        result.setCoords(new GlobalCoordinates(engine.latitudedecosgb36, engine.longitudedecosgb36));
+        return result;
+    }
+
+    public OsGb36ConverterResult convertCoordsToOsGb36EastingNorthing(GlobalCoordinates coords) {
+        OsGb36ConverterResult result = new OsGb36ConverterResult();
+        result.setCoords(coords);
+
+        engine.deletestringbuffers();
+        engine.latitudedecosgb36stringbuffer.append(coords.getLatitude());
+        engine.longitudedecosgb36stringbuffer.append(coords.getLongitude());
+        engine.bngoldheightstringbuffer.append("0.0");
+
+        engine.convertlonglatosgb36tonewbng();
+        if (engine.stopcalculating) {
+            engine.showerrormessage("Calculation stopped!");
+        } else {
+            engine.convertlonglatdecosgb36tolonglatosgb36();
+            engine.convertlonglatosgb36cartesianosgb36();
+            engine.helmerttransformation(false);
+            engine.convertcartesianwgs84longlatwgs84();
+            engine.convertlonglatdecwgs84tolonglatwgs84();
+            engine.convertlatlongwgs84todbx();
+            engine.calcconvandscale();
+            engine.convertnewbngtooldbng();
+            engine.showresults();
+        }
+        result.setError(engine.messagestextareastringbuffer.toString().replace('\n', ' '));
+        result.setSuccess(StringUtils.isEmpty(result.getError()));
+        result.setOsGb36Easting(Double.parseDouble(engine.bngeastingscoordinatesstringbuffer.toString()));
+        result.setOsGb36Northing(Double.parseDouble(engine.bngnorthingscoordinatesstringbuffer.toString()));
+
+        return result;
+    }
+
 }

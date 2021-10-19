@@ -48,7 +48,7 @@ public class DegreesDecimalLatLongParser implements LocationParser, LocationForm
 
     @Override
     public String getName() {
-        return "Degrees Decimal";
+        return "Decimal Degrees Lat/Long";
     }
 
 }

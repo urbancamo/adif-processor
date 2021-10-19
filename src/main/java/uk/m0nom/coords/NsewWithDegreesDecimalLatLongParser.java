@@ -31,4 +31,11 @@ public class NsewWithDegreesDecimalLatLongParser implements LocationParser {
         }
         return null;
     }
+
+    @Override
+    public String getName() {
+        return "Decimal Degrees Lat/Long with NSEW indicator";
+    }
+
+
 }

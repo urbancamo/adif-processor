@@ -40,7 +40,7 @@ public class OsGb36Parser5Digit implements LocationParser, LocationFormatter{
 
     @Override
     public String getName() {
-        return "OSGB36";
+        return "OSGB36 5 Digit";
     }
 
 }

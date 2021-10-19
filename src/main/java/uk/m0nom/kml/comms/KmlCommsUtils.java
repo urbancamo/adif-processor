@@ -152,13 +152,14 @@ public class KmlCommsUtils {
 
         // Set the contact distance in the ADIF output file
         rec.setDistance(result.getDistance());
-
-        placemark.withDescription(new KmlContactInfoPanel().getPanelContentForCommsLink(qso, result));
+        String description = new KmlContactInfoPanel().getPanelContentForCommsLink(qso, result);
+        placemark.withDescription(description);
         if (control.isKmlContactShadow()) {
             placemark = folder.createAndAddPlacemark();
             // use the style for each line type
-            placemark.withName("")
+            placemark.withName("(shadow)")
                     .withId(commsLinkShadowId)
+                    .withDescription(description)
                     .withStyleUrl(shadowStyleUrl);
 
             commsLine = placemark.createAndSetLineString();

@@ -30,6 +30,6 @@ public class Maidenhead6CharLocatorParser implements LocationParser, LocationFor
 
     @Override
     public String getName() {
-        return "Maidenhead Locator 6";
+        return "Maidenhead Locator 6 Char";
     }
 }

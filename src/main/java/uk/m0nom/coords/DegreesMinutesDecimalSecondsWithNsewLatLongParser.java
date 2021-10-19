@@ -47,6 +47,6 @@ public class DegreesMinutesDecimalSecondsWithNsewLatLongParser implements Locati
 
     @Override
     public String getName() {
-        return "Degrees Minutes Decimal Seconds";
+        return "Degrees Minutes Decimal Seconds Lat/Long";
     }
 }

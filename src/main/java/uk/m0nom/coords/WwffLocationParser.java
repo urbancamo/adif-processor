@@ -32,4 +32,9 @@ public class WwffLocationParser implements LocationParser {
         }
         return null;
     }
+
+    @Override
+    public String getName() {
+        return "WWFF Location";
+    }
 }

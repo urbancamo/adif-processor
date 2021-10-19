@@ -7,8 +7,8 @@ import uk.m0nom.osgb36.OsGb36ConverterResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class OsGb36Parser4Digit implements LocationParser, LocationFormatter{
-    private final static Pattern PATTERN = Pattern.compile("^([A-Z]{2}\\s*[0-9]{4}\\s*[0-9]{4})$");
+public class OsGb36ParserEastingNorthing implements LocationParser, LocationFormatter{
+    private final static Pattern PATTERN = Pattern.compile("^[Ee]\\s*([0-9]{6})[\\s,]*[Nn]\\s*([0-9]{6})$");
 
     @Override
     public Pattern getPattern() {
@@ -19,11 +19,10 @@ public class OsGb36Parser4Digit implements LocationParser, LocationFormatter{
     public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String locationString) {
         Matcher matcher = getPattern().matcher(locationString);
         if (matcher.find()) {
-            String locator = matcher.group(1).replace(" ", "");
-            // Need to add '5' to the end of each digit
-            locator = String.format("%s%s%s%s", locator.substring(0, 6), "5", locator.substring(6, 10), "5");
+            String easting = matcher.group(1).replace(" ", "");
+            String northing = matcher.group(2).replace(" ", "");
             OsGb36Converter converter = new OsGb36Converter();
-            OsGb36ConverterResult result = converter.convertOsGb36ToCoords(locator);
+            OsGb36ConverterResult result = converter.convertOsGb36EastingNorthingToCoords(easting, northing);
             return new GlobalCoordinatesWithSourceAccuracy(result.getCoords(), 0.0, new LocationInfo(LocationAccuracy.OSGB36, LocationSource.OSGB36_CONVERTER));
         }
         return null;
@@ -32,17 +31,16 @@ public class OsGb36Parser4Digit implements LocationParser, LocationFormatter{
     @Override
     public String format(GlobalCoordinates coords) {
         OsGb36Converter converter = new OsGb36Converter();
-        OsGb36ConverterResult result = converter.convertCoordsToOsGb36(coords);
+        OsGb36ConverterResult result = converter.convertCoordsToOsGb36EastingNorthing(coords);
         if (result.isSuccess()) {
-            String loc = result.getOsGb36();
-            return String.format("%s %s %s", loc.substring(0, 2), loc.substring(2, 6), loc.substring(7, 11));
+            return String.format("%s %s", result.getOsGb36EastingString(), result.getOsGb36NorthingString());
         }
         return "OSGB36: undefined";
     }
 
     @Override
     public String getName() {
-        return "OSGB36 4 Digit";
+        return "OSGB36 Easting Northing";
     }
 
 }

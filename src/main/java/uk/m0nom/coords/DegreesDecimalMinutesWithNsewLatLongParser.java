@@ -48,6 +48,6 @@ public class DegreesDecimalMinutesWithNsewLatLongParser implements LocationParse
 
     @Override
     public String getName() {
-        return "Degrees Decimal Minutes with NSEW";
+        return "Degrees Decimal Minutes Lat/Long with NSEW indicator";
     }
 }

@@ -24,4 +24,27 @@ public class OsGbConverterTest {
         assertTrue(result.isSuccess());
         assertEquals("SD4089297677", result.getOsGb36());
     }
+
+    @Test
+    public void osGb36EastingNorthingToLatLongTest() {
+        OsGb36Converter converter = new OsGb36Converter();
+        OsGb36ConverterResult result = converter.convertOsGb36EastingNorthingToCoords("332222", "527763");
+        assertTrue(result.isSuccess());
+        assertTrue(Math.abs(Math.abs(result.getCoords().getLatitude()) - Math.abs(54.6403121148)) < 0.01);
+        assertTrue(Math.abs(Math.abs(result.getCoords().getLongitude()) - Math.abs(-3.0502927536)) < 0.01);
+    }
+
+    // NY 3231 2775, E 332312 N 527750, 54.6403121148, -3.0502927536
+    @Test
+    public
+    void latLongToOsGb36EastingNorthingTest() {
+        OsGb36Converter converter = new OsGb36Converter();
+        GlobalCoordinatesWithSourceAccuracy coords = new GlobalCoordinatesWithSourceAccuracy(54.6403121148, -3.0502927536, null);
+        OsGb36ConverterResult result = converter.convertCoordsToOsGb36EastingNorthing(coords);
+        assertTrue(result.isSuccess());
+        assertEquals("E 332222", result.getOsGb36EastingString());
+        assertEquals("N 527763", result.getOsGb36NorthingString());
+    }
+
+
 }

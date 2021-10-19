@@ -39,6 +39,6 @@ public class CommaSeparatedDecimalWithNsewLatLongParser implements LocationParse
 
     @Override
     public String getName() {
-        return "Comma Separated Decimal with NSEW";
+        return "Comma Separated Decimal Lat/Long with NSEW indicator";
     }
 }

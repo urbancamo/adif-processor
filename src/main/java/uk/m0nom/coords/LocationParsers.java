@@ -32,6 +32,7 @@ public class LocationParsers {
         // Doesn't work due to WAB references clashing
         // TODO Check This comment!
         parsers.add(new Maidenhead4CharLocatorParser());
+        parsers.add(new OsGb36ParserEastingNorthing());
         parsers.add(new OsGb36Parser5Digit());
         parsers.add(new OsGb36Parser4Digit());
 
@@ -40,11 +41,12 @@ public class LocationParsers {
         }
     }
 
-    public GlobalCoordinatesWithSourceAccuracy parseStringForCoordinates(LocationSource source, String value) {
+    public LocationParserResult parseStringForCoordinates(LocationSource source, String value) {
+
         for (LocationParser parser : parsers) {
             GlobalCoordinatesWithSourceAccuracy coords = parser.parse(source, value);
             if (coords != null) {
-                return coords;
+                return new LocationParserResult(coords, parser);
             }
         }
         return null;
