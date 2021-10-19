@@ -41,6 +41,7 @@ public class CotaCsvReader extends ActivityReader {
                 info.setName(record.get("NAME OF CASTLE").trim());
                 info.setLocation(record.get("LOCATION").trim());
                 info.setInformation(record.get("INFORMATION").trim());
+                info.setCoords(readCoords(record, "LAT", "LONG"));
             } catch (IllegalArgumentException e) {
                 logger.severe(String.format("Error reading line %d: %s", line, e.getMessage()));
             }
