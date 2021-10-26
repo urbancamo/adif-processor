@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 
 public class FileTransformerApp implements Runnable
 {
-    private static final String MARKDOWN_CONTROL_FILE = "adif-printer-132-markdown.yaml";
+    private static final String MARKDOWN_CONTROL_FILE = "adif-printer-132-md.yaml";
     private static final Logger logger = Logger.getLogger(FileTransformerApp.class.getName());
 
     private final CommandLineArgs cli;

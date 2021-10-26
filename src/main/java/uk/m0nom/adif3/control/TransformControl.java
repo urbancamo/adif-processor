@@ -31,6 +31,8 @@ public class TransformControl {
 
     private boolean stripComment;
 
+    private String printConfigFile;
+
     private Map<ActivityType, String> activityRefs = new HashMap<>();
 
     // Active satellites from https://www.eqsl.cc/QSLCard/SatelliteInfo.cfm
