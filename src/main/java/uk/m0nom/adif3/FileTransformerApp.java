@@ -124,17 +124,17 @@ public class FileTransformerApp implements Runnable
             if (control.isMarkdown()) {
                 BufferedWriter markdownWriter = null;
                 try {
-                    File markdownFile = new File(markdown);
-                    if (markdownFile.exists()) {
-                        if (!markdownFile.delete()) {
+                    File formattedQsoFile = new File(markdown);
+                    if (formattedQsoFile.exists()) {
+                        if (!formattedQsoFile.delete()) {
                             logger.severe(String.format("Error deleting Markdown file %s, check permissions?", markdown));
                         }
                     }
-                    if (markdownFile.createNewFile()) {
+                    if (formattedQsoFile.createNewFile()) {
                         formatter.getPrintJobConfig().configure(new FileInputStream(MARKDOWN_CONTROL_FILE));
                         logger.info(String.format("Writing Markdown to: %s", markdown));
                         StringBuilder sb = formatter.format(log);
-                        markdownWriter = Files.newBufferedWriter(markdownFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);
+                        markdownWriter = Files.newBufferedWriter(formattedQsoFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);
                         markdownWriter.write(sb.toString());
                     } else {
                         logger.severe(String.format("Error creating Markdown file %s, check permissions?", markdown));

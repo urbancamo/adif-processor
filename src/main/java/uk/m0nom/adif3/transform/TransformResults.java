@@ -12,7 +12,7 @@ public class TransformResults {
     private boolean errors = false;
     private String adiFile;
     private String kmlFile;
-    private String markdownFile;
+    private String formattedQsoFile;
     private String error = "";
     private Collection<String> contactsWithoutLocation;
     private Collection<String> contactsWithDubiousLocation;

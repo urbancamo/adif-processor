@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.types.Sota;
+import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -261,9 +262,11 @@ public class Adif3PrintFormatter {
                 value = rec.getQth();
                 break;
             case "GRIDSQUARE":
-                value = rec.getGridsquare();
-                if ("JJ00aa".equals(value)) {
-                    value = "";
+                if (rec.getGridsquare() != null) {
+                    value = rec.getGridsquare().toUpperCase();
+                    if (MaidenheadLocatorConversion.isADubiousGridSquare(value)) {
+                        value = "";
+                    }
                 }
                 break;
             case "COUNTRY":

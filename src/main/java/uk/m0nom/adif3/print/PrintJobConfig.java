@@ -24,6 +24,7 @@ public class PrintJobConfig {
     String outEncoding;
     String startCommand;
     String endCommand;
+    String filenameExtension;
 
     PageConfig pageConfig;
 
@@ -35,6 +36,7 @@ public class PrintJobConfig {
         setOutEncoding(printJob.string("outEncoding"));
         setStartCommand(printJob.string("startCommand"));
         setEndCommand(printJob.string("endCommand"));
+        setFilenameExtension(printJob.string("filenameExtension"));
 
         YamlMapping page = config.yamlMapping("page");
         pageConfig = new PageConfig();
