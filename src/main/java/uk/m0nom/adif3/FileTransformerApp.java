@@ -131,7 +131,7 @@ public class FileTransformerApp implements Runnable
                         }
                     }
                     if (formattedQsoFile.createNewFile()) {
-                        formatter.getPrintJobConfig().configure(new FileInputStream(MARKDOWN_CONTROL_FILE));
+                        formatter.getPrintJobConfig().configure(MARKDOWN_CONTROL_FILE, new FileInputStream(MARKDOWN_CONTROL_FILE));
                         logger.info(String.format("Writing Markdown to: %s", markdown));
                         StringBuilder sb = formatter.format(log);
                         markdownWriter = Files.newBufferedWriter(formattedQsoFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);

@@ -47,7 +47,7 @@ public class PrintFormatApp implements Runnable
             } else {
                 in = args[0];
                 out = String.format("%s.%s", FilenameUtils.removeExtension(in), "prn");
-                formatter.getPrintJobConfig().configure(new FileInputStream(args[1]));
+                formatter.getPrintJobConfig().configure(args[1], new FileInputStream(args[1]));
                 Adif3 log = readerWriter.read(in, formatter.getPrintJobConfig().getInEncoding(), true);
                 StringBuilder sb = formatter.format(log);
                 File outFile = new File(out);

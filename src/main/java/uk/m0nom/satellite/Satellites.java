@@ -4,6 +4,7 @@ import uk.m0nom.satellite.satellites.QO100;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Satellites {
 
@@ -16,5 +17,9 @@ public class Satellites {
 
     public Satellite getSatellite(String name) {
         return satelliteMap.get(name);
+    }
+
+    public Set<String> getSatelliteNames() {
+        return satelliteMap.keySet();
     }
 }

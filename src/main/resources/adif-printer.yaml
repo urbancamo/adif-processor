@@ -1,4 +1,5 @@
 printJob:
+  name:         'Default (132 column UTF-8 Markdown)'
   inEncoding:   iso-8859-1
   outEncoding:  iso-8859-1
   startCommand: ''

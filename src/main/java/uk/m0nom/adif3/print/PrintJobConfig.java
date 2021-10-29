@@ -20,6 +20,8 @@ import static uk.m0nom.adif3.print.PrintUtils.stripQuotes;
 public class PrintJobConfig {
     private static final Logger logger = Logger.getLogger(PrintJobConfig.class.getName());
 
+    String name;
+    String filename;
     String inEncoding;
     String outEncoding;
     String startCommand;
@@ -28,10 +30,12 @@ public class PrintJobConfig {
 
     PageConfig pageConfig;
 
-    public void configure(InputStream yamlConfig) throws IOException {
+    public void configure(String filename, InputStream yamlConfig) throws IOException {
+        this.filename = filename;
 
         YamlMapping config = Yaml.createYamlInput(yamlConfig).readYamlMapping();
         YamlMapping printJob = config.yamlMapping("printJob");
+        setName(printJob.string("name"));
         setInEncoding(printJob.string("inEncoding"));
         setOutEncoding(printJob.string("outEncoding"));
         setStartCommand(printJob.string("startCommand"));
