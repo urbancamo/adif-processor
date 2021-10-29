@@ -13,7 +13,7 @@ public class LocationParsers {
     /**
      * The order of these parsers is important, they should run from most to least accurate
      */
-    public LocationParsers(ActivityDatabases databases) {
+    public LocationParsers() {
         parsers.add(new DegreesDecimalLatLongParser());
         parsers.add(new DegreesDecimalMinutesLatLongParser());
         parsers.add(new DegreesDecimalMinutesWithNsewLatLongParser());
@@ -35,10 +35,6 @@ public class LocationParsers {
         parsers.add(new OsGb36ParserEastingNorthing());
         parsers.add(new OsGb36Parser5Digit());
         parsers.add(new OsGb36Parser4Digit());
-
-        if (databases != null) {
-            parsers.add(new WwffLocationParser(databases.getDatabase(ActivityType.WWFF)));
-        }
     }
 
     public LocationParserResult parseStringForCoordinates(LocationSource source, String value) {

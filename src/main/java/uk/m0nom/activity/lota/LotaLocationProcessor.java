@@ -22,7 +22,7 @@ public class LotaLocationProcessor {
         ActivityDatabases summits = new ActivityDatabases();
 
         summits.loadData();
-        locationParsers = new LocationParsers(summits);
+        locationParsers = new LocationParsers();
         int count = extractLocationInformation(summits.getDatabase(ActivityType.LOTA));
         logger.info(String.format("Found %d %s locations", count, ActivityType.LOTA.getActivityDescription()));
 

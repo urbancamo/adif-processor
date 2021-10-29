@@ -17,9 +17,7 @@ import java.util.Map;
 @EqualsAndHashCode
 @NoArgsConstructor
 public class TransformControl {
-    private String myLatitude;
-    private String myLongitude;
-    private String myGrid;
+    private String location;
 
     private String pathname;
     private String outputPath;

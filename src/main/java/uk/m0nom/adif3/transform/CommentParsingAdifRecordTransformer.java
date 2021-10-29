@@ -62,7 +62,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         this.activityProcessor = new ActivityProcessor(control, qrzService, activities);
         this.geocodingProvider = new NominatimGeocodingProvider();
         this.tokenizer = new ColonTokenizer();
-        this.locationParsers = new LocationParsers(activities);
+        this.locationParsers = new LocationParsers();
     }
 
     private void issueWarnings(Adif3Record rec) {

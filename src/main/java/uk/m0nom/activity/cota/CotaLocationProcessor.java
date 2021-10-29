@@ -23,7 +23,7 @@ public class CotaLocationProcessor {
         ActivityDatabases summits = new ActivityDatabases();
 
         summits.loadData();
-        locationParsers = new LocationParsers(summits);
+        locationParsers = new LocationParsers();
         int count = extractLocationInformation(summits.getDatabase(ActivityType.COTA));
         logger.info(String.format("Found %d castle locations", count));
 

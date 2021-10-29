@@ -8,9 +8,7 @@ public class LocationParsersTest {
 
     @Test
     public void checkBadCotaConversions() {
-        ActivityDatabases databases = new ActivityDatabases();
-
-        LocationParsers parsers = new LocationParsers(databases);
+        LocationParsers parsers = new LocationParsers();
         checkParsing(parsers, "20.813311°N 89.452448°W", 20.813311, -89.452448);
         checkParsing(parsers, "20.500351°N 86.848297°W\n", 20.500351, -86.848297);
         checkParsing(parsers,"ARKAIM (RFF-0306) (52°38'57\"N   59°34'17\"E)", 52.649167, 59.57139);

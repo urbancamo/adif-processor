@@ -10,8 +10,7 @@ import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Station;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
-import uk.m0nom.coords.LocationSource;
+import uk.m0nom.coords.*;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.qrz.QrzService;
@@ -42,18 +41,17 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
 
     private boolean setMyLocationFromControl(Qso qso, TransformControl control) {
         boolean locationSet = false;
-        Adif3Record rec = qso.getRecord();
-        if (StringUtils.isNotEmpty(control.getMyLatitude()) && StringUtils.isNotEmpty(control.getMyLongitude())) {
-            double latitude = Double.parseDouble(StringUtils.remove(control.getMyLatitude(), '\''));
-            double longitude = Double.parseDouble(StringUtils.remove(control.getMyLongitude(), '\''));
-            setMyLocationFromCoordinates(qso, new GlobalCoordinatesWithSourceAccuracy(latitude, longitude));
-            reportLocationOverride(rec.getStationCallsign(), latitude, longitude);
-            locationSet = true;
-        } else if (control.getMyGrid() != null) {
-            if (MaidenheadLocatorConversion.isAValidGridSquare(control.getMyGrid())) {
-                setMyLocationFromGrid(qso, LocationSource.OVERRIDE, control.getMyGrid());
-                reportLocationOverride(rec.getStationCallsign(), control.getMyGrid());
-                locationSet = true;
+        if (control.getLocation() != null) {
+            LocationParsers parsers = new LocationParsers();
+            if (StringUtils.isNotBlank(control.getLocation())) {
+                LocationParserResult result = parsers.parseStringForCoordinates(LocationSource.UNDEFINED, control.getLocation());
+                if (result.getCoords() != null) {
+                    setMyLocationFromCoordinates(qso, result.getCoords());
+                    String gridsquare = MaidenheadLocatorConversion.coordsToLocator(result.getCoords());
+                    qso.getFrom().setGrid(gridsquare);
+                    qso.getRecord().setMyGridSquare(gridsquare);
+                    locationSet = true;
+                }
             }
         }
         return locationSet;

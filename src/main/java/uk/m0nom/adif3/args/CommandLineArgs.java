@@ -23,12 +23,7 @@ public class CommandLineArgs {
         parser.addArgument("-qp", "--qrz-password").required(false)
                 .help("Password for the QRZ XML Service");
 
-        parser.addArgument("-lat", "--latitude").required(false)
-                .help("Specify override latitude in decimal format, enclose in single quotes");
-        parser.addArgument("-long", "--longitude").required(false)
-                .help("Specify override longitude in decimal format, enclose in single quotes");
-
-        parser.addArgument("-g", "--grid").required(false)
+        parser.addArgument("-l", "--location").required(false)
                 .help("Specify override grid in 4/6/10 characters");
         parser.addArgument("-he", "--hema").required(false)
                 .help("Specify override HEMA Id for your location");
@@ -87,9 +82,7 @@ public class CommandLineArgs {
         try {
             ns = parser.parseArgs(args);
             control.setGenerateKml(ns.getBoolean("kml"));
-            control.setMyLatitude(ns.getString("latitude"));
-            control.setMyLongitude(ns.getString("longitude"));
-            control.setMyGrid(ns.getString("grid"));
+            control.setLocation(ns.getString("location"));
             control.setPathname(ns.getString("input")); //.substring(1, ns.getString("path").length()-1));
             control.setEncoding(ns.getString("encoding"));
             control.setUseQrzDotCom(ns.getBoolean("qrz"));
