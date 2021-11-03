@@ -5,9 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.m0nom.activity.ActivityType;
+import uk.m0nom.adif3.xsdquery.Adif3Element;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Configure the processing of files
@@ -108,6 +110,8 @@ public class TransformControl {
     private Double hfAntennaTakeoffAngle;
 
     private Map<String, String> icons = new HashMap<>();
+
+    private Set<Adif3Element> adif3ElementSet;
 
     public String getActivityRef(ActivityType type) {
         return activityRefs.get(type);
