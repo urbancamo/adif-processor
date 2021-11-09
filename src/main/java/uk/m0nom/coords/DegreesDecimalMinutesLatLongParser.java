@@ -34,17 +34,15 @@ public class DegreesDecimalMinutesLatLongParser implements LocationParser, Locat
 
     @Override
     public String format(GlobalCoordinates coords) {
-        return String.format("%.0f° %.0f' %d\", %.0f° %.0f' %d\"",
+        return String.format("%.0f° %.3f', %.0f° %.3f'",
                 LatLongUtils.getDegreesLat(coords),
-                Math.floor(LatLongUtils.getMinutesLat(coords)),
-                Math.round(LatLongUtils.getSecondsLat(coords)),
+                Math.abs(LatLongUtils.getMinutesLat(coords)),
                 LatLongUtils.getDegreesLong(coords),
-                Math.floor(LatLongUtils.getMinutesLong(coords)),
-                Math.round(LatLongUtils.getSecondsLong(coords)));
+                Math.abs(LatLongUtils.getMinutesLong(coords)));
     }
 
     @Override
     public String getName() {
-        return "Degrees Minutes Seconds Lat/Long";
+        return "Degrees Decimal Minutes Lat/Long";
     }
 }

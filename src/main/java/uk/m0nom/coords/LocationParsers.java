@@ -1,8 +1,6 @@
 package uk.m0nom.coords;
 
 import org.gavaghan.geodesy.GlobalCoordinates;
-import uk.m0nom.activity.ActivityDatabases;
-import uk.m0nom.activity.ActivityType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +13,15 @@ public class LocationParsers {
      */
     public LocationParsers() {
         parsers.add(new DegreesDecimalLatLongParser());
+        parsers.add(new CommaSeparatedDecimalLatLongParser());
+         parsers.add(new DegreesDecimalWithNsewLatLongParser());
+        parsers.add(new CommaSeparatedDecimalWithNsewLatLongParser());
         parsers.add(new DegreesDecimalMinutesLatLongParser());
         parsers.add(new DegreesDecimalMinutesWithNsewLatLongParser());
         parsers.add(new CommaSeparatedDecimalLatLongWithAltitudeParser());
         parsers.add(new NsewWithDegreesDecimalLatLongParser());
         parsers.add(new DegreesMinutesSecondsLatLongParser());
         parsers.add(new DegreesMinutesSecondsWithNsewLatLongParser());
-        parsers.add(new CommaSeparatedDecimalLatLongParser());
-        parsers.add(new CommaSeparatedDecimalWithNsewLatLongParser());
-        parsers.add(new DecimalWithNsewLatLongParser());
         parsers.add(new DegreesMinutesDecimalSecondsWithNsewLatLongParser());
         parsers.add(new DegreesMinutesWithNsewLatLongParser());
         parsers.add(new Maidenhead10CharLocatorParser());

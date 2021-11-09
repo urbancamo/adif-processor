@@ -36,13 +36,15 @@ public class DegreesMinutesDecimalSecondsWithNsewLatLongParser implements Locati
 
     @Override
     public String format(GlobalCoordinates coords) {
-        return String.format("%.0f° %.0f' %.3f\", %.0f° %.0f' %.3f\"",
-                LatLongUtils.getDegreesLat(coords),
-                Math.floor(LatLongUtils.getMinutesLat(coords)),
-                LatLongUtils.getSecondsLat(coords),
-                LatLongUtils.getDegreesLong(coords),
-                Math.floor(LatLongUtils.getMinutesLong(coords)),
-                LatLongUtils.getSecondsLong(coords));
+        return String.format("%.0f° %.0f' %.3f\"%s %.0f° %.0f' %.3f\"%s",
+                Math.abs(LatLongUtils.getDegreesLat(coords)),
+                Math.abs(LatLongUtils.getWholeMinutesLat(coords)),
+                Math.abs(LatLongUtils.getSecondsLat(coords)),
+                LatLongUtils.getNorthSouth(coords),
+                Math.abs(LatLongUtils.getDegreesLong(coords)),
+                Math.abs(LatLongUtils.getWholeMinutesLong(coords)),
+                Math.abs(LatLongUtils.getSecondsLong(coords)),
+                LatLongUtils.getEastWest(coords));
     }
 
     @Override

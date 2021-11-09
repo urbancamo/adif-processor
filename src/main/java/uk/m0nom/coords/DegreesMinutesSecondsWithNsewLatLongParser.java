@@ -38,12 +38,12 @@ public class DegreesMinutesSecondsWithNsewLatLongParser implements LocationParse
     public String format(GlobalCoordinates coords) {
         return String.format("%.0f° %.0f' %d\" %s, %.0f° %.0f' %d\" %s",
                 Math.abs(LatLongUtils.getDegreesLat(coords)),
-                Math.floor(LatLongUtils.getMinutesLat(coords)),
-                Math.round(LatLongUtils.getSecondsLat(coords)),
+                Math.abs(LatLongUtils.getWholeMinutesLat(coords)),
+                Math.abs(Math.round(LatLongUtils.getSecondsLat(coords))),
                 LatLongUtils.getNorthSouth(coords),
-                LatLongUtils.getDegreesLong(coords),
-                Math.floor(LatLongUtils.getMinutesLong(coords)),
-                Math.round(LatLongUtils.getSecondsLong(coords)),
+                Math.abs(LatLongUtils.getDegreesLong(coords)),
+                Math.abs(LatLongUtils.getWholeMinutesLong(coords)),
+                Math.abs(Math.round(LatLongUtils.getSecondsLong(coords))),
                 LatLongUtils.getEastWest(coords));
     }
 

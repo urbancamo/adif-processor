@@ -39,10 +39,10 @@ public class DegreesDecimalMinutesWithNsewLatLongParser implements LocationParse
     public String format(GlobalCoordinates coords) {
         return String.format("%.0f° %.3f' %s, %.0f° %.3f' %s",
                 Math.abs(LatLongUtils.getDegreesLat(coords)),
-                LatLongUtils.getMinutesLat(coords),
+                Math.abs(LatLongUtils.getMinutesLat(coords)),
                 LatLongUtils.getNorthSouth(coords),
                 Math.abs(LatLongUtils.getDegreesLong(coords)),
-                LatLongUtils.getMinutesLong(coords),
+                Math.abs(LatLongUtils.getMinutesLong(coords)),
                 LatLongUtils.getEastWest(coords));
     }
 

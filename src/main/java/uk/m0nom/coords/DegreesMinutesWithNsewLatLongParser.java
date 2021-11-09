@@ -39,14 +39,12 @@ public class DegreesMinutesWithNsewLatLongParser implements LocationParser, Loca
 
     @Override
     public String format(GlobalCoordinates coords) {
-        return String.format("%.0f° %.0f' %d\" %s, %.0f° %.0f' %d\" %s",
+        return String.format("%.0f° %.0f' %s, %.0f° %.0f' %s",
                 Math.abs(LatLongUtils.getDegreesLat(coords)),
-                Math.floor(LatLongUtils.getMinutesLat(coords)),
-                Math.round(LatLongUtils.getSecondsLat(coords)),
+                Math.abs(LatLongUtils.getWholeMinutesLat(coords)),
                 LatLongUtils.getNorthSouth(coords),
                 Math.abs(LatLongUtils.getDegreesLong(coords)),
-                Math.floor(LatLongUtils.getMinutesLong(coords)),
-                Math.round(LatLongUtils.getSecondsLong(coords)),
+                Math.abs(LatLongUtils.getWholeMinutesLong(coords)),
                 LatLongUtils.getEastWest(coords));
     }
 

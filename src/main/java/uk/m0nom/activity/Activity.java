@@ -1,12 +1,14 @@
 package uk.m0nom.activity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public abstract class Activity implements Comparable<Activity> {
     private ActivityType type;
     private String name;

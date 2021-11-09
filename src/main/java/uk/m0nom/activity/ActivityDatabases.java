@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.activity.cota.CotaCsvReader;
+import uk.m0nom.activity.iota.IotaJsonReader;
 import uk.m0nom.activity.lota.LotaCsvReader;
 import uk.m0nom.activity.pota.PotaCsvReader;
 import uk.m0nom.activity.hema.HemaCsvReader;
@@ -38,17 +39,18 @@ public class ActivityDatabases {
         readers.put(ActivityType.COTA, new CotaCsvReader("cota/cota.csv"));
         readers.put(ActivityType.LOTA, new LotaCsvReader("lota/lighthouses.csv"));
         readers.put(ActivityType.ROTA, new RotaCsvReader("rota/2021-rota.csv"));
+        readers.put(ActivityType.IOTA, new IotaJsonReader("iota/iota-full-list.json"));
     }
 
     public void loadData() {
         for (ActivityReader reader : readers.values()) {
             try {
-                InputStream csvStream = getClass().getClassLoader().getResourceAsStream(reader.getSourceFile());
-                if (csvStream == null) {
+                InputStream inputStream = getClass().getClassLoader().getResourceAsStream(reader.getSourceFile());
+                if (inputStream == null) {
                     logger.severe(String.format("Can't load %s using classloader %s", reader.getSourceFile(), getClass().getClassLoader().toString()));
                 }
                 logger.info(String.format("Loading %s data from: %s", reader.getType().getActivityDescription(), reader.getSourceFile()));
-                ActivityDatabase database = reader.read(csvStream);
+                ActivityDatabase database = reader.read(inputStream);
                 databases.put(reader.getType(), database);
                 logger.info(String.format("%d %s records loaded", database.size(), reader.getType().getActivityDescription()));
             } catch (IOException e) {

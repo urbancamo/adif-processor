@@ -182,7 +182,7 @@ public class LatLongUtils {
     }
 
     public static double getDegreesLat(GlobalCoordinates coords) {
-        return Math.floor(coords.getLatitude());
+        return floorWithNegativeHandling(coords.getLatitude());
     }
 
     public static double getMinutesLat(GlobalCoordinates coords) {
@@ -190,11 +190,11 @@ public class LatLongUtils {
     }
 
     public static double getSecondsLat(GlobalCoordinates coords) {
-        return (getMinutesLat(coords) - Math.floor(getMinutesLat(coords))) * 60.0;
+        return (getMinutesLat(coords) - floorWithNegativeHandling(getMinutesLat(coords))) * 60.0;
     }
 
     public static double getDegreesLong(GlobalCoordinates coords) {
-        return Math.floor(coords.getLongitude());
+        return floorWithNegativeHandling(coords.getLongitude());
     }
 
     public static double getMinutesLong(GlobalCoordinates coords) {
@@ -202,7 +202,22 @@ public class LatLongUtils {
     }
 
     public static double getSecondsLong(GlobalCoordinates coords) {
-        return (getMinutesLong(coords) - Math.floor(getMinutesLong(coords))) * 60.0;
+        return (getMinutesLong(coords) - floorWithNegativeHandling(getMinutesLong(coords))) * 60.0;
+    }
+
+    public static double floorWithNegativeHandling(double val) {
+        if (val < 0.0) {
+            return Math.ceil(val);
+        }
+        return Math.floor(val);
+    }
+
+    public static double getWholeMinutesLat(GlobalCoordinates coords) {
+        return LatLongUtils.floorWithNegativeHandling(LatLongUtils.getMinutesLat(coords));
+    }
+
+    public static double getWholeMinutesLong(GlobalCoordinates coords) {
+        return LatLongUtils.floorWithNegativeHandling(LatLongUtils.getMinutesLong(coords));
     }
 }
 

@@ -19,6 +19,7 @@ public class KmlInfoMap {
         infoMap.put(ActivityType.COTA, new KmlCotaInfo());
         infoMap.put(ActivityType.LOTA, new KmlLotaInfo());
         infoMap.put(ActivityType.ROTA, new KmlRotaInfo());
+        infoMap.put(ActivityType.IOTA, new KmlIotaInfo());
     }
 
     public KmlActivityInfo get(ActivityType activityType) {
