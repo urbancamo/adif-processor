@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>KML Contact Info</title>
+</head>
+<body>
+    <div>
+        <div><b>Contact</b></div>
+        <div>
+            D: <span th:value="${info.get('qsoDate').getValue()}" value="">20/01/2021</span>,
+            T: <span th:value="${info.get('timeOn').getValue()}" value="">12:00</span>
+        </div>
+        
+    </div>
+</body>
+</html>
