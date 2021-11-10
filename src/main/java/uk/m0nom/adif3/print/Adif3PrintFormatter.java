@@ -8,6 +8,7 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.types.Sota;
+import uk.m0nom.geodesic.GeodesicUtils;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.time.LocalDate;
@@ -336,11 +337,9 @@ public class Adif3PrintFormatter {
                 break;
             case "BEARING":
                 // Determine if we have a bearing between stations
-                if (rec.getMyCoordinates() != null && rec.getCoordinates() != null) {
-                    GeodeticCalculator calc = new GeodeticCalculator();
-                    GeodeticCurve curve = calc.calculateGeodeticCurve(Ellipsoid.WGS84, rec.getMyCoordinates(), rec.getCoordinates());
-                    double angle = curve.getAzimuth();
-                    value = String.format("%03.0f", angle);
+                Double bearing = GeodesicUtils.getBearing(rec.getMyCoordinates(), rec.getCoordinates());
+                if (bearing != null) {
+                    value = String.format("%03.0f", bearing);
                 }
             default:
                 logger.warning(String.format("Print formatting column %s not currently handled", column.getAdif()));

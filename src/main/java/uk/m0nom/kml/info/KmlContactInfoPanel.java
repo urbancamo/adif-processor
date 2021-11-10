@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.comms.CommsLinkResult;
+import uk.m0nom.geodesic.GeodesicUtils;
 
 import java.util.Locale;
 
@@ -41,6 +42,10 @@ public class KmlContactInfoPanel {
             sb.append(String.format("TX Pwr: %.1f Watts<br/>", rec.getTxPwr()));
         }
         sb.append(String.format("Gnd dist: %.0f km<br/>", result.getDistance()));
+        Double bearing = GeodesicUtils.getBearing(rec.getMyCoordinates(), rec.getCoordinates());
+        if (bearing != null) {
+            sb.append(String.format("Bearing: %03.03f°<br/>", bearing));
+        }
         if (result.getMode() != null) {
             switch (result.getMode()) {
                 case F2_REFLECTION:

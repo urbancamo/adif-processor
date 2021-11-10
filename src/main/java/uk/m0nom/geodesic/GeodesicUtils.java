@@ -96,4 +96,14 @@ public class GeodesicUtils
         final double tolerance = 0.0001;
         return Math.abs(myCoords.getLatitude() - coords.getLatitude()) < tolerance && Math.abs(myCoords.getLongitude() - coords.getLongitude()) < tolerance;
     }
+
+    public static Double getBearing(GlobalCoordinates myCoordinates, GlobalCoordinates coordinates) {
+        Double bearing = null;
+        if (myCoordinates != null && coordinates != null) {
+            GeodeticCalculator calc = new GeodeticCalculator();
+            GeodeticCurve curve = calc.calculateGeodeticCurve(Ellipsoid.WGS84, myCoordinates, coordinates);
+            bearing = curve.getAzimuth();
+        }
+        return bearing;
+    }
 }
