@@ -100,7 +100,7 @@ public class AdifQrzEnricher {
      * Attempt to update the location based on callsign data downloaded from QRZ.COM
      * What we need to be careful of here is of bad data. For example, some users set geoloc to
      * grid but then the grid isn't valid. We need to ignore that, or we'll set the station to
-     * be antartica.
+     * be Antarctica.
      */
     private void updateQsoFromQrzLocation(Qso qso, QrzCallsign callsignData) {
         if (callsignData != null) {

@@ -4,14 +4,12 @@ import com.amihaiemil.eoyaml.Yaml;
 import com.amihaiemil.eoyaml.YamlMapping;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
-import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.adif3.contacts.Qsos;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.transform.Adif3RecordTransformer;
 import uk.m0nom.adif3.transform.CommentParsingAdifRecordTransformer;
-import uk.m0nom.qrz.CachingQrzXmlService;
 import uk.m0nom.qrz.QrzService;
-import uk.m0nom.qrz.QrzXmlService;
-import uk.m0nom.activity.ActivityDatabases;
 
 import java.io.IOException;
 import java.io.InputStream;

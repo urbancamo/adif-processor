@@ -1,12 +1,13 @@
 package uk.m0nom.adif3;
 
 import org.marsik.ham.adif.AdiReader;
-import org.marsik.ham.adif.AdiWriter;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.qsofile.QsoFileReader;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.*;

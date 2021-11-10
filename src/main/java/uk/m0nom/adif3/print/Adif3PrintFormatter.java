@@ -1,6 +1,10 @@
 package uk.m0nom.adif3.print;
 
 import org.apache.commons.lang3.StringUtils;
+import org.gavaghan.geodesy.Ellipsoid;
+import org.gavaghan.geodesy.GeodeticCalculator;
+import org.gavaghan.geodesy.GeodeticCurve;
+import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.types.Sota;
@@ -330,6 +334,14 @@ public class Adif3PrintFormatter {
                     value = "  ";
                 }
                 break;
+            case "BEARING":
+                // Determine if we have a bearing between stations
+                if (rec.getMyCoordinates() != null && rec.getCoordinates() != null) {
+                    GeodeticCalculator calc = new GeodeticCalculator();
+                    GeodeticCurve curve = calc.calculateGeodeticCurve(Ellipsoid.WGS84, rec.getMyCoordinates(), rec.getCoordinates());
+                    double angle = curve.getAzimuth();
+                    value = String.format("%03.0f", angle);
+                }
             default:
                 logger.warning(String.format("Print formatting column %s not currently handled", column.getAdif()));
                 break;
