@@ -3,13 +3,14 @@ package uk.m0nom.kml.info;
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.contacts.Qso;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.comms.CommsLinkResult;
 import uk.m0nom.geodesic.GeodesicUtils;
 
 import java.util.Locale;
 
-public class KmlContactInfoPanel {
-    public String getPanelContentForCommsLink(Qso qso, CommsLinkResult result) {
+public class KmlContactInfoPanel implements IKmlContactInfoPanel {
+    public String getPanelContentForCommsLink(TransformControl control, Qso qso, CommsLinkResult result) {
         Adif3Record rec = qso.getRecord();
         StringBuilder sb=  new StringBuilder();
         sb.append("<b>Contact</b><br/><br/><br/>");

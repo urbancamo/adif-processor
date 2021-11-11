@@ -20,6 +20,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.StandardOpenOption;
+import java.util.Objects;
+import java.util.Properties;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -40,6 +42,7 @@ public class FileTransformerApp implements Runnable
     private Qsos qsos;
 
     private final static String configFilePath = "adif-processor.yaml";
+    private final static Properties application = new Properties();
 
     private final String[] args;
 
@@ -51,7 +54,28 @@ public class FileTransformerApp implements Runnable
 
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                Objects.requireNonNull(stream).close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        stream = FileTransformerApp.class.getClassLoader().
+                getResourceAsStream("application.properties");
+        try {
+            application.load(stream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                Objects.requireNonNull(stream).close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public FileTransformerApp(String[] args) {

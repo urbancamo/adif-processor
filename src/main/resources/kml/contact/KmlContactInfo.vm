@@ -1,0 +1,76 @@
+
+    <div>
+        <div><b>Contact</b></div>
+        <div>
+            D: <span>$qsoDate</span>,
+            T: <span>$qsoTime</span>
+        </div>
+
+        <div>
+            <a href="https://qrz.com/db/$stationCallsign">$stationCallsign</a> ⇋
+            <a href="https://qrz.com/db/$call">$call</a>
+        </div>
+
+        <div>
+            #if($uplinkBand)
+                Uplink Band: $uplinkBand<br/>
+                Downlink Band: $downlinkBand
+            #else
+                Band: $band
+            #end
+        </div>
+
+        #if($mode)
+            <div>
+                Mode: $mode
+            </div>
+        #end
+
+        #if($freq)
+            <div>
+                #if($downlinkFreq)
+                    Uplink Freq: $uplinkFreq<br/>
+                    Downlink Freq: $downlinkFreq
+                #else
+                    Freq: $freq
+                #end
+            </div>
+        #end
+
+        #if($txPwr)
+            <div>
+                TxPwr: $txPwr watts
+            </div>
+        #end
+
+        <div>
+            Gnd Dist: $gndDist km
+        </div>
+        #if($bearing)
+            <div>
+                Bearing: $bearing°
+            </div>
+        #end
+
+        #if($mode == "F2")
+            <div>
+                Sky dist: $skyDist km<br/>
+                Bounces: $bounces<br/>
+                Avg Alt: $avgAlt
+            </div>
+        #elseif($mode == "SAT")
+            <div>
+                Satellite: $satName<br/>
+                Sat Alt: $satAlt km
+            </div>
+        #elseif($mode == "TR")
+            <div>
+                Bounces: $bounces<br/>
+                Duct Top: $ductTop metres<br/>
+                Duct Base: $ductBase metres<br/>
+            </div>
+        #end
+        <div>
+            Propagation Mode: $propagationMode
+        </div>
+    </div>

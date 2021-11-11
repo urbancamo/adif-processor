@@ -1,17 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>KML Contact Info</title>
-</head>
-<body>
-    <div>
-        <div><b>Contact</b></div>
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+    <head>
+        <title></title>
+    </head>
+    <body>
         <div>
-            D: <span th:value="${info.get('qsoDate').getValue()}" value="">20/01/2021</span>,
-            T: <span th:value="${info.get('timeOn').getValue()}" value="">12:00</span>
+            <div><b>Contact</b></div>
+            <div>
+                D: <span th:text="${qsoDate}">20/12/2021</span>,
+                T: <span th:text="${qsoTime}">12:02</span>
+            </div>
         </div>
-        
-    </div>
-</body>
+    </body>
 </html>

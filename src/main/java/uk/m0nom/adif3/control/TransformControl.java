@@ -5,11 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.m0nom.activity.ActivityType;
+import uk.m0nom.adif3.FileTransformerApp;
 import uk.m0nom.adif3.xsdquery.Adif3Element;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 /**
  * Configure the processing of files
@@ -17,7 +18,6 @@ import java.util.Set;
 @Getter
 @Setter
 @EqualsAndHashCode
-@NoArgsConstructor
 public class TransformControl {
     private String location;
 
@@ -32,6 +32,7 @@ public class TransformControl {
     private boolean stripComment;
 
     private String printConfigFile;
+    private Properties velocityProperties = new Properties();
 
     private Map<ActivityType, String> activityRefs = new HashMap<>();
 
@@ -127,5 +128,21 @@ public class TransformControl {
 
     public void setActivityRef(ActivityType activity, String ref) {
         activityRefs.put(activity, ref);
+    }
+
+    public TransformControl() {
+        InputStream stream = TransformControl.class.getClassLoader().
+                getResourceAsStream("velocity.properties");
+        try {
+            velocityProperties.load(stream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                Objects.requireNonNull(stream).close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
