@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.control.TransformControl;
@@ -17,7 +18,11 @@ public class ThymeleafKmlContactInfoPanel implements IKmlContactInfoPanel {
         Adif3Record rec = qso.getRecord();
 
         TemplateEngine templateEngine = new TemplateEngine();
-        templateEngine.setTemplateResolver(new ClassLoaderTemplateResolver());
+        ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
+        resolver.setPrefix("templates/");
+        resolver.setTemplateMode(TemplateMode.HTML);
+        resolver.setSuffix(".html");
+        templateEngine.setTemplateResolver(resolver);
 
         final Context context = new Context();
         context.setVariable("qsoDate", rec.getQsoDate().toString());
@@ -80,7 +85,7 @@ public class ThymeleafKmlContactInfoPanel implements IKmlContactInfoPanel {
         String mode = (result.getMode() != null) ? result.getMode().toString() : "GROUND WAVE";
         context.setVariable("propagationMode", mode);
 
-        final String html = templateEngine.process("kml/contact/KmlContactInfo.html", context);
+        final String html = templateEngine.process("KmlContactInfo", context);
         return html;
     }
 }

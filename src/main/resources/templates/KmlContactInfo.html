@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <div>
+            <div><b>Contact</b></div>
+            <div>
+                D: <span th:text="${qsoDate}">20/12/2021</span>,
+                T: <span th:text="${qsoTime}">12:02</span>
+            </div>
+            <div>
+                <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz/com/db/${stationCallsign}|}" th:text="${stationCallsign}">station</a> ⇋
+                <a href="https://qrz.com/db/G8CPZ" th:href="@{|https://qrz.com/db/${call}|}" th:text="${call}">call</a>
+            </div>
+
+            <div th:if="${uplinkBand} != null">
+                Uplink Band: <span th:text="${uplinkBand}">2 GHz</span><br/>
+                Downlink Band: <span th:text="${downlinkBand}">10 GHz</span>
+            </div>
+
+            <div th:if="${uplinkBand} == null">
+                Band: <span th:text="${band}">2m</span>
+            </div>
+
+            <div th:if="${mode} != null">
+                Mode: <span th:text="${mode}">FM</span>
+            </div>
+
+            <div th:if="${downlinkFreq} != null">
+                Uplink Freq: <span th:text="${uplinkFreq}">2.125 GHz</span><br/>
+                Downlink Freq: <span th:text="${downlinkFreq}">10.455 GHz</span>
+            </div>
+
+            <div th:if="${downlinkFreq} == null">
+                Freq: <span th:text="${freq}">145.450</span> Mhz
+            </div>
+
+            <div th:if="${txPwr} != null">
+                TxPwr: <span th:text="${txPwr}">5</span> watts
+            </div>
+            <div th:if="${gndDist} != null">
+                Gnd Dist: <span th:text="${gndDist}">25 </span> km
+            </div>
+            <div th:if="${bearing} != null">
+                Bearing: <span th:text="${bearing}">180</span>°
+            </div>
+
+            <div th:if="${mode} == 'F2'">
+                Sky dist: <span th:text="${$skyDist}">25</span> km<br/>
+                Bounces: <span th:text="${bounces}">5</span><br/>
+                Avg Alt: <span th:text="${avgAlt}">350</span> km
+            </div>
+            <div th:if="${mode} == 'SAT'">
+                Satellite: <span th:text="${satName}">QO-100</span><br/>
+                Sat Alt: <span th:text="${satAlt}">38,000</span> km<br/>
+            </div>
+            <div th:if="${mode} == 'TR'">
+                Bounces: <span th:text="${bounces}">25</span><br/>
+                Duct Top: <span th:text="${ductTop}">3,500</span> m<br/>
+                Duct Base: <span th:text="${ductBase}">3,000</span> m<br/>
+            </div>
+
+            <div>
+                Propagation Mode: <span th:text="${propagationMode}">GROUND_WAVE</span>
+            </div>
+        </div>
+    </body>
+</html>

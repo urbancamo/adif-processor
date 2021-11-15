@@ -1,10 +1,6 @@
 package uk.m0nom.kml.info.velocity;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-import org.junit.Before;
 import org.junit.Test;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Band;
@@ -16,13 +12,9 @@ import uk.m0nom.kml.info.thymeleaf.ThymeleafKmlContactInfoPanel;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Objects;
-import java.util.Properties;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -54,7 +46,7 @@ public class ThymleafKmlContactInfoPanelTest {
         when(rec.getFreqRx()).thenReturn(null);
 
         String html = infoPanel.getPanelContentForCommsLink(control, qso, clr);
-        FileUtils.writeStringToFile(new File("../contact.html"), html, StandardCharsets.UTF_8);
+        FileUtils.writeStringToFile(new File("target/contact.html"), html, StandardCharsets.UTF_8);
         //System.out.println(html);
     }
 }

@@ -14,8 +14,7 @@ import uk.m0nom.geodesic.GeodesicUtils;
 import uk.m0nom.kml.KmlBandLineStyles;
 import uk.m0nom.kml.KmlLineStyle;
 import uk.m0nom.kml.KmlStyling;
-import uk.m0nom.kml.info.KmlContactInfoPanel;
-import uk.m0nom.kml.info.velocity.VelocityKmlContactInfoPanel;
+import uk.m0nom.kml.info.thymeleaf.ThymeleafKmlContactInfoPanel;
 import uk.m0nom.kml.station.KmlStationUtils;
 
 import java.util.HashSet;
@@ -153,7 +152,7 @@ public class KmlCommsUtils {
 
         // Set the contact distance in the ADIF output file
         rec.setDistance(result.getDistance());
-        String description = new VelocityKmlContactInfoPanel().getPanelContentForCommsLink(control, qso, result);
+        String description = new ThymeleafKmlContactInfoPanel().getPanelContentForCommsLink(control, qso, result);
         placemark.withDescription(description);
         if (control.isKmlContactShadow()) {
             placemark = folder.createAndAddPlacemark();
