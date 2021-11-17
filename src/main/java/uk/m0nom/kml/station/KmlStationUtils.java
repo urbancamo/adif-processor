@@ -105,6 +105,7 @@ public class KmlStationUtils {
             style.createAndSetIconStyle().withScale(1.0).withIcon(kmlIcon); // set size and icon
             style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the station marker
             style.createAndSetLineStyle().withColor("ffb343ff").withWidth(5);
+
             iconStyles.add(icon.getName());
         }
 

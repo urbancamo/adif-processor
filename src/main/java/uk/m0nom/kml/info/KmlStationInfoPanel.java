@@ -1,17 +1,15 @@
 package uk.m0nom.kml.info;
 
 import org.apache.commons.lang3.StringUtils;
-import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.TemplateSpec;
 import org.thymeleaf.context.Context;
+import org.thymeleaf.templatemode.TemplateMode;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 import uk.m0nom.coords.LocationInfo;
 import uk.m0nom.qrz.QrzCallsign;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class KmlStationInfoPanel {
     public String getPanelContentForStation(TransformControl control, Station station) {
@@ -62,6 +60,7 @@ public class KmlStationInfoPanel {
             context.setVariable("locationAccuracy", info.getAccuracy().getDescription());
         }
 
-        return control.getTemplateEngine().process("KmlStationInfo", context);
+        String html = control.getTemplateEngine().process(new TemplateSpec("KmlStationInfo", TemplateMode.XML), context);
+        return html.replace("\n", "");
     }
 }

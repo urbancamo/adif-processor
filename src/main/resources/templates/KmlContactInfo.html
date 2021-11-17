@@ -1,12 +1,44 @@
-<!DOCTYPE HTML>
-<html xmlns:th="https://www.thymeleaf.org" lang="en">
-    <head>
-        <title></title>
-        <meta charset="UTF-8"/>
-    </head>
-    <body>
-        <div>
-            <div><b>Contact</b></div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        .panel {
+            font-family: "Bitstream Vera Sans Mono",monospace;
+            color: black;
+        }
+        .image_box {
+            text-align: center;
+            padding: 5px;
+        }
+        .content {
+            padding: 5px;
+        }
+        h3 {
+            color: midnightblue;
+            font-family: "Bitstream Vera Sans",sans-serif;
+        }
+        .profile {
+            max-height:400px;
+            max-width:450px;
+            height:auto;
+            width:auto;
+        }
+        #earth-balloon-content{
+            display:flex;
+        }
+        #balloon-content{
+            display:inline-block;
+            width: 480px;
+            height: 480px;
+        }
+        card-template{
+            height:640px;
+        }
+    </style>
+</head>
+<body>
+        <div class="panel">
+            <h1>Contact</h1>
             <div>
                 D: <span th:text="${qsoDate}">20/12/2021</span>,
                 T: <span th:text="${qsoTime}">12:02</span>

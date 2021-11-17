@@ -1,13 +1,15 @@
 package uk.m0nom.kml;
 
-import de.micromata.opengis.kml.v_2_2_0.*;
+import de.micromata.opengis.kml.v_2_2_0.Document;
+import de.micromata.opengis.kml.v_2_2_0.Folder;
+import de.micromata.opengis.kml.v_2_2_0.Kml;
+import org.apache.commons.io.FileUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
-import org.thymeleaf.TemplateEngine;
-import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.transform.TransformResults;
-import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.coords.LatLongUtils;
 import uk.m0nom.kml.activity.KmlLocalActivities;
 import uk.m0nom.kml.comms.KmlCommsUtils;
@@ -17,6 +19,7 @@ import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 public class KmlWriter {
@@ -81,9 +84,15 @@ public class KmlWriter {
 
         try {
             logger.info(String.format("Writing KML to: %s", pathname));
-            kml.marshal(new File(pathname));
+            File file = new File(pathname);
+            kml.marshal(file);
+            String kmlContent = FileUtils.readFileToString(file, "UTF-8");
+            kmlContent = kmlContent.replaceAll("ns2:","").replace("<kml xmlns:ns2=\"http://www.opengis.net/kml/2.2\" xmlns:ns3=\"http://www.w3.org/2005/Atom\" xmlns:ns4=\"urn:oasis:names:tc:ciq:xsdschema:xAL:2.0\" xmlns:ns5=\"http://www.google.com/kml/ext/2.2\">", "<kml>");
+            FileUtils.write(file, kmlContent, "UTF-8");
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            results.setError(e.getMessage());
+        } catch (IOException e) {
+            results.setError(e.getMessage());
         }
     }
 

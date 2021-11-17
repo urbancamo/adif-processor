@@ -3,7 +3,9 @@ package uk.m0nom.kml.info;
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.TemplateSpec;
 import org.thymeleaf.context.Context;
+import org.thymeleaf.templatemode.TemplateMode;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.comms.CommsLinkResult;
@@ -74,7 +76,7 @@ public class KmlContactInfoPanel {
         String mode = (result.getMode() != null) ? result.getMode().toString() : "GROUND WAVE";
         context.setVariable("propagationMode", mode);
 
-        final String html = templateEngine.process("KmlContactInfo", context);
-        return html;
+        final String html = templateEngine.process(new TemplateSpec("KmlContactInfo", TemplateMode.XML), context);
+        return html.replace("\n", "");
     }
 }
