@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--
+        return String.format("POTA: <a href=\"%s\">%s</a><br/>", parkInfo.getUrl(), parkInfo.getRef()) +
+                String.format("%s<br/><br/>", parkInfo.getName());
+-->
+    <div th:fragment="info">
+        <div>
+            POTA: <a href="https://pota.app/#/park/EA-0215" th:href="${pota.url}" th:text="${pota.ref}" target="_blank" rel="noopener noreferrer">EA-0215</a>
+        </div>
+        <div>
+            Name: <span th:text="${pota.name}">Los Volcanes Nature Park</span>
+        </div>
+    </div>
+    <div th:fragment="blank" style="display: none;"></div>
+
+</body>
+</html>

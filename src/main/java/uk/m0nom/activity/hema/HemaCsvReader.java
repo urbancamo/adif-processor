@@ -30,7 +30,7 @@ public class HemaCsvReader extends ActivityReader {
 
         Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(reader);
         for (CSVRecord record : records) {
-            HemaSummitInfo info = new HemaSummitInfo();
+            HemaInfo info = new HemaInfo();
             info.setKey(Integer.parseInt(record.get("hHillKey")));
 
             info.setRef(record.get("hFullReference"));

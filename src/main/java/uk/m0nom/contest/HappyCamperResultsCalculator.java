@@ -5,7 +5,7 @@ import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.activity.sota.SotaSummitInfo;
+import uk.m0nom.activity.sota.SotaInfo;
 
 public class HappyCamperResultsCalculator implements ContestResultCalculator {
 
@@ -17,7 +17,7 @@ public class HappyCamperResultsCalculator implements ContestResultCalculator {
         for (Adif3Record record : log.getRecords()) {
             if (record.getSotaRef() != null && record.getMySotaRef() != null) {
                 if (record.getMySotaRef().getValue().startsWith("G/LD")) {
-                    SotaSummitInfo summitInfo = (SotaSummitInfo) sotaDb.get(record.getSotaRef().getValue());
+                    SotaInfo summitInfo = (SotaInfo) sotaDb.get(record.getSotaRef().getValue());
                     if (summitInfo != null) {
                         s2sPoints += summitInfo.getPoints();
                     }

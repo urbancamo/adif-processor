@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--
+        return String.format("Railway: %s<br/>Club: %s<br/>WAB: %s<br/>",
+                info.getName(), info.getClub(), info.getWab());
+-->
+    <div th:fragment="info">
+        <div>
+            Railway: <span th:text="${rota.name}">Lakeside & Haverthwaite Railway</span>
+        </div>
+        <div>
+            Club: <span th:text="${rota.club}">Furness Amateur Radio Society</span>
+        </div>
+        <div>
+            WAB: <span th:text="${rota.wab}">SD38</span>
+        </div>
+    </div>
+    <div th:fragment="blank" style="display: none;"></div>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--
+        return String.format("Lighthouse Ref: %s<br/>", info.getRef()) +
+                String.format("Name: %s<br/><br/>", info.getName());
+-->
+    <div th:fragment="info">
+        <div>
+            Lighthouse Ref: <span th:text="${lota.ref}">ES0014</span>
+        </div>
+        <div>
+            Name: <span th:text="${lota.name}">Fuencaliente</span>
+        </div>
+    </div>
+    <div th:fragment="blank" style="display: none;"></div>
+
+</body>
+</html>

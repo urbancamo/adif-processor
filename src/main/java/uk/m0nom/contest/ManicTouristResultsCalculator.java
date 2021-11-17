@@ -5,7 +5,7 @@ import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.activity.sota.SotaSummitInfo;
+import uk.m0nom.activity.sota.SotaInfo;
 
 public class ManicTouristResultsCalculator implements ContestResultCalculator {
 
@@ -17,7 +17,7 @@ public class ManicTouristResultsCalculator implements ContestResultCalculator {
         for (Adif3Record record : log.getRecords()) {
             if (record.getMySotaRef() != null) {
                 if (record.getMySotaRef().getValue().startsWith("G/LD")) {
-                    SotaSummitInfo summitInfo = (SotaSummitInfo) sotaDb.get(record.getMySotaRef().getValue());
+                    SotaInfo summitInfo = (SotaInfo) sotaDb.get(record.getMySotaRef().getValue());
                     if (summitInfo != null) {
                         points = summitInfo.getPoints();
                     }

@@ -8,7 +8,7 @@ import uk.m0nom.activity.ActivityType;
 
 @Getter
 @Setter
-public class WotaSummitInfo extends Activity {
+public class WotaInfo extends Activity {
     private int internalId;
     private String sotaId;
     private String hemaId;
@@ -18,7 +18,7 @@ public class WotaSummitInfo extends Activity {
     private String gridId;
     private int x, y;
 
-    public WotaSummitInfo() {
+    public WotaInfo() {
         super(ActivityType.WOTA);
     }
 

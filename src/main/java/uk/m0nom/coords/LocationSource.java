@@ -1,10 +1,19 @@
 package uk.m0nom.coords;
 
+import lombok.Getter;
+
+@Getter
 public enum LocationSource {
-    ACTIVITY,
-    OVERRIDE,
-    QRZ,
-    GEOCODING,
-    OSGB36_CONVERTER,
-    UNDEFINED
+    ACTIVITY("Activity"),
+    OVERRIDE("Overriden"),
+    QRZ("QRZ.COM"),
+    GEOCODING("Geocoding"),
+    OSGB36_CONVERTER("OSGB36 Converter"),
+    UNDEFINED("Undefined");
+
+    private final String description;
+
+    LocationSource(String description) {
+        this.description = description;
+    }
 }

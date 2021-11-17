@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--
+        String sb = String.format("SOTA: <a href=\"%s\">%s</a><br/>", activity.getUrl(), activity.getRef()) +
+                String.format("%s<br/>", summitInfo.getName()) +
+                String.format("%.0f metres, %d points<br/><br/>", summitInfo.getAltitude(), summitInfo.getPoints());
+-->
+    <div th:fragment="info">
+        <div>
+            SOTA: <a href="https://summits.sota.org.uk/summit/GM/SS-218" th:href="${sota.url}" th:text="${sota.ref}" target="_blank" rel="noopener noreferrer">GM/SS-218</a>
+        </div>
+        <div>
+            Name: <span th:text="${sota.name}">Cruach Tairbeirt</span>
+        </div>
+        <div>
+            Alt: <span th:text="${sota.altitudeInMetres}">451m</span>
+        </div>
+        <div>
+            Points: <span th:text="${sota.points}">1</span>
+        </div>
+        <div>
+            Bonus Points: <span th:text="${sota.bonusPoints}">0</span>
+        </div>
+    </div>
+    <div th:fragment="blank" style="display: none;"></div>
+
+</body>
+</html>

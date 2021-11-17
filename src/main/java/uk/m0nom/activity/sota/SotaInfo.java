@@ -8,10 +8,10 @@ import uk.m0nom.activity.ActivityType;
 
 @Getter
 @Setter
-public class SotaSummitInfo extends Activity {
+public class SotaInfo extends Activity {
     private int points, bonusPoints;
 
-    public SotaSummitInfo() {
+    public SotaInfo() {
         super(ActivityType.SOTA);
     }
 

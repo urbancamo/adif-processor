@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--
+        return String.format("WWFF: <a href='https://wwff.co/directory/?showRef=%s'>%s</a><br/>", wwffInfo.getRef().toUpperCase(), wwffInfo.getRef()) +
+                String.format("%s<br/><br/>", wwffInfo.getName());
+-->
+    <div th:fragment="info">
+        <div>
+            WWFF: <a href="https://wwff.co/directory/?showRef=GFF-0143" th:href="@{|https://wwff.co/directory/?showRef=${wwff.ref}|}" th:text="${wwff.ref}">GFF-0143</a>
+        </div>
+        <div>
+            Name: <span th:text="${wwff.name}">Leighton Moss SPA (and RSPB)</span>
+        </div>
+    </div>
+    <div th:fragment="blank" style="display: none;"></div>
+
+</body>
+</html>

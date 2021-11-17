@@ -3,9 +3,10 @@ package uk.m0nom.kml.comms;
 import de.micromata.opengis.kml.v_2_2_0.*;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
+import org.thymeleaf.TemplateEngine;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.activity.sota.SotaSummitInfo;
+import uk.m0nom.activity.sota.SotaInfo;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.comms.CommsLinkResult;
@@ -14,7 +15,7 @@ import uk.m0nom.geodesic.GeodesicUtils;
 import uk.m0nom.kml.KmlBandLineStyles;
 import uk.m0nom.kml.KmlLineStyle;
 import uk.m0nom.kml.KmlStyling;
-import uk.m0nom.kml.info.thymeleaf.ThymeleafKmlContactInfoPanel;
+import uk.m0nom.kml.info.KmlContactInfoPanel;
 import uk.m0nom.kml.station.KmlStationUtils;
 
 import java.util.HashSet;
@@ -136,13 +137,13 @@ public class KmlCommsUtils {
         double myAltitude = 0.0;
         double theirAltitude = 0.0;
         if (qso.getRecord().getMySotaRef() != null) {
-            SotaSummitInfo summitInfo = (SotaSummitInfo) activities.getDatabase(ActivityType.SOTA).get(qso.getRecord().getMySotaRef().getValue());
+            SotaInfo summitInfo = (SotaInfo) activities.getDatabase(ActivityType.SOTA).get(qso.getRecord().getMySotaRef().getValue());
             if (summitInfo != null) {
                 myAltitude = summitInfo.getAltitude();
             }
         }
         if (qso.getRecord().getSotaRef() != null) {
-            SotaSummitInfo summitInfo = (SotaSummitInfo) activities.getDatabase(ActivityType.SOTA).get(qso.getRecord().getSotaRef().getValue());
+            SotaInfo summitInfo = (SotaInfo) activities.getDatabase(ActivityType.SOTA).get(qso.getRecord().getSotaRef().getValue());
             if (summitInfo != null) {
                 theirAltitude = summitInfo.getAltitude();
             }
@@ -152,7 +153,7 @@ public class KmlCommsUtils {
 
         // Set the contact distance in the ADIF output file
         rec.setDistance(result.getDistance());
-        String description = new ThymeleafKmlContactInfoPanel().getPanelContentForCommsLink(control, qso, result);
+        String description = new KmlContactInfoPanel().getPanelContentForCommsLink(control, qso, result, control.getTemplateEngine());
         placemark.withDescription(description);
         if (control.isKmlContactShadow()) {
             placemark = folder.createAndAddPlacemark();

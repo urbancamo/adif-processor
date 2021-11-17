@@ -2,6 +2,7 @@ package uk.m0nom.kml;
 
 import de.micromata.opengis.kml.v_2_2_0.*;
 import org.gavaghan.geodesy.GlobalCoordinates;
+import org.thymeleaf.TemplateEngine;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
@@ -10,6 +11,7 @@ import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.coords.LatLongUtils;
 import uk.m0nom.kml.activity.KmlLocalActivities;
 import uk.m0nom.kml.comms.KmlCommsUtils;
+import uk.m0nom.kml.info.TemplateEngineConstructor;
 import uk.m0nom.kml.station.KmlStationUtils;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
@@ -21,9 +23,10 @@ public class KmlWriter {
     private static final Logger logger = Logger.getLogger(KmlWriter.class.getName());
     private final TransformControl control;
 
+
     public KmlWriter(TransformControl control) {
         this.control = control;
-        KmlBandLineStyles bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());
+        control.setTemplateEngine(TemplateEngineConstructor.create());
     }
 
     public void write(String pathname, String name, ActivityDatabases activities, Qsos qsos, TransformResults results) {

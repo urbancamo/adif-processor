@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.thymeleaf.TemplateEngine;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.FileTransformerApp;
 import uk.m0nom.adif3.xsdquery.Adif3Element;
@@ -32,7 +33,6 @@ public class TransformControl {
     private boolean stripComment;
 
     private String printConfigFile;
-    private Properties velocityProperties = new Properties();
 
     private Map<ActivityType, String> activityRefs = new HashMap<>();
 
@@ -114,6 +114,8 @@ public class TransformControl {
 
     private Set<Adif3Element> adif3ElementSet;
 
+    private TemplateEngine templateEngine;
+
     public String getActivityRef(ActivityType type) {
         return activityRefs.get(type);
     }
@@ -131,18 +133,5 @@ public class TransformControl {
     }
 
     public TransformControl() {
-        InputStream stream = TransformControl.class.getClassLoader().
-                getResourceAsStream("velocity.properties");
-        try {
-            velocityProperties.load(stream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                Objects.requireNonNull(stream).close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

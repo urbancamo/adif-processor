@@ -19,8 +19,8 @@ public class WotaSummitsDatabase extends ActivityDatabase {
 
         // Now generate the cross-reference tables
         for (Activity activity : summits.values()) {
-            if (activity instanceof WotaSummitInfo) {
-                WotaSummitInfo info = (WotaSummitInfo) activity;
+            if (activity instanceof WotaInfo) {
+                WotaInfo info = (WotaInfo) activity;
                 if (info.getSotaId() != null) {
                     summitsWithSotaKey.put(info.getSotaId(), info);
                 }

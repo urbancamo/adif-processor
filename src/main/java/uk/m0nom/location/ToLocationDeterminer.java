@@ -5,7 +5,7 @@ import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.activity.wota.WotaSummitInfo;
+import uk.m0nom.activity.wota.WotaInfo;
 import uk.m0nom.activity.wota.WotaSummitsDatabase;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
@@ -63,7 +63,7 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
 
     public void setTheirLocationFromWotaId(Qso qso, String wotaId, Map<String, String> unmapped) {
         setTheirLocationFromActivity(qso, ActivityType.WOTA, wotaId, unmapped);
-        WotaSummitInfo wotaInfo = (WotaSummitInfo) activities.getDatabase(ActivityType.WOTA).get(wotaId);
+        WotaInfo wotaInfo = (WotaInfo) activities.getDatabase(ActivityType.WOTA).get(wotaId);
         if (wotaInfo != null) {
             String sotaId = wotaInfo.getSotaId();
             if (sotaId != null) {

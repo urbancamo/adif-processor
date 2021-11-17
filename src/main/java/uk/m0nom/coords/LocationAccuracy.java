@@ -1,15 +1,24 @@
 package uk.m0nom.coords;
 
+import lombok.Getter;
+
+@Getter
 public enum LocationAccuracy {
-    MHL4,
-    MHL6,
-    MHL8,
-    MHL10,
-    LAT_LONG,
-    WWFF,
-    OSGB36,
-    GEOLOCATION_VERY_GOOD,
-    GEOLOCATION_GOOD,
-    GEOLOCATION_POOR,
-    GEOLOCATION_VERY_POOR;
+    MHL4("Latitude/Longitude"),
+    MHL6("6-CHAR Maidenhead"),
+    MHL8("8-CHAR Maidenhead"),
+    MHL10("10-CHAR Maidenhead"),
+    LAT_LONG("Latitude Longitude"),
+    WWFF("WWFF Reference"),
+    OSGB36("UK Locator"),
+    GEOLOCATION_VERY_GOOD("Geolocation - Very Good"),
+    GEOLOCATION_GOOD("Geolocation - Good"),
+    GEOLOCATION_POOR("Geolocation - Poor"),
+    GEOLOCATION_VERY_POOR("Geolocation - Very Poor");
+
+    private final String description;
+
+    LocationAccuracy(String description) {
+        this.description = description;
+    }
 }

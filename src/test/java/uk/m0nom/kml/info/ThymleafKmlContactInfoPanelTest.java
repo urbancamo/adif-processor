@@ -1,14 +1,13 @@
-package uk.m0nom.kml.info.velocity;
+package uk.m0nom.kml.info;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Band;
+import org.thymeleaf.TemplateEngine;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.comms.CommsLinkResult;
-import uk.m0nom.kml.info.IKmlContactInfoPanel;
-import uk.m0nom.kml.info.thymeleaf.ThymeleafKmlContactInfoPanel;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,10 +21,11 @@ import static org.mockito.Mockito.when;
 public class ThymleafKmlContactInfoPanelTest {
     @Test
     public void testThymeleafContactPanel() throws IOException {
-        IKmlContactInfoPanel infoPanel = new ThymeleafKmlContactInfoPanel();
+        KmlContactInfoPanel infoPanel = new KmlContactInfoPanel();
 
+        TemplateEngine templateEngine = TemplateEngineConstructor.create();
         TransformControl control = mock(TransformControl.class);
-
+        when(control.getTemplateEngine()).thenReturn(templateEngine);
         Adif3Record rec = mock(Adif3Record.class);
         Qso qso = mock(Qso.class);
         CommsLinkResult clr = mock(CommsLinkResult.class);
@@ -45,7 +45,7 @@ public class ThymleafKmlContactInfoPanelTest {
         when(clr.getMode()).thenReturn(null);
         when(rec.getFreqRx()).thenReturn(null);
 
-        String html = infoPanel.getPanelContentForCommsLink(control, qso, clr);
+        String html = infoPanel.getPanelContentForCommsLink(control, qso, clr, TemplateEngineConstructor.create());
         FileUtils.writeStringToFile(new File("target/contact.html"), html, StandardCharsets.UTF_8);
         //System.out.println(html);
     }

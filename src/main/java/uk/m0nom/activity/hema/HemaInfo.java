@@ -7,12 +7,12 @@ import uk.m0nom.activity.ActivityType;
 
 @Getter
 @Setter
-public class HemaSummitInfo extends Activity {
+public class HemaInfo extends Activity {
 
     private int key;
     private boolean active;
 
-    public HemaSummitInfo() {
+    public HemaInfo() {
         super(ActivityType.HEMA);
     }
 

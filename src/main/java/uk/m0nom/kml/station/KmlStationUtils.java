@@ -64,7 +64,7 @@ public class KmlStationUtils {
         }
 
         Placemark placemark = myFolder.createAndAddPlacemark();
-        String htmlPanelContent = new KmlStationInfoPanel().getPanelContent(qso.getFrom());
+        String htmlPanelContent = new KmlStationInfoPanel().getPanelContentForStation(control, qso.getFrom());
         // use the style for each continent
         placemark.withName(callsign)
                 .withStyleUrl(getStyleUrl(icon.getName()))
@@ -109,7 +109,7 @@ public class KmlStationUtils {
         }
 
         Placemark placemark = folder.createAndAddPlacemark();
-        String htmlPanelContent = new KmlStationInfoPanel().getPanelContent(qso.getTo());
+        String htmlPanelContent = new KmlStationInfoPanel().getPanelContentForStation(control, qso.getTo());
         // use the style for each continent
         placemark.withName(name)
                 .withId(id)

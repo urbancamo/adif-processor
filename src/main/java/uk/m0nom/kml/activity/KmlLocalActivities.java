@@ -5,7 +5,6 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.adif3.contacts.Station;
-import uk.m0nom.kml.info.KmlInfoMap;
 import uk.m0nom.kml.station.KmlStationUtils;
 
 import java.util.Collection;
@@ -16,11 +15,6 @@ import static uk.m0nom.kml.KmlUtils.getStyleUrl;
 
 public class KmlLocalActivities {
     public final static String DEFAULT_RADIUS = "5000";
-    private final KmlInfoMap infoMap;
-
-    public KmlLocalActivities() {
-        infoMap = new KmlInfoMap();
-    }
 
     public void addLocalActivities(Document doc, Folder folder, Station to, double radius, ActivityDatabases activities) {
         // Determine activities within the pre-defined radius
@@ -55,7 +49,7 @@ public class KmlLocalActivities {
             style.createAndSetLabelStyle().withColor("ffffffff").withScale(0.75); // set color and size of the station marker
             style.createAndSetLineStyle().withColor("000000ff").withWidth(3);
 
-            String htmlPanelContent = infoMap.get(activity.getType()).getInfo(activity);
+            String htmlPanelContent = ""; //infoMap.get(activity.getType()).getInfo(activity);
             Placemark placemark = folder.createAndAddPlacemark();
             // use the style for each continent
             placemark.withName(id)

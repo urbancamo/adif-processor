@@ -2,80 +2,79 @@ package uk.m0nom.kml.info;
 
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.comms.CommsLinkResult;
 import uk.m0nom.geodesic.GeodesicUtils;
 
-import java.util.Locale;
-
-public class KmlContactInfoPanel implements IKmlContactInfoPanel {
-    public String getPanelContentForCommsLink(TransformControl control, Qso qso, CommsLinkResult result) {
+public class KmlContactInfoPanel {
+    public String getPanelContentForCommsLink(TransformControl control, Qso qso, CommsLinkResult result, TemplateEngine templateEngine) {
         Adif3Record rec = qso.getRecord();
-        StringBuilder sb=  new StringBuilder();
-        sb.append("<b>Contact</b><br/><br/><br/>");
-        sb.append(String.format("D: %s, T: %s<br/>", rec.getQsoDate().toString(), rec.getTimeOn().toString()));
-        sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a> ⇋ ",
-                rec.getStationCallsign(), rec.getStationCallsign()));
-        sb.append(String.format("<a href=\"https://qrz.com/db/%s\">%s</a><br/>",
-                rec.getCall(), rec.getCall()));
+
+        final Context context = new Context();
+        context.setVariable("qsoDate", rec.getQsoDate().toString());
+        context.setVariable("qsoTime", rec.getTimeOn().toString());
+        context.setVariable("call", rec.getCall());
+        context.setVariable("stationCallsign", rec.getStationCallsign());
+
 
         if (rec.getBand() != null) {
             if (rec.getBandRx() != null) {
-                sb.append(String.format("Uplink Band: %s<br/>", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase(Locale.ROOT)));
-                sb.append(String.format("Downlink Band: %s<br/>", StringUtils.replace(rec.getBandRx().name(), "BAND_", "").toLowerCase(Locale.ROOT)));
+                context.setVariable("uplinkBand", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase());
+                context.setVariable("downlinkBand", StringUtils.replace(rec.getBandRx().name(), "BAND_", "").toLowerCase());
             } else {
-                sb.append(String.format("Band: %s<br/>", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase(Locale.ROOT)));
+                context.setVariable("band", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase());
             }
         }
         if (rec.getMode() != null) {
-            sb.append(String.format("Mode: %s<br/>", rec.getMode().toString()));
+            context.setVariable("mode", rec.getMode().toString());
         }
         if (rec.getFreq() != null) {
             if (rec.getFreqRx() != null) {
-                sb.append(String.format("Uplink Freq: %.3f Mhz<br/>", rec.getFreq()));
-                sb.append(String.format("Downlink Freq: %.3f Mhz<br/>", rec.getFreqRx()));
+                context.setVariable("freq", String.format("%.3f", rec.getFreq()));
+                context.setVariable("downlinkFreq", String.format("%.3f", rec.getFreqRx()));
             } else {
-                sb.append(String.format("Freq: %.3f Mhz<br/>", rec.getFreq()));
+                context.setVariable("freq", String.format("%.3f", rec.getFreq()));
             }
         }
         if (rec.getTxPwr() != null) {
-            sb.append(String.format("TX Pwr: %.1f Watts<br/>", rec.getTxPwr()));
+            context.setVariable("txPwr", String.format("%.1f", rec.getTxPwr()));
         }
-        sb.append(String.format("Gnd dist: %.0f km<br/>", result.getDistance()));
+        context.setVariable("gndDist", String.format("%.0f", result.getDistance()));
         Double bearing = GeodesicUtils.getBearing(rec.getMyCoordinates(), rec.getCoordinates());
         if (bearing != null) {
-            sb.append(String.format("Bearing: %03.03f°<br/>", bearing));
+            context.setVariable("bearing", String.format("%03.03f", bearing));
         }
         if (result.getMode() != null) {
             switch (result.getMode()) {
                 case F2_REFLECTION:
-                    sb.append(String.format("Sky dist: %.0f km<br/>", result.getSkyDistance()));
-                    sb.append(String.format("Bounces: %d<br/>", result.getBounces()));
+                    context.setVariable("skyDist", String.format("%.0f", result.getSkyDistance()));
+                    context.setVariable("bounces", String.format("%d", result.getBounces()));
                     if (result.getAltitude() > 9999.99) {
-                        sb.append(String.format("Avg Alt: %.0f km<br/>", result.getAltitude() / 1000));
+                        context.setVariable("avgAlt", String.format("%.0f km", result.getAltitude() / 1000));
                     } else {
-                        sb.append(String.format("Avg Alt: %.0f metres<br/>", result.getAltitude()));
+                        context.setVariable("avgAlt", String.format("%.0f metres", result.getAltitude()));
                     }
-                    sb.append(String.format("Avg Angle: %.0f°<br/>", result.getFromAngle()));
+                    context.setVariable("avgAngle", String.format("%.0f°", result.getFromAngle()));
                     break;
                 case SATELLITE:
-                    sb.append(String.format("Satellite: %s<br/>", qso.getRecord().getSatName()));
+                    context.setVariable("satName", qso.getRecord().getSatName());
                     /*sb.append(String.format("Sky dist: %.0f km<br/>", result.getSkyDistance()));*/
-                    sb.append(String.format("Sat Alt: %.0f km<br/>", result.getAltitude() / 1000));
+                    context.setVariable("satAlt", String.format("%.0f", result.getAltitude() / 1000));
                     break;
                 case TROPOSPHERIC_DUCTING:
-                    sb.append(String.format("Bounces: %d<br/>", result.getBounces()));
-                    sb.append(String.format("Duct Top: %.0f metres<br/>", result.getAltitude()));
-                    sb.append(String.format("Duct Base: %.0f metres<br/>", result.getBase()));
+                    context.setVariable("bounces", String.format("%d", result.getBounces()));
+                    context.setVariable("ductTop", String.format("%.0f", result.getAltitude()));
+                    context.setVariable("ductBase", String.format("%.0f", result.getBase()));
                     break;
             }
         }
         String mode = (result.getMode() != null) ? result.getMode().toString() : "GROUND WAVE";
-        sb.append(String.format("Propagation Mode: %s", mode));
+        context.setVariable("propagationMode", mode);
 
-        return sb.toString();
+        final String html = templateEngine.process("KmlContactInfo", context);
+        return html;
     }
-
-
 }

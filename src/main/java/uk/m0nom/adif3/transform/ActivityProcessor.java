@@ -6,7 +6,7 @@ import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.activity.wota.WotaSummitInfo;
+import uk.m0nom.activity.wota.WotaInfo;
 import uk.m0nom.activity.wota.WotaSummitsDatabase;
 import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.adif3.control.TransformControl;
@@ -25,7 +25,7 @@ public class ActivityProcessor {
     }
 
     protected void setHemaOrSotaFromWota(Station station, String wotaId) {
-        WotaSummitInfo wotaInfo = (WotaSummitInfo) activities.getDatabase(ActivityType.WOTA).get(wotaId);
+        WotaInfo wotaInfo = (WotaInfo) activities.getDatabase(ActivityType.WOTA).get(wotaId);
 
         station.addActivity(activities.getDatabase(ActivityType.HEMA).get(wotaInfo.getHemaId()));
         station.addActivity(activities.getDatabase(ActivityType.SOTA).get(wotaInfo.getSotaId()));
