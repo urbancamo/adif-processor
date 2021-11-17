@@ -12,8 +12,8 @@
                 T: <span th:text="${qsoTime}">12:02</span>
             </div>
             <div>
-                <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz/com/db/${stationCallsign}|}" th:text="${stationCallsign}">station</a> ⇋
-                <a href="https://qrz.com/db/G8CPZ" th:href="@{|https://qrz.com/db/${call}|}" th:text="${call}">call</a>
+                <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz/com/db/${stationCallsign}|}" th:text="${stationCallsign}"  target="_blank">station</a> ⇋
+                <a href="https://qrz.com/db/G8CPZ" th:href="@{|https://qrz.com/db/${call}|}" th:text="${call}"  target="_blank">call</a>
             </div>
 
             <div th:if="${uplinkBand} != null">

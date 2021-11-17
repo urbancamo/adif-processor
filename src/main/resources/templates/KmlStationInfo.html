@@ -7,16 +7,16 @@
 <body>
 <div>
     <div th:if="${image} != null">
-        <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" target="_blank" rel="noopener noreferrer">
+        <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" target="_blank">
             <img src="https://cdn-bio.qrz.com/p/m0nom_p/IMG_20180211_131628.jpg" th:src="${image}" width="300px" alt=""/>
         </a>
     </div>
     <div th:if="${image} == null">
-        <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" target="_blank" rel="noopener noreferrer"><img src="http://i3.cpcache.com/product/178743690/ham_radio_operator_35_button.jpg?height=630&width=630&qv=90" width="300px" alt=""/></a>
+        <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" target="_blank" ><img src="http://i3.cpcache.com/product/178743690/ham_radio_operator_35_button.jpg?height=630&width=630&qv=90" width="300px" alt=""/></a>
     </div>
 
     <div>
-        Callsign: <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz/com/db/${call}|}" th:text="${call}" target="_blank" rel="noopener noreferrer">M0NOM/P</a>
+        Callsign: <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" th:text="${call}" target="_blank" >M0NOM/P</a>
     </div>
 
     <div th:replace="CotaInfo :: ${cota} ? 'info' : 'blank' "></div>
