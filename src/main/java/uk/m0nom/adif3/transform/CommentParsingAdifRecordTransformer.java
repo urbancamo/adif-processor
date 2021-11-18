@@ -81,8 +81,12 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
         activityProcessor.processActivities(qso.getFrom(), rec);
 
+        // Attempt a lookup from QRZ.com
+        QrzCallsign myQrzData = qrzService.getCallsignData(rec.getStationCallsign());
+
         Map<String, String> unmapped = new HashMap<>();
-        QrzCallsign myQrzData = fromLocationDeterminer.setMyLocation(qso);
+        fromLocationDeterminer.setMyLocation(qso, myQrzData);
+
         qso.getFrom().setQrzInfo(myQrzData);
         enricher.enrichAdifForMe(qso.getRecord(), myQrzData);
 

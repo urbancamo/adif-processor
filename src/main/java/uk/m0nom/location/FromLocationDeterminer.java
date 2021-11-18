@@ -126,10 +126,9 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
         return false;
     }
 
-    public QrzCallsign setMyLocation(Qso qso) {
+    public boolean setMyLocation(Qso qso, QrzCallsign callsignData) {
         Adif3Record rec = qso.getRecord();
-        // Attempt a lookup from QRZ.com
-        QrzCallsign callsignData = qrzService.getCallsignData(rec.getStationCallsign());
+        boolean locationSet = true;
 
         // Query the record MYSOTA_REF field - if this isn't empty add it as an activity for onward processing
         if (rec.getMySotaRef() != null) {
@@ -145,13 +144,13 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
                 if (!setMyLocationFromRecGridsquare(qso)) {
                     if (!setMyLocationFromQrzLatLong(qso, callsignData)) {
                         if (!setMyLocationFromQrzGrid(qso, callsignData)) {
-                            logger.warning(String.format("Cannot determine location for station: %s", qso.getFrom().getCallsign()));
+                            locationSet = false;
                         }
                     }
                 }
             }
         }
-        return callsignData;
+        return locationSet;
     }
 
     private void updateMySigInfoFromActivity(Qso qso) {
