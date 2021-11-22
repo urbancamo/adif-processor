@@ -36,6 +36,9 @@ public class KmlStationInfoPanel {
             context.setVariable("name", String.format("%s %s",
                     StringUtils.defaultIfBlank(qrzInfo.getFname(), ""),
                     StringUtils.defaultIfBlank(qrzInfo.getName(), "")));
+            if (StringUtils.isNotEmpty(qrzInfo.getCountry())) {
+                context.setVariable("country", qrzInfo.getCountry());
+            }
         }
 
         String grid = station.getGrid();
@@ -45,6 +48,7 @@ public class KmlStationInfoPanel {
         if (grid != null) {
             context.setVariable("grid", grid);
         }
+
 
         GlobalCoordinatesWithSourceAccuracy coordinates = station.getCoordinates();
         if (coordinates == null && qrzInfo != null) {

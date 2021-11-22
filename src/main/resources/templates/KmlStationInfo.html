@@ -28,7 +28,7 @@
          }
         #balloon-content{
             display:inline-block;
-            width: 480px;
+            width: 490px;
             height: 640px;
         }
         card-template{
@@ -38,6 +38,7 @@
 </head>
 <body>
         <div class="panel">
+            <h1>Station Info</h1>
             <div class="image_box" th:if="${image} != null">
                 <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" target="_blank">
                     <img class="profile" src="https://cdn-bio.qrz.com/p/m0nom_p/IMG_20180211_131628.jpg" th:src="${image}" alt=""/>
@@ -63,6 +64,9 @@
 
                 <div th:if="${name} != null">
                     Name: <span th:text="${name}">Mark Wickens</span>
+                </div>
+                <div th:if="${country} != null">
+                    Country: <span th:text="${country}">England</span>
                 </div>
                 <div th:if="${grid} != null">
                     Grid: <span th:text="${grid}">IO84NI</span>
