@@ -3,29 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .tdLabel {
+            width: 200px;
+        }
+        div.info {
+            padding-top: 1em;
+        }
+    </style>
 </head>
 <body>
-<!--
-        String sb = String.format("SOTA: <a href=\"%s\">%s</a><br/>", activity.getUrl(), activity.getRef()) +
-                String.format("%s<br/>", summitInfo.getName()) +
-                String.format("%.0f metres, %d points<br/><br/>", summitInfo.getAltitude(), summitInfo.getPoints());
--->
-    <div th:fragment="info">
-        <div>
-            SOTA: <a target="_blank" rel="noopener noreferrer" href="https://summits.sota.org.uk/summit/GM/SS-218" th:href="${sota.url}" th:text="${sota.ref}">GM/SS-218</a>
-        </div>
-        <div>
-            Name: <span th:text="${sota.name}">Cruach Tairbeirt</span>
-        </div>
-        <div>
-            Alt: <span th:text="${sota.altitudeInMetres}">451m</span>
-        </div>
-        <div>
-            Points: <span th:text="${sota.points}">1</span>
-        </div>
-        <div>
-            Bonus Points: <span th:text="${sota.bonusPoints}">0</span>
-        </div>
+    <div th:fragment="info" class="info">
+        <table>
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td class="tdLabel">SOTA:</td>
+                    <td>
+                        <a target="_blank" rel="noopener noreferrer" href="https://summits.sota.org.uk/summit/GM/SS-218" th:href="${sota.url}" th:text="${sota.ref}">GM/SS-218</a>
+                    </td>
+                </tr>
+                <tr><td class="tdLabel">Name:</td><td><span th:text="${sota.name}">Cruach Tairbeirt</span></td></tr>
+                <tr><td class="tdLabel">Alt: </td><td><span th:text="${sota.altitudeInMetres}">451m</span></td></tr>
+                <tr><td class="tdLabel">Points: </td><td><span th:text="${sota.points}">1</span></td></tr>
+                <tr><td class="tdLabel">Bonus Points:</td><td><span th:text="${sota.bonusPoints}">0</span></td></tr>
+            </tbody>
+        </table>
     </div>
     <div th:fragment="blank" style="display: none;"></div>
 

@@ -9,6 +9,8 @@ import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 import uk.m0nom.coords.LocationInfo;
+import uk.m0nom.dxcc.DxccEntities;
+import uk.m0nom.dxcc.DxccEntity;
 import uk.m0nom.qrz.QrzCallsign;
 
 public class KmlStationInfoPanel {
@@ -18,7 +20,7 @@ public class KmlStationInfoPanel {
         final Context context = new Context();
         QrzCallsign qrzInfo = station.getQrzInfo();
         if (qrzInfo != null) {
-            context.setVariable("call", station.getQrzInfo().getCall());
+            setVariable(context,"call", station.getQrzInfo().getCall());
             if (qrzInfo.getImage() != null) {
                 context.setVariable("image", station.getQrzInfo().getImage());
             }
@@ -33,22 +35,26 @@ public class KmlStationInfoPanel {
         }
 
         if (qrzInfo != null) {
-            context.setVariable("name", String.format("%s %s",
+            setVariable(context,"name", String.format("%s %s",
                     StringUtils.defaultIfBlank(qrzInfo.getFname(), ""),
                     StringUtils.defaultIfBlank(qrzInfo.getName(), "")));
-            if (StringUtils.isNotEmpty(qrzInfo.getCountry())) {
-                context.setVariable("country", qrzInfo.getCountry());
+            setVariable(context, "country", qrzInfo.getCountry());
+
+            if (StringUtils.isNotEmpty(qrzInfo.getDxcc())) {
+                setVariable(context, "dxcc", qrzInfo.getDxcc());
+                int dxccCode = Integer.parseInt(qrzInfo.getDxcc());
+                DxccEntity dxcc = control.getDxccEntities().getEntity(dxccCode);
+                setVariable(context, "flag", dxcc.getFlag());
             }
+            setVariable(context, "ituZone", qrzInfo.getItuzone());
+            setVariable(context, "cqZone", qrzInfo.getCqzone());
         }
 
         String grid = station.getGrid();
         if (grid == null && qrzInfo != null) {
             grid = qrzInfo.getGrid();
         }
-        if (grid != null) {
-            context.setVariable("grid", grid);
-        }
-
+        setVariable(context, "grid", grid);
 
         GlobalCoordinatesWithSourceAccuracy coordinates = station.getCoordinates();
         if (coordinates == null && qrzInfo != null) {
@@ -66,5 +72,11 @@ public class KmlStationInfoPanel {
 
         String html = control.getTemplateEngine().process(new TemplateSpec("KmlStationInfo", TemplateMode.XML), context);
         return html.replace("\n", "");
+    }
+
+    private void setVariable(Context context, String key, String value) {
+        if (StringUtils.isNotEmpty(value)) {
+            context.setVariable(key, value);
+        }
     }
 }

@@ -8,6 +8,7 @@ import org.thymeleaf.TemplateEngine;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.FileTransformerApp;
 import uk.m0nom.adif3.xsdquery.Adif3Element;
+import uk.m0nom.dxcc.DxccEntities;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -115,6 +116,8 @@ public class TransformControl {
     private Set<Adif3Element> adif3ElementSet;
 
     private TemplateEngine templateEngine;
+
+    private DxccEntities dxccEntities;
 
     public String getActivityRef(ActivityType type) {
         return activityRefs.get(type);

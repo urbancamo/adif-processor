@@ -35,16 +35,16 @@ public class KmlContactInfoPanel {
         }
         if (rec.getFreq() != null) {
             if (rec.getFreqRx() != null) {
-                context.setVariable("freq", String.format("%.3f", rec.getFreq()));
-                context.setVariable("downlinkFreq", String.format("%.3f", rec.getFreqRx()));
+                context.setVariable("freq", String.format("%,.3f", rec.getFreq()));
+                context.setVariable("downlinkFreq", String.format("%,.3f", rec.getFreqRx()));
             } else {
-                context.setVariable("freq", String.format("%.3f", rec.getFreq()));
+                context.setVariable("freq", String.format("%,.3f", rec.getFreq()));
             }
         }
         if (rec.getTxPwr() != null) {
-            context.setVariable("txPwr", String.format("%.1f", rec.getTxPwr()));
+            context.setVariable("txPwr", String.format("%,.1f", rec.getTxPwr()));
         }
-        context.setVariable("gndDist", String.format("%.0f", result.getDistance()));
+        context.setVariable("gndDist", String.format("%,.0f", result.getDistance()));
         Double bearing = GeodesicUtils.getBearing(rec.getMyCoordinates(), rec.getCoordinates());
         if (bearing != null) {
             context.setVariable("bearing", String.format("%03.03f", bearing));
@@ -52,24 +52,24 @@ public class KmlContactInfoPanel {
         if (result.getMode() != null) {
             switch (result.getMode()) {
                 case F2_REFLECTION:
-                    context.setVariable("skyDist", String.format("%.0f", result.getSkyDistance()));
+                    context.setVariable("skyDist", String.format("%,.0f", result.getSkyDistance()));
                     context.setVariable("bounces", String.format("%d", result.getBounces()));
                     if (result.getAltitude() > 9999.99) {
-                        context.setVariable("avgAlt", String.format("%.0f km", result.getAltitude() / 1000));
+                        context.setVariable("avgAlt", String.format("%,.0f km", result.getAltitude() / 1000));
                     } else {
-                        context.setVariable("avgAlt", String.format("%.0f metres", result.getAltitude()));
+                        context.setVariable("avgAlt", String.format("%,.0f metres", result.getAltitude()));
                     }
-                    context.setVariable("avgAngle", String.format("%.0f°", result.getFromAngle()));
+                    context.setVariable("avgAngle", String.format("%,.0f°", result.getFromAngle()));
                     break;
                 case SATELLITE:
                     context.setVariable("satName", qso.getRecord().getSatName());
-                    /*sb.append(String.format("Sky dist: %.0f km<br/>", result.getSkyDistance()));*/
-                    context.setVariable("satAlt", String.format("%.0f", result.getAltitude() / 1000));
+                    /*sb.append(String.format("Sky dist: %,.0f km<br/>", result.getSkyDistance()));*/
+                    context.setVariable("satAlt", String.format("%,.0f", result.getAltitude() / 1000));
                     break;
                 case TROPOSPHERIC_DUCTING:
                     context.setVariable("bounces", String.format("%d", result.getBounces()));
-                    context.setVariable("ductTop", String.format("%.0f", result.getAltitude()));
-                    context.setVariable("ductBase", String.format("%.0f", result.getBase()));
+                    context.setVariable("ductTop", String.format("%,.0f", result.getAltitude()));
+                    context.setVariable("ductBase", String.format("%,.0f", result.getBase()));
                     break;
             }
         }
