@@ -84,7 +84,7 @@ public class AdifQrzEnricher {
         if (callsignData != null) {
             updateQsoFromQrzLocation(qso, callsignData);
             logger.info(String.format("Retrieved %s from QRZ.COM", callsign));
-        } else if (CallsignUtils.isNotFixed(callsign)) {
+        } else if (CallsignUtils.isPortable(callsign)) {
             // Try stripping off any portable callsign information and querying that as a last resort
             String fixedCallsign = callsign.substring(0, StringUtils.lastIndexOf(callsign, "/"));
             callsignData = qrzService.getCallsignData(fixedCallsign);

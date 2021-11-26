@@ -18,6 +18,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+/**
+ * This class can 'print' QSOs into either a fixed-column width table or a markdown table based on the
+ * supplied print configuration. Not all ADIF fields are currently supported, this is on my TODO list.
+ */
 public class Adif3PrintFormatter {
     private static final Logger logger = Logger.getLogger(Adif3PrintFormatter.class.getName());
 

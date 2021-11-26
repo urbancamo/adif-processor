@@ -15,7 +15,11 @@ import java.io.InputStream;
 import java.util.*;
 
 /**
- * Configure the processing of files
+ * This class captures the control information that is used to define the file to process and any other
+ * configuration captured either on the command line or via the Web UI. It also contains some static information
+ * which should probably be refactored out, but keeping it here does reduce the number of objects that must be
+ * passed down into the processing code. Maybe the refactor should split the static and variable data out into two
+ * underlying classes?
  */
 @Getter
 @Setter

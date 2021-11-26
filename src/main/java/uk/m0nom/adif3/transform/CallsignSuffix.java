@@ -1,14 +1,25 @@
 package uk.m0nom.adif3.transform;
 
+import lombok.Getter;
+
+/**
+ * Recognised callsign suffixes with a human-readable description
+ */
+@Getter
 public enum CallsignSuffix {
-    PORTABLE("Portable"),
-    MOBILE("Mobile"),
-    MARITIME_MOBILE("Maritime Mobile"),
-    PEDESTRIAN_MOBILE("Pedestrian Mobile");
+    PORTABLE("/P", "Portable", true),
+    MOBILE("/M", "Mobile", true),
+    MARITIME_MOBILE("/MM", "Maritime Mobile", true),
+    PEDESTRIAN_MOBILE("/PM", "Pedestrian Mobile", true),
+    ALTERNATIVE("/A", "Alternative QTH", false);
 
+    private final String suffix;
     private final String description;
+    private final boolean portable;
 
-    CallsignSuffix(String description) {
+    CallsignSuffix(String suffix, String description, boolean portable) {
+        this.suffix = suffix;
         this.description = description;
+        this.portable = portable;
     }
 }

@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.marsik.ham.adif.Adif3Record;
 
+/**
+ * Captures the information relating to a single contact. Each station in the QSO is recorded as a single
+ * instance of Station which allows some more OO-centric processing compared ot the raw data in the Adif3Record
+ */
 @Getter
 @Setter
 @NoArgsConstructor

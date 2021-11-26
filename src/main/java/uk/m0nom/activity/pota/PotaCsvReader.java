@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Reader for the Parks on the Air CSV extract
+ */
 public class PotaCsvReader extends ActivityReader {
     private static final Logger logger = Logger.getLogger(PotaCsvReader.class.getName());
 

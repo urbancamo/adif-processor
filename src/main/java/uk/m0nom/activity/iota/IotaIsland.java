@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Information about an individual island which might be part of a group of islands captured using a single
+ * IOTA reference.
+ */
 @Getter
 @Setter
 public class IotaIsland {

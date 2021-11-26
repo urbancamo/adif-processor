@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+/**
+ * Command line application interface to the ADIF3 Processor that will process all files in a directory
+ */
 public class DirectoryTransformerApp implements Runnable
 {
     private static final Logger logger = Logger.getLogger(DirectoryTransformerApp.class.getName());

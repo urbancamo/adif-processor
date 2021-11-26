@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Captures a list of QSOs, typically in chronological order
+ */
 @Getter
 @Setter
 @AllArgsConstructor

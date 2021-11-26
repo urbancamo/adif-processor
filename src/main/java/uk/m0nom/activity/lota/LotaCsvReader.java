@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * CSV Reader for the Lighthouses and Lightships on the Air Programme data
+ */
 @Getter
 @Setter
 public class LotaCsvReader extends ActivityReader {

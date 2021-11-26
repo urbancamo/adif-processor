@@ -13,6 +13,9 @@ import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+/**
+ * Used to standardize the various location formats used in the master Lighthouses extract file
+ */
 public class LotaLocationProcessor {
     private static final Logger logger = Logger.getLogger(LotaLocationProcessor.class.getName());
 

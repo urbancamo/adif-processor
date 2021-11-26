@@ -21,6 +21,10 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Not currently used but potentially this will allow loading of the entire Adif3 schema for use when parsing comments
+ * TODO
+ */
 public class Adif3SchemaLoader {
     public Set<Adif3Element> loadFromFile(String filename) throws FileNotFoundException {
         FileInputStream fileIS = new FileInputStream(filename);

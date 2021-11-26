@@ -5,6 +5,10 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * This class breaks down a callsign into all the possible information about the callsign that is used by the
+ * ADIF3 processor, such as UK variants, operator location based on country prefix etc.
+ */
 @Getter
 @Setter
 public class Callsign {

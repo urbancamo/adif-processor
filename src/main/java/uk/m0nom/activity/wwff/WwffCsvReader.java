@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Reader for the World Wide Flora Fauna CSV extract file
+ */
 public class WwffCsvReader extends ActivityReader {
     private static final Logger logger = Logger.getLogger(WwffCsvReader.class.getName());
     private static final String EMPTY_DATE = "0000-00-00";

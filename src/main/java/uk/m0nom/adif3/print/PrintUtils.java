@@ -1,5 +1,8 @@
 package uk.m0nom.adif3.print;
 
+/**
+ * Utilities relating to printing
+ */
 public class PrintUtils {
     static String stripQuotes(String str) {
         String stripped = str;

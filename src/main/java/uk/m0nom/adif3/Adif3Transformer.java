@@ -15,6 +15,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Logger;
 
+/**
+ * Main entry into the Adif3 Transformer functionality.
+ * Current set to use the:
+ * @see CommentParsingAdifRecordTransformer
+ */
 public class Adif3Transformer {
     private static final Logger logger = Logger.getLogger(Adif3Transformer.class.getName());
 

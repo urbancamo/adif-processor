@@ -17,6 +17,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Railways on the Air CSV reader. I created the CSV file from the https://rota.barac.org.uk/stations stations
+ * list for 2021. It had a couple of additional entries following the 2021 contest based on the stations we contacted
+ * as GB4LHR.
+ */
 public class RotaCsvReader extends ActivityReader {
     private static final Logger logger = Logger.getLogger(RotaCsvReader.class.getName());
 

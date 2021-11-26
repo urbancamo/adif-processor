@@ -13,6 +13,9 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.logging.Logger;
 
+/**
+ * Wrapper to the Adif3 library for reading ADIF format files
+ */
 public class Adif3FileReader implements QsoFileReader {
     private static final Logger logger = Logger.getLogger(Adif3FileReader.class.getName());
 

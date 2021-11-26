@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Logger;
 
+/**
+ * Abstract class providing common methods for reading loading an activity and reading coordinate values
+ */
 @Getter
 public abstract class ActivityReader {
 
@@ -22,7 +25,6 @@ public abstract class ActivityReader {
         this.type = type;
         this.sourceFile = sourceFile;
     }
-
 
     public abstract ActivityDatabase read(InputStream inputStream) throws IOException;
 

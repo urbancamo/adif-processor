@@ -6,6 +6,9 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityType;
 
+/**
+ * Additional information for a Summit on the Air
+ */
 @Getter
 @Setter
 public class SotaInfo extends Activity {

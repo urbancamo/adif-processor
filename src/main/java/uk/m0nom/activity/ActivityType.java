@@ -2,6 +2,9 @@ package uk.m0nom.activity;
 
 import lombok.Getter;
 
+/**
+ * Each of the supported activities is enumerated here with the activity name
+ */
 @Getter
 public enum ActivityType {
     WOTA("WOTA", "Wainwrights on the Air"),

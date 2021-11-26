@@ -26,6 +26,9 @@ import java.util.Properties;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+/**
+ * Main command line interface to the ADIF Processor that processes a single file
+ */
 public class FileTransformerApp implements Runnable
 {
     private static final String MARKDOWN_CONTROL_FILE = "adif-printer-132-md.yaml";

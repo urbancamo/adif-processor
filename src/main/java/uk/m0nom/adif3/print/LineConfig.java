@@ -6,6 +6,9 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Configuration for a row in the print output file, consisting of all the column definitions that make up that row
+ */
 @Getter
 @Setter
 public class LineConfig {

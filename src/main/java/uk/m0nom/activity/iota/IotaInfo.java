@@ -12,6 +12,9 @@ import uk.m0nom.coords.LocationSource;
 
 import java.util.Collection;
 
+/**
+ * Top of the information hierarchy stored for any Island on the Air reference
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -59,6 +62,11 @@ public class IotaInfo extends Activity {
         super(type);
     }
 
+    /**
+     * Each IOTA reference could be a group of islands so the location is defined as a latitude/longitude
+     * maximum and minimum. This method calculates a central coordinate in this region
+     * @return Central coordinate of an island (group) max/min lat/long
+     */
     public GlobalCoordinatesWithSourceAccuracy getCoordsFromLatLongMaxMin() {
         double latitudeCentre = latitudeMin + ((latitudeMax - latitudeMin) / 2.0);
         double longitudeCentre = longitudeMin + ((longitudeMax - longitudeMin) / 2.0);

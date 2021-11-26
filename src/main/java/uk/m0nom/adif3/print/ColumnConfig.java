@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Configuration for a print column to appear in the output
+ */
 @Getter
 @Setter
 @NoArgsConstructor

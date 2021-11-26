@@ -2,6 +2,9 @@ package uk.m0nom.callsign;
 
 import lombok.Getter;
 
+/**
+ * UK callsign variants
+ */
 @Getter
 public enum CallsignVariant {
     IN_COUNTRY(""),

@@ -7,6 +7,9 @@ import uk.m0nom.activity.ActivityType;
 
 import java.util.Date;
 
+/**
+ * Additional information stored for a World Wide Flora Fauna location
+ */
 @Getter
 @Setter
 public class WwffInfo extends Activity {

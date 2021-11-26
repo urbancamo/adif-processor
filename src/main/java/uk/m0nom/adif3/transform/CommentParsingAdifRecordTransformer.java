@@ -67,7 +67,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private void issueWarnings(Adif3Record rec) {
         // Check to see if a /P or /M station has a location, if not issue a warning
         String callsign = rec.getCall().trim().toUpperCase();
-        boolean portable = CallsignUtils.isNotFixed(callsign);
+        boolean portable = CallsignUtils.isPortable(callsign);
         if (portable && rec.getMyCoordinates() == null && rec.getGridsquare() == null) {
             logger.warning(String.format("Contact with non-fixed station %s at %s does not have a location defined", callsign, rec.getTimeOn()));
         }

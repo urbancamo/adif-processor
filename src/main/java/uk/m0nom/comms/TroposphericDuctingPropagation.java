@@ -15,27 +15,18 @@ import java.util.List;
 public class TroposphericDuctingPropagation implements CommsLinkGenerator {
 
     @Override
-    public CommsLinkResult getCommsLink(TransformControl control, LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc, Adif3Record rec, double myAltitude, double theirAltitude) {
+    public CommsLinkResult getCommsLink(TransformControl control, LineString hfLine,
+                                        GlobalCoordinates start, GlobalCoordinates end,
+                                        Adif3Record rec, double myAltitude, double theirAltitude) {
         /* assume daytime propagation if we don't have a QSO time */
-        CommsLinkResult result = new CommsLinkResult();
+        CommsLinkResult result = PropagationUtils.calculateGeodeticCurve(start, end);
 
-        GlobalCoordinates start = new GlobalCoordinates(startGc.getLatitude(), startGc.getLongitude());
-        GlobalCoordinates end = new GlobalCoordinates(endGc.getLatitude(), endGc.getLongitude());
-
-        GeodeticCalculator calculator = new GeodeticCalculator();
-        GeodeticCurve curve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, start, end);
-        double distance = curve.getEllipsoidalDistance();
-
-        double distanceInKm = distance / 1000;
-        result.setDistance(distanceInKm);
-
-        double azimuth = curve.getAzimuth();
         double avgAltitude = 0.0;
         double avgAngle = 0.0;
         double avgBase = 0.0;
         Propagation mode = null;
-        List<PropagationBounce> bounces = new Troposphere().getBounces(distanceInKm);
-        double skyDistance = GeodesicUtils.addBouncesToLineString(hfLine, bounces, start, end, azimuth, calculator);
+        List<PropagationBounce> bounces = new Troposphere().getBounces(result.getDistance());
+        double skyDistance = GeodesicUtils.addBouncesToLineString(hfLine, bounces, start, end, result.getAzimuth());
         result.setSkyDistance(skyDistance);
 
         for (PropagationBounce bounce : bounces) {

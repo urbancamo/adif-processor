@@ -6,6 +6,10 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 
+/**
+ * An activity is any amateur radio activity programme or awards programme that you can participate in.
+ * This class captures the typical common data set for an activity.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
