@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Reader for the Islands on the Air (IOTA) JSON export file
+ */
 public class IotaJsonReader extends ActivityReader {
     private static final Logger logger = Logger.getLogger(IotaJsonReader.class.getName());
 

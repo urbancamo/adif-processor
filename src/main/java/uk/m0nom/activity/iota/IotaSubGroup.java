@@ -7,6 +7,9 @@ import uk.m0nom.activity.iota.IotaIsland;
 
 import java.util.Collection;
 
+/**
+ * Sub-group of islands that share a common main IOTA reference
+ */
 @Getter
 @Setter
 public class IotaSubGroup {

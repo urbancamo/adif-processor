@@ -17,9 +17,11 @@ public class IonosphericPropagation implements CommsLinkGenerator {
     private final static LocalTime MIDDAY = LocalTime.of(12,0);
 
     @Override
-    public CommsLinkResult getCommsLink(TransformControl control, LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc, Adif3Record rec, double myAltitude, double theirAltitude) {
+    public CommsLinkResult getCommsLink(TransformControl control, LineString hfLine,
+                                        GlobalCoordinates startGc, GlobalCoordinates endGc,
+                                        Adif3Record rec, double myAltitude, double theirAltitude) {
         /* assume daytime propagation if we don't have a QSO time */
-        CommsLinkResult result = new CommsLinkResult();
+        CommsLinkResult result = PropagationUtils.calculateGeodeticCurve(startGc, endGc);
 
         LocalTime time = MIDDAY;
         if (rec.getTimeOn() != null) {
@@ -52,7 +54,7 @@ public class IonosphericPropagation implements CommsLinkGenerator {
         Propagation mode = rec.getPropMode();
         List<PropagationBounce> bounces = new Ionosphere().getBounces(mode, frequencyInKhz, distanceInKm, time, myAltitude, theirAltitude, control.getHfAntennaTakeoffAngle());
 
-        double skyDistance = GeodesicUtils.addBouncesToLineString(hfLine, bounces, start, end, azimuth, calculator);
+        double skyDistance = GeodesicUtils.addBouncesToLineString(hfLine, bounces, start, end, azimuth);
         result.setSkyDistance(skyDistance);
 
         for (PropagationBounce bounce : bounces) {

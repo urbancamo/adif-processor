@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Castles on the Air CSV Writer. Used when cleaning up the data set
+ */
 public class CotaCsvWriter {
     private static final Logger logger = Logger.getLogger(CotaCsvWriter.class.getName());
 

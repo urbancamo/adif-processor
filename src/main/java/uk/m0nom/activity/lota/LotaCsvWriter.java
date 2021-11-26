@@ -14,6 +14,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
+/**
+ * A writer used to standardize the various coordinate systems used in the original Lighthouses on the Air extract
+ */
 public class LotaCsvWriter {
     private static final Logger logger = Logger.getLogger(LotaCsvWriter.class.getName());
 

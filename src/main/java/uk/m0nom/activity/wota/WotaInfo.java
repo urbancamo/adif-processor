@@ -6,6 +6,10 @@ import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityType;
 
+/**
+ * Additional information for a Wainwright on the Air summit
+ * Cross-references to SOTA and HEMA summits exist in the WOTA database and have been retained here.
+ */
 @Getter
 @Setter
 public class WotaInfo extends Activity {

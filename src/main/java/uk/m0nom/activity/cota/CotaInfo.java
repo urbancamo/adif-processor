@@ -5,6 +5,9 @@ import lombok.Setter;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityType;
 
+/**
+ * Encapsulates the information available about any location described in the Castles on the Air activity programme.
+ */
 @Getter
 @Setter
 public class CotaInfo extends Activity {

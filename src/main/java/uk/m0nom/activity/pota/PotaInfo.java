@@ -5,6 +5,9 @@ import lombok.Setter;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityType;
 
+/**
+ * Additional information for a Park on the Air
+ */
 @Getter
 @Setter
 public class PotaInfo extends Activity {

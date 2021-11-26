@@ -2,19 +2,17 @@ package uk.m0nom.adif3.transform;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Utility methods relating to callsigns
+ */
 public class CallsignUtils {
-    private final static String[] portableSuffixes = new String[] {"/P", "/M", "/MM", "/PM"};
 
-    public static boolean isNotFixed(String callsign) {
-        return StringUtils.endsWithAny(callsign, portableSuffixes);
-    }
-
-    public CallsignSuffix getSuffix(String callsign) {
-        for (CallsignSuffix toCheck : CallsignSuffix.values()) {
-            if (StringUtils.endsWith(callsign, toCheck.name())) {
-                return toCheck;
+    public static boolean isPortable(String callsign) {
+        for (CallsignSuffix suffix : CallsignSuffix.values()) {
+            if (StringUtils.endsWithAny(callsign, suffix.getSuffix())) {
+                return suffix.isPortable();
             }
         }
-        return null;
+        return false;
     }
 }

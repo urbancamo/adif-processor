@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Reader for the Castles on the Air CSV file, which was created from an export of the 'master' spreadsheet
+ */
 @Getter
 @Setter
 public class CotaCsvReader extends ActivityReader {

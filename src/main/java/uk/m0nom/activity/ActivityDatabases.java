@@ -19,6 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * This is the collection of all activity databases, including the readers to obtain the data from the source
+ * files
+ */
 @Getter
 @Setter
 public class ActivityDatabases {
@@ -27,6 +31,9 @@ public class ActivityDatabases {
     private Map<ActivityType, ActivityDatabase> databases;
     private Map<ActivityType, ActivityReader> readers;
 
+    /**
+     * Constructor creates readers for all supported activities
+     */
     public ActivityDatabases() {
         databases = new HashMap<>();
         readers = new HashMap<>();
@@ -42,6 +49,10 @@ public class ActivityDatabases {
         readers.put(ActivityType.IOTA, new IotaJsonReader("iota/iota-full-list.json"));
     }
 
+    /**
+     * For each supported activity this calls the reader to load the activity data into a database and
+     * then maintain a reference here using the ActivityType. Source files are read from the resources directory
+     */
     public void loadData() {
         for (ActivityReader reader : readers.values()) {
             try {
@@ -63,6 +74,11 @@ public class ActivityDatabases {
         return databases.get(type);
     }
 
+    /**
+     * Given an arbitrary activity reference, search each of the databases for a matching activity
+     * @param reference String reference for the activity to search for
+     * @return If a match is found the corresponding activity is returned, otherwise null
+     */
     public Activity findActivity(String reference) {
         for (ActivityType activityType : databases.keySet()) {
             ActivityDatabase database = getDatabase(activityType);
@@ -74,6 +90,11 @@ public class ActivityDatabases {
         return null;
     }
 
+    /**
+     * Get the database for the named activity based on the activityName field in each activity type
+     * @param requested name of the actitity type
+     * @return database if activity type found, otherwise null
+     */
     public ActivityDatabase getDatabase(String requested) {
         for (ActivityType type : databases.keySet()) {
             if (StringUtils.equals(requested, type.getActivityName())) {

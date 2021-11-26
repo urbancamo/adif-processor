@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.logging.Logger;
 
+/**
+ * Wrapper for the Adif3 library for writing ADIF format files
+ */
 public class Adif3FileWriter implements QsoFileWriter {
     private static final Logger logger = Logger.getLogger(Adif3FileWriter.class.getName());
 

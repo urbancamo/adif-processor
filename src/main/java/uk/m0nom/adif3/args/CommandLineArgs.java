@@ -9,6 +9,9 @@ import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.icons.IconResource;
 
+/**
+ * Sets up a TransformControl instance based on command line arguments for the standalone transformer
+ */
 public class CommandLineArgs {
     public TransformControl parseArgs(String[] args) {
         TransformControl control = new TransformControl();

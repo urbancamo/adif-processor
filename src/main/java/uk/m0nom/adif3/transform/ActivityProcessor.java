@@ -24,6 +24,12 @@ public class ActivityProcessor {
         this.activities = activities;
     }
 
+    /**
+     * If a Wainwright on the air summit corresponds to a SOTA/HEMA summit then we alsop record those respective
+     * activities against the station
+     * @param station station participating in Wainwrights on the air
+     * @param wotaId Reference for the WOTA, eg: LDO-113
+     */
     protected void setHemaOrSotaFromWota(Station station, String wotaId) {
         WotaInfo wotaInfo = (WotaInfo) activities.getDatabase(ActivityType.WOTA).get(wotaId);
 
@@ -31,16 +37,32 @@ public class ActivityProcessor {
         station.addActivity(activities.getDatabase(ActivityType.SOTA).get(wotaInfo.getSotaId()));
     }
 
+    /**
+     * Check if a HEMA is being activated by the station if it corresponds to a WOTA summit in the Lake District
+     * @param station station participating in HEMA
+     * @param hemaId Humps on the Air reference for the summit being activated
+     */
     protected void setWotaFromHemaId(Station station, String hemaId) {
         WotaSummitsDatabase wotaDatabase = (WotaSummitsDatabase) activities.getDatabase(ActivityType.WOTA);
         station.addActivity(wotaDatabase.getFromHemaId(hemaId));
     }
 
+    /**
+     * Check ifa SOTA is being activated by the station if it corresponds to a WOTA summit in the Lake District
+     * @param station station participating in SOTA
+     * @param sotaId SOTA reference for the summit being activated
+     */
     protected void setWotaFromSotaId(Station station, String sotaId) {
         WotaSummitsDatabase wotaDatabase = (WotaSummitsDatabase) activities.getDatabase(ActivityType.WOTA);
         station.addActivity(wotaDatabase.getFromSotaId(sotaId));
     }
 
+    /**
+     * If the 'from' station has activity information specified in the transform control record then add this
+     * activity to the station
+     * @param type activity type to check
+     * @param station station doing the activation
+     */
     protected void processActivityFromControl(ActivityType type, Station station) {
         String ref = control.getActivityRef(type);
         if (StringUtils.isNotBlank(ref)) {
@@ -49,6 +71,13 @@ public class ActivityProcessor {
         }
     }
 
+    /**
+     * This method provides the cross referencing logic for WOTA, HEMA and SOTA to ensure that all activities
+     * are recorded where the summit is part of multiple programmes
+     * @param type type of activity
+     * @param station station participating in a programme
+     * @param ref the reference of the activity provided
+     */
     protected void processActivity(ActivityType type, Station station, String ref) {
         station.addActivity(activities.getDatabase(type).get(ref.toUpperCase()));
         // Special handling where there can be multiple activities from the same location
@@ -65,6 +94,12 @@ public class ActivityProcessor {
         }
     }
 
+    /**
+     * Record activity for a station where the input ADIF file contains a SIG_INFO/SIG_REF record
+     * @param type activity type to check
+     * @param station station to record activity against
+     * @param rec input ADIF record
+     */
     protected void processActivityFromSigInfo(ActivityType type, Station station, Adif3Record rec) {
         String sig = rec.getMySig();
         if (sig == null) {
@@ -80,6 +115,12 @@ public class ActivityProcessor {
         }
     }
 
+    /**
+     * For each of the supported activities ensure any SIG_INFO/SIG_REF information in the input ADIF file is
+     * recorded against the station
+     * @param station station to check for activity
+     * @param rec input ADIF record to check for SIG_INFO/SIG_REF supported activity information
+     */
     public void processActivities(Station station, Adif3Record rec) {
         for (ActivityType activity : ActivityType.values()) {
             processActivityFromSigInfo(activity, station, rec);
@@ -92,6 +133,12 @@ public class ActivityProcessor {
 
     }
 
+    /**
+     * A special event is where the callsign of the station defines the activity being participated in (e.g. Railways
+     * on the Air). In this case we need to check the activity references against the station callsign
+     * @param type activity type to check against
+     * @param station the station to check the callsign against activity references
+     */
     private void processSpecialEventActivity(ActivityType type, Station station) {
         ActivityDatabase db = activities.getDatabase(type);
         if (db.isSpecialEventActivity()) {

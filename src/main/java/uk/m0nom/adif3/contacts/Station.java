@@ -14,6 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * One end of a QSO this captures both station related information and the QSOs that the station has participated in
+ * For the purposes of comparison a station is considered unique if it is both the same callsign and location
+ */
 @Getter
 @Setter
 @AllArgsConstructor

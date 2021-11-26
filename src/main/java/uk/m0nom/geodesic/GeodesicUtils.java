@@ -16,7 +16,8 @@ public class GeodesicUtils
 
 
     public static double addBouncesToLineString(LineString hfLine, List<PropagationBounce> bounces, GlobalCoordinates start, GlobalCoordinates end,
-                                                double initialAzimuth, GeodeticCalculator calculator) {
+                                                double initialAzimuth) {
+        GeodeticCalculator calculator = new GeodeticCalculator();
         hfLine.addToCoordinates(start.getLongitude(), start.getLatitude(), 0);
         GlobalCoordinates previous = start;
         double azimuth = initialAzimuth;

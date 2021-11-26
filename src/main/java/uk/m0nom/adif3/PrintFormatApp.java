@@ -14,7 +14,9 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.logging.Logger;
 
-
+/**
+ * Command line interface to the print formatter mainly for checking out/testing new features
+ */
 public class PrintFormatApp implements Runnable
 {
     private static final Logger logger = Logger.getLogger(PrintFormatApp.class.getName());

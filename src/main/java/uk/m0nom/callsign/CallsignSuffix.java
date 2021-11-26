@@ -3,6 +3,9 @@ package uk.m0nom.callsign;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * The supported callsign suffixes
+ */
 @Getter
 @AllArgsConstructor
 public enum CallsignSuffix {

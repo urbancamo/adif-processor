@@ -14,6 +14,9 @@ import java.util.logging.Logger;
 
 import static uk.m0nom.adif3.print.PrintUtils.stripQuotes;
 
+/**
+ * This class reads configuration information from a YAML file for the print formatter
+ */
 @Getter
 @Setter
 @NoArgsConstructor
