@@ -42,7 +42,7 @@ public class ThymleafKmlContactInfoPanelTest {
         when(rec.getFreq()).thenReturn(145.450);
         when(rec.getTxPwr()).thenReturn(50.0);
         when(clr.getDistance()).thenReturn(20.5);
-        when(clr.getMode()).thenReturn(null);
+        when(clr.getPropagation()).thenReturn(null);
         when(rec.getFreqRx()).thenReturn(null);
 
         String html = infoPanel.getPanelContentForCommsLink(control, qso, clr, TemplateEngineConstructor.create());

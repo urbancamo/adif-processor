@@ -5,8 +5,10 @@ import net.sourceforge.argparse4j.impl.Arguments;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
+import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.antenna.Antennas;
 import uk.m0nom.icons.IconResource;
 
 /**
@@ -41,6 +43,8 @@ public class CommandLineArgs {
 
         parser.addArgument("-e", "--encoding").required(false).setDefault("windows-1251")
                 .help("Specify encoding of input ADIF file");
+
+        parser.addArgument("-a", "--antenna").required(false).setDefault("Vertical").help("Antenna Type, one of: Vertical (default), Dipole or Inverted-V");
 
         parser.addArgument("-k", "--kml").required(false).action(Arguments.storeTrue())
                 .help("Generate a KML output file for mapping direct to Google Earth");
@@ -115,6 +119,10 @@ public class CommandLineArgs {
 
             control.setOutputPath(ns.getString("output"));
             control.setPathname(ns.getString("path").substring(1, ns.getString("path").length()-1));
+
+            if (StringUtils.isNotEmpty(ns.getString("antenna"))) {
+                control.setAntenna(new Antennas().getAntenna(ns.getString("antenna")));
+            }
         } catch (ArgumentParserException e) {
             parser.handleError(e);
             System.exit(1);

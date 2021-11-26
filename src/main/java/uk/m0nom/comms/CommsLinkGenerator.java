@@ -6,6 +6,6 @@ import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.control.TransformControl;
 
 public interface CommsLinkGenerator {
-    CommsLinkResult getCommsLink(TransformControl control, LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc,
-                                 Adif3Record rec, double myAltitude, double theirAltitude);
+    CommsLinkResult getCommunicationsLink(TransformControl control, LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc,
+                                          Adif3Record rec, double myAltitude, double theirAltitude);
 }

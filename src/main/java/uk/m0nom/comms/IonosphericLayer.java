@@ -3,6 +3,9 @@ package uk.m0nom.comms;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * A named layer in the Ionosphere
+ */
 @Getter
 @Setter
 public class IonosphericLayer {

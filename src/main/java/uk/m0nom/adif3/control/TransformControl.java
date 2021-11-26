@@ -1,13 +1,12 @@
 package uk.m0nom.adif3.control;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.thymeleaf.TemplateEngine;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.FileTransformerApp;
 import uk.m0nom.adif3.xsdquery.Adif3Element;
+import uk.m0nom.antenna.Antenna;
+import uk.m0nom.antenna.Antennas;
 import uk.m0nom.dxcc.DxccEntities;
 
 import java.io.IOException;
@@ -24,6 +23,7 @@ import java.util.*;
 @Getter
 @Setter
 @EqualsAndHashCode
+@ToString
 public class TransformControl {
     private String location;
 
@@ -113,7 +113,7 @@ public class TransformControl {
     private boolean markdown;
     private boolean contestResults;
 
-    private Double hfAntennaTakeoffAngle;
+    private Antenna antenna = new Antennas().getAntenna("Vertical");
 
     private Map<String, String> icons = new HashMap<>();
 
