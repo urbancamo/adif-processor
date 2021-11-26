@@ -10,6 +10,7 @@ import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.print.Adif3PrintFormatter;
 import uk.m0nom.adif3.transform.TransformResults;
 import uk.m0nom.contest.ContestResultsCalculator;
+import uk.m0nom.dxcc.DxccJsonReader;
 import uk.m0nom.kml.KmlWriter;
 import uk.m0nom.qrz.CachingQrzXmlService;
 import uk.m0nom.qrz.QrzService;
@@ -125,6 +126,7 @@ public class FileTransformerApp implements Runnable
         logger.info(String.format("Running from: %s", new File(".").getAbsolutePath()));
         try {
             summits.loadData();
+            control.setDxccEntities(new DxccJsonReader().read());
             if (control.getUseQrzDotCom()) {
                 qrzService.enable();
                 if (!qrzService.getSessionKey()) {

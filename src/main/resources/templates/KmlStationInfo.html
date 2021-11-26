@@ -7,8 +7,6 @@
             color: black;
         }
         .image_box {
-            text-align: center;
-            padding: 5px;
         }
         .content {
             padding: 5px;
@@ -17,19 +15,28 @@
             color: midnightblue;
             font-family: "Bitstream Vera Sans",sans-serif;
         }
+        .tdLabel {
+            width: 200px;
+        }
+        div.info {
+            padding-top: 1em;
+        }
         .profile {
-            max-height:400px;
-            max-width:450px;
+            max-height:380px;
+            max-width:440px;
             height:auto;
             width:auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         #earth-balloon-content{
             display:flex;
-         }
+        }
         #balloon-content{
             display:inline-block;
-            width: 490px;
-            height: 640px;
+            width: 450px;
+            height: 700px;
         }
         card-template{
             height:640px;
@@ -37,50 +44,72 @@
     </style>
 </head>
 <body>
-        <div class="panel">
-            <h1>Station Info</h1>
-            <div class="image_box" th:if="${image} != null">
-                <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" target="_blank">
-                    <img class="profile" src="https://cdn-bio.qrz.com/p/m0nom_p/IMG_20180211_131628.jpg" th:src="${image}" alt=""/>
-                </a>
-            </div>
-            <div class="image_box" th:if="${image} == null">
-                <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" target="_blank" ><img class="profile" src="http://i3.cpcache.com/product/178743690/ham_radio_operator_35_button.jpg?height=630&width=630&qv=90" alt=""/></a>
-            </div>
-            <div class="content">
-                <div>
-                    Callsign: <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" th:text="${call}" target="_blank" >M0NOM/P</a>
-                </div>
+<div class="panel">
+    <div class="content">
+        <h1>Station Info</h1>
+    </div>
+    <div class="image_box" th:if="${image} != null">
+        <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" target="_blank">
+            <img class="profile" src="https://cdn-bio.qrz.com/p/m0nom_p/IMG_20180211_131628.jpg" th:src="${image}" alt=""/>
+        </a>
+    </div>
+    <div class="content">
+        <table>
+            <thead/>
+            <tbody>
+            <tr>
+                <td class="tdLabel">Callsign:</td>
+                <td><a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" th:text="${call}" target="_blank" >M0NOM/P</a></td>
+            </tr>
+            <tr th:if="${name} != null">
+                <td class="tdLabel">Name:</td>
+                <td><span th:text="${name}">Mark Wickens</span></td>
+            </tr>
+            <tr th:if="${country} != null">
+                <td class="tdLabel">Country:</td>
+                <td><span th:text="${country}">England</span></td>
+            </tr>
+            <tr th:if="${grid} != null">
+                <td class="tdLabel">Grid:</td>
+                <td><span th:text="${grid}">IO84NI</span></td>
+            </tr>
+            <tr th:if="${lat} != null">
+                <td class="tdLabel">Location: </td>
+                <td><span th:text="${lat}">LAT</span> <span th:text="${long}">LONG</span></td>
+            </tr>
+            <tr th:if="${locationSource} != null">
+                <td class="tdLabel">Location Source:</td><td><span th:text="${locationSource}">10-CHAR Maidenhead</span></td>
+            </tr>
+            <tr th:if="${locationAccuracy} != null">
+                <td class="tdLabel">Location Accuracy:</td><td><span th:text="${locationAccuracy}">IO84NI20MS</span></td>
+            </tr>
+            <tr th:if="${dxcc} != null">
+                <td class="tdLabel">DXCC:</td>
+                <td>
+                    <span th:text="${dxcc}">119 </span>
+                    <span th:text="${flag}">🇨🇦</span>
+                </td>
+            </tr>
+            <tr th:if="${ituZone} != null">
+                <td class="tdLabel">ITU Zone:</td><td><span th:text="${ituZone}">27</span></td>
+            </tr>
+            <tr th:if="${cqZone} != null">
+                <td class="tdLabel">CQ Zone:</td><td><span th:text="${cqZone}">14</span></td>
+            </tr>
+            </tbody>
+        </table>
 
-                <div th:replace="CotaInfo :: ${cota} ? 'info' : 'blank' "></div>
-                <div th:replace="HemaInfo :: ${hema} ? 'info' : 'blank' "></div>
-                <div th:replace="IotaInfo :: ${iota} ? 'info' : 'blank' "></div>
-                <div th:replace="LotaInfo :: ${lota} ? 'info' : 'blank' "></div>
-                <div th:replace="PotaInfo :: ${pota} ? 'info' : 'blank' "></div>
-                <div th:replace="RotaInfo :: ${rota} ? 'info' : 'blank' "></div>
-                <div th:replace="SotaInfo :: ${sota} ? 'info' : 'blank' "></div>
-                <div th:replace="WotaInfo :: ${wota} ? 'info' : 'blank' "></div>
-                <div th:replace="WwffInfo :: ${wwff} ? 'info' : 'blank' "></div>
+        <div th:replace="CotaInfo :: ${cota} ? 'info' : 'blank' "></div>
+        <div th:replace="HemaInfo :: ${hema} ? 'info' : 'blank' "></div>
+        <div th:replace="IotaInfo :: ${iota} ? 'info' : 'blank' "></div>
+        <div th:replace="LotaInfo :: ${lota} ? 'info' : 'blank' "></div>
+        <div th:replace="PotaInfo :: ${pota} ? 'info' : 'blank' "></div>
+        <div th:replace="RotaInfo :: ${rota} ? 'info' : 'blank' "></div>
+        <div th:replace="SotaInfo :: ${sota} ? 'info' : 'blank' "></div>
+        <div th:replace="WotaInfo :: ${wota} ? 'info' : 'blank' "></div>
+        <div th:replace="WwffInfo :: ${wwff} ? 'info' : 'blank' "></div>
 
-                <div th:if="${name} != null">
-                    Name: <span th:text="${name}">Mark Wickens</span>
-                </div>
-                <div th:if="${country} != null">
-                    Country: <span th:text="${country}">England</span>
-                </div>
-                <div th:if="${grid} != null">
-                    Grid: <span th:text="${grid}">IO84NI</span>
-                </div>
-                <div th:if="${lat} != null">
-                    Location: <span th:text="${lat}">LAT</span> <span th:text="${long}">LONG</span>
-                </div>
-                <div th:if="${locationSource} != null">
-                    Location Source: <span th:text="${locationSource}">10-CHAR Maidenhead</span>
-                </div>
-                <div th:if="${locationAccuracy} != null">
-                    Location Accuracy: <span th:text="${locationAccuracy}">IO84NI20MS</span>
-                </div>
-            </div>
-        </div>
-    </body>
+    </div>
+</div>
+</body>
 </html>
