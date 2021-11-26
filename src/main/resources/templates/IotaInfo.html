@@ -2,21 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>IOTA Fragment</title>
+    <style>
+        .tdLabel {
+            width: 200px;
+        }
+        div.info {
+            padding-top: 1em;
+        }
+    </style>
 </head>
 <body>
-<!--
-        IotaInfo iotaInfo = (IotaInfo) activity;
-        return String.format("IOTA: <a href=\"%s\">%s</a><br/>", activity.getUrl(), activity.getRef()) +
-                String.format("%s<br/>", iotaInfo.getName());
--->
-    <div th:fragment="info">
-        <div>
-            Name: <span th:text="${iota.name}"> Name</span>
-        </div>
-        <div>
-            Ref: <span th:text="${iota.ref}"> Ref</span>
-        </div>
+    <div th:fragment="info" class="info">
+        <table>
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td class="tdLabel">Name: </td>
+                    <td><span th:text="${iota.name}"> Iceland</span></td>
+                </tr>
+                <tr>
+                    <td class="tdLabel">Ref: </td>
+                    <td><span th:text="${iota.ref}"> EA-1234</span></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div th:fragment="blank" style="display: none;"></div>
 

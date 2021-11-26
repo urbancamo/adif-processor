@@ -3,19 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>HEMA Activity Info</title>
+    <style>
+        .tdLabel {
+            width: 200px;
+        }
+        div.info {
+            padding-top: 1em;
+        }
+    </style>
 </head>
 <body>
-<!--        String sb = String.format("HEMA: <a href=\"http://hema.org.uk/fullSummit.jsp?summitKey=%d\">%s</a><br/>",
-                summitInfo.getKey(), summitInfo.getRef()) +
-                String.format("%s<br/><br/>", summitInfo.getName());
--->
-    <div th:fragment="info">
-        <div>
-            HEMA: <a href="http://hema.org.uk/fullSummit.jsp?summitKey=2371" th:href="@{|http://hema.org.uk/fullSummit.jsp?summitKey=${hema.key}|}" th:text="${hema.ref}" target="_blank" >G/HLD-013</a>
-        </div>
-        <div>
-            Name: <span th:text="${hema.name}">Crinkle Crags - Long Top [Second Crinkle]</span>
-        </div>
+    <div th:fragment="info" class="info">
+        <table>
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td class="tdLabel">HEMA: </td>
+                    <td><a href="http://hema.org.uk/fullSummit.jsp?summitKey=2371" th:href="@{|http://hema.org.uk/fullSummit.jsp?summitKey=${hema.key}|}" th:text="${hema.ref}" target="_blank" >G/HLD-013</a></td>
+                </tr>
+                <tr>
+                    <td class="tdLabel">Name: </td>
+                    <td><span th:text="${hema.name}">Crinkle Crags - Long Top [Second Crinkle]</span></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div th:fragment="blank" style="display: none;"></div>
 </body>

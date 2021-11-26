@@ -2,16 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>COTA Fragment</title>
+    <style>
+        .tdLabel {
+            width: 200px;
+        }
+        div.info {
+            padding-top: 1em;
+        }
+    </style>
 </head>
 <body>
-    <div th:fragment="info">
-        <div>
-            COTA: <span th:text="${cota.ref}">G-00528</span>
-        </div>
-        <div>
-            Name: <span th:text="${cota.name}">Arnside Pele Tower,Cumbria</span>
-        </div>
+    <div th:fragment="info" class="info">
+        <table>
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td class="tdLabel">COTA:</td>
+                    <td><span th:text="${cota.ref}">G-00528</span></td>
+                </tr>
+                <tr>
+                    <td class="tdLabel">Name: </td>
+                    <td><span th:text="${cota.name}">Arnside Pele Tower,Cumbria</span></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div th:fragment="blank" style="display: none;"></div>
 </body>
