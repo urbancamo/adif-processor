@@ -44,7 +44,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
         if (control.getLocation() != null) {
             LocationParsers parsers = new LocationParsers();
             if (StringUtils.isNotBlank(control.getLocation())) {
-                LocationParserResult result = parsers.parseStringForCoordinates(LocationSource.UNDEFINED, control.getLocation());
+                LocationParserResult result = parsers.parseStringForCoordinates(LocationSource.OVERRIDE, control.getLocation());
                 if (result.getCoords() != null) {
                     setMyLocationFromCoordinates(qso, result.getCoords());
                     String gridsquare = MaidenheadLocatorConversion.coordsToLocator(result.getCoords());
@@ -72,8 +72,8 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
         station.setGrid(grid);
     }
 
-    private void setMyCoordsFromGrid(Station station, Adif3Record rec, LocationSource source, String grid) {
-        GlobalCoordinatesWithSourceAccuracy coords = MaidenheadLocatorConversion.locatorToCoords(source, grid);
+    private void setMyCoordsFromGrid(Station station, Adif3Record rec, String grid) {
+        GlobalCoordinatesWithSourceAccuracy coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.ACTIVITY, grid);
         rec.setMyCoordinates(coords);
         station.setCoordinates(coords);
     }
@@ -85,7 +85,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
             setMyGridFromCoords(station, rec, info.getCoords());
         } else if (info.hasGrid()) {
             rec.setMyGridSquare(info.getGrid());
-            setMyCoordsFromGrid(station, rec, LocationSource.ACTIVITY, info.getGrid());
+            setMyCoordsFromGrid(station, rec, info.getGrid());
         } else {
             logger.warning(String.format("Your activity %s at %s doesn't have a location defined", info.getType().getActivityName(), info.getRef()));
         }

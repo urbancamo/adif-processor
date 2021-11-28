@@ -84,7 +84,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         QrzCallsign myQrzData = qrzService.getCallsignData(rec.getStationCallsign());
 
         Map<String, String> unmapped = new HashMap<>();
-        fromLocationDeterminer.setMyLocation(qso, myQrzData);
+        if (!fromLocationDeterminer.setMyLocation(qso, myQrzData)) {
+            logger.warning("Unable to determine from station location");
+        }
 
         qso.getFrom().setQrzInfo(myQrzData);
         enricher.enrichAdifForMe(qso.getRecord(), myQrzData);
@@ -174,7 +176,6 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         if (control.isSotaMicrowaveAwardComment()) {
             SotaMicrowaveAward.addSotaMicrowaveAwardToComment(rec);
         }
-
     }
 
     private void processSig(Qso qso, Map<String, String> unmapped) {

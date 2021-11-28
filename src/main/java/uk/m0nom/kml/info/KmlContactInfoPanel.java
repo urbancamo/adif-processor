@@ -49,8 +49,8 @@ public class KmlContactInfoPanel {
         if (bearing != null) {
             context.setVariable("bearing", String.format("%03.03f", bearing));
         }
-        if (result.getMode() != null) {
-            switch (result.getMode()) {
+        if (result.getPropagation() != null) {
+            switch (result.getPropagation()) {
                 case F2_REFLECTION:
                     context.setVariable("skyDist", String.format("%,.0f", result.getSkyDistance()));
                     context.setVariable("bounces", String.format("%d", result.getBounces()));
@@ -73,7 +73,7 @@ public class KmlContactInfoPanel {
                     break;
             }
         }
-        String mode = (result.getMode() != null) ? result.getMode().toString() : "GROUND WAVE";
+        String mode = (result.getPropagation() != null) ? result.getPropagation().adifCode() : "GND";
         context.setVariable("propagationMode", mode);
 
         final String html = templateEngine.process(new TemplateSpec("KmlContactInfo", TemplateMode.XML), context);

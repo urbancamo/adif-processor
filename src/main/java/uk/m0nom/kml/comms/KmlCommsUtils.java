@@ -3,7 +3,6 @@ package uk.m0nom.kml.comms;
 import de.micromata.opengis.kml.v_2_2_0.*;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
-import org.thymeleaf.TemplateEngine;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.activity.sota.SotaInfo;
@@ -148,7 +147,7 @@ public class KmlCommsUtils {
                 theirAltitude = summitInfo.getAltitude();
             }
         }
-        CommsLinkResult result = new CommsVisualizer().getCommsLink(control, commsLine, myCoords, coords,
+        CommsLinkResult result = new CommsVisualizer().getCommunicationsLink(control, commsLine, myCoords, coords,
                 rec, myAltitude, theirAltitude);
 
         // Set the contact distance in the ADIF output file

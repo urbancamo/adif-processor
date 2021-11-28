@@ -22,8 +22,8 @@ public class SatellitePropagation implements CommsLinkGenerator {
     }
 
     @Override
-    public CommsLinkResult getCommsLink(TransformControl control, LineString hfLine, GlobalCoordinates start, GlobalCoordinates end,
-                                        Adif3Record rec, double myAltitude, double theirAltitude) {
+    public CommsLinkResult getCommunicationsLink(TransformControl control, LineString hfLine, GlobalCoordinates start, GlobalCoordinates end,
+                                                 Adif3Record rec, double myAltitude, double theirAltitude) {
         CommsLinkResult result = new CommsLinkResult();
 
         if (rec.getSatName() != null) {
@@ -51,7 +51,7 @@ public class SatellitePropagation implements CommsLinkGenerator {
 
             result.setSkyDistance(satelliteLocation.getAltitude() * 2 / 1000);
 
-            result.setMode(Propagation.SATELLITE);
+            result.setPropagation(Propagation.SATELLITE);
             result.setAltitude(satelliteLocation.getAltitude());
 
             // In order to complete this right angle calculation we need to shorten the geodesic distance

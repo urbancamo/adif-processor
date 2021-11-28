@@ -4,7 +4,6 @@ import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
 import org.gavaghan.geodesy.GlobalCoordinates;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 
 public class PropagationUtils {
     public static CommsLinkResult calculateGeodeticCurve(GlobalCoordinates start,

@@ -14,7 +14,7 @@ public class CommsLinkResult {
     private double fromAngle;
     private double toAngle;
     private double skyDistance;
-    private Propagation mode;
+    private Propagation propagation;
     private double azimuth;
 
     public CommsLinkResult() {

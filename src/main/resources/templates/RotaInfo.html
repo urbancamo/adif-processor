@@ -2,23 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>ROTA Fragment</title>
+    <style>
+        .tdLabel {
+            width: 200px;
+        }
+        div.info {
+            padding-top: 1em;
+        }
+    </style>
 </head>
 <body>
-<!--
-        return String.format("Railway: %s<br/>Club: %s<br/>WAB: %s<br/>",
-                info.getName(), info.getClub(), info.getWab());
--->
-    <div th:fragment="info">
-        <div>
-            Railway: <span th:text="${rota.name}">Lakeside & Haverthwaite Railway</span>
-        </div>
-        <div>
-            Club: <span th:text="${rota.club}">Furness Amateur Radio Society</span>
-        </div>
-        <div>
-            WAB: <span th:text="${rota.wab}">SD38</span>
-        </div>
+    <div th:fragment="info" class="info">
+        <table>
+            <thead></thead>
+            <tbody>
+            <tr>
+                <td class="tdLabel">Railway:</td>
+                <td><span th:text="${rota.name}">Lakeside & Haverthwaite Railway</span></td>
+            </tr>
+            <tr>
+                <td class="tdLabel">Club:</td>
+                <td><span th:text="${rota.club}">Furness Amateur Radio Society</span></td>
+            <tr>
+                <td class="tdLabel">WAB:</td>
+                <td><span th:text="${rota.wab}">SD38</span></td>
+            </tbody>
+        </table>
     </div>
     <div th:fragment="blank" style="display: none;"></div>
 

@@ -1,9 +1,6 @@
 package uk.m0nom.comms;
 
 import de.micromata.opengis.kml.v_2_2_0.LineString;
-import org.gavaghan.geodesy.Ellipsoid;
-import org.gavaghan.geodesy.GeodeticCalculator;
-import org.gavaghan.geodesy.GeodeticCurve;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Propagation;
@@ -15,9 +12,9 @@ import java.util.List;
 public class TroposphericDuctingPropagation implements CommsLinkGenerator {
 
     @Override
-    public CommsLinkResult getCommsLink(TransformControl control, LineString hfLine,
-                                        GlobalCoordinates start, GlobalCoordinates end,
-                                        Adif3Record rec, double myAltitude, double theirAltitude) {
+    public CommsLinkResult getCommunicationsLink(TransformControl control, LineString hfLine,
+                                                 GlobalCoordinates start, GlobalCoordinates end,
+                                                 Adif3Record rec, double myAltitude, double theirAltitude) {
         /* assume daytime propagation if we don't have a QSO time */
         CommsLinkResult result = PropagationUtils.calculateGeodeticCurve(start, end);
 
@@ -35,7 +32,7 @@ public class TroposphericDuctingPropagation implements CommsLinkGenerator {
             avgBase += bounce.getBase();
             mode = bounce.getMode();
         }
-        result.setMode(mode);
+        result.setPropagation(mode);
         result.setAltitude(avgAltitude / bounces.size());
         result.setBase(avgBase / bounces.size());
         result.setFromAngle(avgAngle / bounces.size());

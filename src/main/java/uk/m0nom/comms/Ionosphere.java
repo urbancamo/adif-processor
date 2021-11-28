@@ -8,6 +8,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A model of the Ionosphere that defines the layers in the Ionosphere and how the reflection properties
+ * of a signal based on the signal frequency.
+ */
 public class Ionosphere {
     public final static double HF_ANTENNA_DEFAULT_TAKEOFF_ANGLE = 6;
 
@@ -37,6 +41,17 @@ public class Ionosphere {
         return kms * 1000;
     }
 
+    /**
+     * Get the number of bounces that a signal makes as it travels between the two stations.
+     * @param mode
+     * @param frequencyInKhz
+     * @param distanceInKm
+     * @param timeOfDay
+     * @param myAltitude
+     * @param theirAltitude
+     * @param hfAntennaTakeoffAngle
+     * @return
+     */
     public List<PropagationBounce> getBounces(Propagation mode, double frequencyInKhz, double distanceInKm, LocalTime timeOfDay,
                                               double myAltitude, double theirAltitude, double hfAntennaTakeoffAngle) {
         List<PropagationBounce> bounces = new LinkedList<>();
@@ -49,7 +64,11 @@ public class Ionosphere {
                 case F2_REFLECTION:
                     Map<String, IonosphericLayer> layers = getLayerForTimeOfDay(timeOfDay);
                     IonosphericLayer bounceLayer = layers.get("F2");
-                    double alt = bounceLayer.getAverageHeight();
+
+                    // Here we take into account that higher frequency signals tend to bounce at a lower height in the
+                    // atmosphere than higher frequency signals
+                    double alt = calculateBounceHeight(frequencyInKhz, bounceLayer, 1800, 22000);
+
                     int hops = calculateNumberOfHops(distanceInKm, alt / 1000, hfAntennaTakeoffAngle);
                     for (int i = 0; i < hops; i++) {
                         double hopDistance = distanceInKm / hops;
@@ -68,12 +87,26 @@ public class Ionosphere {
 
         if (mode == null || bounces.size() == 0) {
             // Single hop with nominal altitude that increases as the distance increases
+            // this provides a very rough approximation of the way signals curve to follow the earth
             double adjustAlt = Math.max(myAltitude, theirAltitude);
             double apexHeight = Math.max(GROUNDWAVE_BOUNCE_ALT * distanceInKm, adjustAlt);
             PropagationBounce bounce = new PropagationBounce(null, distanceInKm, apexHeight, 0, 0.0);
             bounces.add(bounce);
         }
         return bounces;
+    }
+
+    private double calculateBounceHeight(double frequencyInKhz, IonosphericLayer bounceLayer, double minFreq, double maxFreq) {
+        double bounceHeight = bounceLayer.getLower();
+        if (frequencyInKhz < maxFreq && frequencyInKhz > minFreq) {
+            // Normalize frequencies between 14Mhz and 1.8mhz to within 0.0 to 1.0
+            double delta = (frequencyInKhz - minFreq) / (maxFreq - minFreq);
+            double layerWidth = bounceLayer.getUpper() - bounceLayer.getLower();
+            bounceHeight = bounceLayer.getLower() + (delta * layerWidth);
+        } else if (frequencyInKhz < minFreq) {
+            bounceHeight = bounceLayer.getUpper();
+        }
+        return bounceHeight;
     }
 
     /**
