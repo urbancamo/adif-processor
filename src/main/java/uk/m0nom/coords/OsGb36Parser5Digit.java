@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class OsGb36Parser5Digit implements LocationParser, LocationFormatter{
-    private final static Pattern PATTERN = Pattern.compile("^([A-Z]{2}\\s*[0-9]{5}\\s*[0-9]{5})$");
+    private final static Pattern PATTERN = Pattern.compile("^([A-Z]{2})\\s*([0-9]{5})\\s*([0-9]{5})$");
 
     @Override
     public Pattern getPattern() {
@@ -19,10 +19,14 @@ public class OsGb36Parser5Digit implements LocationParser, LocationFormatter{
     public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String locationString) {
         Matcher matcher = getPattern().matcher(locationString);
         if (matcher.find()) {
-            String locator = matcher.group(1).replace(" ", "");
+            String map = matcher.group(1);
+            String easting = matcher.group(2);
+            String northing = matcher.group(3);
+            // Need to pad easting and northing with '5's to make them 6 digits
+            String locator = String.format("%s%s%s%s%s", map, easting, "5", northing, "5");
             OsGb36Converter converter = new OsGb36Converter();
             OsGb36ConverterResult result = converter.convertOsGb36ToCoords(locator);
-            return new GlobalCoordinatesWithSourceAccuracy(result.getCoords(), 0.0, new LocationInfo(LocationAccuracy.OSGB36, LocationSource.OSGB36_CONVERTER));
+            return new GlobalCoordinatesWithSourceAccuracy(result.getCoords(), 0.0, new LocationInfo(LocationAccuracy.OSGB36_5DIGIT, LocationSource.OSGB36_CONVERTER));
         }
         return null;
     }
@@ -40,7 +44,7 @@ public class OsGb36Parser5Digit implements LocationParser, LocationFormatter{
 
     @Override
     public String getName() {
-        return "OSGB36 5 Digit";
+        return "5 Digit OSGB36";
     }
 
 }

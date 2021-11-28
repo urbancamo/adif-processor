@@ -7,7 +7,7 @@ import uk.m0nom.osgb36.OsGb36ConverterResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class OsGb36ParserEastingNorthing implements LocationParser, LocationFormatter{
+public class OsGb36Parser6Digit implements LocationParser, LocationFormatter{
     private final static Pattern PATTERN = Pattern.compile("^[Ee]\\s*([0-9]{6})[\\s,]*[Nn]\\s*([0-9]{6})$");
 
     @Override
@@ -23,7 +23,7 @@ public class OsGb36ParserEastingNorthing implements LocationParser, LocationForm
             String northing = matcher.group(2).replace(" ", "");
             OsGb36Converter converter = new OsGb36Converter();
             OsGb36ConverterResult result = converter.convertOsGb36EastingNorthingToCoords(easting, northing);
-            return new GlobalCoordinatesWithSourceAccuracy(result.getCoords(), 0.0, new LocationInfo(LocationAccuracy.OSGB36, LocationSource.OSGB36_CONVERTER));
+            return new GlobalCoordinatesWithSourceAccuracy(result.getCoords(), 0.0, new LocationInfo(LocationAccuracy.OSGB36_6DIGIT, LocationSource.OSGB36_CONVERTER));
         }
         return null;
     }
@@ -40,7 +40,7 @@ public class OsGb36ParserEastingNorthing implements LocationParser, LocationForm
 
     @Override
     public String getName() {
-        return "OSGB36 Easting Northing";
+        return "6 Digit OSGB36";
     }
 
 }
