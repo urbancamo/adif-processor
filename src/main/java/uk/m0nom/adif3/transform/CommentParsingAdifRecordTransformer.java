@@ -124,13 +124,14 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             transformComment(qso, rec.getComment(), unmapped);
         }
 
-        if (rec.getCoordinates() == null && StringUtils.isBlank(rec.getGridsquare())) {
-            theirQrzData = enricher.lookupLocationFromQrz(qso);
-            qso.getTo().setQrzInfo(theirQrzData);
+        if (rec.getCoordinates() == null && rec.getGridsquare() == null) {
+            enricher.lookupLocationFromQrz(qso);
         }
 
         // IF qrz.com can't fill in the coordinates, and the gridsquare is set, fill in coordinates from that
-        if (rec.getCoordinates() == null && MaidenheadLocatorConversion.isAValidGridSquare(rec.getGridsquare()) && !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare())) {
+        if (rec.getCoordinates() == null &&
+                MaidenheadLocatorConversion.isAValidGridSquare(rec.getGridsquare()) &&
+                !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare())) {
             // Set Coordinates from GridSquare that has been supplied in the input file
             GlobalCoordinatesWithSourceAccuracy coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, rec.getGridsquare());
             rec.setCoordinates(coords);
@@ -267,12 +268,16 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                                 case 8:
                                 case 10:
                                     if (value.length() > 6) {
-                                        // Truncate more accurate grid square values to 6 characters
+                                        // Truncate more accurate grid square values to 6 characters to put in the record
+                                        // as it doesn't support any more accuracy than 6
                                         rec.setGridsquare(value.substring(0, 6));
                                     } else {
                                         rec.setGridsquare(value);
                                     }
-                                    rec.setCoordinates(MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, value));
+                                    // Use full accuracy to set the coordinates
+                                    GlobalCoordinatesWithSourceAccuracy coordinates = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, value);
+                                    rec.setCoordinates(coordinates);
+                                    qso.getTo().setCoordinates(coordinates);
                                     break;
                                 default:
                                     logger.severe(String.format("Gridsquare %s isn't valid", value));

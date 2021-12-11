@@ -1,5 +1,6 @@
 package uk.m0nom.adif3.transform;
 
+import com.vividsolutions.jts.algorithm.HCoordinate;
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.contacts.Qso;
@@ -52,12 +53,12 @@ public class AdifQrzEnricher {
 
         if (rec.getQth() == null) {
             StringBuilder addr = new StringBuilder();
-            if (qrzData.getAddr1() != null) {
+            if (StringUtils.isNotEmpty(qrzData.getAddr1())) {
                 addr.append(qrzData.getAddr1());
-                if (qrzData.getAddr2() != null) {
-                    addr.append(", ");
-                    addr.append(qrzData.getAddr2());
-                }
+                addr.append(", ");
+            }
+            if (StringUtils.isNotEmpty(qrzData.getAddr2())) {
+                addr.append(qrzData.getAddr2());
             }
             rec.setQth(addr.toString());
         }
@@ -77,10 +78,16 @@ public class AdifQrzEnricher {
         return name;
     }
 
-    QrzCallsign lookupLocationFromQrz(Qso qso) {
+    public QrzCallsign lookupLocationFromQrz(Qso qso) {
+        QrzCallsign callsignData = qso.getTo().getQrzInfo();
         Adif3Record rec = qso.getRecord();
         String callsign = rec.getCall();
-        QrzCallsign callsignData = qrzService.getCallsignData(callsign);
+
+        if (callsignData == null) {
+            callsignData = qrzService.getCallsignData(callsign);
+            qso.getTo().setQrzInfo(callsignData);
+        }
+
         if (callsignData != null) {
             updateQsoFromQrzLocation(qso, callsignData);
             logger.info(String.format("Retrieved %s from QRZ.COM", callsign));
@@ -90,6 +97,7 @@ public class AdifQrzEnricher {
             callsignData = qrzService.getCallsignData(fixedCallsign);
             if (callsignData != null) {
                 logger.info(String.format("Retrieved %s from QRZ.COM using FIXED station callsign %s", callsign, fixedCallsign));
+                qso.getTo().setQrzInfo(callsignData);
                 updateQsoFromQrzLocation(qso, callsignData);
             }
         }
@@ -106,25 +114,32 @@ public class AdifQrzEnricher {
         if (callsignData != null) {
             Adif3Record rec = qso.getRecord();
             if (rec.getCoordinates() == null) {
-                boolean geocodeBasedGeoLoc = StringUtils.equalsIgnoreCase("geocode", callsignData.getGeoloc());
-                boolean gridBasedGeoloc = StringUtils.equalsIgnoreCase("grid", callsignData.getGeoloc());
+                boolean geocodeBasedGeoLocation = StringUtils.equalsIgnoreCase("geocode", callsignData.getGeoloc());
+                boolean gridBasedGeoLocation = StringUtils.equalsIgnoreCase("grid", callsignData.getGeoloc());
+                boolean userGeoLocation = StringUtils.equalsIgnoreCase("user", callsignData.getGeoloc());
 
                 String gridSquare = callsignData.getGrid();
-                boolean invalidGridBasedLoc = gridBasedGeoloc && (!MaidenheadLocatorConversion.isAValidGridSquare(gridSquare) || MaidenheadLocatorConversion.isADubiousGridSquare(gridSquare));
+                boolean invalidGridBasedLoc = (gridBasedGeoLocation || userGeoLocation) &&
+                        (!MaidenheadLocatorConversion.isAValidGridSquare(gridSquare) || MaidenheadLocatorConversion.isADubiousGridSquare(gridSquare));
 
+                GlobalCoordinatesWithSourceAccuracy coord = null;
                 if (callsignData.getLat() != null && callsignData.getLon() != null && !invalidGridBasedLoc) {
-                    GlobalCoordinatesWithSourceAccuracy coord = new GlobalCoordinatesWithSourceAccuracy(callsignData.getLat(), callsignData.getLon(),
+                    coord = new GlobalCoordinatesWithSourceAccuracy(callsignData.getLat(), callsignData.getLon(),
                             LocationSource.QRZ, LocationAccuracy.LAT_LONG);
-                    if (geocodeBasedGeoLoc) {
+                    if (geocodeBasedGeoLocation) {
                         coord.setLocationInfo(LocationSource.QRZ, LocationAccuracy.GEOLOCATION_GOOD);
-                    } else if (gridBasedGeoloc) {
+                    } else if (gridBasedGeoLocation) {
                         coord.setLocationInfo(LocationSource.QRZ, LocationAccuracy.MHL6);
                     }
+
+                } else if (rec.getGridsquare() == null && !invalidGridBasedLoc) {
+                    // Fallback to gridsquare in callsign of lat/long not specified
+                    coord = MaidenheadLocatorConversion.locatorToCoords(LocationSource.QRZ, gridSquare);
+                }
+
+                if (coord != null) {
                     rec.setCoordinates(coord);
                     qso.getTo().setCoordinates(coord);
-                }
-                if (rec.getGridsquare() == null && !invalidGridBasedLoc) {
-                    rec.setGridsquare(callsignData.getGrid());
                 }
             }
         }
