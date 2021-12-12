@@ -1,7 +1,5 @@
 package org.marsik.ham.adif;
 
-import org.marsik.ham.adif.Adif3Record;
-import org.marsik.ham.adif.AdifHeader;
 import org.marsik.ham.adif.enums.AdifEnumCode;
 import org.marsik.ham.adif.types.AdifType;
 import org.marsik.ham.grid.CoordinateWriter;
@@ -19,7 +17,7 @@ public class AdiWriter {
     static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmmss");
     static final DateTimeFormatter timeFormatterShort = DateTimeFormatter.ofPattern("HHmm");
 
-    private StringBuilder builder = new StringBuilder();
+    private final StringBuilder builder = new StringBuilder();
 
     public void append(String value) {
         builder.append(value);
