@@ -1,7 +1,7 @@
 package uk.m0nom.osgb36;
 
 /**
- * Decompiled from Swing application: https://www.megalithic.co.uk/download.php?op=viewdownloaddetails&lid=91&ttitle=The_Java_British_National_Grid_Converter
+ * Decompiled from Swing application: The_Java_British_National_Grid_Converter
  * Author: Jan Herold (yzle at gmx dot de)
  * Might look weird, but I've tried not to tamper with the converter code at all, hence the wrapper class.
  */

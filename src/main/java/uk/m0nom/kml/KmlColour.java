@@ -29,10 +29,6 @@ public class KmlColour {
         this.transparency = transparency;
     }
 
-    /**
-     * Create a custom colour
-     */
-
     public KmlColour(String name, int red, int green, int blue, int transparency) {
         this.name = name;
         this.red = red;

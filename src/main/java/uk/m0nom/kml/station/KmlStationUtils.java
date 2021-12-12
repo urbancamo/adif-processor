@@ -156,7 +156,7 @@ public class KmlStationUtils {
         }
     }
 
-    /** In order to be unique the station marker name must contain the date and time of the contact **/
+    /* In order to be unique the station marker name must contain the date and time of the contact **/
     public static String getStationMarkerId(Qso qso) {
         String stationName = qso.getTo().getCallsign();
         String dateTime = getQsoDateTimeAsString(qso);

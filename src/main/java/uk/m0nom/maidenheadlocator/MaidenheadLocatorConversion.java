@@ -164,7 +164,7 @@ public class MaidenheadLocatorConversion {
      *
      * @param a Start locator string
      * @param b End locator string
-     * @return Distance in km<
+     * @return Distance in km
      */
     public static double distance(String a, String b) {
         return distance(locatorToCoords(LocationSource.UNDEFINED, a), locatorToCoords(LocationSource.UNDEFINED, b));
