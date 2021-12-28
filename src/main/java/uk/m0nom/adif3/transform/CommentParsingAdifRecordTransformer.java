@@ -193,6 +193,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     qso.getTo().addActivity(activity);
 
                     // Make sure if they have a SOTA reference this takes precedence over any other reference
+                    // hence why this code is only executed if the sota ref is null
                     if (rec.getSotaRef() == null || StringUtils.isBlank(rec.getSotaRef().getValue())) {
                         toLocationDeterminer.setTheirLocationFromActivity(qso, activity);
                     }

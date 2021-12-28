@@ -1,6 +1,7 @@
 package uk.m0nom.adif3.control;
 
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 import org.thymeleaf.TemplateEngine;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.FileTransformerApp;
@@ -31,7 +32,6 @@ public class TransformControl {
     private String outputPath;
     private String encoding;
 
-    private Boolean useQrzDotCom;
     private String qrzUsername;
     private String qrzPassword;
 
@@ -137,6 +137,10 @@ public class TransformControl {
 
     public void setActivityRef(ActivityType activity, String ref) {
         activityRefs.put(activity, ref);
+    }
+
+    public boolean isQrzDotComEnabled() {
+        return (StringUtils.isNotEmpty(qrzUsername) && StringUtils.isNotEmpty(qrzPassword));
     }
 
     public TransformControl() {

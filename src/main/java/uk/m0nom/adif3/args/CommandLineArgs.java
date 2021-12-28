@@ -21,8 +21,6 @@ public class CommandLineArgs {
                 .defaultHelp(true)
                 .description("Transform an ADIF file prior to storing or mapping it by enriching it with positional data.");
 
-        parser.addArgument("-q", "--qrz").required(false).action(Arguments.storeTrue())
-                .help("Enable QRZ.COM lookup");
         parser.addArgument("-qu", "--qrz-username").required(false)
                 .help("Username for the QRZ XML Service");
         parser.addArgument("-qp", "--qrz-password").required(false)
@@ -92,7 +90,6 @@ public class CommandLineArgs {
             control.setLocation(ns.getString("location"));
             control.setPathname(ns.getString("input")); //.substring(1, ns.getString("path").length()-1));
             control.setEncoding(ns.getString("encoding"));
-            control.setUseQrzDotCom(ns.getBoolean("qrz"));
             control.setKmlS2s(ns.getBoolean("kml_s2s"));
             control.setKmlS2sContactLineStyle(ns.getString("kml_s2s_line_style"));
             control.setKmlContactLineStyle(ns.getString("kml_contact_line_style"));

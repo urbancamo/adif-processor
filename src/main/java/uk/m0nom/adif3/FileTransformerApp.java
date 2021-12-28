@@ -127,7 +127,7 @@ public class FileTransformerApp implements Runnable
         try {
             summits.loadData();
             control.setDxccEntities(new DxccJsonReader().read());
-            if (control.getUseQrzDotCom()) {
+            if (control.isQrzDotComEnabled()) {
                 qrzService.enable();
                 if (!qrzService.getSessionKey()) {
                     logger.warning("Could not connect to QRZ.COM, disabling lookups and continuing...");

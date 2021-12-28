@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DegreesDecimalMinutesLatLongParser implements LocationParser, LocationFormatter {
-    private final static Pattern PATTERN = Pattern.compile("([-+]*)(\\d+)[^\\d]+(\\d+\\.\\d+)[^\\d]+([-+]*)([-+]*)(\\d+)[^\\d]+(\\d+\\.\\d+)");
+    private final static Pattern PATTERN = Pattern.compile("([-+])(\\d+)[^\\d]+(\\d+\\.\\d+)[^\\d]+([-+]*)([-+])(\\d+)[^\\d]+(\\d+\\.\\d+)");
 
     @Override
     public Pattern getPattern() {

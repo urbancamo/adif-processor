@@ -23,8 +23,8 @@ import static uk.m0nom.adif3.print.PrintUtils.stripQuotes;
 public class PrintJobConfig {
     private static final Logger logger = Logger.getLogger(PrintJobConfig.class.getName());
 
-    String name;
     String filename;
+    String name;
     String inEncoding;
     String outEncoding;
     String startCommand;
@@ -35,7 +35,6 @@ public class PrintJobConfig {
 
     public void configure(String filename, InputStream yamlConfig) throws IOException {
         this.filename = filename;
-
         YamlMapping config = Yaml.createYamlInput(yamlConfig).readYamlMapping();
         YamlMapping printJob = config.yamlMapping("printJob");
         setName(printJob.string("name"));

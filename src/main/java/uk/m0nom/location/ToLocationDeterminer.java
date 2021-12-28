@@ -76,6 +76,11 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
     }
 
     public void setTheirLocationFromActivity(Qso qso, Activity activity) {
+        // Do nothing here if the location is already overridden via a COORD comment in the ADIF record
+        if (qso.getTo().getCoordinates() != null && qso.getTo().getCoordinates().getLocationInfo().getSource() == LocationSource.OVERRIDE) {
+            return;
+        }
+
         if (activity.hasCoords()) {
             GlobalCoordinatesWithSourceAccuracy coords = activity.getCoords();
             String grid = MaidenheadLocatorConversion.coordsToLocator(coords);

@@ -6,10 +6,10 @@ import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class DegreesDecimalMinutesLatLongParserTest {
+public class DegreesDecimalMinutesWithNsewLatLongParserTest {
     @Test
     public void test1() {
-        check("48°28.510\"N 14°11.310\"E", 48.475167, 14.1885);
+        check("48°28.510'N 14°11.310'E", 48.475167, 14.1885);
     }
 
     @Test
@@ -18,7 +18,7 @@ public class DegreesDecimalMinutesLatLongParserTest {
     }
 
     private void check(String input, Double latitude, Double longitude) {
-        GlobalCoordinates coords = new DegreesDecimalMinutesLatLongParser().parse(LocationSource.UNDEFINED, input);
+        GlobalCoordinates coords = new DegreesDecimalMinutesWithNsewLatLongParser().parse(LocationSource.UNDEFINED, input);
         assertNotNull("Coords is null", coords);
         assertTrue(Math.abs(coords.getLatitude()) - Math.abs(latitude) < 0.001);
         assertTrue(Math.abs(coords.getLongitude()) - Math.abs(longitude) < 0.001);
