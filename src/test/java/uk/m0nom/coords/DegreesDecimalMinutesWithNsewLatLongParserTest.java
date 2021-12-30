@@ -17,6 +17,16 @@ public class DegreesDecimalMinutesWithNsewLatLongParserTest {
         check("51°53.31' N 0°32.77' W", 51.888464861082646, -0.5462438363385727);
     }
 
+    @Test
+    public void test3() {
+        check("51°53.31'N 0°32.77'W", 51.888464861082646, -0.5462438363385727);
+    }
+
+    @Test
+    public void test4() {
+        check("51 53.31'N 0 32.77'W", 51.888464861082646, -0.5462438363385727);
+    }
+
     private void check(String input, Double latitude, Double longitude) {
         GlobalCoordinates coords = new DegreesDecimalMinutesWithNsewLatLongParser().parse(LocationSource.UNDEFINED, input);
         assertNotNull("Coords is null", coords);

@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DegreesDecimalMinutesLatLongParser implements LocationParser, LocationFormatter {
-    private final static Pattern PATTERN = Pattern.compile("([-+])(\\d+)[^\\d]+(\\d+\\.\\d+)[^\\d]+([-+]*)([-+])(\\d+)[^\\d]+(\\d+\\.\\d+)");
+    private final static Pattern PATTERN = Pattern.compile("([-+]*)(\\d+)[^\\d]+(\\d+\\.\\d+)'*\\s+([-+]*)(\\d+)[^\\d]+(\\d+\\.\\d+)'*");
 
     @Override
     public Pattern getPattern() {
@@ -21,9 +21,9 @@ public class DegreesDecimalMinutesLatLongParser implements LocationParser, Locat
             String latDegrees = matcher.group(2);
             String latMinutes = matcher.group(3);
 
-            String longNegative = matcher.group(5);
-            String longDegrees = matcher.group(6);
-            String longMinutes = matcher.group(7);
+            String longNegative = matcher.group(4);
+            String longDegrees = matcher.group(5);
+            String longMinutes = matcher.group(6);
 
             Double latitude = LatLongUtils.parseDegreesMinutes(latDegrees, latMinutes, "-".equalsIgnoreCase(latNegative));
             Double longitude = LatLongUtils.parseDegreesMinutes(longDegrees, longMinutes, "-".equalsIgnoreCase(longNegative));

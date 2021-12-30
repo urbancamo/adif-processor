@@ -118,12 +118,14 @@ public class LatLongUtils {
         public static Double parseDegreesMinutesSeconds(String degrees, String minutes, String seconds, boolean negative) {
         try {
             double d = Double.parseDouble(degrees);
-            if (negative) {
-                d = -d;
-            }
             double m = Double.parseDouble(minutes);
             double s = Double.parseDouble(seconds);
-            return Math.signum(d) * (Math.abs(d) + (m / 60.0) + (s / 3600.0));
+
+            double absVal = (Math.abs(d) + (m / 60.0) + (s / 3600.0));
+            if (negative) {
+                absVal = absVal * -1.0;
+            }
+            return absVal;
         } catch (NumberFormatException e) {
             return null;
         }
