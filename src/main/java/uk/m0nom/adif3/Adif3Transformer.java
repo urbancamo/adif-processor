@@ -9,6 +9,7 @@ import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.transform.Adif3RecordTransformer;
 import uk.m0nom.adif3.transform.CommentParsingAdifRecordTransformer;
+import uk.m0nom.adif3.transform.TransformResults;
 import uk.m0nom.qrz.QrzService;
 
 import java.io.IOException;
@@ -34,11 +35,11 @@ public class Adif3Transformer {
         this.qrzService = qrzService;
     }
 
-    public Qsos transform(Adif3 log, TransformControl control) throws UnsupportedHeaderException {
+    public Qsos transform(Adif3 log, TransformControl control, TransformResults results) throws UnsupportedHeaderException {
         Adif3RecordTransformer transformer;
         Qsos qsos = new Qsos(log);
 
-        transformer = new CommentParsingAdifRecordTransformer(config, summits, qrzService, control);
+        transformer = new CommentParsingAdifRecordTransformer(config, summits, qrzService, control, results);
         int index = 1;
         for (Adif3Record rec : log.getRecords()) {
             if ((rec.getStationCallsign() != null || rec.getOperator() != null) && rec.getCall() != null) {

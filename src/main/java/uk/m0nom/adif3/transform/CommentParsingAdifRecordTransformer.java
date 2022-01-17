@@ -41,6 +41,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private final Satellites satellites;
     private final QrzService qrzService;
     private final TransformControl control;
+    private final TransformResults results;
     private final AdifQrzEnricher enricher;
     private final FromLocationDeterminer fromLocationDeterminer;
     private final ToLocationDeterminer toLocationDeterminer;
@@ -49,11 +50,12 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private final CommentTokenizer tokenizer;
     private final LocationParsers locationParsers;
 
-    public CommentParsingAdifRecordTransformer(YamlMapping config, ActivityDatabases activities, QrzService qrzService, TransformControl control) {
+    public CommentParsingAdifRecordTransformer(YamlMapping config, ActivityDatabases activities, QrzService qrzService, TransformControl control, TransformResults results) {
         fieldMap = config.asMapping();
         this.activities = activities;
         this.qrzService = qrzService;
         this.control = control;
+        this.results = results;
         this.enricher = new AdifQrzEnricher(qrzService);
         this.satellites = new Satellites();
         this.fromLocationDeterminer = new FromLocationDeterminer(control, qrzService, activities);
@@ -98,14 +100,25 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
         if (rec.getSotaRef() != null && StringUtils.isNotBlank(rec.getSotaRef().getValue())) {
             String sotaId = rec.getSotaRef().getValue();
-            toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.SOTA, sotaId, unmapped);
-            qso.getTo().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaId));
+            Activity activity = activities.getDatabase(ActivityType.SOTA).get(sotaId);
+            if (activity != null) {
+                qso.getTo().addActivity(activity);
+                String result = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.SOTA, sotaId, unmapped);
+                if (result != null) {
+                    results.addContactWithDubiousLocation(result);
+                }
+            } else {
+                results.addContactWithDubiousLocation(String.format("%s (SOTA %s invalid)", qso.getTo().getCallsign(), sotaId));
+            }
         }
 
         // Check the callsign for a Railways on the Air
         Activity rotaInfo = activities.getDatabase(ActivityType.ROTA).get(rec.getCall().toUpperCase());
         if (rotaInfo != null) {
-            toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.ROTA, rotaInfo.getRef(), unmapped);
+            String result = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.ROTA, rotaInfo.getRef(), unmapped);
+            if (result != null) {
+                results.addContactWithDubiousLocation(result);
+            }
             qso.getTo().addActivity(rotaInfo);
         }
 
@@ -231,6 +244,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         Double latitude = null;
         Double longitude = null;
         GlobalCoordinatesWithSourceAccuracy coords = null;
+        String callsignWithInvalidActivity = null;
+
         for (String key : tokens.keySet()) {
             String value = tokens.get(key).trim();
 
@@ -327,7 +342,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         try {
                             Sota sota = Sota.valueOf(sotaRef.toUpperCase());
                             rec.setSotaRef(sota);
-                            toLocationDeterminer.setTheirLocationFromActivity(qso, sotaRef, unmapped);
+                            callsignWithInvalidActivity = toLocationDeterminer.setTheirLocationFromSotaId(qso, sotaRef, unmapped);
                             qso.getTo().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaRef));
                         } catch (IllegalArgumentException iae) {
                             // something we can't work out about the reference, so put it in the unmapped list instead
@@ -340,31 +355,31 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     case "WotaRef":
                         // Strip off any S2s reference
                         String wotaId = StringUtils.split(value, ' ')[0];
-                        toLocationDeterminer.setTheirLocationFromWotaId(qso, wotaId.toUpperCase(), unmapped);
+                        callsignWithInvalidActivity = toLocationDeterminer.setTheirLocationFromWotaId(qso, wotaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.WOTA).get(wotaId));
                         break;
                     case "HemaRef":
                         // Strip off any S2s reference
                         String hemaId = StringUtils.split(value, ' ')[0];
-                        toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.HEMA, hemaId.toUpperCase(), unmapped);
+                        callsignWithInvalidActivity = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.HEMA, hemaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.HEMA).get(hemaId));
                         break;
                     case "PotaRef":
                         // Strip off any S2s reference
                         String potaId = StringUtils.split(value, ' ')[0];
-                        toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.POTA, potaId.toUpperCase(), unmapped);
+                        callsignWithInvalidActivity = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.POTA, potaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.POTA).get(potaId));
                         break;
                     case "CotaRef":
                         // Strip off any S2s reference
                         String cotaId = StringUtils.split(value, ' ')[0];
-                        toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.COTA, cotaId.toUpperCase(), unmapped);
+                        callsignWithInvalidActivity = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.COTA, cotaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.COTA).get(cotaId));
                         break;
                     case "WwffRef":
                         // Strip off any S2s reference
                         String wwffId = StringUtils.split(value, ' ')[0];
-                        toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.WWFF, wwffId.toUpperCase(), unmapped);
+                        callsignWithInvalidActivity = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.WWFF, wwffId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.WWFF).get(wwffId));
                         break;
                     case "SerialTx":
@@ -405,9 +420,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         }
                         break;
                     case "Coordinates":
-                        LocationParserResult result = locationParsers.parseStringForCoordinates(LocationSource.OVERRIDE, value);
-                        if (result != null) {
-                            coords = result.getCoords();
+                        LocationParserResult parserResult = locationParsers.parseStringForCoordinates(LocationSource.OVERRIDE, value);
+                        if (parserResult != null) {
+                            coords = parserResult.getCoords();
                         }
                         break;
                     case "Latitude":
@@ -458,6 +473,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 }
             } else {
                 unmapped.put(key, value);
+            }
+            if (callsignWithInvalidActivity != null) {
+                results.addContactWithDubiousLocation(callsignWithInvalidActivity);
             }
             issueWarnings(rec);
         }

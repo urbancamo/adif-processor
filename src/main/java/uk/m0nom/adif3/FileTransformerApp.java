@@ -138,7 +138,7 @@ public class FileTransformerApp implements Runnable
 
             logger.info(String.format("Reading input file %s with encoding %s", inPath, control.getEncoding()));
             Adif3 log = reader.read(inPath, control.getEncoding(), false);
-            qsos = transformer.transform(log, control);
+            qsos = transformer.transform(log, control, results);
             logger.info(String.format("Writing output file %s with encoding %s", out, control.getEncoding()));
             if (control.getGenerateKml()) {
                 kmlWriter.write(kml, inBasename, summits, qsos, results);

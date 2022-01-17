@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.marsik.ham.adif.Adif3;
 import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.adif3.transform.TransformResults;
 import uk.m0nom.qrz.CachingQrzXmlService;
 import uk.m0nom.qrz.QrzService;
 import uk.m0nom.qrz.QrzXmlService;
@@ -69,7 +70,8 @@ public class DirectoryTransformerApp implements Runnable
                     for (File in: files) {
                         try {
                             Adif3 log = reader.read(in.getAbsolutePath(), "windows-1252", false);
-                            transformer.transform(log, control);
+                            TransformResults results = new TransformResults();
+                            transformer.transform(log, control, results);
 
                             // Create output file name from input file name
                             String out = String.format("%s-%s.%s", FilenameUtils.removeExtension(in.toString()),

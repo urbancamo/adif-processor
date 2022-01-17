@@ -10,6 +10,7 @@ import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.transform.Adif3RecordTransformer;
 import uk.m0nom.adif3.transform.CommentParsingAdifRecordTransformer;
+import uk.m0nom.adif3.transform.TransformResults;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.activity.ActivityDatabases;
 
@@ -68,7 +69,8 @@ public class AdifReaderTest {
                 System.err.println("Could not connect to QRZ.COM, continuing...");
             }
 
-            Adif3RecordTransformer transformer = new CommentParsingAdifRecordTransformer(config, summits, qrzXmlService, control);
+            TransformResults results = new TransformResults();
+            Adif3RecordTransformer transformer = new CommentParsingAdifRecordTransformer(config, summits, qrzXmlService, control, results);
             int index = 1;
             for (Adif3Record rec : log.getRecords()) {
                 transformer.transform(qsos, rec, index++);
