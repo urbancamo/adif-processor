@@ -1,4 +1,4 @@
-package uk.m0nom.comms;
+package uk.m0nom.comms.ionosphere;
 
 import lombok.Getter;
 import lombok.Setter;

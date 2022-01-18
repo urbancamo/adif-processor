@@ -1,6 +1,7 @@
 package uk.m0nom.comms;
 
 import org.marsik.ham.adif.enums.Propagation;
+import uk.m0nom.comms.ionosphere.Ionosphere;
 
 public class PropagationModePredictor {
     public static Propagation predictPropagationMode(double frequencyInKhz, double distanceInKm) {

@@ -1,6 +1,8 @@
-package uk.m0nom.comms;
+package uk.m0nom.comms.ionosphere;
 
 import org.marsik.ham.adif.enums.Propagation;
+import uk.m0nom.comms.PropagationApex;
+import uk.m0nom.comms.PropagationModePredictor;
 
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -37,16 +39,18 @@ public class Ionosphere {
         dayTimeLayers.put("F2", new IonosphericLayer("F2", metersFromKm(250), metersFromKm(500)));
     }
 
+
     private double metersFromKm(double kms) {
         return kms * 1000;
     }
 
+
     /*
      * Get the number of bounces that a signal makes as it travels between the two stations.
      */
-    public List<PropagationBounce> getBounces(Propagation mode, double frequencyInKhz, double distanceInKm, LocalTime timeOfDay,
-                                              double myAltitude, double theirAltitude, double hfAntennaTakeoffAngle) {
-        List<PropagationBounce> bounces = new LinkedList<>();
+    public List<PropagationApex> getBounces(Propagation mode, double frequencyInKhz, double distanceInKm, LocalTime timeOfDay,
+                                            double myAltitude, double theirAltitude, double hfAntennaTakeoffAngle) {
+        List<PropagationApex> bounces = new LinkedList<>();
 
         if (mode == null) {
             mode = PropagationModePredictor.predictPropagationMode(frequencyInKhz, distanceInKm);
@@ -59,20 +63,29 @@ public class Ionosphere {
 
                     // Here we take into account that higher frequency signals tend to bounce at a lower height in the
                     // atmosphere than higher frequency signals
-                    double alt = calculateBounceHeight(frequencyInKhz, bounceLayer, 22000);
+                    double altInMetres = calculateBounceHeight(frequencyInKhz, bounceLayer, 22000);
+                    double altInKm = altInMetres / 1000.0;
 
-                    int hops = calculateNumberOfHops(distanceInKm, alt / 1000, hfAntennaTakeoffAngle);
+                    // We initially calculate the distance across the earth of propagation based on the takeoff angle
+                    // this is then used to determine the number of hops required
+                    PropagationApex apexResult = IonosphericApexCalculator.calculateDistanceOfApex(altInKm, hfAntennaTakeoffAngle);
+
+                    int hops = calculateNumberOfHops(distanceInKm, apexResult);
+                    // We now need to adjust the hops so that the fall equally between the stations
+                    apexResult = adjustApexBasedOnHops(distanceInKm, apexResult, hops);
+
+
                     for (int i = 0; i < hops; i++) {
-                        double hopDistance = distanceInKm / hops;
-                        PropagationBounce bounce = new PropagationBounce(mode, hopDistance, alt, 0, 0.0);
+                        double hopDistance = apexResult.getDistanceAcrossEarth() * 2.0;
+                        PropagationApex bounce = new PropagationApex(mode, hopDistance, apexResult.getDistanceToApex()*1000, altInKm*1000, 0, apexResult.getRadiationAngle());
                         bounces.add(bounce);
                     }
                     break;
                 case SPORADIC_E:
                     layers = getLayerForTimeOfDay(timeOfDay);
                     bounceLayer = layers.get("E");
-                    alt = bounceLayer.getAverageHeight();
-                    bounces.add(new PropagationBounce(mode, distanceInKm, alt, 0, 0.0));
+                    altInKm = bounceLayer.getAverageHeight() / 1000.0;
+                    bounces.add(new PropagationApex(mode, distanceInKm, altInKm, altInKm, 0, 0.0));
                     break;
             }
         }
@@ -82,11 +95,24 @@ public class Ionosphere {
             // this provides a very rough approximation of the way signals curve to follow the earth
             double adjustAlt = Math.max(myAltitude, theirAltitude);
             double apexHeight = Math.max(GROUNDWAVE_BOUNCE_ALT * distanceInKm, adjustAlt);
-            PropagationBounce bounce = new PropagationBounce(null, distanceInKm, apexHeight, 0, 0.0);
+            PropagationApex bounce = new PropagationApex(null, distanceInKm, apexHeight, apexHeight, 0, 0.0);
             bounces.add(bounce);
         }
         return bounces;
     }
+
+    private PropagationApex adjustApexBasedOnHops(double distanceAcrossEarthInKm, PropagationApex apexResult, int hopCount) {
+        /* find the takeoff angle based on the distance between stations */
+
+        // A bounce includes both up and down, so the apex distance is half the distance across the earth between stations
+        double apexDistance = distanceAcrossEarthInKm / 2.0;
+
+        double takeOffAngle = IonosphericApexCalculator.calculateTakeoffAngleFromDistanceAcrossEarth((distanceAcrossEarthInKm / 2.0) / hopCount, apexResult.getApexHeight());
+
+        /* recalculate apex based on new takeOffAngle */
+        return IonosphericApexCalculator.calculateDistanceOfApex(apexResult.getApexHeight(), takeOffAngle);
+    }
+
 
     private double calculateBounceHeight(double frequencyInKhz, IonosphericLayer bounceLayer, double maxFreq) {
         double bounceHeight = bounceLayer.getLower();
@@ -101,17 +127,12 @@ public class Ionosphere {
         return bounceHeight;
     }
 
-    /*
-     * This is pure magic here, no science involved.
-     */
-    private int calculateNumberOfHops(double distanceInKm, double altInKm, double hfAntennaTakeoffAngle) {
-        double angleOfRadiationSingleHop = 90.0 - Math.toDegrees(Math.atan(distanceInKm / altInKm));
-        if (angleOfRadiationSingleHop < hfAntennaTakeoffAngle) {
-            /* We need to break up the propagation into hops */
-            return (int) (Math.floor(hfAntennaTakeoffAngle / angleOfRadiationSingleHop)) + 1;
-        }
-        return 1;
+
+    private int calculateNumberOfHops(double distanceInKm, PropagationApex apexResult) {
+        double singleHopDistance = apexResult.getDistanceAcrossEarth() * 2;
+        return (int) Math.floor(distanceInKm / singleHopDistance) + 1;
     }
+
 
     private Map<String, IonosphericLayer> getLayerForTimeOfDay(LocalTime timeOfDay) {
         if (timeOfDay.isAfter(LocalTime.of(18,0)) && timeOfDay.isBefore(LocalTime.of(8,0))) {

@@ -15,7 +15,7 @@ public class GeodesicUtils
     }
 
 
-    public static double addBouncesToLineString(LineString hfLine, List<PropagationBounce> bounces, GlobalCoordinates start, GlobalCoordinates end,
+    public static double addBouncesToLineString(LineString hfLine, List<PropagationApex> bounces, GlobalCoordinates start, GlobalCoordinates end,
                                                 double initialAzimuth) {
         GeodeticCalculator calculator = new GeodeticCalculator();
         hfLine.addToCoordinates(start.getLongitude(), start.getLatitude(), 0);
@@ -25,13 +25,13 @@ public class GeodesicUtils
 
         /* number of lines will be twice the number of bounces */
         for (int i = 0; i < bounces.size(); i++) {
-            PropagationBounce bounce = bounces.get(i);
+            PropagationApex bounce = bounces.get(i);
 
             /* Need work out the distance taking into account the altitude gain */
 
-            double distanceAcrossGlobal = bounce.getDistance() * 1000;
-            double reflectionHeight = bounce.getHeight();
-            double baseHeight = bounce.getBase();
+            double distanceAcrossGlobal = bounce.getDistanceAcrossEarth() * 1000;
+            double reflectionHeight = bounce.getApexHeight();
+            double baseHeight = bounce.getBaseHeight();
             double distanceOfHalfHop = distanceAcrossGlobal / 2.0;
 
             /* need to make sure we take into account both sides of the hop */
@@ -39,12 +39,12 @@ public class GeodesicUtils
             skyDistance += halfCommsDistance * 2.0 / 1000.0;
 
             /* set the angle of the bounce */
-            double angle = Math.toDegrees(Math.atan((halfCommsDistance / distanceOfHalfHop)));
-            bounce.setAngle(angle);
+            //double angle = Math.toDegrees(Math.atan((halfCommsDistance / distanceOfHalfHop)));
+            //bounce.setRadiationAngle(angle);
 
             /* Add 'up' bounce */
             GlobalCoordinates apex = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, previous, azimuth, distanceAcrossGlobal / 2.0);
-            hfLine.addToCoordinates(apex.getLongitude(), apex.getLatitude(), bounce.getHeight());
+            hfLine.addToCoordinates(apex.getLongitude(), apex.getLatitude(), bounce.getApexHeight());
 
             /* Recalculate Azimuth between Apex and End Point */
             GeodeticCurve curve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, apex, end);

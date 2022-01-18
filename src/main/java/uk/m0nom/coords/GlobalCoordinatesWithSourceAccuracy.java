@@ -22,6 +22,12 @@ public class GlobalCoordinatesWithSourceAccuracy extends GlobalCoordinates {
         setLocationInfo(source, accuracy);
     }
 
+    public GlobalCoordinatesWithSourceAccuracy(GlobalCoordinates coordinates,  Double altitude) {
+        super(coordinates.getLatitude(), coordinates.getLongitude());
+        setAltitude(altitude);
+        setLocationInfo(LocationSource.UNDEFINED, LAT_LONG);
+    }
+
     public GlobalCoordinatesWithSourceAccuracy(double latitude, double longitude, Double altitude) {
         super(latitude, longitude);
         setAltitude(altitude);

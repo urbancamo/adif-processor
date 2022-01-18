@@ -22,14 +22,14 @@ public class TroposphericDuctingPropagation implements CommsLinkGenerator {
         double avgAngle = 0.0;
         double avgBase = 0.0;
         Propagation mode = null;
-        List<PropagationBounce> bounces = new Troposphere().getBounces(result.getDistance());
+        List<PropagationApex> bounces = new Troposphere().getBounces(result.getDistanceInKm());
         double skyDistance = GeodesicUtils.addBouncesToLineString(hfLine, bounces, start, end, result.getAzimuth());
         result.setSkyDistance(skyDistance);
 
-        for (PropagationBounce bounce : bounces) {
-            avgAltitude += bounce.getHeight();
-            avgAngle += bounce.getAngle();
-            avgBase += bounce.getBase();
+        for (PropagationApex bounce : bounces) {
+            avgAltitude += bounce.getApexHeight();
+            avgAngle += bounce.getRadiationAngle();
+            avgBase += bounce.getBaseHeight();
             mode = bounce.getMode();
         }
         result.setPropagation(mode);

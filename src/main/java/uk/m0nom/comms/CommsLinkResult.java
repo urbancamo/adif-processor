@@ -10,7 +10,7 @@ public class CommsLinkResult {
     private int bounces;
     private double altitude;
     private double base;
-    private double distance;
+    private double distanceInKm;
     private double fromAngle;
     private double toAngle;
     private double skyDistance;

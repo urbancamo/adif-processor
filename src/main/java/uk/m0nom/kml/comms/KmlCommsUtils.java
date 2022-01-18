@@ -151,7 +151,7 @@ public class KmlCommsUtils {
                 rec, myAltitude, theirAltitude);
 
         // Set the contact distance in the ADIF output file
-        rec.setDistance(result.getDistance());
+        rec.setDistance(result.getDistanceInKm());
         String description = new KmlContactInfoPanel().getPanelContentForCommsLink(control, qso, result, control.getTemplateEngine());
         placemark.withDescription(description);
         if (control.isKmlContactShadow()) {

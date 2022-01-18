@@ -9,15 +9,15 @@ public class Antennas {
         antennaMap = new HashMap<>();
 
         // Vertical
-        Antenna vertical = new Antenna(AntennaType.VERTICAL, "Vertical", 6);
+        Antenna vertical = new Antenna(AntennaType.VERTICAL, "Vertical", 10);
         antennaMap.put(vertical.getName(), vertical);
 
         // Dipole
-        Antenna dipole = new Antenna(AntennaType.DIPOLE, "Dipole", 10);
+        Antenna dipole = new Antenna(AntennaType.DIPOLE, "Dipole", 20);
         antennaMap.put(dipole.getName(), dipole);
 
         // Inverted-V
-        Antenna invertedV = new Antenna(AntennaType.INV_V, "Inverted-V", 8);
+        Antenna invertedV = new Antenna(AntennaType.INV_V, "Inverted-V", 30);
         antennaMap.put(invertedV.getName(), invertedV);
     }
 

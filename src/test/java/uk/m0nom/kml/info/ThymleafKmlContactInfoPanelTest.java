@@ -41,7 +41,7 @@ public class ThymleafKmlContactInfoPanelTest {
         when(rec.getBand()).thenReturn(Band.BAND_2m);
         when(rec.getFreq()).thenReturn(145.450);
         when(rec.getTxPwr()).thenReturn(50.0);
-        when(clr.getDistance()).thenReturn(20.5);
+        when(clr.getDistanceInKm()).thenReturn(20.5);
         when(clr.getPropagation()).thenReturn(null);
         when(rec.getFreqRx()).thenReturn(null);
 

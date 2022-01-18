@@ -3,7 +3,10 @@ package uk.m0nom.comms;
 import de.micromata.opengis.kml.v_2_2_0.LineString;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
+import org.marsik.ham.adif.enums.AntPath;
 import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.comms.ionosphere.LongPath;
+import uk.m0nom.comms.ionosphere.ShortPath;
 
 /**
  * Calculates the path of propagation between two points on the earth based on a propagation mode
@@ -27,7 +30,11 @@ public class CommsVisualizer implements CommsLinkGenerator {
                 default:
             }
         } else {
-            result = new IonosphericPropagation().getCommunicationsLink(control, commsLine, startGc, endGc, rec, myAltitude, theirAltitude);
+            if (rec.getAntPath() == AntPath.LONG) {
+                result = new LongPath().getCommunicationsLink(control, commsLine, startGc, endGc, rec, myAltitude, theirAltitude);
+            } else {
+                result = new ShortPath().getCommunicationsLink(control, commsLine, startGc, endGc, rec, myAltitude, theirAltitude);
+            }
         }
         return result;
     }

@@ -25,7 +25,7 @@ import uk.m0nom.location.ToLocationDeterminer;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.qrz.QrzService;
-import uk.m0nom.satellite.Satellites;
+import uk.m0nom.satellite.ApSatellites;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -38,7 +38,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
     private final YamlMapping fieldMap;
     private final ActivityDatabases activities;
-    private final Satellites satellites;
+    private final ApSatellites apSatellites;
     private final QrzService qrzService;
     private final TransformControl control;
     private final TransformResults results;
@@ -57,7 +57,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         this.control = control;
         this.results = results;
         this.enricher = new AdifQrzEnricher(qrzService);
-        this.satellites = new Satellites();
+        this.apSatellites = new ApSatellites();
         this.fromLocationDeterminer = new FromLocationDeterminer(control, qrzService, activities);
         this.toLocationDeterminer = new ToLocationDeterminer(control, qrzService, activities);
         this.activityProcessor = new ActivityProcessor(control, qrzService, activities);
@@ -458,7 +458,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         rec.setPropMode(mode);
                         break;
                     case "SatelliteName":
-                        if (satellites.getSatellite(value.toUpperCase()) != null) {
+                        if (apSatellites.getSatellite(value.toUpperCase()) != null) {
                             rec.setSatName(value.toUpperCase());
                         } else {
                             logger.warning(String.format("Satellite: %s isn't currently supported", value));

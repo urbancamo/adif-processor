@@ -10,5 +10,5 @@ import java.util.List;
 @Setter
 public class CommsLinkPath {
     private Propagation mode;
-    private List<PropagationBounce> hops;
+    private List<PropagationApex> hops;
 }

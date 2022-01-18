@@ -135,8 +135,12 @@
                             <td><span th:text="${bounces}">5</span></td>
                         </tr>
                         <tr th:if="${propagationMode} == 'F2'">
-                            <td class="tdLabel">Bounce Alt:</td>
+                            <td class="tdLabel">Reflection Alt:</td>
                             <td><span th:text="${avgAlt}">350 km</span></td>
+                        </tr>
+                        <tr th:if="${propagationMode} == 'F2'">
+                            <td class="tdLabel">Reflection Angle:</td>
+                            <td><span th:text="${angle}">23°</span></td>
                         </tr>
 
 

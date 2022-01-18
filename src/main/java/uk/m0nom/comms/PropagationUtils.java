@@ -10,7 +10,7 @@ public class PropagationUtils {
                                                          GlobalCoordinates end) {
         CommsLinkResult result = new CommsLinkResult();
         GeodeticCurve curve = new GeodeticCalculator().calculateGeodeticCurve(Ellipsoid.WGS84, start, end);
-        result.setDistance(curve.getEllipsoidalDistance() / 1000);
+        result.setDistanceInKm(curve.getEllipsoidalDistance() / 1000);
         result.setAzimuth(curve.getAzimuth());
         return result;
     }

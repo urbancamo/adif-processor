@@ -44,7 +44,7 @@ public class KmlContactInfoPanel {
         if (rec.getTxPwr() != null) {
             context.setVariable("txPwr", String.format("%,.1f", rec.getTxPwr()));
         }
-        context.setVariable("gndDist", String.format("%,.0f", result.getDistance()));
+        context.setVariable("gndDist", String.format("%,.0f", result.getDistanceInKm()));
         Double bearing = GeodesicUtils.getBearing(rec.getMyCoordinates(), rec.getCoordinates());
         if (bearing != null) {
             context.setVariable("bearing", String.format("%03.03f", bearing));
@@ -59,7 +59,7 @@ public class KmlContactInfoPanel {
                     } else {
                         context.setVariable("avgAlt", String.format("%,.0f metres", result.getAltitude()));
                     }
-                    context.setVariable("avgAngle", String.format("%,.0f°", result.getFromAngle()));
+                    context.setVariable("angle", String.format("%,.0f°", result.getFromAngle()));
                     break;
                 case SATELLITE:
                     context.setVariable("satName", qso.getRecord().getSatName());

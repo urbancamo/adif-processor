@@ -16,8 +16,8 @@ public class Troposphere {
         return kms * 1000;
     }
 
-    public List<PropagationBounce> getBounces(double distanceInKm) {
-        List<PropagationBounce> bounces = new LinkedList<>();
+    public List<PropagationApex> getBounces(double distanceInKm) {
+        List<PropagationApex> bounces = new LinkedList<>();
 
         double topOfDuctAlt = DUCT_ALTITUDE + (DUCT_SIZE / 2);
         double bottomOfDuctAlt = DUCT_ALTITUDE - (DUCT_SIZE / 2);
@@ -27,7 +27,7 @@ public class Troposphere {
 
         // First hop from my site to the duct
         for (int i = 0; i < hops; i++) {
-            PropagationBounce bounce = new PropagationBounce(Propagation.TROPOSPHERIC_DUCTING, hopDistance, topOfDuctAlt, bottomOfDuctAlt,0.0);
+            PropagationApex bounce = new PropagationApex(Propagation.TROPOSPHERIC_DUCTING, hopDistance, topOfDuctAlt, topOfDuctAlt, bottomOfDuctAlt,0.0);
             bounces.add(bounce);
         }
         return bounces;

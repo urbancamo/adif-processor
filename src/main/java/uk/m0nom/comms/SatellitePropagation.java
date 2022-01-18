@@ -9,16 +9,16 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Propagation;
 import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 import uk.m0nom.geodesic.GeodesicUtils;
-import uk.m0nom.satellite.Satellite;
-import uk.m0nom.satellite.SatellitePosition;
-import uk.m0nom.satellite.Satellites;
+import uk.m0nom.satellite.ApSatellite;
+import uk.m0nom.satellite.ApSatellites;
 
 public class SatellitePropagation implements CommsLinkGenerator {
-    private final Satellites satellites;
+    private final ApSatellites apSatellites;
 
     public SatellitePropagation() {
-        satellites = new Satellites();
+        apSatellites = new ApSatellites();
     }
 
     @Override
@@ -27,23 +27,24 @@ public class SatellitePropagation implements CommsLinkGenerator {
         CommsLinkResult result = new CommsLinkResult();
 
         if (rec.getSatName() != null) {
-            Satellite satellite = satellites.getSatellite(rec.getSatName());
-            satellite.updateAdifRec(control, rec);
-            SatellitePosition satelliteLocation = satellite.getPosition(rec.getTimeOn());
+            ApSatellite apSatellite = apSatellites.getSatellite(rec.getSatName());
+            apSatellite.updateAdifRec(control, rec);
+            GlobalCoordinatesWithSourceAccuracy groundStation = new GlobalCoordinatesWithSourceAccuracy(rec.getMyCoordinates(), myAltitude);
+            GlobalCoordinatesWithSourceAccuracy satelliteLocation = apSatellite.getPosition(groundStation, rec.getQsoDate(), rec.getTimeOn());
 
             // Calculate ground distance between two stations
             GeodeticCalculator calculator = new GeodeticCalculator();
 
             GeodeticCurve betweenStationsCurve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, start, end);
-            GeodeticCurve fromSatelliteCurve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, start, satelliteLocation.getPosition());
-            GeodeticCurve toSatelliteCurve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, satelliteLocation.getPosition(), end);
+            GeodeticCurve fromSatelliteCurve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, start, satelliteLocation);
+            GeodeticCurve toSatelliteCurve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, satelliteLocation, end);
             double distance = betweenStationsCurve.getEllipsoidalDistance();
 
             double distanceInKm = distance / 1000;
-            result.setDistance(distanceInKm);
+            result.setDistanceInKm(distanceInKm);
 
             hfLine.addToCoordinates(start.getLongitude(), start.getLatitude(), myAltitude);
-            hfLine.addToCoordinates(satelliteLocation.getPosition().getLongitude(), satelliteLocation.getPosition().getLatitude(), satelliteLocation.getAltitude());
+            hfLine.addToCoordinates(satelliteLocation.getLongitude(), satelliteLocation.getLatitude(), satelliteLocation.getAltitude());
             hfLine.addToCoordinates(end.getLongitude(), end.getLatitude(), theirAltitude);
 
             hfLine.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
