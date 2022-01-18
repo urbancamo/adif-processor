@@ -1,5 +1,6 @@
 package uk.m0nom.satellite;
 
+import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;

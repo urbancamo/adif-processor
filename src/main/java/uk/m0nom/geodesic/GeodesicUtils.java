@@ -9,7 +9,7 @@ import java.util.List;
 
 public class GeodesicUtils
 {
-    public static void getSurfaceLine(LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc) {
+    public static void addSurfaceLine(LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc) {
         hfLine.addToCoordinates(startGc.getLongitude(), startGc.getLatitude(), 0);
         hfLine.addToCoordinates(endGc.getLongitude(), endGc.getLatitude(), 0);
     }

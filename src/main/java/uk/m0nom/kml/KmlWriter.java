@@ -10,12 +10,15 @@ import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.transform.TransformResults;
+import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 import uk.m0nom.coords.LatLongUtils;
 import uk.m0nom.kml.activity.KmlLocalActivities;
 import uk.m0nom.kml.comms.KmlCommsUtils;
+import uk.m0nom.kml.comms.KmlSatelliteTrack;
 import uk.m0nom.kml.info.TemplateEngineConstructor;
 import uk.m0nom.kml.station.KmlStationUtils;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
+import uk.m0nom.satellite.ApSatellites;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,6 +39,7 @@ public class KmlWriter {
         KmlLocalActivities kmlLocalActivities = new KmlLocalActivities();
         KmlCommsUtils kmlCommsUtils = new KmlCommsUtils(control, activities);
         KmlStationUtils kmlStationUtils = new KmlStationUtils(control);
+        KmlSatelliteTrack kmlSatelliteTrack = new KmlSatelliteTrack();
 
         final Kml kml = new Kml();
         Document doc = kml.createAndSetDocument().withName(name).withOpen(true);
@@ -80,6 +84,12 @@ public class KmlWriter {
                 results.addContactWithoutLocation(qso.getTo().getCallsign());
                 logger.warning(String.format("Cannot determine communication link, no location data for: %s", qso.getTo().getCallsign()));
             }
+        }
+
+        if (results.getSatelliteActivity().hasActivity()) {
+            GlobalCoordinates coords = qsos.getQsos().get(0).getRecord().getMyCoordinates();
+            GlobalCoordinatesWithSourceAccuracy coordinatesWithSourceAccuracy = new GlobalCoordinatesWithSourceAccuracy(coords, 0.0);
+            kmlSatelliteTrack.addSatelliteTracks(control, doc, results.getSatelliteActivity(), coordinatesWithSourceAccuracy);
         }
 
         try {

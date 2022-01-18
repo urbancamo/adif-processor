@@ -2,6 +2,7 @@ package uk.m0nom.adif3.transform;
 
 import lombok.Getter;
 import lombok.Setter;
+import uk.m0nom.satellite.SatelliteActivity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,10 +17,12 @@ public class TransformResults {
     private String error = "";
     private Collection<String> contactsWithoutLocation;
     private Collection<String> contactsWithDubiousLocation;
+    private SatelliteActivity satelliteActivity;
 
     public TransformResults() {
         contactsWithoutLocation = new ArrayList<>();
         contactsWithDubiousLocation = new ArrayList<>();
+        satelliteActivity = new SatelliteActivity();
     }
 
     public TransformResults(String errorMessage) {

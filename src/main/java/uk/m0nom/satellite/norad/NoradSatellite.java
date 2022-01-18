@@ -36,10 +36,14 @@ public class NoradSatellite implements ApSatellite {
         ZonedDateTime utcDateTime = dateTime.atZone(ZoneId.of("UTC"));
         Date utcDate = new Date(utcDateTime.toInstant().toEpochMilli());
         SatPos satPos = satellite.getPosition(groundStationPosition, utcDate);
+
+        double latitude = satPos.getLatitude() / (Math.PI * 2.0) * 360;
+        double longitude = satPos.getLongitude() / (Math.PI * 2.0) * 360;
+        double altitudeInMetres = satPos.getAltitude() * 1000.0;
         GlobalCoordinatesWithSourceAccuracy position =
-                new GlobalCoordinatesWithSourceAccuracy(satPos.getLatitude(),
-                        satPos.getLongitude(), satPos.getAltitude() * 1000.0,
-                        LocationSource.UNDEFINED, LocationAccuracy.LAT_LONG);
+                new GlobalCoordinatesWithSourceAccuracy(latitude,
+                        longitude, altitudeInMetres,
+                        LocationSource.SATELLITE, LocationAccuracy.LAT_LONG);
         return position;
 
     }

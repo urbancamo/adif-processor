@@ -9,7 +9,8 @@ public enum LocationSource {
     QRZ("QRZ.COM"),
     GEOCODING("Geocoding"),
     OSGB36_CONVERTER("OSGB36 Converter"),
-    UNDEFINED("Undefined");
+    UNDEFINED("Undefined"),
+    SATELLITE("Satellite");
 
     private final String description;
 

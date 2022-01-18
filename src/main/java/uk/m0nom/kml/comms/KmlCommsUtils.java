@@ -27,6 +27,7 @@ public class KmlCommsUtils {
     private final static String S2S_LINE_ID = "s2S";
     private final static String COMM_LINE_ID = "comm";
     private final static String SHADOW_LINE_ID = "shadow";
+    private final static String SATELLITE_ID = "satellite";
 
     private final ActivityDatabases activities;
     private final KmlBandLineStyles bandLineStyles;
@@ -163,7 +164,7 @@ public class KmlCommsUtils {
                     .withStyleUrl(shadowStyleUrl);
 
             commsLine = placemark.createAndSetLineString();
-            GeodesicUtils.getSurfaceLine(commsLine, myCoords, coords);
+            GeodesicUtils.addSurfaceLine(commsLine, myCoords, coords);
         }
         return null;
 

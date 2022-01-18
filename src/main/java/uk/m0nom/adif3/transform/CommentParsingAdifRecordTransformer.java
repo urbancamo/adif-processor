@@ -55,9 +55,10 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         this.activities = activities;
         this.qrzService = qrzService;
         this.control = control;
-        this.results = results;
         this.enricher = new AdifQrzEnricher(qrzService);
         this.apSatellites = new ApSatellites();
+        this.results = results;
+        results.getSatelliteActivity().setSatellites(apSatellites);
         this.fromLocationDeterminer = new FromLocationDeterminer(control, qrzService, activities);
         this.toLocationDeterminer = new ToLocationDeterminer(control, qrzService, activities);
         this.activityProcessor = new ActivityProcessor(control, qrzService, activities);
@@ -189,6 +190,10 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         // Add the SOTA Microwave Award data to the end of the comment field
         if (control.isSotaMicrowaveAwardComment()) {
             SotaMicrowaveAward.addSotaMicrowaveAwardToComment(rec);
+        }
+
+        if (rec.getSatName() != null) {
+            results.getSatelliteActivity().recordSatelliteActivity(qso);
         }
     }
 

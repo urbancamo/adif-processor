@@ -64,7 +64,7 @@ public class KmlContactInfoPanel {
                 case SATELLITE:
                     context.setVariable("satName", qso.getRecord().getSatName());
                     /*sb.append(String.format("Sky dist: %,.0f km<br/>", result.getSkyDistance()));*/
-                    context.setVariable("satAlt", String.format("%,.0f", result.getAltitude() / 1000));
+                    context.setVariable("satAlt", String.format("%,.0f km", result.getAltitude() / 1000));
                     break;
                 case TROPOSPHERIC_DUCTING:
                     context.setVariable("bounces", String.format("%d", result.getBounces()));
