@@ -14,6 +14,8 @@ import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
@@ -24,6 +26,8 @@ import java.util.logging.Logger;
  */
 public class Adif3PrintFormatter {
     private static final Logger logger = Logger.getLogger(Adif3PrintFormatter.class.getName());
+
+    private final static List<String> FIRSTNAME_SKIP = new ArrayList<String>(Arrays.asList("Op.", "Mr", "Mr.", "Mrs", "Mrs.")) ;
 
     static class PrintState {
         StringBuilder sb;
@@ -266,6 +270,17 @@ public class Adif3PrintFormatter {
                 break;
             case "NAME":
                 value = rec.getName();
+                break;
+            case "FIRSTNAME":
+                // Attempt to extract the firstname. This isn't foolproof by any means!
+                String names[] = StringUtils.split(rec.getName());
+                if (names != null && names.length > 0) {
+                    value = names[0];
+                    // This one primarily for Guru EA2IF
+                    if (FIRSTNAME_SKIP.contains(value) && names.length > 1) {
+                        value = names[1];
+                    }
+                }
                 break;
             case "QTH":
                 value = rec.getQth();

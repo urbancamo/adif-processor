@@ -37,7 +37,7 @@ columns:
   - column:
       adif: 'MODE'
       header: 'MODE'
-      length: 4
+      length: 5
       align: right
   - column:
       adif: 'RST_SENT'
@@ -50,13 +50,13 @@ columns:
       length: 3
       align: right
   - column:
-      adif: 'NAME'
+      adif: 'FIRSTNAME'
       header: 'OPERATOR'
-      length: 19
+      length: 12
   - column:
       adif: 'SIG'
       header: 'SIG'
-      length: 4
+      length: 5
   - column:
       adif: 'SIG_INFO'
       header: 'REF'
