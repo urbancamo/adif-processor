@@ -13,7 +13,7 @@ import uk.m0nom.comms.PropagationUtils;
 
 public class LongPath implements CommsLinkGenerator {
 
-    public CommsLinkResult getCommunicationsLink(TransformControl control, LineString hfLine,
+    public CommsLinkResult getCommunicationsLink(TransformControl control,
                                                          GlobalCoordinates start, GlobalCoordinates end,
                                                          Adif3Record rec, double myAltitude, double theirAltitude) {
         GeodeticCalculator calculator = new GeodeticCalculator();

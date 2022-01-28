@@ -1,6 +1,5 @@
 package uk.m0nom.comms.ionosphere;
 
-import de.micromata.opengis.kml.v_2_2_0.LineString;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Propagation;
@@ -37,7 +36,7 @@ public class IonosphereUtils {
     }
 
 
-    public static CommsLinkResult getShortestPath(TransformControl control, LineString hfLine,
+    public static CommsLinkResult getShortestPath(TransformControl control,
                                        GlobalCoordinates start, GlobalCoordinates end,
                                        Adif3Record rec, double myAltitude, double theirAltitude) {
 
@@ -53,7 +52,7 @@ public class IonosphereUtils {
         Propagation mode = rec.getPropMode();
         List<PropagationApex> bounces = new Ionosphere().getBounces(mode, frequencyInKhz, result.getDistanceInKm(), time, myAltitude, theirAltitude, control.getAntenna().getTakeOffAngle());
 
-        double skyDistance = GeodesicUtils.addBouncesToLineString(hfLine, bounces, start, end, azimuth);
+        double skyDistance = GeodesicUtils.calculatePath(result.getPath(), bounces, start, end, azimuth);
         result.setSkyDistance(skyDistance);
 
         for (PropagationApex bounce : bounces) {

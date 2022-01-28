@@ -58,6 +58,8 @@ public class CommandLineArgs {
                 .help("Draw a shadow under the KML contact line");
         parser.addArgument("-ks2sls", "--kml-s2s-line-style").required(false).setDefault("brick_red:50:2")
                 .help("Set the colour of contact line for Summit to Summit contacts of the form html_color:transparency:width, default is: brick_red:50:2");
+        parser.addArgument("-kstls", "--kml-satellite-track-line-style").required(false).setDefault("brick_red:50:2")
+                .help("Set the colour of contact line for Satellite tracks of the form html_color:transparency:width, default is: brick_red:50:2");
         parser.addArgument("-kcls", "--kml-contact-line-style").required(false).setDefault("baby_blue:50:2")
                 .help("Set the colour of contact line for contacts of the form html_color:transparency:width, default is: baby_blue:50:2");
         parser.addArgument("-kfi", "--kml-fixed-station").required(false).setDefault("https://maps.google.com/mapfiles/kml/shapes/ranger_station.png")
@@ -92,6 +94,7 @@ public class CommandLineArgs {
             control.setEncoding(ns.getString("encoding"));
             control.setKmlS2s(ns.getBoolean("kml_s2s"));
             control.setKmlS2sContactLineStyle(ns.getString("kml_s2s_line_style"));
+            control.setKmlSatelliteTrackLineStyle(ns.getString("kml_satellite_track_line_style"));
             control.setKmlContactLineStyle(ns.getString("kml_contact_line_style"));
             control.setQrzUsername(ns.getString("qrz_username"));
             control.setQrzPassword(ns.getString("qrz_password"));

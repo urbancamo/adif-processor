@@ -14,6 +14,8 @@ import uk.m0nom.geodesic.GeodesicUtils;
 import uk.m0nom.satellite.ApSatellite;
 import uk.m0nom.satellite.ApSatellites;
 
+import java.util.List;
+
 public class SatellitePropagation implements CommsLinkGenerator {
     private final ApSatellites apSatellites;
 
@@ -22,7 +24,7 @@ public class SatellitePropagation implements CommsLinkGenerator {
     }
 
     @Override
-    public CommsLinkResult getCommunicationsLink(TransformControl control, LineString hfLine, GlobalCoordinates start, GlobalCoordinates end,
+    public CommsLinkResult getCommunicationsLink(TransformControl control, GlobalCoordinates start, GlobalCoordinates end,
                                                  Adif3Record rec, double myAltitude, double theirAltitude) {
         CommsLinkResult result = new CommsLinkResult();
 
@@ -43,12 +45,11 @@ public class SatellitePropagation implements CommsLinkGenerator {
             double distanceInKm = distance / 1000;
             result.setDistanceInKm(distanceInKm);
 
-            hfLine.addToCoordinates(start.getLongitude(), start.getLatitude(), myAltitude);
-            hfLine.addToCoordinates(satelliteLocation.getLongitude(), satelliteLocation.getLatitude(), satelliteLocation.getAltitude());
-            hfLine.addToCoordinates(end.getLongitude(), end.getLatitude(), theirAltitude);
-
-            hfLine.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
-            hfLine.setExtrude(false);
+            List<GlobalCoordinatesWithSourceAccuracy> path = result.getPath();
+            path.add(new GlobalCoordinatesWithSourceAccuracy(start.getLatitude(), start.getLongitude(), myAltitude));
+            path.add(new GlobalCoordinatesWithSourceAccuracy(satelliteLocation.getLatitude(), satelliteLocation.getLongitude(),
+                    satelliteLocation.getAltitude()));
+            path.add(new GlobalCoordinatesWithSourceAccuracy(end.getLatitude(), end.getLongitude(), theirAltitude));
 
             result.setSkyDistance(satelliteLocation.getAltitude() * 2 / 1000);
 

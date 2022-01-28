@@ -27,7 +27,7 @@ public class NoradSatelliteOrbitReader {
     public Map<String, ApSatellite> readSatellites(String sourceFileUrl)
     {
         if (isCacheCurrent()) {
-            logger.info(String.format("Returning %d cached satellites", cache.size()));
+            //logger.info(String.format("Returning %d cached satellites", cache.size()));
             return cache;
         } else {
             cache.clear();

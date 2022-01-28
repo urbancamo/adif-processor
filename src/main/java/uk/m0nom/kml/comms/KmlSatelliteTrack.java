@@ -1,15 +1,15 @@
 package uk.m0nom.kml.comms;
 
-import com.github.amsacode.predict4java.SatPos;
 import de.micromata.opengis.kml.v_2_2_0.*;
-
-import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 import uk.m0nom.kml.KmlLineStyle;
 import uk.m0nom.kml.KmlStyling;
 import uk.m0nom.kml.KmlUtils;
-import uk.m0nom.satellite.*;
+import uk.m0nom.satellite.ApSatellite;
+import uk.m0nom.satellite.SatelliteActivity;
+import uk.m0nom.satellite.SatellitePass;
+import uk.m0nom.satellite.SatellitePassId;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -33,9 +33,9 @@ public class KmlSatelliteTrack {
             // Create KML folder for the pass points
             Folder passFolder = folder.createAndAddFolder().withName(pass.getId().toString()).withOpen(false);
 
-            LocalTime currentTime = pass.getFirstContact().minusMinutes(11);
+            LocalTime currentTime = pass.getFirstContact().minusMinutes(3);
             GlobalCoordinatesWithSourceAccuracy lastPosition = null;
-            while (currentTime.isBefore(pass.getLastContact().plusMinutes(10))) {
+            while (currentTime.isBefore(pass.getLastContact().plusMinutes(2))) {
                 // Calculate position of satellite at the time
                 GlobalCoordinatesWithSourceAccuracy currentPosition = satellite.getPosition(groundStation, passDate, currentTime);
                 if (lastPosition != null) {
@@ -64,7 +64,7 @@ public class KmlSatelliteTrack {
 
     private String addSatelliteTrackStyle(TransformControl control,  Document doc) {
         String styleId = KmlUtils.getStyleId(SATELLITE_TRACK_ID);
-        KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlS2sContactLineStyle());
+        KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlSatelliteTrackLineStyle());
         Style style = doc.createAndAddStyle()
                 .withId(styleId);
         assert styling != null;

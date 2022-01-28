@@ -104,6 +104,7 @@ public class TransformControl {
     private boolean kmlS2s;
     private String kmlS2sContactLineStyle;
     private String kmlContactLineStyle;
+    private String kmlSatelliteTrackLineStyle;
     private boolean kmlContactShadow;
 
     private boolean kmlShowStationSubLabel;

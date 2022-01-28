@@ -4,6 +4,7 @@ import de.micromata.opengis.kml.v_2_2_0.AltitudeMode;
 import de.micromata.opengis.kml.v_2_2_0.LineString;
 import org.gavaghan.geodesy.*;
 import uk.m0nom.comms.*;
+import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 
 import java.util.List;
 
@@ -15,10 +16,11 @@ public class GeodesicUtils
     }
 
 
-    public static double addBouncesToLineString(LineString hfLine, List<PropagationApex> bounces, GlobalCoordinates start, GlobalCoordinates end,
-                                                double initialAzimuth) {
+    public static double calculatePath(List<GlobalCoordinatesWithSourceAccuracy> path, List<PropagationApex> bounces, GlobalCoordinates start, GlobalCoordinates end,
+                                       double initialAzimuth) {
         GeodeticCalculator calculator = new GeodeticCalculator();
-        hfLine.addToCoordinates(start.getLongitude(), start.getLatitude(), 0);
+
+        path.add(new GlobalCoordinatesWithSourceAccuracy(start.getLatitude(), start.getLongitude(), 0.0));
         GlobalCoordinates previous = start;
         double azimuth = initialAzimuth;
         double skyDistance = 0.0;
@@ -44,7 +46,8 @@ public class GeodesicUtils
 
             /* Add 'up' bounce */
             GlobalCoordinates apex = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, previous, azimuth, distanceAcrossGlobal / 2.0);
-            hfLine.addToCoordinates(apex.getLongitude(), apex.getLatitude(), bounce.getApexHeight());
+
+            path.add(new GlobalCoordinatesWithSourceAccuracy(apex.getLatitude(), apex.getLongitude(), bounce.getApexHeight()));
 
             /* Recalculate Azimuth between Apex and End Point */
             GeodeticCurve curve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, apex, end);
@@ -52,18 +55,20 @@ public class GeodesicUtils
 
             /* Handle the last return by working backwards from the end point, so we don't lose accuracy */
             if  (i == bounces.size() - 1) {
-                hfLine.addToCoordinates(end.getLongitude(), end.getLatitude(), 0);
+                path.add(new GlobalCoordinatesWithSourceAccuracy(end.getLatitude(), end.getLongitude(), 0.0));
             } else {
                 GlobalCoordinates rtn = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, apex, azimuth, distanceAcrossGlobal / 2.0);
-                hfLine.addToCoordinates(rtn.getLongitude(), rtn.getLatitude(), baseHeight);
+                path.add(new GlobalCoordinatesWithSourceAccuracy(rtn.getLatitude(), rtn.getLongitude(), baseHeight));
                 /* Recalculate Azimuth between Apex and End Point */
                 curve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, rtn, end);
                 azimuth = curve.getAzimuth();
                 previous = rtn;
             }
         }
-        hfLine.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
-        hfLine.setExtrude(false);
+
+        // TODO
+        //hfLine.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
+        //hfLine.setExtrude(false);
 
         return skyDistance;
     }

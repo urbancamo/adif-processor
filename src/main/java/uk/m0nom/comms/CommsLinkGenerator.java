@@ -7,6 +7,6 @@ import org.marsik.ham.adif.enums.AntPath;
 import uk.m0nom.adif3.control.TransformControl;
 
 public interface CommsLinkGenerator {
-    CommsLinkResult getCommunicationsLink(TransformControl control, LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc,
+    CommsLinkResult getCommunicationsLink(TransformControl control, GlobalCoordinates startGc, GlobalCoordinates endGc,
                                           Adif3Record rec, double myAltitude, double theirAltitude);
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class TroposphericDuctingPropagation implements CommsLinkGenerator {
 
     @Override
-    public CommsLinkResult getCommunicationsLink(TransformControl control, LineString hfLine,
+    public CommsLinkResult getCommunicationsLink(TransformControl control,
                                                  GlobalCoordinates start, GlobalCoordinates end,
                                                  Adif3Record rec, double myAltitude, double theirAltitude) {
         /* assume daytime propagation if we don't have a QSO time */
@@ -23,7 +23,7 @@ public class TroposphericDuctingPropagation implements CommsLinkGenerator {
         double avgBase = 0.0;
         Propagation mode = null;
         List<PropagationApex> bounces = new Troposphere().getBounces(result.getDistanceInKm());
-        double skyDistance = GeodesicUtils.addBouncesToLineString(hfLine, bounces, start, end, result.getAzimuth());
+        double skyDistance = GeodesicUtils.calculatePath(result.getPath(), bounces, start, end, result.getAzimuth());
         result.setSkyDistance(skyDistance);
 
         for (PropagationApex bounce : bounces) {
