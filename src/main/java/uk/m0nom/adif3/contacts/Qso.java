@@ -23,4 +23,8 @@ public class Qso {
     public boolean doingSameActivity() {
        return from.doingSameActivityAs(to);
     }
+
+    public boolean isSatelliteContact() {
+        return (record != null) && (record.getSatName() != null);
+    }
 }

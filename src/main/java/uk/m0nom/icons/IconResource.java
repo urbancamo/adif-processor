@@ -43,6 +43,10 @@ public class IconResource {
         this.url = url;
     }
 
+    public static IconResource getSatelliteResource(TransformControl control) {
+        return new IconResource(SATELLITE_ICON_NAME, control.getIcon(SATELLITE_ICON_NAME));
+    }
+
     public static IconResource getIconFromStation(TransformControl control, Station station) {
         String cs = station.getCallsign();
 

@@ -15,6 +15,7 @@ import uk.m0nom.geodesic.GeodesicUtils;
 import uk.m0nom.kml.KmlBandLineStyles;
 import uk.m0nom.kml.KmlLineStyle;
 import uk.m0nom.kml.KmlStyling;
+import uk.m0nom.kml.KmlUtils;
 import uk.m0nom.kml.info.KmlContactInfoPanel;
 import uk.m0nom.kml.station.KmlStationUtils;
 
@@ -62,7 +63,7 @@ public class KmlCommsUtils {
         return id.replaceAll(" ", "_");
     }
 
-    public String createCommsLink(Document document, Folder folder, Qso qso, TransformControl control) {
+    public String createCommsLink(Document document, Folder folder, Qso qso, TransformControl control, KmlStationUtils stationUtils) {
         String commsLinkId = getCommsLinkId(qso);
         String commsLinkName = getCommsLinkName(qso);
         String commsLinkShadowId = getCommsLinkShadowId(qso);
@@ -120,7 +121,7 @@ public class KmlCommsUtils {
             commsLine.addToCoordinates(coord.getLongitude(), coord.getLatitude(), coord.getAltitude() );
         }
 
-        if (control.isKmlContactShadow()) {
+        if (control.isKmlContactShadow() && !qso.isSatelliteContact()) {
             placemark = folder.createAndAddPlacemark();
             // use the style for each line type
             placemark.withName("(shadow)")
@@ -135,6 +136,10 @@ public class KmlCommsUtils {
                 shadowLine.addToCoordinates(coord.getLongitude(), coord.getLatitude());
             }
 
+        }
+
+        if (qso.isSatelliteContact()) {
+            stationUtils.createSatelliteContactMarker(control, document, folder, qso, result.getSatellitePosition());
         }
         return null;
 

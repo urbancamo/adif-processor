@@ -5,6 +5,7 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 import uk.m0nom.icons.IconResource;
 import uk.m0nom.kml.info.KmlStationInfoPanel;
 
@@ -19,7 +20,11 @@ import static uk.m0nom.kml.KmlUtils.*;
 
 public class KmlStationUtils {
     public final static double DEFAULT_RANGE_METRES = 500.0;
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm");
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm");
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private static final DateTimeFormatter timeWithSecondsFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
     private final Set<String> iconStyles = new HashSet<>();
 
     private final TransformControl control;
@@ -37,7 +42,17 @@ public class KmlStationUtils {
         LocalTime time = qso.getRecord().getTimeOn();
 
         LocalDateTime contactDateTime = LocalDateTime.of(date, time);
-        return formatter.format(contactDateTime);
+        return dateTimeFormatter.format(contactDateTime);
+    }
+
+    public static String getQsoDateAsString(Qso qso) {
+        LocalDate date = qso.getRecord().getQsoDate();
+        return dateFormatter.format(date);
+    }
+
+    public static String getQsoTimeAsString(Qso qso) {
+        LocalTime time = qso.getRecord().getTimeOn();
+        return timeFormatter.format(time);
     }
 
 
@@ -77,6 +92,47 @@ public class KmlStationUtils {
 
         return null;
     }
+
+    public String createSatelliteContactMarker(TransformControl control, Document document, Folder folder, Qso qso, GlobalCoordinatesWithSourceAccuracy position) {
+        String id = getSatelliteMarkerId(qso);
+        String name = getSatelliteMarkerName(qso);
+        String folderName = getSatelliteFolderName(qso);
+
+        IconResource icon = IconResource.getSatelliteResource(control);
+
+        if (!iconStyles.contains(icon.getName())) {
+            Icon kmlIcon = new Icon().withHref(icon.getUrl());
+            Style style = document.createAndAddStyle()
+                    .withId(getStyleId(icon.getName()));
+            // set the stylename to use this style from the placemark
+            style.createAndSetIconStyle().withScale(1.0).withIcon(kmlIcon); // set size and icon
+            style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the continent name
+            iconStyles.add(icon.getName());
+        }
+
+        Folder satFolder = folder.createAndAddFolder().withName(folderName).withOpen(false);
+        Placemark placemark = satFolder.createAndAddPlacemark();
+
+        //
+        // String htmlPanelContent = new KmlStationInfoPanel().getPanelContentForStation(control, qso.getFrom());
+        // use the style for each continent
+        placemark.withName(name)
+                .withStyleUrl(getStyleUrl(icon.getName()))
+                .createAndSetLookAt()
+                .withLongitude(position.getLongitude())
+                .withLatitude(position.getLatitude())
+                .withAltitude(position.getAltitude())
+                .withRange(DEFAULT_RANGE_METRES);
+                // 3D chart image
+                //.withDescription(htmlPanelContent)
+                // coordinates and distance (zoom level) of the viewer
+        placemark.createAndSetPoint()
+                .addToCoordinates(position.getLongitude(), position.getLatitude(), position.getAltitude())
+                .setAltitudeMode(AltitudeMode.ABSOLUTE); // set coordinates
+
+        return null;
+    }
+
 
     public String createStationMarker(TransformControl control, Document document, Folder folder, Qso qso) {
         String id = getStationMarkerId(qso);
@@ -166,6 +222,25 @@ public class KmlStationUtils {
 
     public static String getStationMarkerName(Qso qso) {
         return qso.getTo().getCallsign();
+    }
+
+    public static String getSatelliteMarkerId(Qso qso) {
+        String time = getQsoTimeAsString(qso);
+        String satelliteName = qso.getRecord().getSatName();
+        String id = String.format("%s %s", time, satelliteName);
+        return id.replaceAll(" ", "_");
+    }
+
+    public static String getSatelliteFolderName(Qso qso) {
+        String date = getQsoDateAsString(qso);
+        String satelliteName = qso.getRecord().getSatName();
+        String id = String.format("%s %s", date, satelliteName);
+        return id;
+    }
+
+    public static String getSatelliteMarkerName(Qso qso) {
+        LocalTime time = qso.getRecord().getTimeOn();
+        return timeWithSecondsFormatter.format(time);
     }
 
 }

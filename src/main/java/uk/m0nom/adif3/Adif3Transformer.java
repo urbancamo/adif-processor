@@ -4,6 +4,7 @@ import com.amihaiemil.eoyaml.Yaml;
 import com.amihaiemil.eoyaml.YamlMapping;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
+import org.marsik.ham.adif.AdifHeader;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.control.TransformControl;
@@ -47,8 +48,12 @@ public class Adif3Transformer {
             }
         }
 
-        log.getHeader().setProgramId("M0NOM ADIF Processor");
-        log.getHeader().setProgramVersion("1.0");
+
+        AdifHeader header = new AdifHeader();
+        header.setProgramId("M0NOM ADIF Processor");
+        header.setProgramVersion("1.0");
+        log.setHeader(header);
+
         return qsos;
     }
 }

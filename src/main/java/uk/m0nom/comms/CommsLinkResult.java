@@ -21,6 +21,7 @@ public class CommsLinkResult {
     private Propagation propagation;
     private double azimuth;
     private List<GlobalCoordinatesWithSourceAccuracy> path;
+    private GlobalCoordinatesWithSourceAccuracy satellitePosition;
 
     public CommsLinkResult() {
         path = new ArrayList<>();

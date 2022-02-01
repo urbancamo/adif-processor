@@ -18,10 +18,8 @@ import uk.m0nom.kml.comms.KmlSatelliteTrack;
 import uk.m0nom.kml.info.TemplateEngineConstructor;
 import uk.m0nom.kml.station.KmlStationUtils;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
-import uk.m0nom.satellite.ApSatellites;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -73,7 +71,7 @@ public class KmlWriter {
                     Folder localActivityFolder = contactFolder.createAndAddFolder().withName("Local Activity").withOpen(false);
                     kmlLocalActivities.addLocalActivities(doc, localActivityFolder, qso.getTo(), control.getKmlLocalActivationSitesRadius(), activities);
                 }
-                error = kmlCommsUtils.createCommsLink(doc, contactFolder, qso, control);
+                error = kmlCommsUtils.createCommsLink(doc, contactFolder, qso, control, kmlStationUtils);
                 if (error != null) {
                     results.setError(error);
                 }
@@ -84,6 +82,7 @@ public class KmlWriter {
                 results.addContactWithoutLocation(qso.getTo().getCallsign());
                 logger.warning(String.format("Cannot determine communication link, no location data for: %s", qso.getTo().getCallsign()));
             }
+
         }
 
         if (results.getSatelliteActivity().hasActivity()) {
@@ -99,8 +98,6 @@ public class KmlWriter {
             String kmlContent = FileUtils.readFileToString(file, "UTF-8");
             kmlContent = kmlContent.replaceAll("ns2:","").replace("<kml xmlns:ns2=\"http://www.opengis.net/kml/2.2\" xmlns:ns3=\"http://www.w3.org/2005/Atom\" xmlns:ns4=\"urn:oasis:names:tc:ciq:xsdschema:xAL:2.0\" xmlns:ns5=\"http://www.google.com/kml/ext/2.2\">", "<kml>");
             FileUtils.write(file, kmlContent, "UTF-8");
-        } catch (FileNotFoundException e) {
-            results.setError(e.getMessage());
         } catch (IOException e) {
             results.setError(e.getMessage());
         }

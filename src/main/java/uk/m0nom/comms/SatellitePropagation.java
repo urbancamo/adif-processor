@@ -1,7 +1,5 @@
 package uk.m0nom.comms;
 
-import de.micromata.opengis.kml.v_2_2_0.AltitudeMode;
-import de.micromata.opengis.kml.v_2_2_0.LineString;
 import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
@@ -33,8 +31,8 @@ public class SatellitePropagation implements CommsLinkGenerator {
             apSatellite.updateAdifRec(control, rec);
             GlobalCoordinatesWithSourceAccuracy groundStation = new GlobalCoordinatesWithSourceAccuracy(rec.getMyCoordinates(), myAltitude);
             GlobalCoordinatesWithSourceAccuracy satelliteLocation = apSatellite.getPosition(groundStation, rec.getQsoDate(), rec.getTimeOn());
+            result.setSatellitePosition(satelliteLocation);
 
-            // Calculate ground distance between two stations
             GeodeticCalculator calculator = new GeodeticCalculator();
 
             GeodeticCurve betweenStationsCurve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, start, end);
@@ -47,8 +45,7 @@ public class SatellitePropagation implements CommsLinkGenerator {
 
             List<GlobalCoordinatesWithSourceAccuracy> path = result.getPath();
             path.add(new GlobalCoordinatesWithSourceAccuracy(start.getLatitude(), start.getLongitude(), myAltitude));
-            path.add(new GlobalCoordinatesWithSourceAccuracy(satelliteLocation.getLatitude(), satelliteLocation.getLongitude(),
-                    satelliteLocation.getAltitude()));
+            path.add(satelliteLocation);
             path.add(new GlobalCoordinatesWithSourceAccuracy(end.getLatitude(), end.getLongitude(), theirAltitude));
 
             result.setSkyDistance(satelliteLocation.getAltitude() * 2 / 1000);

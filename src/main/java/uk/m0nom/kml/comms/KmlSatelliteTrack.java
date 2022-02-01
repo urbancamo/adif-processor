@@ -6,6 +6,7 @@ import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 import uk.m0nom.kml.KmlLineStyle;
 import uk.m0nom.kml.KmlStyling;
 import uk.m0nom.kml.KmlUtils;
+import uk.m0nom.kml.station.KmlStationUtils;
 import uk.m0nom.satellite.ApSatellite;
 import uk.m0nom.satellite.SatelliteActivity;
 import uk.m0nom.satellite.SatellitePass;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class KmlSatelliteTrack {
-    private final static String SATELLITE_TRACK_ID = "satellite";
+    private final static String SATELLITE_TRACK_ID = "satellite_track";
 
     public void addSatelliteTracks(TransformControl control, Document doc, SatelliteActivity activity,
                                    GlobalCoordinatesWithSourceAccuracy groundStation) {
@@ -45,6 +46,8 @@ public class KmlSatelliteTrack {
                 currentTime = currentTime.plusMinutes(1);
             }
         }
+
+
     }
 
     private void drawSatelliteTrack(Folder folder, LocalTime currentTime, GlobalCoordinatesWithSourceAccuracy lastPosition,
