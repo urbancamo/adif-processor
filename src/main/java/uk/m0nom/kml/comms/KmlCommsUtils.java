@@ -109,6 +109,9 @@ public class KmlCommsUtils {
         }
         CommsLinkResult result = new CommsVisualizer().getCommunicationsLink(control, myCoords, coords,
                 rec, myAltitude, theirAltitude);
+        if (!result.isValid()) {
+            return result.getError();
+        }
 
         // Set the contact distance in the ADIF output file
         rec.setDistance(result.getDistanceInKm());

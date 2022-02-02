@@ -28,6 +28,10 @@ public class SatellitePropagation implements CommsLinkGenerator {
 
         if (rec.getSatName() != null) {
             ApSatellite apSatellite = apSatellites.getSatellite(rec.getSatName());
+            if (apSatellite == null) {
+                result.setError(String.format("Unknown satellite: %s", rec.getSatName()));
+                return result;
+            }
             apSatellite.updateAdifRec(control, rec);
             GlobalCoordinatesWithSourceAccuracy groundStation = new GlobalCoordinatesWithSourceAccuracy(rec.getMyCoordinates(), myAltitude);
             GlobalCoordinatesWithSourceAccuracy satelliteLocation = apSatellite.getPosition(groundStation, rec.getQsoDate(), rec.getTimeOn());

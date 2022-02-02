@@ -1,5 +1,6 @@
 package uk.m0nom.satellite.satellites;
 
+import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Band;
@@ -14,13 +15,27 @@ import java.time.LocalTime;
 public class QO100 implements ApSatellite {
     private final static GlobalCoordinates ESHAIL2_LOCATION = new GlobalCoordinates(0, 25.9);
     private final static double ESHAIL2_HEIGHT = 36000.0 * 1000.0;
-    private final static String ESHAIL2_ID = "QO-100";
+    private final static String ESHAIL2_NAME = "Es’hail-2";
+    private final static String ESHAIL2_DESIGNATOR = "QO-100";
 
     private final static GlobalCoordinatesWithSourceAccuracy ESHAIL2_POSITION = new GlobalCoordinatesWithSourceAccuracy(ESHAIL2_LOCATION, ESHAIL2_HEIGHT);
 
     @Override
+    public String getIdentifier() {
+        if (StringUtils.isNotBlank(getDesignator())) {
+            return String.format("%s: %s", getDesignator(), getName());
+        }
+        return getName();
+    }
+
+    @Override
     public String getName() {
-        return ESHAIL2_ID;
+        return ESHAIL2_NAME;
+    }
+
+    @Override
+    public String getDesignator() {
+        return ESHAIL2_DESIGNATOR;
     }
 
     @Override

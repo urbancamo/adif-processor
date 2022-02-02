@@ -9,37 +9,44 @@ import java.util.logging.Logger;
 public class ApSatellites {
     private static final Logger logger = Logger.getLogger(ApSatellites.class.getName());
 
-    private final Map<String, ApSatellite> satelliteMap = new HashMap<>();
+    private final Map<String, ApSatellite> satelliteIdentifierMap = new HashMap<>();
 
     public ApSatellites() {
         QO100 qo100 = new QO100();
-        satelliteMap.put(qo100.getName(), qo100);
+        satelliteIdentifierMap.put(qo100.getIdentifier(), qo100);
 
         // read from Norad
         NoradSatelliteOrbitReader reader = new NoradSatelliteOrbitReader();
         Map<String, ApSatellite> noradSats = reader.readSatellites(NoradSatelliteOrbitReader.NORAD_TLE_FILE_LOCATION);
         if (noradSats != null) {
-            satelliteMap.putAll(noradSats);
+            for (ApSatellite noradSat: noradSats.values()) {
+                satelliteIdentifierMap.put(noradSat.getIdentifier(), noradSat);
+            }
         } else {
             logger.severe(String.format("Error reading from satellite file: %s", NoradSatelliteOrbitReader.NORAD_TLE_FILE_LOCATION));
         }
     }
 
-    public ApSatellite getSatellite(String name) {
-        return satelliteMap.get(name);
+    public ApSatellite getSatellite(String ident) {
+        for (String identifier : satelliteIdentifierMap.keySet()) {
+            if (identifier.toUpperCase().contains(ident.toUpperCase())) {
+                return satelliteIdentifierMap.get(identifier);
+            }
+        }
+        return null;
     }
 
     public Set<String> getSatelliteNames() {
         SortedSet<String> names = new TreeSet<>();
-        names.addAll(satelliteMap.keySet());
+        names.addAll(satelliteIdentifierMap.keySet());
         return names;
     }
 
     public void addSatellite(ApSatellite apSatellite) {
-        satelliteMap.put(apSatellite.getName(), apSatellite);
+        satelliteIdentifierMap.put(apSatellite.getName(), apSatellite);
     }
 
     public int size() {
-        return satelliteMap.size();
+        return satelliteIdentifierMap.size();
     }
 }

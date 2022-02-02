@@ -22,9 +22,14 @@ public class CommsLinkResult {
     private double azimuth;
     private List<GlobalCoordinatesWithSourceAccuracy> path;
     private GlobalCoordinatesWithSourceAccuracy satellitePosition;
+    private String error;
 
     public CommsLinkResult() {
         path = new ArrayList<>();
+    }
+
+    public boolean isValid() {
+        return error == null;
     }
 }
 

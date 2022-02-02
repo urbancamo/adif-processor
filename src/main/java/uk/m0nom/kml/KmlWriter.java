@@ -85,23 +85,23 @@ public class KmlWriter {
 
         }
 
-        if (results.getSatelliteActivity().hasActivity()) {
-            GlobalCoordinates coords = qsos.getQsos().get(0).getRecord().getMyCoordinates();
-            GlobalCoordinatesWithSourceAccuracy coordinatesWithSourceAccuracy = new GlobalCoordinatesWithSourceAccuracy(coords, 0.0);
-            kmlSatelliteTrack.addSatelliteTracks(control, doc, results.getSatelliteActivity(), coordinatesWithSourceAccuracy);
-        }
+        if (!results.hasErrors()) {
+            if (results.getSatelliteActivity().hasActivity()) {
+                GlobalCoordinates coords = qsos.getQsos().get(0).getRecord().getMyCoordinates();
+                GlobalCoordinatesWithSourceAccuracy coordinatesWithSourceAccuracy = new GlobalCoordinatesWithSourceAccuracy(coords, 0.0);
+                kmlSatelliteTrack.addSatelliteTracks(control, doc, results.getSatelliteActivity(), coordinatesWithSourceAccuracy);
 
-        try {
-            logger.info(String.format("Writing KML to: %s", pathname));
-            File file = new File(pathname);
-            kml.marshal(file);
-            String kmlContent = FileUtils.readFileToString(file, "UTF-8");
-            kmlContent = kmlContent.replaceAll("ns2:","").replace("<kml xmlns:ns2=\"http://www.opengis.net/kml/2.2\" xmlns:ns3=\"http://www.w3.org/2005/Atom\" xmlns:ns4=\"urn:oasis:names:tc:ciq:xsdschema:xAL:2.0\" xmlns:ns5=\"http://www.google.com/kml/ext/2.2\">", "<kml>");
-            FileUtils.write(file, kmlContent, "UTF-8");
-        } catch (IOException e) {
-            results.setError(e.getMessage());
+                try {
+                    logger.info(String.format("Writing KML to: %s", pathname));
+                    File file = new File(pathname);
+                    kml.marshal(file);
+                    String kmlContent = FileUtils.readFileToString(file, "UTF-8");
+                    kmlContent = kmlContent.replaceAll("ns2:", "").replace("<kml xmlns:ns2=\"http://www.opengis.net/kml/2.2\" xmlns:ns3=\"http://www.w3.org/2005/Atom\" xmlns:ns4=\"urn:oasis:names:tc:ciq:xsdschema:xAL:2.0\" xmlns:ns5=\"http://www.google.com/kml/ext/2.2\">", "<kml>");
+                    FileUtils.write(file, kmlContent, "UTF-8");
+                } catch (IOException e) {
+                    results.setError(e.getMessage());
+                }
+            }
         }
     }
-
-
 }

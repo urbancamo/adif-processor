@@ -11,6 +11,8 @@ import java.util.Date;
 
 public interface ApSatellite {
     String getName();
+    String getDesignator();
+    String getIdentifier();
     GlobalCoordinatesWithSourceAccuracy getPosition(GlobalCoordinatesWithSourceAccuracy groundStation, LocalDate date, LocalTime time);
     void updateAdifRec(TransformControl control, Adif3Record rec);
 }

@@ -2,6 +2,7 @@ package uk.m0nom.adif3.transform;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.satellite.SatelliteActivity;
 
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import java.util.Collection;
 @Getter
 @Setter
 public class TransformResults {
-    private boolean errors = false;
     private String adiFile;
     private String kmlFile;
     private String formattedQsoFile;
@@ -27,7 +27,10 @@ public class TransformResults {
 
     public TransformResults(String errorMessage) {
         this.error = errorMessage;
-        this.errors = true;
+    }
+
+    public boolean hasErrors() {
+        return StringUtils.isNotBlank(error);
     }
 
     public void addContactWithoutLocation(String callsign) {

@@ -5,6 +5,7 @@ import com.github.amsacode.predict4java.SatPos;
 import com.github.amsacode.predict4java.Satellite;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
@@ -19,14 +20,29 @@ import java.time.*;
 @Setter
 public class NoradSatellite implements ApSatellite {
     private Satellite satellite;
+    private String name;
+    private String designator;
 
     public NoradSatellite(Satellite satellite) {
         this.satellite = satellite;
+        String identifier = satellite.getTLE().getName();
+        // Name is either just a name, or a name and designator in brackets
+        if (identifier.contains("(")) {
+            name = StringUtils.substringBefore(identifier, "(");
+            designator = StringUtils.substringAfter(identifier, "(");
+            designator = StringUtils.substringBefore(designator, ")");
+        } else {
+            name = identifier;
+            designator = "";
+        }
     }
 
     @Override
-    public String getName() {
-        return satellite.getTLE().getName();
+    public String getIdentifier() {
+        if (StringUtils.isNotBlank(getDesignator())) {
+            return String.format("%s: %s", getDesignator(), getName());
+        }
+        return getName();
     }
 
     @Override
