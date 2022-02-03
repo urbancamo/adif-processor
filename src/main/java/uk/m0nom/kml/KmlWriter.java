@@ -46,6 +46,10 @@ public class KmlWriter {
         Folder folder = doc.createAndAddFolder();
         folder.withName("Contacts").withOpen(true);
 
+        if (results.getSatelliteActivity().hasActivity()) {
+            results.getSatelliteActivity().spaceOutContactsInPasses();
+        }
+
         // create Placemark elements
         boolean first = true;
         for (Qso qso : qsos.getQsos()) {

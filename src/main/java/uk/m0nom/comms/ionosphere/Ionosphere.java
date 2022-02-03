@@ -25,6 +25,8 @@ public class Ionosphere {
     public final static double MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM = 200;
     public final static double MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM = 50;
 
+    public final static double MAX_FREQUENCY = 22000.0;
+
     public Ionosphere() {
         dayTimeLayers = new HashMap<>();
         dayTimeLayers.put("D", new IonosphericLayer("D", metersFromKm(48), metersFromKm(90)));
@@ -63,7 +65,7 @@ public class Ionosphere {
 
                     // Here we take into account that higher frequency signals tend to bounce at a lower height in the
                     // atmosphere than higher frequency signals
-                    double altInMetres = calculateBounceHeight(frequencyInKhz, bounceLayer, 22000);
+                    double altInMetres = calculateBounceHeight(frequencyInKhz, bounceLayer, MAX_FREQUENCY);
                     double altInKm = altInMetres / 1000.0;
 
                     // We initially calculate the distance across the earth of propagation based on the takeoff angle
@@ -107,7 +109,7 @@ public class Ionosphere {
         // A bounce includes both up and down, so the apex distance is half the distance across the earth between stations
         double apexDistance = distanceAcrossEarthInKm / 2.0;
 
-        double takeOffAngle = IonosphericApexCalculator.calculateTakeoffAngleFromDistanceAcrossEarth((distanceAcrossEarthInKm / 2.0) / hopCount, apexResult.getApexHeight());
+        double takeOffAngle = IonosphericApexCalculator.calculateTakeoffAngleFromDistanceAcrossEarth(apexDistance / hopCount, apexResult.getApexHeight());
 
         /* recalculate apex based on new takeOffAngle */
         return IonosphericApexCalculator.calculateDistanceOfApex(apexResult.getApexHeight(), takeOffAngle);

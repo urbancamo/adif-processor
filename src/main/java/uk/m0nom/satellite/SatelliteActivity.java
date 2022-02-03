@@ -31,11 +31,17 @@ public class SatelliteActivity {
             pass = new SatellitePass(id);
             satellitePasses.put(id, pass);
         }
-        pass.addContact(qso.getRecord().getTimeOn());
+        pass.addContact(qso);
     }
 
     public Collection<SatellitePass> getPasses() {
         return satellitePasses.values();
+    }
+
+    public void spaceOutContactsInPasses() {
+        for (SatellitePass pass: getPasses()) {
+            pass.spaceOutContacts();
+        }
     }
 
     public boolean hasActivity() {

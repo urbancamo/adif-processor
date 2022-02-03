@@ -17,12 +17,14 @@ public class IconResource {
     public final static String FM_ICON_NAME = "fm";
     public final static String DEFAULT_MODE_ICON_NAME = "mode";
     public final static String SATELLITE_ICON_NAME="satellite";
+    public final static String SATELLITE_TRACK_ICON_NAME="satellite_track";
 
     public final static String FIXED_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/ranger_station.png";
 	public final static String PORTABLE_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/hiker.png";
 	public final static String MOBILE_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/cabs.png";
     public final static String MARITIME_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/sailing.png";
-    public final static String SATELLITE_DEFAULT_ICON_URL = "http://maps.google.com/mapfiles/kml/shapes/arrow.png";
+    public final static String SATELLITE_DEFAULT_ICON_URL = "http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png";
+    public final static String SATELLITE_TRACK_DEFAULT_ICON_URL = "http://maps.google.com/mapfiles/kml/shapes/capital_big_highlight.png";
 
 	public final static String POTA_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/picnic.png";
 	public final static String SOTA_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/mountains.png";
@@ -41,6 +43,10 @@ public class IconResource {
     private IconResource(String name, String url) {
         this.name = name;
         this.url = url;
+    }
+
+    public static IconResource getSatelliteTrackResource(TransformControl control) {
+        return new IconResource(SATELLITE_TRACK_ICON_NAME, control.getIcon(SATELLITE_TRACK_ICON_NAME));
     }
 
     public static IconResource getSatelliteResource(TransformControl control) {

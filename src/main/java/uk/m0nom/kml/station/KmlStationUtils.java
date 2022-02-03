@@ -234,8 +234,7 @@ public class KmlStationUtils {
     public static String getSatelliteFolderName(Qso qso) {
         String date = getQsoDateAsString(qso);
         String satelliteName = qso.getRecord().getSatName();
-        String id = String.format("%s %s", date, satelliteName);
-        return id;
+        return String.format("%s %s", date, satelliteName);
     }
 
     public static String getSatelliteMarkerName(Qso qso) {

@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 public class CommsLinkResult {
+    private GlobalCoords3D start, end;
     private int bounces;
     private double altitude;
     private double base;
@@ -26,6 +27,12 @@ public class CommsLinkResult {
 
     public CommsLinkResult() {
         path = new ArrayList<>();
+    }
+
+    public CommsLinkResult(GlobalCoords3D start, GlobalCoords3D end) {
+        this();
+        this.start = start;
+        this.end = end;
     }
 
     public boolean isValid() {

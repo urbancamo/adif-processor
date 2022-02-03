@@ -54,12 +54,6 @@ public class KmlContactInfoPanel {
                 case F2_REFLECTION:
                     context.setVariable("skyDist", String.format("%,.0f", result.getSkyDistance()));
                     context.setVariable("bounces", String.format("%d", result.getBounces()));
-                    if (result.getAltitude() > 9999.99) {
-                        context.setVariable("avgAlt", String.format("%,.0f km", result.getAltitude() / 1000));
-                    } else {
-                        context.setVariable("avgAlt", String.format("%,.0f metres", result.getAltitude()));
-                    }
-                    context.setVariable("angle", String.format("%,.0f°", result.getFromAngle()));
                     break;
                 case SATELLITE:
                     context.setVariable("satName", qso.getRecord().getSatName());
@@ -73,6 +67,13 @@ public class KmlContactInfoPanel {
                     break;
             }
         }
+        if (result.getAltitude() > 9999.99) {
+            context.setVariable("avgAlt", String.format("%,.0f km", result.getAltitude() / 1000));
+        } else {
+            context.setVariable("avgAlt", String.format("%,.0f metres", result.getAltitude()));
+        }
+        context.setVariable("angle", String.format("%,.0f°", result.getFromAngle()));
+
         String mode = (result.getPropagation() != null) ? result.getPropagation().adifCode() : "GND";
         context.setVariable("propagationMode", mode);
 

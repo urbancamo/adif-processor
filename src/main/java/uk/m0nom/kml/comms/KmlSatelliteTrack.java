@@ -3,6 +3,7 @@ package uk.m0nom.kml.comms;
 import de.micromata.opengis.kml.v_2_2_0.*;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.coords.GlobalCoords3D;
+import uk.m0nom.icons.IconResource;
 import uk.m0nom.kml.KmlLineStyle;
 import uk.m0nom.kml.KmlStyling;
 import uk.m0nom.kml.KmlUtils;
@@ -14,12 +15,26 @@ import uk.m0nom.satellite.SatellitePassId;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import static uk.m0nom.kml.KmlUtils.getStyleId;
+import static uk.m0nom.kml.KmlUtils.getStyleUrl;
+import static uk.m0nom.kml.station.KmlStationUtils.DEFAULT_RANGE_METRES;
+
 public class KmlSatelliteTrack {
     private final static String SATELLITE_TRACK_ID = "satellite_track";
+    private final static String SATELLITE_TRACK_LINE_ID = "satellite_track_line";
+    private final static int TRACK_LEAD_LAG_TIME_MINS = 5;
 
     public void addSatelliteTracks(TransformControl control, Document doc, SatelliteActivity activity,
                                    GlobalCoords3D groundStation) {
         String styleUrl = addSatelliteTrackStyle(control, doc);
+
+        /** Add an icon to indicate the name and date of the satellite pass */
+        IconResource icon = IconResource.getSatelliteTrackResource(control);
+        Icon kmlIcon = new Icon().withHref(icon.getUrl());
+        Style style = doc.createAndAddStyle()
+                .withId(getStyleId(icon.getName()));
+        style.createAndSetIconStyle().withScale(1.0).withIcon(kmlIcon);
+        style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0);
 
         Folder folder = doc.createAndAddFolder();
         folder.withName("Satellite Tracks").withOpen(false);
@@ -33,20 +48,40 @@ public class KmlSatelliteTrack {
             // Create KML folder for the pass points
             Folder passFolder = folder.createAndAddFolder().withName(pass.getId().toString()).withOpen(false);
 
-            LocalTime currentTime = pass.getFirstContact().minusMinutes(3);
+            LocalTime currentTime = pass.getFirstContact().minusMinutes(TRACK_LEAD_LAG_TIME_MINS-1);
             GlobalCoords3D lastPosition = null;
-            while (currentTime.isBefore(pass.getLastContact().plusMinutes(2))) {
+            while (currentTime.isBefore(pass.getLastContact().plusMinutes(TRACK_LEAD_LAG_TIME_MINS))) {
                 // Calculate position of satellite at the time
                 GlobalCoords3D currentPosition = satellite.getPosition(groundStation, passDate, currentTime);
-                if (lastPosition != null) {
+                if (lastPosition == null) {
+                    addSatelliteMarker(control, passFolder, satName, passDate, currentPosition);
+                } else {
                     drawSatelliteTrack(passFolder, currentTime, lastPosition, currentPosition, styleUrl);
                 }
                 lastPosition = currentPosition;
                 currentTime = currentTime.plusMinutes(1);
             }
         }
+    }
 
+    private void addSatelliteMarker(TransformControl control,  Folder folder, String satName, LocalDate passDate, GlobalCoords3D position) {
+        Placemark placemark = folder.createAndAddPlacemark();
+        String date = passDate.toString();
+        String id = String.format("%s %s", satName, date);
 
+        IconResource icon = IconResource.getSatelliteTrackResource(control);
+        // use the style for each line type
+        placemark.withName(id)
+                .withId(id)
+                .withStyleUrl(getStyleUrl(icon.getName()))
+                .createAndSetLookAt()
+                .withLongitude(position.getLongitude())
+                .withLatitude(position.getLatitude())
+                .withAltitude(position.getAltitude())
+                .withRange(DEFAULT_RANGE_METRES);
+        placemark.createAndSetPoint()
+                .addToCoordinates(position.getLongitude(), position.getLatitude(), position.getAltitude())
+                .setAltitudeMode(AltitudeMode.ABSOLUTE); // set coordinates
     }
 
     private void drawSatelliteTrack(Folder folder, LocalTime currentTime, GlobalCoords3D lastPosition,
@@ -64,13 +99,13 @@ public class KmlSatelliteTrack {
         trackLine.addToCoordinates(currentPosition.getLongitude(), currentPosition.getLatitude(), currentPosition.getAltitude());
     }
 
-    private String addSatelliteTrackStyle(TransformControl control,  Document doc) {
-        String styleId = KmlUtils.getStyleId(SATELLITE_TRACK_ID);
+    private String addSatelliteTrackStyle(TransformControl control, Document doc) {
+        String styleId = KmlUtils.getStyleId(SATELLITE_TRACK_LINE_ID);
         KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlSatelliteTrackLineStyle());
         Style style = doc.createAndAddStyle()
                 .withId(styleId);
         assert styling != null;
         style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(5);
-        return KmlUtils.getStyleUrl(SATELLITE_TRACK_ID);
+        return KmlUtils.getStyleUrl(SATELLITE_TRACK_LINE_ID);
     }
 }

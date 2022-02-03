@@ -46,11 +46,12 @@
                 height:640px;
             }
         </style>
+        <title></title>
     </head>
     <body>
         <div class="panel">
             <div class="content">
-                <h1>Contact Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+                <h1>Contact&nbsp;Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
             </div>
             <div class="content contact">
                 <div>
@@ -86,9 +87,9 @@
                             <td class="tdLabel">Mode: </td>
                             <td><span th:text="${mode}">FM</span></td>
                         </tr>
-                        <tr th:if="${uplinkFreq} != null">
+                        <tr th:if="${downlinkFreq} != null">
                             <td class="tdLabel"> Uplink Freq: </td>
-                            <td><span th:text="${uplinkFreq}">2.125 GHz</span></td>
+                            <td><span th:text="${freq}">2.125 GHz</span></td>
                         </tr>
                         <tr th:if="${downlinkFreq} != null">
                             <td class="tdLabel">Downlink Freq: </td>
@@ -126,6 +127,12 @@
                 <table>
                     <thead></thead>
                     <tbody>
+                        <tr th:if="${propagationMode} == 'GND'">
+                            <td class="tdLabel">Max Height:</td>
+                            <td><span th:text="${avgAlt}">6 km</span></td>
+                        </tr>
+
+
                         <tr th:if="${propagationMode} == 'F2'">
                             <td class="tdLabel">Sky dist: </td>
                             <td><span th:text="${skyDist}">25</span> km</td>
