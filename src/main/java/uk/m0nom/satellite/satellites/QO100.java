@@ -5,9 +5,8 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Band;
 import uk.m0nom.adif3.control.TransformControl;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.satellite.ApSatellite;
-import uk.m0nom.satellite.SatellitePosition;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,7 +17,7 @@ public class QO100 implements ApSatellite {
     private final static String ESHAIL2_NAME = "Es’hail-2";
     private final static String ESHAIL2_DESIGNATOR = "QO-100";
 
-    private final static GlobalCoordinatesWithSourceAccuracy ESHAIL2_POSITION = new GlobalCoordinatesWithSourceAccuracy(ESHAIL2_LOCATION, ESHAIL2_HEIGHT);
+    private final static GlobalCoords3D ESHAIL2_POSITION = new GlobalCoords3D(ESHAIL2_LOCATION, ESHAIL2_HEIGHT);
 
     @Override
     public String getIdentifier() {
@@ -39,7 +38,7 @@ public class QO100 implements ApSatellite {
     }
 
     @Override
-    public GlobalCoordinatesWithSourceAccuracy getPosition(GlobalCoordinatesWithSourceAccuracy loc, LocalDate date, LocalTime time) {
+    public GlobalCoords3D getPosition(GlobalCoords3D loc, LocalDate date, LocalTime time) {
         return ESHAIL2_POSITION;
     }
 

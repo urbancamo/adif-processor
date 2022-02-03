@@ -4,7 +4,6 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class LocationParsers {
     private final List<LocationParser> parsers = new ArrayList<>();
@@ -40,7 +39,7 @@ public class LocationParsers {
     public LocationParserResult parseStringForCoordinates(LocationSource source, String value) {
         String location = value.toUpperCase().trim();
         for (LocationParser parser : parsers) {
-            GlobalCoordinatesWithSourceAccuracy coords = parser.parse(source, location);
+            GlobalCoords3D coords = parser.parse(source, location);
             if (coords != null) {
                 return new LocationParserResult(coords, parser);
             }

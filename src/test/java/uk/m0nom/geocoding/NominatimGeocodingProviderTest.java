@@ -1,9 +1,8 @@
 package uk.m0nom.geocoding;
 
-import org.gavaghan.geodesy.GlobalCoordinates;
 import org.junit.Ignore;
 import org.junit.Test;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.qrz.QrzCallsign;
 
 import java.io.IOException;
@@ -22,7 +21,7 @@ public class NominatimGeocodingProviderTest {
 
         NominatimGeocodingProvider provider = new NominatimGeocodingProvider();
         GeocodingResult result = provider.getLocationFromAddress(qrzData);
-        GlobalCoordinatesWithSourceAccuracy coords = result.getCoordinates();
+        GlobalCoords3D coords = result.getCoordinates();
 
         // From Google Maps: 54.70503157515261, -3.451084602863399
         assertTrue(Math.abs(coords.getLatitude() - 54.705) < 0.1);

@@ -1,7 +1,6 @@
 package uk.m0nom.kml.comms;
 
 import de.micromata.opengis.kml.v_2_2_0.*;
-import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
@@ -10,12 +9,11 @@ import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.comms.CommsLinkResult;
 import uk.m0nom.comms.CommsVisualizer;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.geodesic.GeodesicUtils;
 import uk.m0nom.kml.KmlBandLineStyles;
 import uk.m0nom.kml.KmlLineStyle;
 import uk.m0nom.kml.KmlStyling;
-import uk.m0nom.kml.KmlUtils;
 import uk.m0nom.kml.info.KmlContactInfoPanel;
 import uk.m0nom.kml.station.KmlStationUtils;
 
@@ -70,16 +68,8 @@ public class KmlCommsUtils {
 
         Adif3Record rec = qso.getRecord();
 
-        GlobalCoordinates myCoords = rec.getMyCoordinates();
         if (qso.getFrom().getCoordinates() == null && rec.getMyCoordinates() == null) {
             return String.format("Cannot determine coordinates for station %s, please specify a location override", qso.getFrom().getCallsign());
-        }
-
-        GlobalCoordinates coords = rec.getCoordinates();
-
-        // Sanity check - if their coords and our coords are the same then the geodesic calculations are going to stall
-        if (GeodesicUtils.areCoordsEqual(myCoords, coords)) {
-            return String.format("Your location and the location of station %s at %.3f, %.3f are equal - check the log!", qso.getTo().getCallsign(), coords.getLatitude(), coords.getLongitude());
         }
 
         addStyleIfUsed(document, control, qso, commsStyleMap);
@@ -107,8 +97,16 @@ public class KmlCommsUtils {
                 theirAltitude = summitInfo.getAltitude();
             }
         }
-        CommsLinkResult result = new CommsVisualizer().getCommunicationsLink(control, myCoords, coords,
-                rec, myAltitude, theirAltitude);
+
+        GlobalCoords3D myCoords = new GlobalCoords3D(rec.getMyCoordinates(), myAltitude);
+        GlobalCoords3D coords = new GlobalCoords3D(rec.getCoordinates(), theirAltitude);
+
+        // Sanity check - if their coords and our coords are the same then the geodesic calculations are going to stall
+        if (GeodesicUtils.areCoordsEqual(myCoords, coords)) {
+            return String.format("Your location and the location of station %s at %.3f, %.3f are equal - check the log!", qso.getTo().getCallsign(), coords.getLatitude(), coords.getLongitude());
+        }
+
+        CommsLinkResult result = new CommsVisualizer().getCommunicationsLink(control, myCoords, coords, rec);
         if (!result.isValid()) {
             return result.getError();
         }
@@ -117,11 +115,11 @@ public class KmlCommsUtils {
         rec.setDistance(result.getDistanceInKm());
         String description = new KmlContactInfoPanel().getPanelContentForCommsLink(control, qso, result, control.getTemplateEngine());
         placemark.withDescription(description);
-        commsLine.setAltitudeMode(AltitudeMode.ABSOLUTE);
+        commsLine.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
         commsLine.setExtrude(false);
 
-        for (GlobalCoordinatesWithSourceAccuracy coord : result.getPath()) {
-            commsLine.addToCoordinates(coord.getLongitude(), coord.getLatitude(), coord.getAltitude() );
+        for (GlobalCoords3D coord : result.getPath()) {
+            commsLine.addToCoordinates(coord.getLongitude(), coord.getLatitude(), coord.getAltitude());
         }
 
         if (control.isKmlContactShadow() && !qso.isSatelliteContact()) {
@@ -135,7 +133,7 @@ public class KmlCommsUtils {
             shadowLine.setAltitudeMode(AltitudeMode.CLAMP_TO_GROUND);
             shadowLine.setExtrude(false);
 
-            for (GlobalCoordinatesWithSourceAccuracy coord : result.getPath()) {
+            for (GlobalCoords3D coord : result. getPath()) {
                 shadowLine.addToCoordinates(coord.getLongitude(), coord.getLatitude());
             }
 

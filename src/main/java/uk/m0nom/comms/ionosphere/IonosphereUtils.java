@@ -7,6 +7,7 @@ import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.comms.CommsLinkResult;
 import uk.m0nom.comms.PropagationApex;
 import uk.m0nom.comms.PropagationUtils;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.geodesic.GeodesicUtils;
 
 import java.time.LocalTime;
@@ -37,8 +38,8 @@ public class IonosphereUtils {
 
 
     public static CommsLinkResult getShortestPath(TransformControl control,
-                                       GlobalCoordinates start, GlobalCoordinates end,
-                                       Adif3Record rec, double myAltitude, double theirAltitude) {
+                                                  GlobalCoords3D start, GlobalCoords3D end,
+                                                  Adif3Record rec) {
 
         /* assume daytime propagation if we don't have a QSO time */
         LocalTime time = IonosphereUtils.getTime(rec);
@@ -50,7 +51,7 @@ public class IonosphereUtils {
         double avgAltitude = 0.0;
         double avgAngle = 0.0;
         Propagation mode = rec.getPropMode();
-        List<PropagationApex> bounces = new Ionosphere().getBounces(mode, frequencyInKhz, result.getDistanceInKm(), time, myAltitude, theirAltitude, control.getAntenna().getTakeOffAngle());
+        List<PropagationApex> bounces = new Ionosphere().getBounces(mode, frequencyInKhz, result.getDistanceInKm(), time, start.getAltitude(), end.getAltitude(), control.getAntenna().getTakeOffAngle());
 
         double skyDistance = GeodesicUtils.calculatePath(result.getPath(), bounces, start, end, azimuth);
         result.setSkyDistance(skyDistance);

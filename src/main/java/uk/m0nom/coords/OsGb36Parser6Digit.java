@@ -16,14 +16,14 @@ public class OsGb36Parser6Digit implements LocationParser, LocationFormatter{
     }
 
     @Override
-    public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String locationString) {
+    public GlobalCoords3D parse(LocationSource source, String locationString) {
         Matcher matcher = getPattern().matcher(locationString);
         if (matcher.find()) {
             String easting = matcher.group(1).replace(" ", "");
             String northing = matcher.group(2).replace(" ", "");
             OsGb36Converter converter = new OsGb36Converter();
             OsGb36ConverterResult result = converter.convertOsGb36EastingNorthingToCoords(easting, northing);
-            return new GlobalCoordinatesWithSourceAccuracy(result.getCoords(), 0.0, new LocationInfo(LocationAccuracy.OSGB36_6DIGIT, LocationSource.OSGB36_CONVERTER));
+            return new GlobalCoords3D(result.getCoords(), 0.0, new LocationInfo(LocationAccuracy.OSGB36_6DIGIT, LocationSource.OSGB36_CONVERTER));
         }
         return null;
     }

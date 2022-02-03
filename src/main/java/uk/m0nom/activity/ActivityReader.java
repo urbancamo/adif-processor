@@ -3,7 +3,7 @@ package uk.m0nom.activity;
 import lombok.Getter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.coords.LocationAccuracy;
 import uk.m0nom.coords.LocationSource;
 
@@ -35,8 +35,8 @@ public abstract class ActivityReader {
      * @param longColName name of Longitude column in CSV record
      * @return Global Coordinate for lat/long, or null if neither specified
      */
-    protected GlobalCoordinatesWithSourceAccuracy readCoords(CSVRecord record, String latColName, String longColName) {
-        GlobalCoordinatesWithSourceAccuracy location = null;
+    protected GlobalCoords3D readCoords(CSVRecord record, String latColName, String longColName) {
+        GlobalCoords3D location = null;
 
         String longitudeStr = record.get(latColName);
 
@@ -56,7 +56,7 @@ public abstract class ActivityReader {
 
             }
             if ((latitude != null && longitude != null) && (latitude != 0 && longitude != 0)) {
-                location = new GlobalCoordinatesWithSourceAccuracy(longitude, latitude, LocationSource.ACTIVITY, LocationAccuracy.LAT_LONG);
+                location = new GlobalCoords3D(longitude, latitude, LocationSource.ACTIVITY, LocationAccuracy.LAT_LONG);
             }
         }
         return location;

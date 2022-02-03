@@ -14,7 +14,7 @@ public class DegreesDecimalWithNsewLatLongParser implements LocationParser, Loca
     }
 
     @Override
-    public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String location) {
+    public GlobalCoords3D parse(LocationSource source, String location) {
         Matcher matcher = getPattern().matcher(location);
         if (matcher.find()) {
             String latString = matcher.group(1);
@@ -25,7 +25,7 @@ public class DegreesDecimalWithNsewLatLongParser implements LocationParser, Loca
 
             Double latitude = LatLongUtils.parseDecimalLatitudeWithNs(latString, latNorthSouth);
             Double longitude = LatLongUtils.parseDecimalLongitudeWithEw(longString, longEastWest);
-            return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.LAT_LONG);
+            return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
         }
         return null;
     }

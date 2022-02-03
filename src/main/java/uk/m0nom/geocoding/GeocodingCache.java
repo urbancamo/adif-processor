@@ -1,7 +1,5 @@
 package uk.m0nom.geocoding;
 
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;

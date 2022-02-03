@@ -1,20 +1,18 @@
 package uk.m0nom.comms;
 
-import de.micromata.opengis.kml.v_2_2_0.LineString;
-import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.AntPath;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.comms.ionosphere.LongPath;
 import uk.m0nom.comms.ionosphere.ShortPath;
+import uk.m0nom.coords.GlobalCoords3D;
 
 /**
  * Calculates the path of propagation between two points on the earth based on a propagation mode
  */
 public class CommsVisualizer implements CommsLinkGenerator {
-    public CommsLinkResult getCommunicationsLink(TransformControl control, GlobalCoordinates startGc, GlobalCoordinates endGc,
-                                                 Adif3Record rec,
-                                                 double myAltitude, double theirAltitude) {
+    public CommsLinkResult getCommunicationsLink(TransformControl control, GlobalCoords3D startGc, GlobalCoords3D endGc,
+                                                 Adif3Record rec) {
         CommsLinkResult result = null;
 
         // See if the propagation mode used is defined in the record
@@ -22,18 +20,18 @@ public class CommsVisualizer implements CommsLinkGenerator {
             // We honour satellite mode here
             switch (rec.getPropMode()) {
                 case SATELLITE:
-                    result = new SatellitePropagation().getCommunicationsLink(control, startGc, endGc, rec, myAltitude, theirAltitude);
+                    result = new SatellitePropagation().getCommunicationsLink(control, startGc, endGc, rec);
                     break;
                 case TROPOSPHERIC_DUCTING:
-                        result = new TroposphericDuctingPropagation().getCommunicationsLink(control, startGc, endGc, rec, myAltitude, theirAltitude);
+                        result = new TroposphericDuctingPropagation().getCommunicationsLink(control, startGc, endGc, rec);
                         break;
                 default:
             }
         } else {
             if (rec.getAntPath() == AntPath.LONG) {
-                result = new LongPath().getCommunicationsLink(control, startGc, endGc, rec, myAltitude, theirAltitude);
+                result = new LongPath().getCommunicationsLink(control, startGc, endGc, rec);
             } else {
-                result = new ShortPath().getCommunicationsLink(control, startGc, endGc, rec, myAltitude, theirAltitude);
+                result = new ShortPath().getCommunicationsLink(control, startGc, endGc, rec);
             }
         }
         return result;

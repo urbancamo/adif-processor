@@ -4,7 +4,6 @@ import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
 import uk.m0nom.coords.LocationParserResult;
 import uk.m0nom.coords.LocationParsers;
 import uk.m0nom.coords.LocationSource;

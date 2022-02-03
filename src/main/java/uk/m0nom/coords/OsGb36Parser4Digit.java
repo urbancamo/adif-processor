@@ -16,7 +16,7 @@ public class OsGb36Parser4Digit implements LocationParser, LocationFormatter{
     }
 
     @Override
-    public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String locationString) {
+    public GlobalCoords3D parse(LocationSource source, String locationString) {
         Matcher matcher = getPattern().matcher(locationString);
         if (matcher.find()) {
             String map = matcher.group(1);
@@ -26,7 +26,7 @@ public class OsGb36Parser4Digit implements LocationParser, LocationFormatter{
             String locator = String.format("%s%s%s%s%s", map, easting, "55", northing, "55");
             OsGb36Converter converter = new OsGb36Converter();
             OsGb36ConverterResult result = converter.convertOsGb36ToCoords(locator);
-            return new GlobalCoordinatesWithSourceAccuracy(result.getCoords(), 0.0, new LocationInfo(LocationAccuracy.OSGB36_4DIGIT, LocationSource.OSGB36_CONVERTER));
+            return new GlobalCoords3D(result.getCoords(), 0.0, new LocationInfo(LocationAccuracy.OSGB36_4DIGIT, LocationSource.OSGB36_CONVERTER));
         }
         return null;
     }

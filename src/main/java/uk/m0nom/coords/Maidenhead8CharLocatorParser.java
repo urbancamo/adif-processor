@@ -14,7 +14,7 @@ public class Maidenhead8CharLocatorParser implements LocationParser, LocationFor
     }
 
     @Override
-    public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String locationString) {
+    public GlobalCoords3D parse(LocationSource source, String locationString) {
         Matcher matcher = getPattern().matcher(locationString);
         if (matcher.find()) {
             String locator = matcher.group(1);

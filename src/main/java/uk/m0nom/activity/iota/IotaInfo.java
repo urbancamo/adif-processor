@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.coords.LocationAccuracy;
 import uk.m0nom.coords.LocationSource;
 
@@ -67,10 +67,10 @@ public class IotaInfo extends Activity {
      * maximum and minimum. This method calculates a central coordinate in this region
      * @return Central coordinate of an island (group) max/min lat/long
      */
-    public GlobalCoordinatesWithSourceAccuracy getCoordsFromLatLongMaxMin() {
+    public GlobalCoords3D getCoordsFromLatLongMaxMin() {
         double latitudeCentre = latitudeMin + ((latitudeMax - latitudeMin) / 2.0);
         double longitudeCentre = longitudeMin + ((longitudeMax - longitudeMin) / 2.0);
-        return new GlobalCoordinatesWithSourceAccuracy(latitudeCentre, longitudeCentre, LocationSource.ACTIVITY, LocationAccuracy.LAT_LONG);
+        return new GlobalCoords3D(latitudeCentre, longitudeCentre, LocationSource.ACTIVITY, LocationAccuracy.LAT_LONG);
     }
 
     @Override

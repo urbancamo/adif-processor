@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 
 /**
  * An activity is any amateur radio activity programme or awards programme that you can participate in.
@@ -17,7 +17,7 @@ public abstract class Activity implements Comparable<Activity> {
     private ActivityType type;
     private String name;
     private String ref;
-    private GlobalCoordinatesWithSourceAccuracy coords;
+    private GlobalCoords3D coords;
     private String grid;
     private Double altitude;
 

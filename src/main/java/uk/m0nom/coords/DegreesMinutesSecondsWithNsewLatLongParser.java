@@ -14,7 +14,7 @@ public class DegreesMinutesSecondsWithNsewLatLongParser implements LocationParse
     }
 
     @Override
-    public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String location) {
+    public GlobalCoords3D parse(LocationSource source, String location) {
         Matcher matcher = getPattern().matcher(location);
         if (matcher.find()) {
             String latDegrees = matcher.group(1);
@@ -29,7 +29,7 @@ public class DegreesMinutesSecondsWithNsewLatLongParser implements LocationParse
 
             Double latitude = LatLongUtils.parseDegMinSecLatitude(latDegrees, latMinutes, latSeconds, latNorthSouth);
             Double longitude = LatLongUtils.parseDegMinSecLongitude(longDegrees, longMinutes, longSeconds, longEastWest);
-            return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.LAT_LONG);
+            return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
         }
         return null;
     }

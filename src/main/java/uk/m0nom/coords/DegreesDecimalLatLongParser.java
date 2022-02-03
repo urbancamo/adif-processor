@@ -14,7 +14,7 @@ public class DegreesDecimalLatLongParser implements LocationParser, LocationForm
     }
 
     @Override
-    public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String location) {
+    public GlobalCoords3D parse(LocationSource source, String location) {
         Matcher matcher = getPattern().matcher(location);
 
         String latNorthSouth = "N";
@@ -36,7 +36,7 @@ public class DegreesDecimalLatLongParser implements LocationParser, LocationForm
             if (latitude == null || longitude == null) {
                 throw new UnsupportedOperationException();
             }
-            return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.LAT_LONG);
+            return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
         }
         return null;
     }

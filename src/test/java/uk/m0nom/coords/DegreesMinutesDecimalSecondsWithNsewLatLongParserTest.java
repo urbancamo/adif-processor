@@ -29,7 +29,7 @@ public class DegreesMinutesDecimalSecondsWithNsewLatLongParserTest {
     }
 
     private void checkFormat(String expected, Double latitude, Double longitude) {
-        GlobalCoordinates coords = new GlobalCoordinatesWithSourceAccuracy(latitude, longitude);
+        GlobalCoordinates coords = new GlobalCoords3D(latitude, longitude);
         String formatted = new DegreesMinutesDecimalSecondsWithNsewLatLongParser().format(coords);
         assertEquals(formatted, expected);
     }

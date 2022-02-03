@@ -14,14 +14,14 @@ public class CommaSeparatedDecimalLatLongParser implements LocationParser, Locat
     }
 
     @Override
-    public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String location) {
+    public GlobalCoords3D parse(LocationSource source, String location) {
         Matcher matcher = getPattern().matcher(location);
         if (matcher.find()) {
             String latString = matcher.group(1);
             String longString = matcher.group(2);
             Double latitude = LatLongUtils.parseDecimalLatitude(latString);
             Double longitude = LatLongUtils.parseDecimalLongitude(longString);
-            return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, source, LocationAccuracy.LAT_LONG);
+            return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
         }
         return null;
     }

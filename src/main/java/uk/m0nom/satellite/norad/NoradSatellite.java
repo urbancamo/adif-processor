@@ -8,7 +8,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.control.TransformControl;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.coords.LocationAccuracy;
 import uk.m0nom.coords.LocationSource;
 import uk.m0nom.satellite.ApSatellite;
@@ -46,7 +46,7 @@ public class NoradSatellite implements ApSatellite {
     }
 
     @Override
-    public GlobalCoordinatesWithSourceAccuracy getPosition(GlobalCoordinatesWithSourceAccuracy coords, LocalDate date, LocalTime time) {
+    public GlobalCoords3D getPosition(GlobalCoords3D coords, LocalDate date, LocalTime time) {
         GroundStationPosition groundStationPosition = new GroundStationPosition(coords.getLatitude(), coords.getLongitude(), coords.getAltitude());
         LocalDateTime dateTime = LocalDateTime.of(date, time);
         ZonedDateTime utcDateTime = dateTime.atZone(ZoneId.of("UTC"));
@@ -56,8 +56,8 @@ public class NoradSatellite implements ApSatellite {
         double latitude = satPos.getLatitude() / (Math.PI * 2.0) * 360;
         double longitude = satPos.getLongitude() / (Math.PI * 2.0) * 360;
         double altitudeInMetres = satPos.getAltitude() * 1000.0;
-        GlobalCoordinatesWithSourceAccuracy position =
-                new GlobalCoordinatesWithSourceAccuracy(latitude,
+        GlobalCoords3D position =
+                new GlobalCoords3D(latitude,
                         longitude, altitudeInMetres,
                         LocationSource.SATELLITE, LocationAccuracy.LAT_LONG);
         return position;

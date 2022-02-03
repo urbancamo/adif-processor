@@ -5,7 +5,7 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.control.TransformControl;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.icons.IconResource;
 import uk.m0nom.kml.info.KmlStationInfoPanel;
 
@@ -93,7 +93,7 @@ public class KmlStationUtils {
         return null;
     }
 
-    public String createSatelliteContactMarker(TransformControl control, Document document, Folder folder, Qso qso, GlobalCoordinatesWithSourceAccuracy position) {
+    public String createSatelliteContactMarker(TransformControl control, Document document, Folder folder, Qso qso, GlobalCoords3D position) {
         String id = getSatelliteMarkerId(qso);
         String name = getSatelliteMarkerName(qso);
         String folderName = getSatelliteFolderName(qso);

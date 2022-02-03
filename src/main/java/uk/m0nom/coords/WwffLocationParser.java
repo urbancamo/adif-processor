@@ -23,11 +23,11 @@ public class WwffLocationParser implements LocationParser {
     }
 
     @Override
-    public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String location) {
+    public GlobalCoords3D parse(LocationSource source, String location) {
         WwffInfo wwff = (WwffInfo) wwffDatabase.get(location);
         if (wwff != null) {
             if (wwff.hasCoords()) {
-                return new GlobalCoordinatesWithSourceAccuracy(wwff.getCoords(), LocationSource.ACTIVITY, LocationAccuracy.LAT_LONG);
+                return new GlobalCoords3D(wwff.getCoords(), LocationSource.ACTIVITY, LocationAccuracy.LAT_LONG);
             }
         }
         return null;

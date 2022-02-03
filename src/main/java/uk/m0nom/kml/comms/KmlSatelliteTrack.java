@@ -2,11 +2,10 @@ package uk.m0nom.kml.comms;
 
 import de.micromata.opengis.kml.v_2_2_0.*;
 import uk.m0nom.adif3.control.TransformControl;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.kml.KmlLineStyle;
 import uk.m0nom.kml.KmlStyling;
 import uk.m0nom.kml.KmlUtils;
-import uk.m0nom.kml.station.KmlStationUtils;
 import uk.m0nom.satellite.ApSatellite;
 import uk.m0nom.satellite.SatelliteActivity;
 import uk.m0nom.satellite.SatellitePass;
@@ -19,7 +18,7 @@ public class KmlSatelliteTrack {
     private final static String SATELLITE_TRACK_ID = "satellite_track";
 
     public void addSatelliteTracks(TransformControl control, Document doc, SatelliteActivity activity,
-                                   GlobalCoordinatesWithSourceAccuracy groundStation) {
+                                   GlobalCoords3D groundStation) {
         String styleUrl = addSatelliteTrackStyle(control, doc);
 
         Folder folder = doc.createAndAddFolder();
@@ -35,10 +34,10 @@ public class KmlSatelliteTrack {
             Folder passFolder = folder.createAndAddFolder().withName(pass.getId().toString()).withOpen(false);
 
             LocalTime currentTime = pass.getFirstContact().minusMinutes(3);
-            GlobalCoordinatesWithSourceAccuracy lastPosition = null;
+            GlobalCoords3D lastPosition = null;
             while (currentTime.isBefore(pass.getLastContact().plusMinutes(2))) {
                 // Calculate position of satellite at the time
-                GlobalCoordinatesWithSourceAccuracy currentPosition = satellite.getPosition(groundStation, passDate, currentTime);
+                GlobalCoords3D currentPosition = satellite.getPosition(groundStation, passDate, currentTime);
                 if (lastPosition != null) {
                     drawSatelliteTrack(passFolder, currentTime, lastPosition, currentPosition, styleUrl);
                 }
@@ -50,8 +49,8 @@ public class KmlSatelliteTrack {
 
     }
 
-    private void drawSatelliteTrack(Folder folder, LocalTime currentTime, GlobalCoordinatesWithSourceAccuracy lastPosition,
-                                    GlobalCoordinatesWithSourceAccuracy currentPosition,
+    private void drawSatelliteTrack(Folder folder, LocalTime currentTime, GlobalCoords3D lastPosition,
+                                    GlobalCoords3D currentPosition,
                                     String styleUrl) {
         Placemark placemark = folder.createAndAddPlacemark();
         String time = currentTime.toString();

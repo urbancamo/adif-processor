@@ -3,11 +3,10 @@ package uk.m0nom.comms;
 import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
-import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Propagation;
 import uk.m0nom.adif3.control.TransformControl;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.geodesic.GeodesicUtils;
 import uk.m0nom.satellite.ApSatellite;
 import uk.m0nom.satellite.ApSatellites;
@@ -22,8 +21,10 @@ public class SatellitePropagation implements CommsLinkGenerator {
     }
 
     @Override
-    public CommsLinkResult getCommunicationsLink(TransformControl control, GlobalCoordinates start, GlobalCoordinates end,
-                                                 Adif3Record rec, double myAltitude, double theirAltitude) {
+    public CommsLinkResult getCommunicationsLink(TransformControl control,
+                                                 GlobalCoords3D start,
+                                                 GlobalCoords3D end,
+                                                 Adif3Record rec) {
         CommsLinkResult result = new CommsLinkResult();
 
         if (rec.getSatName() != null) {
@@ -33,8 +34,8 @@ public class SatellitePropagation implements CommsLinkGenerator {
                 return result;
             }
             apSatellite.updateAdifRec(control, rec);
-            GlobalCoordinatesWithSourceAccuracy groundStation = new GlobalCoordinatesWithSourceAccuracy(rec.getMyCoordinates(), myAltitude);
-            GlobalCoordinatesWithSourceAccuracy satelliteLocation = apSatellite.getPosition(groundStation, rec.getQsoDate(), rec.getTimeOn());
+            GlobalCoords3D groundStation = start;
+            GlobalCoords3D satelliteLocation = apSatellite.getPosition(groundStation, rec.getQsoDate(), rec.getTimeOn());
             result.setSatellitePosition(satelliteLocation);
 
             GeodeticCalculator calculator = new GeodeticCalculator();
@@ -47,10 +48,10 @@ public class SatellitePropagation implements CommsLinkGenerator {
             double distanceInKm = distance / 1000;
             result.setDistanceInKm(distanceInKm);
 
-            List<GlobalCoordinatesWithSourceAccuracy> path = result.getPath();
-            path.add(new GlobalCoordinatesWithSourceAccuracy(start.getLatitude(), start.getLongitude(), myAltitude));
+            List<GlobalCoords3D> path = result.getPath();
+            path.add(start);
             path.add(satelliteLocation);
-            path.add(new GlobalCoordinatesWithSourceAccuracy(end.getLatitude(), end.getLongitude(), theirAltitude));
+            path.add(end);
 
             result.setSkyDistance(satelliteLocation.getAltitude() * 2 / 1000);
 

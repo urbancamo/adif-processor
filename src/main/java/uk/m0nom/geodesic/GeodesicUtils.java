@@ -1,10 +1,9 @@
 package uk.m0nom.geodesic;
 
-import de.micromata.opengis.kml.v_2_2_0.AltitudeMode;
 import de.micromata.opengis.kml.v_2_2_0.LineString;
 import org.gavaghan.geodesy.*;
 import uk.m0nom.comms.*;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 
 import java.util.List;
 
@@ -16,11 +15,11 @@ public class GeodesicUtils
     }
 
 
-    public static double calculatePath(List<GlobalCoordinatesWithSourceAccuracy> path, List<PropagationApex> bounces, GlobalCoordinates start, GlobalCoordinates end,
+    public static double calculatePath(List<GlobalCoords3D> path, List<PropagationApex> bounces, GlobalCoords3D start, GlobalCoords3D end,
                                        double initialAzimuth) {
         GeodeticCalculator calculator = new GeodeticCalculator();
 
-        path.add(new GlobalCoordinatesWithSourceAccuracy(start.getLatitude(), start.getLongitude(), 0.0));
+        path.add(new GlobalCoords3D(start.getLatitude(), start.getLongitude(), 0.0));
         GlobalCoordinates previous = start;
         double azimuth = initialAzimuth;
         double skyDistance = 0.0;
@@ -47,7 +46,7 @@ public class GeodesicUtils
             /* Add 'up' bounce */
             GlobalCoordinates apex = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, previous, azimuth, distanceAcrossGlobal / 2.0);
 
-            path.add(new GlobalCoordinatesWithSourceAccuracy(apex.getLatitude(), apex.getLongitude(), bounce.getApexHeight()));
+            path.add(new GlobalCoords3D(apex.getLatitude(), apex.getLongitude(), bounce.getApexHeight()));
 
             /* Recalculate Azimuth between Apex and End Point */
             GeodeticCurve curve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, apex, end);
@@ -55,10 +54,10 @@ public class GeodesicUtils
 
             /* Handle the last return by working backwards from the end point, so we don't lose accuracy */
             if  (i == bounces.size() - 1) {
-                path.add(new GlobalCoordinatesWithSourceAccuracy(end.getLatitude(), end.getLongitude(), 0.0));
+                path.add(new GlobalCoords3D(end.getLatitude(), end.getLongitude(), 0.0));
             } else {
                 GlobalCoordinates rtn = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, apex, azimuth, distanceAcrossGlobal / 2.0);
-                path.add(new GlobalCoordinatesWithSourceAccuracy(rtn.getLatitude(), rtn.getLongitude(), baseHeight));
+                path.add(new GlobalCoords3D(rtn.getLatitude(), rtn.getLongitude(), baseHeight));
                 /* Recalculate Azimuth between Apex and End Point */
                 curve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, rtn, end);
                 azimuth = curve.getAzimuth();

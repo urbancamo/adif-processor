@@ -8,7 +8,7 @@ import uk.m0nom.activity.ActivityType;
 import uk.m0nom.activity.cota.CotaInfo;
 import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.adif3.control.TransformControl;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.coords.LocationAccuracy;
 import uk.m0nom.coords.LocationSource;
 import uk.m0nom.qrz.QrzCallsign;
@@ -40,8 +40,8 @@ public class ThymleafKmlStationInfoPanelTest {
 
         when(station.getGrid()).thenReturn("IO84qi");
 
-        GlobalCoordinatesWithSourceAccuracy coords =
-                new GlobalCoordinatesWithSourceAccuracy(54.344710, -2.663091, LocationSource.QRZ, LocationAccuracy.LAT_LONG);
+        GlobalCoords3D coords =
+                new GlobalCoords3D(54.344710, -2.663091, LocationSource.QRZ, LocationAccuracy.LAT_LONG);
 
         when(station.getCoordinates()).thenReturn(coords);
         when(qrzInfo.getCall()).thenReturn("M5TUE");

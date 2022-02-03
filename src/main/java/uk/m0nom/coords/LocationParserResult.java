@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class LocationParserResult {
-    private final GlobalCoordinatesWithSourceAccuracy coords;
+    private final GlobalCoords3D coords;
     private final LocationParser parser;
 }

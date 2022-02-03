@@ -5,6 +5,7 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Propagation;
 import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.geodesic.GeodesicUtils;
 
 import java.util.List;
@@ -13,8 +14,8 @@ public class TroposphericDuctingPropagation implements CommsLinkGenerator {
 
     @Override
     public CommsLinkResult getCommunicationsLink(TransformControl control,
-                                                 GlobalCoordinates start, GlobalCoordinates end,
-                                                 Adif3Record rec, double myAltitude, double theirAltitude) {
+                                                 GlobalCoords3D start, GlobalCoords3D end,
+                                                 Adif3Record rec) {
         /* assume daytime propagation if we don't have a QSO time */
         CommsLinkResult result = PropagationUtils.calculateGeodeticCurve(start, end);
 

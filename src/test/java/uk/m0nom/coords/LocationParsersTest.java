@@ -2,7 +2,6 @@ package uk.m0nom.coords;
 
 import org.junit.Assert;
 import org.junit.Test;
-import uk.m0nom.activity.ActivityDatabases;
 
 public class LocationParsersTest {
 
@@ -20,7 +19,7 @@ public class LocationParsersTest {
     }
 
     private void checkParsing(LocationParsers parsers, String toScan, double expectedLatitude, double expectedLongitude) {
-        GlobalCoordinatesWithSourceAccuracy gc = parsers.parseStringForCoordinates(LocationSource.UNDEFINED, toScan).getCoords();
+        GlobalCoords3D gc = parsers.parseStringForCoordinates(LocationSource.UNDEFINED, toScan).getCoords();
         Assert.assertTrue(String.format("Returned latitude: %f doesn't match expected %f", gc.getLatitude(), expectedLatitude), Math.abs(gc.getLatitude() - expectedLatitude) < 0.0001);
         Assert.assertTrue(String.format("Returned longitude: %f doesn't match expected %f",gc.getLongitude(), expectedLongitude), Math.abs(gc.getLongitude() - expectedLongitude) < 0.0001);
     }

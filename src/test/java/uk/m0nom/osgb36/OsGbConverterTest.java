@@ -1,7 +1,7 @@
 package uk.m0nom.osgb36;
 
 import org.junit.Test;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -19,7 +19,7 @@ public class OsGbConverterTest {
     @Test
     public void latLongToOsGb36Test() {
         OsGb36Converter converter = new OsGb36Converter();
-        GlobalCoordinatesWithSourceAccuracy coords = new GlobalCoordinatesWithSourceAccuracy(54.371029088698165, -2.909934810139321, null);
+        GlobalCoords3D coords = new GlobalCoords3D(54.371029088698165, -2.909934810139321, null);
         OsGb36ConverterResult result = converter.convertCoordsToOsGb36(coords);
         assertTrue(result.isSuccess());
         assertEquals("SD4089297677", result.getOsGb36());
@@ -39,7 +39,7 @@ public class OsGbConverterTest {
     public
     void latLongToOsGb36EastingNorthingTest() {
         OsGb36Converter converter = new OsGb36Converter();
-        GlobalCoordinatesWithSourceAccuracy coords = new GlobalCoordinatesWithSourceAccuracy(54.6403121148, -3.0502927536, null);
+        GlobalCoords3D coords = new GlobalCoords3D(54.6403121148, -3.0502927536, null);
         OsGb36ConverterResult result = converter.convertCoordsToOsGb36EastingNorthing(coords);
         assertTrue(result.isSuccess());
         assertEquals("E 332222", result.getOsGb36EastingString());

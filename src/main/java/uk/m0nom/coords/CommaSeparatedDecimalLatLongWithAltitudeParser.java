@@ -12,7 +12,7 @@ public class CommaSeparatedDecimalLatLongWithAltitudeParser implements LocationP
     }
 
     @Override
-    public GlobalCoordinatesWithSourceAccuracy parse(LocationSource source, String location) {
+    public GlobalCoords3D parse(LocationSource source, String location) {
         Matcher matcher = getPattern().matcher(location);
         if (matcher.find()) {
             String latString = matcher.group(1);
@@ -21,7 +21,7 @@ public class CommaSeparatedDecimalLatLongWithAltitudeParser implements LocationP
             Double latitude = LatLongUtils.parseDecimalLatitude(latString);
             Double longitude = LatLongUtils.parseDecimalLongitude(longString);
             Double altitude = Double.parseDouble(altString);
-            return new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, altitude, source, LocationAccuracy.LAT_LONG);
+            return new GlobalCoords3D(latitude, longitude, altitude, source, LocationAccuracy.LAT_LONG);
         }
         return null;
     }

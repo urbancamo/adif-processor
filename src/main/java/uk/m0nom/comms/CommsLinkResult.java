@@ -3,7 +3,7 @@ package uk.m0nom.comms;
 import lombok.Getter;
 import lombok.Setter;
 import org.marsik.ham.adif.enums.Propagation;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,8 @@ public class CommsLinkResult {
     private double skyDistance;
     private Propagation propagation;
     private double azimuth;
-    private List<GlobalCoordinatesWithSourceAccuracy> path;
-    private GlobalCoordinatesWithSourceAccuracy satellitePosition;
+    private List<GlobalCoords3D> path;
+    private GlobalCoords3D satellitePosition;
     private String error;
 
     public CommsLinkResult() {

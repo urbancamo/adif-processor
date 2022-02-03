@@ -4,7 +4,7 @@ import fr.dudie.nominatim.client.JsonNominatimClient;
 import fr.dudie.nominatim.model.Address;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.impl.client.HttpClientBuilder;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.coords.LocationAccuracy;
 import uk.m0nom.coords.LocationSource;
 import uk.m0nom.qrz.QrzCallsign;
@@ -74,7 +74,7 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
 
     private GeocodingResult queryUsingAddressSubstring(String callsign, String addressToCheck) throws IOException, InterruptedException {
         String substring = addressToCheck;
-        GlobalCoordinatesWithSourceAccuracy coords = null;
+        GlobalCoords3D coords = null;
         int accuracy = 0;
         while (StringUtils.isNotBlank(substring) && coords == null) {
             // Start cutting down the address, with the most specific information first
@@ -92,7 +92,7 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
         return new GeocodingResult(coords, substring, null);
     }
 
-    private GlobalCoordinatesWithSourceAccuracy addressSearch(String callsign, String searchString, int accuracy) throws IOException, InterruptedException {
+    private GlobalCoords3D addressSearch(String callsign, String searchString, int accuracy) throws IOException, InterruptedException {
         long timeDiff = new Date().getTime() - lastTimestamp;
         if (timeDiff < DELAY) {
             long pause = DELAY - timeDiff;
@@ -107,7 +107,7 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
         if (addressMatches.size() > 0) {
             Address match = addressMatches.get(0);
             LocationAccuracy locationAccuracy = getLocationAccuracy(accuracy);
-            return new GlobalCoordinatesWithSourceAccuracy(match.getLatitude(), match.getLongitude(), LocationSource.GEOCODING, locationAccuracy);
+            return new GlobalCoords3D(match.getLatitude(), match.getLongitude(), LocationSource.GEOCODING, locationAccuracy);
         }
         return null;
     }

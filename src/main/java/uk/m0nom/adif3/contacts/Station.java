@@ -6,7 +6,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.qrz.QrzCallsign;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class Station {
 
     private Map<ActivityType, Activity> activities;
     private String grid;
-    private GlobalCoordinatesWithSourceAccuracy coordinates;
+    private GlobalCoords3D coordinates;
 
     public Station() {
         activities = new HashMap<>();

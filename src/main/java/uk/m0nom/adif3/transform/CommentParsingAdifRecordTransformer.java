@@ -147,7 +147,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 MaidenheadLocatorConversion.isAValidGridSquare(rec.getGridsquare()) &&
                 !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare())) {
             // Set Coordinates from GridSquare that has been supplied in the input file
-            GlobalCoordinatesWithSourceAccuracy coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, rec.getGridsquare());
+            GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, rec.getGridsquare());
             rec.setCoordinates(coords);
             qso.getTo().setCoordinates(coords);
             qso.getTo().setGrid(rec.getGridsquare());
@@ -248,7 +248,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
         Double latitude = null;
         Double longitude = null;
-        GlobalCoordinatesWithSourceAccuracy coords = null;
+        GlobalCoords3D coords = null;
         String callsignWithInvalidActivity = null;
 
         for (String key : tokens.keySet()) {
@@ -296,7 +296,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                                         rec.setGridsquare(value);
                                     }
                                     // Use full accuracy to set the coordinates
-                                    GlobalCoordinatesWithSourceAccuracy coordinates = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, value);
+                                    GlobalCoords3D coordinates = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, value);
                                     rec.setCoordinates(coordinates);
                                     qso.getTo().setCoordinates(coordinates);
                                     break;
@@ -486,7 +486,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
         if (coords != null || (latitude != null && longitude != null)) {
             if (coords == null) {
-                coords = new GlobalCoordinatesWithSourceAccuracy(latitude, longitude, LocationSource.OVERRIDE, LocationAccuracy.LAT_LONG);
+                coords = new GlobalCoords3D(latitude, longitude, LocationSource.OVERRIDE, LocationAccuracy.LAT_LONG);
             }
             qso.getTo().setCoordinates(coords);
             rec.setCoordinates(coords);

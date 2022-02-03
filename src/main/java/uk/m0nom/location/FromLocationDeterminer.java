@@ -28,13 +28,13 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
         Adif3Record rec = qso.getRecord();
         qso.getRecord().setMyGridSquare(myGrid.substring(0, 6));
         qso.getFrom().setGrid(myGrid);
-        GlobalCoordinatesWithSourceAccuracy coords = MaidenheadLocatorConversion.locatorToCoords(source, myGrid);
+        GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(source, myGrid);
         rec.setMyCoordinates(coords);
         qso.getFrom().setCoordinates(coords);
     }
 
 
-    private void setMyLocationFromCoordinates(Qso qso, GlobalCoordinatesWithSourceAccuracy coords) {
+    private void setMyLocationFromCoordinates(Qso qso, GlobalCoords3D coords) {
         qso.getRecord().setMyCoordinates(coords);
         qso.getFrom().setCoordinates(coords);
     }
@@ -73,7 +73,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
     }
 
     private void setMyCoordsFromGrid(Station station, Adif3Record rec, String grid) {
-        GlobalCoordinatesWithSourceAccuracy coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.ACTIVITY, grid);
+        GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.ACTIVITY, grid);
         rec.setMyCoordinates(coords);
         station.setCoordinates(coords);
     }
@@ -106,7 +106,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
     private boolean setMyLocationFromQrzLatLong(Qso qso, QrzCallsign callsignData) {
         Adif3Record rec = qso.getRecord();
         if (callsignData != null && callsignData.getLat() != null && callsignData.getLon() != null) {
-            GlobalCoordinatesWithSourceAccuracy coord = new GlobalCoordinatesWithSourceAccuracy(callsignData.getLat(), callsignData.getLon());
+            GlobalCoords3D coord = new GlobalCoords3D(callsignData.getLat(), callsignData.getLon());
             rec.setMyCoordinates(coord);
             qso.getFrom().setCoordinates(coord);
             return true;

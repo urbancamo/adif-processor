@@ -7,9 +7,8 @@ import org.thymeleaf.templatemode.TemplateMode;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.adif3.control.TransformControl;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.coords.LocationInfo;
-import uk.m0nom.dxcc.DxccEntities;
 import uk.m0nom.dxcc.DxccEntity;
 import uk.m0nom.qrz.QrzCallsign;
 
@@ -56,9 +55,9 @@ public class KmlStationInfoPanel {
         }
         setVariable(context, "grid", grid);
 
-        GlobalCoordinatesWithSourceAccuracy coordinates = station.getCoordinates();
+        GlobalCoords3D coordinates = station.getCoordinates();
         if (coordinates == null && qrzInfo != null) {
-            coordinates = new GlobalCoordinatesWithSourceAccuracy(qrzInfo.getLat(), qrzInfo.getLon());
+            coordinates = new GlobalCoords3D(qrzInfo.getLat(), qrzInfo.getLon());
         }
         if (coordinates != null) {
             context.setVariable("lat", String.format("%.3f", coordinates.getLatitude()));

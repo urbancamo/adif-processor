@@ -1,10 +1,9 @@
 package uk.m0nom.adif3.transform;
 
-import com.vividsolutions.jts.algorithm.HCoordinate;
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.contacts.Qso;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.coords.LocationAccuracy;
 import uk.m0nom.coords.LocationSource;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
@@ -122,9 +121,9 @@ public class AdifQrzEnricher {
                 boolean invalidGridBasedLoc = (gridBasedGeoLocation || userGeoLocation) &&
                         (!MaidenheadLocatorConversion.isAValidGridSquare(gridSquare) || MaidenheadLocatorConversion.isADubiousGridSquare(gridSquare));
 
-                GlobalCoordinatesWithSourceAccuracy coord = null;
+                GlobalCoords3D coord = null;
                 if (callsignData.getLat() != null && callsignData.getLon() != null && !invalidGridBasedLoc) {
-                    coord = new GlobalCoordinatesWithSourceAccuracy(callsignData.getLat(), callsignData.getLon(),
+                    coord = new GlobalCoords3D(callsignData.getLat(), callsignData.getLon(),
                             LocationSource.QRZ, LocationAccuracy.LAT_LONG);
                     if (geocodeBasedGeoLocation) {
                         coord.setLocationInfo(LocationSource.QRZ, LocationAccuracy.GEOLOCATION_GOOD);

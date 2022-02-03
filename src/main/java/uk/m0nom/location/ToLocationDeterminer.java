@@ -9,7 +9,7 @@ import uk.m0nom.activity.wota.WotaInfo;
 import uk.m0nom.activity.wota.WotaSummitsDatabase;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
-import uk.m0nom.coords.GlobalCoordinatesWithSourceAccuracy;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.coords.LocationSource;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzService;
@@ -33,7 +33,7 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
                 qso.getTo().setGrid(grid);
                 qso.getTo().setCoordinates(info.getCoords());
             } else if (info.hasGrid()) {
-                GlobalCoordinatesWithSourceAccuracy coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.ACTIVITY, info.getGrid());
+                GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.ACTIVITY, info.getGrid());
                 rec.setCoordinates(coords);
                 rec.setGridsquare(info.getGrid());
                 qso.getTo().setGrid(info.getGrid());
@@ -92,7 +92,7 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
         }
 
         if (activity.hasCoords()) {
-            GlobalCoordinatesWithSourceAccuracy coords = activity.getCoords();
+            GlobalCoords3D coords = activity.getCoords();
             String grid = MaidenheadLocatorConversion.coordsToLocator(coords);
 
             qso.getTo().setCoordinates(coords);
