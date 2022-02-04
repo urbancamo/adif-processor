@@ -3,13 +3,14 @@ package uk.m0nom.geolib;
 import org.gavaghan.geodesy.*;
 import org.junit.Assert;
 import org.junit.Test;
+import uk.m0nom.coords.LocationSource;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
 public class GeoLibTest {
     @Test
     public void distanceTest() {
-        GlobalCoordinates myLocation = MaidenheadLocatorConversion.locatorToCoords("IO84mj91mb");
-        GlobalCoordinates belgium =  MaidenheadLocatorConversion.locatorToCoords("JO11PF");
+        GlobalCoordinates myLocation = MaidenheadLocatorConversion.locatorToCoords(LocationSource.UNDEFINED,"IO84mj91mb");
+        GlobalCoordinates belgium =  MaidenheadLocatorConversion.locatorToCoords(LocationSource.UNDEFINED, "JO11PF");
 
         GlobalCoordinates start = new GlobalCoordinates(myLocation.getLatitude(), myLocation.getLongitude());
         GlobalCoordinates end = new GlobalCoordinates(belgium.getLatitude(), belgium.getLongitude());

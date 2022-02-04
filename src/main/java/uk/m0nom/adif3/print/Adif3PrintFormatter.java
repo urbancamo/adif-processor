@@ -1,31 +1,35 @@
 package uk.m0nom.adif3.print;
 
-import com.amihaiemil.eoyaml.Yaml;
-import com.amihaiemil.eoyaml.YamlMapping;
-import com.amihaiemil.eoyaml.YamlNode;
 import org.apache.commons.lang3.StringUtils;
+import org.gavaghan.geodesy.Ellipsoid;
+import org.gavaghan.geodesy.GeodeticCalculator;
+import org.gavaghan.geodesy.GeodeticCurve;
+import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.types.Sota;
-import uk.m0nom.adif3.print.ColumnConfig;
-import uk.m0nom.adif3.print.LineConfig;
-import uk.m0nom.adif3.print.PageConfig;
-import uk.m0nom.adif3.print.PrintJobConfig;
+import uk.m0nom.geodesic.GeodesicUtils;
+import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+/**
+ * This class can 'print' QSOs into either a fixed-column width table or a markdown table based on the
+ * supplied print configuration. Not all ADIF fields are currently supported, this is on my TODO list.
+ */
 public class Adif3PrintFormatter {
     private static final Logger logger = Logger.getLogger(Adif3PrintFormatter.class.getName());
 
-    class PrintState {
+    private final static List<String> FIRSTNAME_SKIP = new ArrayList<String>(Arrays.asList("Op.", "Mr", "Mr.", "Mrs", "Mrs.")) ;
+
+    static class PrintState {
         StringBuilder sb;
         int currentPage;
         int currentLine;
@@ -37,8 +41,7 @@ public class Adif3PrintFormatter {
         printJobConfig = new PrintJobConfig();
     }
 
-    private YamlMapping config = null;
-    private PrintJobConfig printJobConfig;
+    private final PrintJobConfig printJobConfig;
 
     private PrintState state;
 
@@ -51,7 +54,7 @@ public class Adif3PrintFormatter {
         for (Adif3Record rec : log.getRecords()) {
             if (rec.getCall() != null && rec.getStationCallsign() != null) {
                 if (atPageBreak()) {
-                    handlePageBreak(log);
+                    handlePageBreak();
                 }
                 printRecord(rec);
             }
@@ -73,7 +76,7 @@ public class Adif3PrintFormatter {
         return (state.currentLine == 1 || state.currentLine % printJobConfig.pageConfig.getPageHeight() == 0);
     }
 
-    private void handlePageBreak(Adif3 log) {
+    private void handlePageBreak() {
         if (state.currentLine != 1) {
             // Need to end the previous page
             // Add a Control-L
@@ -82,7 +85,7 @@ public class Adif3PrintFormatter {
         for (int i = 0; i < printJobConfig.pageConfig.getTopMargin(); i++) {
             printLineEnd();
         }
-        printHeader(log);
+        printHeader();
         for (int i = 0; i < printJobConfig.pageConfig.getHeaderMargin(); i++) {
             printLineEnd();
         }
@@ -96,7 +99,7 @@ public class Adif3PrintFormatter {
         state.currentPage++;
     }
 
-    private void printHeader(Adif3 log) {
+    private void printHeader() {
         if (printJobConfig.pageConfig.getHeaderLine().length() > 0) {
             if ("COLUMN_NAMES".equals(printJobConfig.pageConfig.getHeaderLine())) {
                 printColumnHeaders();
@@ -188,12 +191,10 @@ public class Adif3PrintFormatter {
     }
 
     private void printLineEnd() {
-        switch (printJobConfig.pageConfig.getLineEnd()) {
-            case "unix":
-                state.sb.append("\n");
-                break;
-            default:
-                state.sb.append("\r\n");
+        if ("unix".equals(printJobConfig.pageConfig.getLineEnd())) {
+            state.sb.append("\n");
+        } else {
+            state.sb.append("\r\n");
         }
         state.currentLine++;
         state.currentColumn = 1;
@@ -201,7 +202,7 @@ public class Adif3PrintFormatter {
 
     public void printRecord(Adif3Record rec) {
         StringBuilder line = new StringBuilder();
-        String value = "";
+        String value;
         for (ColumnConfig column : printJobConfig.pageConfig.getLine().getColumns()) {
             value = getAdif3FieldFromRecord(rec, column);
             printValueToColumn(column, value, line);
@@ -270,13 +271,26 @@ public class Adif3PrintFormatter {
             case "NAME":
                 value = rec.getName();
                 break;
+            case "FIRSTNAME":
+                // Attempt to extract the firstname. This isn't foolproof by any means!
+                String names[] = StringUtils.split(rec.getName());
+                if (names != null && names.length > 0) {
+                    value = names[0];
+                    // This one primarily for Guru EA2IF
+                    if (FIRSTNAME_SKIP.contains(value) && names.length > 1) {
+                        value = names[1];
+                    }
+                }
+                break;
             case "QTH":
                 value = rec.getQth();
                 break;
             case "GRIDSQUARE":
-                value = rec.getGridsquare();
-                if ("JJ00aa".equals(value)) {
-                    value = "";
+                if (rec.getGridsquare() != null) {
+                    value = rec.getGridsquare().toUpperCase();
+                    if (MaidenheadLocatorConversion.isADubiousGridSquare(value)) {
+                        value = "";
+                    }
                 }
                 break;
             case "COUNTRY":
@@ -340,6 +354,12 @@ public class Adif3PrintFormatter {
                     value = "  ";
                 }
                 break;
+            case "BEARING":
+                // Determine if we have a bearing between stations
+                Double bearing = GeodesicUtils.getBearing(rec.getMyCoordinates(), rec.getCoordinates());
+                if (bearing != null) {
+                    value = String.format("%03.0f", bearing);
+                }
             default:
                 logger.warning(String.format("Print formatting column %s not currently handled", column.getAdif()));
                 break;

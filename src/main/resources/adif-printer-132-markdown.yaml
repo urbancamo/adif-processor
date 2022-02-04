@@ -1,6 +1,6 @@
 printJob:
   inEncoding:   iso-8859-1
-  outEncoding:  iso-8859-1
+  outEncoding:  utf-8
   startCommand: ''
   endCommand:   ''
 

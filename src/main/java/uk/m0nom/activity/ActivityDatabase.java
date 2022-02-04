@@ -1,28 +1,58 @@
 package uk.m0nom.activity;
 
-import lombok.val;
 import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
 import org.gavaghan.geodesy.GlobalCoordinates;
-import uk.m0nom.activity.hema.HemaSummitInfo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
+/**
+ * This class groups all locations for an activity in a Map that can be searched using the primary reference
+ * It also contains a method to obtain all activities within a given radius of a location
+ */
 public class ActivityDatabase {
-    private ActivityType type;
-    private Map<String, Activity> database;
+    private final ActivityType type;
+    private final Map<String, Activity> database;
+    private final boolean specialEventActivity;
 
     public ActivityDatabase(ActivityType type, Map<String, Activity> database) {
         this.type = type;
         this.database = database;
+        this.specialEventActivity = false;
     }
 
-    public ActivityType getType() { return type; }
-
-    public Activity get(String ref) { return database.get(ref);
+    public ActivityDatabase(ActivityType type, Map<String, Activity> database, boolean specialEventActivity) {
+        this.type = type;
+        this.database = database;
+        this.specialEventActivity = specialEventActivity;
     }
 
+    public ActivityType getType() {
+        return type;
+    }
+
+    public Activity get(String ref) {
+        return database.get(ref);
+    }
+
+    public boolean isSpecialEventActivity() {
+        return specialEventActivity;
+    }
+
+    public Collection<Activity> getValues() {
+        return database.values();
+    }
+
+    /**
+     * Search for all activities that are within the given radius
+     * @param activity centre activity reference to search from
+     * @param radius radius in metres to search against
+     * @return collection of activities in the given radius
+     */
     public Collection<Activity> findActivitiesInRadius(Activity activity, double radius) {
         List<Activity> matches = new ArrayList<>(10);
 

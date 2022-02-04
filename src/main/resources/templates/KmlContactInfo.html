@@ -1,0 +1,193 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <style>
+            .panel {
+                font-family: "Bitstream Vera Sans Mono",monospace;
+                color: black;
+            }
+            .image_box {
+            }
+            .content {
+                padding: 5px;
+            }
+            h3 {
+                color: midnightblue;
+                font-family: "Bitstream Vera Sans",sans-serif;
+            }
+            .contact {
+                font-family: "Bitstream Vera Sans",sans-serif;
+                font-size: 14pt;
+            }
+            .tdLabel {
+                width: 200px;
+            }
+            div.info {
+                padding-top: 1em;
+            }
+            .profile {
+                max-height:380px;
+                max-width:440px;
+                height:auto;
+                width:auto;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            #earth-balloon-content{
+                display:flex;
+            }
+            #balloon-content{
+                display:inline-block;
+                width: 450px;
+                height: 700px;
+            }
+            card-template{
+                height:640px;
+            }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div class="panel">
+            <div class="content">
+                <h1>Contact&nbsp;Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+            </div>
+            <div class="content contact">
+                <div>
+                    <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz/com/db/${stationCallsign}|}" th:text="${stationCallsign}"  target="_blank">EA8/M0NOM/P</a> ⇋
+                    <a href="https://qrz.com/db/G8CPZ" th:href="@{|https://qrz.com/db/${call}|}" th:text="${call}"  target="_blank">HB9/SP5SDR/P</a>
+                </div>
+            </div>
+            <div class="content">
+                <table>
+                    <thead></thead>
+                    <tbody>
+                        <tr>
+                            <td class="tdLabel">Date:</td>
+                            <td><span th:text="${qsoDate}">20/12/2021</span></td>
+                        </tr>
+                        <tr>
+                            <td class="tdLabel">Time (UTC):</td>
+                            <td><span th:text="${qsoTime}">12:02</span></td>
+                        </tr>
+                        <tr th:if="${band} != null">
+                            <td class="tdLabel">Band: </td>
+                            <td><span th:text="${band}">20 m</span></td>
+                        </tr>
+                        <tr th:if="${uplinkBand} != null">
+                            <td class="tdLabel">Uplink Band: </td>
+                            <td><span th:text="${uplinkBand}">2 GHz</span></td>
+                        </tr>
+                        <tr th:if="${downlinkBand} != null">
+                            <td class="tdLabel">Downlink Band:</td>
+                            <td><span th:text="${downlinkBand}">10 GHz</span></td>
+                        </tr>
+                        <tr th:if="${mode} != null">
+                            <td class="tdLabel">Mode: </td>
+                            <td><span th:text="${mode}">FM</span></td>
+                        </tr>
+                        <tr th:if="${downlinkFreq} != null">
+                            <td class="tdLabel"> Uplink Freq: </td>
+                            <td><span th:text="${freq}">2.125 GHz</span></td>
+                        </tr>
+                        <tr th:if="${downlinkFreq} != null">
+                            <td class="tdLabel">Downlink Freq: </td>
+                            <td><span th:text="${downlinkFreq}">10.455 GHz</span></td>
+                        </tr>
+                        <tr th:if="${downlinkFreq} == null">
+                            <td class="tdLabel">Freq:</td>
+                            <td><span th:text="${freq}">145.450</span> Mhz</td>
+                        </tr>
+                        <tr th:if="${txPwr} != null">
+                            <td class="tdLabel">TxPwr: </td>
+                            <td><span th:text="${txPwr}">5</span> watts</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info">
+                <table>
+                    <thead></thead>
+                    <tbody>
+                        <tr th:if="${gndDist} != null">
+                            <td class="tdLabel">Gnd Dist:</td>
+                            <td><span th:text="${gndDist}">25 </span> km</td>
+                        </tr>
+                        <tr th:if="${bearing} != null">
+                            <td class="tdLabel">Bearing:</td>
+                            <td><span th:text="${bearing}">180</span>°</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info">
+                <table>
+                    <thead></thead>
+                    <tbody>
+                        <tr th:if="${propagationMode} == 'GND'">
+                            <td class="tdLabel">Max Height:</td>
+                            <td><span th:text="${avgAlt}">6 km</span></td>
+                        </tr>
+
+
+                        <tr th:if="${propagationMode} == 'F2'">
+                            <td class="tdLabel">Sky dist: </td>
+                            <td><span th:text="${skyDist}">25</span> km</td>
+                        </tr>
+                        <tr th:if="${propagationMode} == 'F2'">
+                            <td class="tdLabel">Bounces:</td>
+                            <td><span th:text="${bounces}">5</span></td>
+                        </tr>
+                        <tr th:if="${propagationMode} == 'F2'">
+                            <td class="tdLabel">Reflection Alt:</td>
+                            <td><span th:text="${avgAlt}">350 km</span></td>
+                        </tr>
+                        <tr th:if="${propagationMode} == 'F2'">
+                            <td class="tdLabel">Reflection Angle:</td>
+                            <td><span th:text="${angle}">23°</span></td>
+                        </tr>
+
+
+                        <tr th:if="${propagationMode} == 'SAT'">
+                            <td class="tdLabel">Satellite: </td>
+                            <td><span th:text="${satName}">QO-100</span></td>
+                        </tr>
+                        <tr th:if="${propagationMode} == 'SAT'">
+                            <td class="tdLabel">Sat Alt:</td>
+                            <td><span th:text="${satAlt}">38,000 km</span></td>
+                        </tr>
+
+
+                        <tr th:if="${propagationMode} == 'TR'">
+                            <td class="tdLabel">Bounces:</td>
+                            <td><span th:text="${bounces}">25</span></td>
+                        </tr>
+                        <tr th:if="${propagationMode} == 'TR'">
+                            <td class="tdLabel">Duct Top:</td>
+                            <td><span th:text="${ductTop}">3,500</span> m</td>
+                        </tr>
+                        <tr th:if="${propagationMode} == 'TR'">
+                            <td class="tdLabel">Duct Base:</td>
+                            <td><span th:text="${ductBase}">3,000</span> m</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info">
+                <table>
+                    <thead></thead>
+                    <tbody>
+                    <tr>
+                        <td class="tdLabel">Propagation Mode:</td>
+                        <td><span th:text="${propagationMode}">GND</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

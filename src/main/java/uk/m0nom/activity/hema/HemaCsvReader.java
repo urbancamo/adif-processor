@@ -17,6 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * HuMPS on the Air CSV reader - the export having been provided by Rob.
+ */
 public class HemaCsvReader extends ActivityReader {
 
     public HemaCsvReader(String sourceFile) {
@@ -30,7 +33,7 @@ public class HemaCsvReader extends ActivityReader {
 
         Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(reader);
         for (CSVRecord record : records) {
-            HemaSummitInfo info = new HemaSummitInfo();
+            HemaInfo info = new HemaInfo();
             info.setKey(Integer.parseInt(record.get("hHillKey")));
 
             info.setRef(record.get("hFullReference"));

@@ -39,7 +39,7 @@ public class WotaCsvReader extends ActivityReader {
 
         Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(reader);
         for (CSVRecord record : records) {
-            WotaSummitInfo info = new WotaSummitInfo();
+            WotaInfo info = new WotaInfo();
 
             int wotaid = Integer.parseInt(record.get("wotaid"));
             if (wotaid <= 214) {

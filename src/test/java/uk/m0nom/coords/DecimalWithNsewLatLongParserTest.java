@@ -10,10 +10,10 @@ public class DecimalWithNsewLatLongParserTest {
     @Test
     public void test() {
         String input = "50.4490S 3.6366E";
-        Double latitude = -50.4490;
-        Double longitude = -3.6366;
+        double latitude = -50.4490;
+        double longitude = -3.6366;
 
-        GlobalCoordinates coords = new DecimalWithNsewLatLongParser().parse(input);
+        GlobalCoordinates coords = new DegreesDecimalWithNsewLatLongParser().parse(LocationSource.UNDEFINED, input);
         assertNotNull("Coords is null", coords);
         assertTrue(Math.abs(coords.getLatitude()) - Math.abs(latitude) < 0.001);
         assertTrue(Math.abs(coords.getLongitude()) - Math.abs(longitude) < 0.001);

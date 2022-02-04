@@ -2,12 +2,11 @@ package uk.m0nom.adif3.contacts;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.gavaghan.geodesy.GlobalCoordinates;
-import org.marsik.ham.adif.Adif3Record;
+import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityType;
+import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.qrz.QrzCallsign;
 
 import java.util.ArrayList;
@@ -15,6 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * One end of a QSO this captures both station related information and the QSOs that the station has participated in
+ * For the purposes of comparison a station is considered unique if it is both the same callsign and location
+ */
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,7 +28,7 @@ public class Station {
 
     private Map<ActivityType, Activity> activities;
     private String grid;
-    private GlobalCoordinates coordinates;
+    private GlobalCoords3D coordinates;
 
     public Station() {
         activities = new HashMap<>();
@@ -34,7 +37,7 @@ public class Station {
 
     public Station(String callsign, Qso initialQso) {
         this();
-        this.callsign = callsign;
+        this.callsign = StringUtils.trim(callsign).toUpperCase();
         addQso(initialQso);
     }
 
@@ -49,7 +52,7 @@ public class Station {
     }
 
     public boolean isDoing(ActivityType type) {
-        return activities.keySet().contains(type);
+        return activities.containsKey(type);
     }
 
     public Activity getActivity(ActivityType type) {
@@ -65,5 +68,28 @@ public class Station {
             }
         }
         return false;
+    }
+
+    /**
+     * Stations are considered equal if they have the same callsign and are in the same
+     * location (or have no location set)
+     * @param other Other instance to compare
+     * @return true if same callsign and same location
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof Station) {
+            Station otherStation = (Station) other;
+            return otherStation.getKey().equals(getKey());
+        }
+        return false;
+    }
+
+    /**
+     * Unique key for this station including callsign and either coords/grid or both/neither
+     * @return unique key for this station
+     */
+    public String getKey() {
+        return String.format("%s %s %s", getCallsign(), getCoordinates(), getGrid());
     }
 }

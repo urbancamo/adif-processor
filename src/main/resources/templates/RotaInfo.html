@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ROTA Fragment</title>
+    <style>
+        .tdLabel {
+            width: 200px;
+        }
+        div.info {
+            padding-top: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div th:fragment="info" class="info">
+        <table>
+            <thead></thead>
+            <tbody>
+            <tr>
+                <td class="tdLabel">Railway:</td>
+                <td><span th:text="${rota.name}">Lakeside & Haverthwaite Railway</span></td>
+            </tr>
+            <tr>
+                <td class="tdLabel">Club:</td>
+                <td><span th:text="${rota.club}">Furness Amateur Radio Society</span></td>
+            <tr>
+                <td class="tdLabel">WAB:</td>
+                <td><span th:text="${rota.wab}">SD38</span></td>
+            </tbody>
+        </table>
+    </div>
+    <div th:fragment="blank" style="display: none;"></div>
+
+</body>
+</html>

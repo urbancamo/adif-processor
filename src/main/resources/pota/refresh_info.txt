@@ -1,0 +1,2 @@
+The current list is downloadable from https://pota.app/all_parks_ext.csv
+No additional transformation required

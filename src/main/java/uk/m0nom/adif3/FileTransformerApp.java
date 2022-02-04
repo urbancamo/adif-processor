@@ -5,13 +5,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.marsik.ham.adif.Adif3;
 import uk.m0nom.adif3.args.CommandLineArgs;
-import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.print.Adif3PrintFormatter;
 import uk.m0nom.adif3.transform.TransformResults;
 import uk.m0nom.contest.ContestResultsCalculator;
+import uk.m0nom.dxcc.DxccJsonReader;
 import uk.m0nom.kml.KmlWriter;
-import uk.m0nom.qrz.QrzXmlService;
+import uk.m0nom.qrz.CachingQrzXmlService;
+import uk.m0nom.qrz.QrzService;
 import uk.m0nom.activity.ActivityDatabases;
 
 import java.io.*;
@@ -19,29 +21,32 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.StandardOpenOption;
+import java.util.Objects;
+import java.util.Properties;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+/**
+ * Main command line interface to the ADIF Processor that processes a single file
+ */
 public class FileTransformerApp implements Runnable
 {
-    private static final String MARKDOWN_CONTROL_FILE = "adif-printer-132-markdown.yaml";
+    private static final String MARKDOWN_CONTROL_FILE = "adif-printer-132-md.yaml";
     private static final Logger logger = Logger.getLogger(FileTransformerApp.class.getName());
 
-    private static FileTransformerApp instance;
+    private final CommandLineArgs cli;
+    private final Adif3Transformer transformer;
+    private final Adif3FileReader reader;
+    private final Adif3FileWriter writer;
 
-    private CommandLineArgs cli;
-    private Adif3Transformer transformer;
-    private Adif3FileReaderWriter readerWriter;
-    private KmlWriter kmlWriter;
+    private final ActivityDatabases summits;
 
-    private ActivityDatabases summits;
-    private QrzXmlService qrzXmlService;
-
-    private Adif3PrintFormatter formatter;
+    private final Adif3PrintFormatter formatter;
 
     private Qsos qsos;
 
     private final static String configFilePath = "adif-processor.yaml";
+    private final static Properties application = new Properties();
 
     private final String[] args;
 
@@ -53,13 +58,35 @@ public class FileTransformerApp implements Runnable
 
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                Objects.requireNonNull(stream).close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        stream = FileTransformerApp.class.getClassLoader().
+                getResourceAsStream("application.properties");
+        try {
+            application.load(stream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                Objects.requireNonNull(stream).close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public FileTransformerApp(String[] args) {
         this.args = args;
         transformer = new Adif3Transformer();
-        readerWriter = new Adif3FileReaderWriter();
+        reader = new Adif3FileReader();
+        writer = new Adif3FileWriter();
         summits = new ActivityDatabases();
         cli = new CommandLineArgs();
         qsos = new Qsos();
@@ -68,7 +95,7 @@ public class FileTransformerApp implements Runnable
 
     public static void main( String[] args )
     {
-        instance = new FileTransformerApp(args);
+        FileTransformerApp instance = new FileTransformerApp(args);
         instance.run();
     }
 
@@ -76,8 +103,8 @@ public class FileTransformerApp implements Runnable
     public void run() {
         TransformResults results = new TransformResults();
         TransformControl control = cli.parseArgs(args);
-        qrzXmlService = new QrzXmlService(control.getQrzUsername(), control.getQrzPassword());
-        kmlWriter = new KmlWriter(control);
+        QrzService qrzService = new CachingQrzXmlService(control.getQrzUsername(), control.getQrzPassword());
+        KmlWriter kmlWriter = new KmlWriter(control);
 
 
         String inPath = control.getPathname();
@@ -99,44 +126,44 @@ public class FileTransformerApp implements Runnable
         logger.info(String.format("Running from: %s", new File(".").getAbsolutePath()));
         try {
             summits.loadData();
-            if (control.getUseQrzDotCom()) {
-                qrzXmlService.enable();
-                if (!qrzXmlService.getSessionKey()) {
+            control.setDxccEntities(new DxccJsonReader().read());
+            if (control.isQrzDotComEnabled()) {
+                qrzService.enable();
+                if (!qrzService.getSessionKey()) {
                     logger.warning("Could not connect to QRZ.COM, disabling lookups and continuing...");
-                    qrzXmlService.disable();
+                    qrzService.disable();
                 }
             }
-            transformer.configure(new FileInputStream(new File(configFilePath)), summits, qrzXmlService);
+            transformer.configure(new FileInputStream(configFilePath), summits, qrzService);
 
             logger.info(String.format("Reading input file %s with encoding %s", inPath, control.getEncoding()));
-            Adif3 log = readerWriter.read(inPath, control.getEncoding(), false);
-            qsos = transformer.transform(log, control);
+            Adif3 log = reader.read(inPath, control.getEncoding(), false);
+            qsos = transformer.transform(log, control, results);
             logger.info(String.format("Writing output file %s with encoding %s", out, control.getEncoding()));
             if (control.getGenerateKml()) {
                 kmlWriter.write(kml, inBasename, summits, qsos, results);
                 if (results.getError() != null) {
-                    kml = "";
                     logger.severe(results.getError());
                 }
             }
             // Contest Calculations
             log.getHeader().setPreamble(new ContestResultsCalculator(summits).calculateResults(log));
 
-            readerWriter.write(out, control.getEncoding(), log);
-            if (control.getMarkdown()) {
+            writer.write(out, control.getEncoding(), log);
+            if (control.isMarkdown()) {
                 BufferedWriter markdownWriter = null;
                 try {
-                    File markdownFile = new File(markdown);
-                    if (markdownFile.exists()) {
-                        if (!markdownFile.delete()) {
+                    File formattedQsoFile = new File(markdown);
+                    if (formattedQsoFile.exists()) {
+                        if (!formattedQsoFile.delete()) {
                             logger.severe(String.format("Error deleting Markdown file %s, check permissions?", markdown));
                         }
                     }
-                    if (markdownFile.createNewFile()) {
-                        formatter.getPrintJobConfig().configure(new FileInputStream(new File(MARKDOWN_CONTROL_FILE)));
+                    if (formattedQsoFile.createNewFile()) {
+                        formatter.getPrintJobConfig().configure(MARKDOWN_CONTROL_FILE, new FileInputStream(MARKDOWN_CONTROL_FILE));
                         logger.info(String.format("Writing Markdown to: %s", markdown));
                         StringBuilder sb = formatter.format(log);
-                        markdownWriter = Files.newBufferedWriter(markdownFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);
+                        markdownWriter = Files.newBufferedWriter(formattedQsoFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);
                         markdownWriter.write(sb.toString());
                     } else {
                         logger.severe(String.format("Error creating Markdown file %s, check permissions?", markdown));

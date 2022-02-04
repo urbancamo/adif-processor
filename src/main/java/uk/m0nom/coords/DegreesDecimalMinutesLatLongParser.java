@@ -5,8 +5,8 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DegreesDecimalMinutesLatLongParser implements LatLongParser {
-    private final static Pattern PATTERN = Pattern.compile("(\\d+)[^\\d]+([\\d\\.]+).*([NnSs])[^\\d]*(\\d+)[^\\d]+([\\d\\.]+).*([EeWw])");
+public class DegreesDecimalMinutesLatLongParser implements LocationParser, LocationFormatter {
+    private final static Pattern PATTERN = Pattern.compile("([-+]*)(\\d+)[^\\d]+(\\d+\\.\\d+)'*\\s+([-+]*)(\\d+)[^\\d]+(\\d+\\.\\d+)'*");
 
     @Override
     public Pattern getPattern() {
@@ -14,21 +14,35 @@ public class DegreesDecimalMinutesLatLongParser implements LatLongParser {
     }
 
     @Override
-    public GlobalCoordinates parse(String latLongString) {
-        Matcher matcher = getPattern().matcher(latLongString);
+    public GlobalCoords3D parse(LocationSource source, String location) {
+        Matcher matcher = getPattern().matcher(location);
         if (matcher.find()) {
-            String latDegrees = matcher.group(1);
-            String latMinutes = matcher.group(2);
-            String latNorthSouth = matcher.group(3).toUpperCase();
+            String latNegative = matcher.group(1);
+            String latDegrees = matcher.group(2);
+            String latMinutes = matcher.group(3);
 
-            String longDegrees = matcher.group(4);
-            String longMinutes = matcher.group(5);
-            String longEastWest = matcher.group(6).toUpperCase();
+            String longNegative = matcher.group(4);
+            String longDegrees = matcher.group(5);
+            String longMinutes = matcher.group(6);
 
-            Double latitude = LatLongUtils.parseDegDecimalMinLatitude(latDegrees, latMinutes, latNorthSouth);
-            Double longitude = LatLongUtils.parseDegDecimalMinLongitude(longDegrees, longMinutes, longEastWest);
-            return new GlobalCoordinates(latitude, longitude);
+            Double latitude = LatLongUtils.parseDegreesMinutes(latDegrees, latMinutes, "-".equalsIgnoreCase(latNegative));
+            Double longitude = LatLongUtils.parseDegreesMinutes(longDegrees, longMinutes, "-".equalsIgnoreCase(longNegative));
+            return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
         }
         return null;
+    }
+
+    @Override
+    public String format(GlobalCoordinates coords) {
+        return String.format("%.0f° %.3f', %.0f° %.3f'",
+                LatLongUtils.getDegreesLat(coords),
+                Math.abs(LatLongUtils.getMinutesLat(coords)),
+                LatLongUtils.getDegreesLong(coords),
+                Math.abs(LatLongUtils.getMinutesLong(coords)));
+    }
+
+    @Override
+    public String getName() {
+        return "Degrees Decimal Minutes Lat/Long";
     }
 }

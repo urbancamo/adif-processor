@@ -9,7 +9,7 @@ import lombok.Setter;
  * startCommand is sent to the printer before the start of a print job
  * endCommand is sent to the printer at the end of a print job
  *
- *     <--------------------- width -------------------------------->
+ *     ---------------------- width ---------------------------------
  *     +------------------------------------------------------------+
  *  ^  |                                                            |  ^
  *  |  |                                                            |  V - topMargin

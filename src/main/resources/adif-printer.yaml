@@ -1,4 +1,5 @@
 printJob:
+  name:         'Default (132 column UTF-8 Markdown)'
   inEncoding:   iso-8859-1
   outEncoding:  iso-8859-1
   startCommand: ''
@@ -88,9 +89,15 @@ columns:
       format: '%4.0f'
       align: right
   - column:
+      adif: 'BEARING'
+      header: 'BEAR'
+      length: 4
+      format: '%3.0f'
+      align: right
+  - column:
       adif: 'COMMENT'
       header: 'COMMENT'
-      length: 36
+      length: 32
 #     TIME_ON: 4
 #     STATION_CALLSIGN: 10,left
 #     BAND: 3

@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Reader for the Parks on the Air CSV extract
+ */
 public class PotaCsvReader extends ActivityReader {
     private static final Logger logger = Logger.getLogger(PotaCsvReader.class.getName());
 
@@ -30,19 +33,28 @@ public class PotaCsvReader extends ActivityReader {
 
         final Reader reader = new InputStreamReader(new BOMInputStream(inputStream), StandardCharsets.UTF_8);
 
-        Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(reader);
-        for (CSVRecord record : records) {
-            PotaInfo info = new PotaInfo();
-            info.setRef(record.get("reference"));
-            info.setName(record.get("name"));
-            info.setActive(StringUtils.equals(record.get("active"), "1"));
-            info.setEntityId(Integer.parseInt(record.get("entityId")));
-            info.setLocationDesc(record.get("locationDesc"));
+        int i = 1;
+        try {
+            Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(reader);
+            for (CSVRecord record : records) {
+                PotaInfo info = new PotaInfo();
+                info.setRef(record.get("reference"));
+                info.setName(record.get("name"));
+                info.setActive(StringUtils.equals(record.get("active"), "1"));
+                String entityId = record.get("entityId");
+                if (StringUtils.isNotBlank(entityId)) {
+                    info.setEntityId(Integer.parseInt(entityId));
+                }
+                info.setLocationDesc(record.get("locationDesc"));
 
-            info.setCoords(readCoords(record, "latitude", "longitude"));
-            potaInfo.put(info.getRef(), info);
+                info.setCoords(readCoords(record, "latitude", "longitude"));
+                info.setGrid(record.get("grid"));
+                potaInfo.put(info.getRef(), info);
+                i++;
+            }
+        } catch (NumberFormatException numberFormatException) {
+            logger.severe(String.format("Problem with number in record %d: %s", i, numberFormatException.getMessage()));
         }
-
         return new ActivityDatabase(ActivityType.POTA, potaInfo);
     }
 }

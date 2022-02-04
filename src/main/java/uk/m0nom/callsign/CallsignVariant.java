@@ -2,6 +2,9 @@ package uk.m0nom.callsign;
 
 import lombok.Getter;
 
+/**
+ * UK callsign variants
+ */
 @Getter
 public enum CallsignVariant {
     IN_COUNTRY(""),
@@ -13,7 +16,7 @@ public enum CallsignVariant {
     GW_ALT("W"),
     GD_ALT("D");
 
-    private String modifier;
+    private final String modifier;
 
     CallsignVariant(String modifier) {
         this.modifier = modifier;

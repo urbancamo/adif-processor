@@ -36,7 +36,7 @@ public class SotaCsvReader extends ActivityReader {
 
         Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(reader);
         for (CSVRecord record : records) {
-            SotaSummitInfo info = new SotaSummitInfo();
+            SotaInfo info = new SotaInfo();
 
             info.setRef(record.get("SummitCode"));
             info.setName(record.get("SummitName"));

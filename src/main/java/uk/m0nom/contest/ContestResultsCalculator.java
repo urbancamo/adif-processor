@@ -1,16 +1,14 @@
 package uk.m0nom.contest;
 
 import org.marsik.ham.adif.Adif3;
-import uk.m0nom.activity.ActivityDatabase;
 import uk.m0nom.activity.ActivityDatabases;
-import uk.m0nom.activity.ActivityType;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class ContestResultsCalculator {
-    private Collection<ContestResultCalculator> calculators;
-    private ActivityDatabases databases;
+    private final Collection<ContestResultCalculator> calculators;
+    private final ActivityDatabases databases;
 
     public ContestResultsCalculator(ActivityDatabases databases) {
         this.databases = databases;

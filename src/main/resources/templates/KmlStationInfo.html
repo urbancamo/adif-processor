@@ -1,0 +1,115 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        .panel {
+            font-family: "Bitstream Vera Sans Mono",monospace;
+            color: black;
+        }
+        .image_box {
+        }
+        .content {
+            padding: 2px;
+        }
+        h3 {
+            color: midnightblue;
+            font-family: "Bitstream Vera Sans",sans-serif;
+        }
+        .tdLabel {
+            width: 200px;
+        }
+        div.info {
+            padding-top: 1em;
+        }
+        .profile {
+            max-height:380px;
+            max-width:440px;
+            height:auto;
+            width:auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #earth-balloon-content{
+            display:flex;
+        }
+        #balloon-content{
+            display:inline-block;
+            width: 450px;
+            height: 700px;
+        }
+        card-template{
+            height:640px;
+        }
+    </style>
+</head>
+<body>
+<div class="panel">
+    <div class="content">
+        <h1>Station&nbsp;Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+    </div>
+    <div class="image_box" th:if="${image} != null">
+        <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" target="_blank">
+            <img class="profile" src="https://cdn-bio.qrz.com/p/m0nom_p/IMG_20180211_131628.jpg" th:src="${image}" alt=""/>
+        </a>
+    </div>
+    <div class="content">
+        <table>
+            <thead/>
+            <tbody>
+            <tr>
+                <td class="tdLabel">Callsign:</td>
+                <td><a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" th:text="${call}" target="_blank" >M0NOM/P</a></td>
+            </tr>
+            <tr th:if="${name} != null">
+                <td class="tdLabel">Name:</td>
+                <td><span th:text="${name}">Mark Wickens</span></td>
+            </tr>
+            <tr th:if="${country} != null">
+                <td class="tdLabel">Country:</td>
+                <td><span th:text="${country}">England</span></td>
+            </tr>
+            <tr th:if="${grid} != null">
+                <td class="tdLabel">Grid:</td>
+                <td><span th:text="${grid}">IO84NI</span></td>
+            </tr>
+            <tr th:if="${lat} != null">
+                <td class="tdLabel">Location: </td>
+                <td><span th:text="${lat}">LAT</span> <span th:text="${long}">LONG</span></td>
+            </tr>
+            <tr th:if="${locationSource} != null">
+                <td class="tdLabel">Location Source:</td><td><span th:text="${locationSource}">10-CHAR Maidenhead</span></td>
+            </tr>
+            <tr th:if="${locationAccuracy} != null">
+                <td class="tdLabel">Location Accuracy:</td><td><span th:text="${locationAccuracy}">IO84NI20MS</span></td>
+            </tr>
+            <tr th:if="${dxcc} != null">
+                <td class="tdLabel">DXCC:</td>
+                <td>
+                    <span th:text="${dxcc}">119 </span>
+                    <span th:text="${flag}">🇨🇦</span>
+                </td>
+            </tr>
+            <tr th:if="${ituZone} != null">
+                <td class="tdLabel">ITU Zone:</td><td><span th:text="${ituZone}">27</span></td>
+            </tr>
+            <tr th:if="${cqZone} != null">
+                <td class="tdLabel">CQ Zone:</td><td><span th:text="${cqZone}">14</span></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:replace="CotaInfo :: ${cota} ? 'info' : 'blank' "></div>
+        <div th:replace="HemaInfo :: ${hema} ? 'info' : 'blank' "></div>
+        <div th:replace="IotaInfo :: ${iota} ? 'info' : 'blank' "></div>
+        <div th:replace="LotaInfo :: ${lota} ? 'info' : 'blank' "></div>
+        <div th:replace="PotaInfo :: ${pota} ? 'info' : 'blank' "></div>
+        <div th:replace="RotaInfo :: ${rota} ? 'info' : 'blank' "></div>
+        <div th:replace="SotaInfo :: ${sota} ? 'info' : 'blank' "></div>
+        <div th:replace="WotaInfo :: ${wota} ? 'info' : 'blank' "></div>
+        <div th:replace="WwffInfo :: ${wwff} ? 'info' : 'blank' "></div>
+
+    </div>
+</div>
+</body>
+</html>

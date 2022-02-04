@@ -18,17 +18,17 @@ import java.util.logging.Logger;
 /**
  * https://www.qrz.com/XML/current_spec.html
  */
-public class QrzXmlService {
+public class QrzXmlService implements QrzService {
     private static final Logger logger = Logger.getLogger(QrzXmlService.class.getName());
 
     private final static String QRZ_XML_SERVICE_BASE_URL = " https://xmldata.qrz.com/xml";
     private final static String QRZ_XML_SERVICE_VERSION = "1.34";
 
-    private OkHttpClient client;
+    private final OkHttpClient client;
     private String sessionKey;
     private boolean enabled;
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 
     public QrzXmlService(String username, String password) {
         client = new OkHttpClient();

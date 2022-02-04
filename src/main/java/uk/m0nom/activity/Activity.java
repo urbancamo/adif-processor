@@ -1,17 +1,23 @@
 package uk.m0nom.activity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.gavaghan.geodesy.GlobalCoordinates;
+import uk.m0nom.coords.GlobalCoords3D;
 
+/**
+ * An activity is any amateur radio activity programme or awards programme that you can participate in.
+ * This class captures the typical common data set for an activity.
+ */
 @Getter
 @Setter
-public abstract class Activity {
+@NoArgsConstructor
+public abstract class Activity implements Comparable<Activity> {
     private ActivityType type;
     private String name;
     private String ref;
-    private GlobalCoordinates coords;
+    private GlobalCoords3D coords;
     private String grid;
     private Double altitude;
 
@@ -31,6 +37,10 @@ public abstract class Activity {
 
     public abstract String getUrl();
 
+    public String getAltitudeInMetres() {
+        return String.format("%.0f", altitude);
+    }
+
     @Override
     public boolean equals(Object other) {
         boolean rtn = false;
@@ -39,5 +49,12 @@ public abstract class Activity {
             rtn = otherActivity.getRef().equals(ref);
         }
         return rtn;
+    }
+
+    @Override
+    public int compareTo(Activity other) {
+        String ref = getRef() != null ? getRef() : "";
+        String otherRef = other.getRef() != null ? other.getRef() : "";
+        return ref.compareTo(otherRef);
     }
 }

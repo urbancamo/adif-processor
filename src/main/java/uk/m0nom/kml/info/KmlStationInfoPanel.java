@@ -1,80 +1,81 @@
 package uk.m0nom.kml.info;
 
 import org.apache.commons.lang3.StringUtils;
-import org.gavaghan.geodesy.GlobalCoordinates;
+import org.thymeleaf.TemplateSpec;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.templatemode.TemplateMode;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.adif3.contacts.Station;
+import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.coords.GlobalCoords3D;
+import uk.m0nom.coords.LocationInfo;
+import uk.m0nom.dxcc.DxccEntity;
 import uk.m0nom.qrz.QrzCallsign;
 
-import java.util.HashMap;
-import java.util.Map;
+public class KmlStationInfoPanel {
+    public String getPanelContentForStation(TransformControl control, Station station) {
+        String callSign = station.getCallsign();
 
-public class KmlStationInfoPanel implements KmlInfoPanel {
-    private KmlInfoMap infoMap;
-
-    public KmlStationInfoPanel() {
-        infoMap = new KmlInfoMap();
-    }
-
-    public String getPanelContent(Station station) {
-        StringBuilder sb = new StringBuilder();
-        String callsign = station.getCallsign();
-
-        sb.append("<div style=\"width: 340px; height: 480px\">");
+        final Context context = new Context();
         QrzCallsign qrzInfo = station.getQrzInfo();
         if (qrzInfo != null) {
+            setVariable(context,"call", station.getQrzInfo().getCall());
             if (qrzInfo.getImage() != null) {
-                sb.append(String.format("<a href=\"https://qrz.com/db/%s\"><img src=\"%s\" width=\"300px\"/></a><br/>",
-                        station.getQrzInfo().getCall(), station.getQrzInfo().getImage()));
-            } else {
-                sb.append(String.format("<a href=\"https://qrz.com/db/%s\"><img src=\"%s\" width=\"300px\"/></a><br/>",
-                        station.getQrzInfo().getCall(), "http://i3.cpcache.com/product/178743690/ham_radio_operator_35_button.jpg?height=630&width=630&qv=90"));
+                context.setVariable("image", station.getQrzInfo().getImage());
             }
-            sb.append(String.format("Callsign: <a href=\"https://qrz.com/db/%s\">%s</a><br/>",
-                    station.getQrzInfo().getCall(), callsign));
         } else {
-            sb.append(String.format("Callsign: %s<br/>", callsign));
+            context.setVariable("call", callSign);
         }
 
-        if (station.isDoing(ActivityType.SOTA)) {
-            sb.append(infoMap.get(ActivityType.SOTA).getInfo(station.getActivity(ActivityType.SOTA)));
-        }
-        if (station.isDoing(ActivityType.HEMA)) {
-            sb.append(infoMap.get(ActivityType.HEMA).getInfo(station.getActivity(ActivityType.HEMA)));
-        }
-        if (station.isDoing(ActivityType.WOTA)) {
-            sb.append(infoMap.get(ActivityType.WOTA).getInfo(station.getActivity(ActivityType.WOTA)));
-        }
-        if (station.isDoing(ActivityType.POTA)) {
-            sb.append(infoMap.get(ActivityType.POTA).getInfo(station.getActivity(ActivityType.POTA)));
-        }
-        if (station.isDoing(ActivityType.WWFF)) {
-            sb.append(infoMap.get(ActivityType.WWFF).getInfo(station.getActivity(ActivityType.WWFF)));
+        for (ActivityType activityType : ActivityType.values()) {
+            if (station.isDoing(activityType)) {
+                context.setVariable(activityType.getActivityName().toLowerCase(), station.getActivity(activityType));
+            }
         }
 
         if (qrzInfo != null) {
-            sb.append(String.format("Name: %s %s<br/>",
+            setVariable(context,"name", String.format("%s %s",
                     StringUtils.defaultIfBlank(qrzInfo.getFname(), ""),
                     StringUtils.defaultIfBlank(qrzInfo.getName(), "")));
+            setVariable(context, "country", qrzInfo.getCountry());
+
+            if (StringUtils.isNotEmpty(qrzInfo.getDxcc())) {
+                setVariable(context, "dxcc", qrzInfo.getDxcc());
+                int dxccCode = Integer.parseInt(qrzInfo.getDxcc());
+                DxccEntity dxcc = control.getDxccEntities().getEntity(dxccCode);
+                setVariable(context, "flag", dxcc.getFlag());
+            }
+            setVariable(context, "ituZone", qrzInfo.getItuzone());
+            setVariable(context, "cqZone", qrzInfo.getCqzone());
         }
 
         String grid = station.getGrid();
         if (grid == null && qrzInfo != null) {
             grid = qrzInfo.getGrid();
         }
-        if (grid != null) {
-            sb.append(String.format("Grid: %s<br/>", grid));
-        }
+        setVariable(context, "grid", grid);
 
-        GlobalCoordinates coordinates = station.getCoordinates();
+        GlobalCoords3D coordinates = station.getCoordinates();
         if (coordinates == null && qrzInfo != null) {
-            coordinates = new GlobalCoordinates(qrzInfo.getLat(), qrzInfo.getLon());
+            coordinates = new GlobalCoords3D(qrzInfo.getLat(), qrzInfo.getLon());
         }
         if (coordinates != null) {
-            sb.append(String.format("Lat: %.3f, Long: %.3f<br/>", coordinates.getLatitude(), coordinates.getLongitude()));
+            context.setVariable("lat", String.format("%.3f", coordinates.getLatitude()));
+            context.setVariable("long", String.format("%.3f", coordinates.getLongitude()));
+
+            LocationInfo info = coordinates.getLocationInfo();
+
+            context.setVariable("locationSource", info.getSource().getDescription());
+            context.setVariable("locationAccuracy", info.getAccuracy().getDescription());
         }
-        sb.append("</div>");
-        return sb.toString();
+
+        String html = control.getTemplateEngine().process(new TemplateSpec("KmlStationInfo", TemplateMode.XML), context);
+        return html.replace("\n", "");
     }
 
+    private void setVariable(Context context, String key, String value) {
+        if (StringUtils.isNotEmpty(value)) {
+            context.setVariable(key, value);
+        }
+    }
 }

@@ -6,10 +6,11 @@ import org.junit.Test;
 import org.marsik.ham.adif.AdiReader;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
-import uk.m0nom.adif3.args.TransformControl;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
 import uk.m0nom.adif3.transform.Adif3RecordTransformer;
 import uk.m0nom.adif3.transform.CommentParsingAdifRecordTransformer;
+import uk.m0nom.adif3.transform.TransformResults;
 import uk.m0nom.qrz.QrzXmlService;
 import uk.m0nom.activity.ActivityDatabases;
 
@@ -23,8 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class AdifReaderTest {
-    private ActivityDatabases summits;
-    private TransformControl control;
+    private final TransformControl control;
 
     public AdifReaderTest() {
         control = new TransformControl();
@@ -62,14 +62,15 @@ public class AdifReaderTest {
             Qsos qsos = new Qsos(log);
             assertThat(log.getHeader().getProgramId()).isEqualTo("FLE");
 
-            summits = new ActivityDatabases();
+            ActivityDatabases summits = new ActivityDatabases();
             summits.loadData();
             QrzXmlService qrzXmlService = new QrzXmlService(null, null);
             if (!qrzXmlService.getSessionKey()) {
                 System.err.println("Could not connect to QRZ.COM, continuing...");
             }
 
-            Adif3RecordTransformer transformer = new CommentParsingAdifRecordTransformer(config, summits, qrzXmlService, control);
+            TransformResults results = new TransformResults();
+            Adif3RecordTransformer transformer = new CommentParsingAdifRecordTransformer(config, summits, qrzXmlService, control, results);
             int index = 1;
             for (Adif3Record rec : log.getRecords()) {
                 transformer.transform(qsos, rec, index++);

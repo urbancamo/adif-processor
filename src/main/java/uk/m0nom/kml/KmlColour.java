@@ -13,7 +13,7 @@ public class KmlColour {
     private int red, green, blue;
     private int transparency;
 
-    public KmlColour() {};
+    public KmlColour() {}
 
     public KmlColour(String key, String name, String htmlColor, int red, int green, int blue) {
         this(key, name, htmlColor, red,green, blue, 255);
@@ -28,14 +28,6 @@ public class KmlColour {
         this.blue = blue;
         this.transparency = transparency;
     }
-
-    /**
-     * Create a custom colour
-     * @param red
-     * @param green
-     * @param blue
-     * @param transparency
-     */
 
     public KmlColour(String name, int red, int green, int blue, int transparency) {
         this.name = name;
