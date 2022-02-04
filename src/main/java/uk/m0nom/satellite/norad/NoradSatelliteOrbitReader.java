@@ -16,6 +16,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Reads a set of TLE definitions of satellite orbits from a NASA format TLE file.
+ * See http://www.celestrak.com for more info on this format.
+ *
+ * DECODE 2-LINE ELSETS WITH THE FOLLOWING KEY:
+ * 1 AAAAAU 00  0  0 BBBBB.BBBBBBBB  .CCCCCCCC  00000-0  00000-0 0  DDDZ
+ * 2 AAAAA EEE.EEEE FFF.FFFF GGGGGGG HHH.HHHH III.IIII JJ.JJJJJJJJKKKKKZ
+ * KEY: A-CATALOGNUM B-EPOCHTIME C-DECAY D-ELSETNUM E-INCLINATION F-RAAN
+ * G-ECCENTRICITY H-ARGPERIGEE I-MNANOM J-MNMOTION K-ORBITNUM Z-CHECKSUM
+ */
 public class NoradSatelliteOrbitReader {
     public final static String NORAD_TLE_FILE_LOCATION = "http://www.celestrak.com/NORAD/elements/amateur.txt";
     private static final Logger logger = Logger.getLogger(NoradSatelliteOrbitReader.class.getName());

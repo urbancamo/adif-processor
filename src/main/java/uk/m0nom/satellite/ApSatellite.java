@@ -7,6 +7,9 @@ import uk.m0nom.coords.GlobalCoords3D;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Interface for both Low Earth Orbit (LEO) and Geostationary Satellites
+ */
 public interface ApSatellite {
     String getName();
     String getDesignator();

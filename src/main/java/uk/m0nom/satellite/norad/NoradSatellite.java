@@ -16,6 +16,9 @@ import uk.m0nom.satellite.ApSatellite;
 import java.sql.Date;
 import java.time.*;
 
+/**
+ * Definition for a satellite derived from a NASA TLE file entry.
+ */
 @Getter
 @Setter
 public class NoradSatellite implements ApSatellite {

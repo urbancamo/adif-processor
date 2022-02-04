@@ -10,8 +10,8 @@ import java.time.LocalTime;
 import java.util.*;
 
 /**
- * This class records a single satellite pass being worked with the first and last time of being worked to
- * allow a pass to be visualized.
+ * This class records a single satellite pass being worked with the first and last contact date/time to
+ * allow a pass to be visualized, as well as the list of QSOs that went through that satellite during the pass.
  */
 @Getter
 @Setter
@@ -74,7 +74,7 @@ public class SatellitePass {
 
     /**
      * For each time recorded for a contact determine the number of contacts that share that time
-     * @return map of times with number of QSOs
+     * @return map of contact times with number of QSOs
      */
     private Map<LocalTime, Integer> createQsoCountPerTime() {
 

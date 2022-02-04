@@ -20,8 +20,13 @@ import static uk.m0nom.kml.KmlUtils.getStyleId;
 import static uk.m0nom.kml.KmlUtils.getStyleUrl;
 import static uk.m0nom.kml.station.KmlStationUtils.DEFAULT_RANGE_METRES;
 
+/**
+ * Draws an arc representing the track of a worked satellite for one pass through the sky based
+ * the contacts that were made. The track includes a lead/trail time based on the first/last contact times
+ * during that pass
+ */
+
 public class KmlSatelliteTrack {
-    private final static String SATELLITE_TRACK_ID = "satellite_track";
     private final static String SATELLITE_TRACK_LINE_ID = "satellite_track_line";
     private final static int TRACK_LEAD_LAG_TIME_MINS = 5;
 

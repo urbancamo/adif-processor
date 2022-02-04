@@ -6,6 +6,10 @@ import uk.m0nom.satellite.satellites.QO100;
 import java.util.*;
 import java.util.logging.Logger;
 
+/**
+ * Map of the satellites that the ADIF Processor supports, both LEO and Geostationary
+ * Satellites can be identified either by their name or a code
+ */
 public class ApSatellites {
     private static final Logger logger = Logger.getLogger(ApSatellites.class.getName());
 

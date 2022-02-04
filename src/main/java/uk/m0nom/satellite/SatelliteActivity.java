@@ -9,6 +9,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Container for all the satellite activity (QSOs) that are being processed in this run
+ */
 @Getter
 @Setter
 public class SatelliteActivity {
