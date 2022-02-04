@@ -13,6 +13,7 @@ import uk.m0nom.satellite.SatellitePass;
 import uk.m0nom.satellite.SatellitePassId;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static uk.m0nom.kml.KmlUtils.getStyleId;
@@ -47,19 +48,18 @@ public class KmlSatelliteTrack {
 
             // Create KML folder for the pass points
             Folder passFolder = folder.createAndAddFolder().withName(pass.getId().toString()).withOpen(false);
-
-            LocalTime currentTime = pass.getFirstContact().minusMinutes(TRACK_LEAD_LAG_TIME_MINS-1);
+            LocalDateTime currentContact = pass.getFirstContact().minusMinutes(TRACK_LEAD_LAG_TIME_MINS-1);
             GlobalCoords3D lastPosition = null;
-            while (currentTime.isBefore(pass.getLastContact().plusMinutes(TRACK_LEAD_LAG_TIME_MINS))) {
+            while (currentContact.isBefore(pass.getLastContact().plusMinutes(TRACK_LEAD_LAG_TIME_MINS))) {
                 // Calculate position of satellite at the time
-                GlobalCoords3D currentPosition = satellite.getPosition(groundStation, passDate, currentTime);
+                GlobalCoords3D currentPosition = satellite.getPosition(groundStation, currentContact.toLocalDate(), currentContact.toLocalTime());
                 if (lastPosition == null) {
                     addSatelliteMarker(control, passFolder, satName, passDate, currentPosition);
                 } else {
-                    drawSatelliteTrack(passFolder, currentTime, lastPosition, currentPosition, styleUrl);
+                    drawSatelliteTrack(passFolder, currentContact, lastPosition, currentPosition, styleUrl);
                 }
                 lastPosition = currentPosition;
-                currentTime = currentTime.plusMinutes(1);
+                currentContact = currentContact.plusMinutes(1);
             }
         }
     }
@@ -84,7 +84,7 @@ public class KmlSatelliteTrack {
                 .setAltitudeMode(AltitudeMode.ABSOLUTE); // set coordinates
     }
 
-    private void drawSatelliteTrack(Folder folder, LocalTime currentTime, GlobalCoords3D lastPosition,
+    private void drawSatelliteTrack(Folder folder, LocalDateTime currentTime, GlobalCoords3D lastPosition,
                                     GlobalCoords3D currentPosition,
                                     String styleUrl) {
         Placemark placemark = folder.createAndAddPlacemark();

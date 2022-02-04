@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import uk.m0nom.adif3.contacts.Qso;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -15,8 +17,8 @@ import java.util.*;
 @Setter
 public class SatellitePass {
     private SatellitePassId id;
-    private LocalTime firstContact;
-    private LocalTime lastContact;
+    private LocalDateTime firstContact;
+    private LocalDateTime lastContact;
     private Collection<Qso> contacts;
 
     public SatellitePass(SatellitePassId id) {
@@ -25,16 +27,20 @@ public class SatellitePass {
     }
 
     public void addContact(Qso qso) {
+        LocalDate date = qso.getRecord().getQsoDate();
         LocalTime time = qso.getRecord().getTimeOn();
+
+        LocalDateTime contact = LocalDateTime.of(date, time);
+
         contacts.add(qso);
 
         if (firstContact == null) {
-            firstContact = time;
-            lastContact = time;
-        } else if (firstContact.isAfter(time)) {
-            firstContact = time;
-        } else if (lastContact.isBefore(time)) {
-            lastContact = time;
+            firstContact = contact;
+            lastContact = contact;
+        } else if (firstContact.isAfter(contact)) {
+            firstContact = contact;
+        } else if (lastContact.isBefore(contact)) {
+            lastContact = contact;
         }
     }
 
