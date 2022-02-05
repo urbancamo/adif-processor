@@ -6,6 +6,7 @@
 
   <description>ADIF Processor visualizes contacts in your input file on Google Earth. It generates a Google Earth Project file, also known as a KML file, for each contact in the ADIF input file.</description>
 
+
   <groupId>uk.m0nom</groupId>
   <artifactId>adif-processor</artifactId>
   <version>1.0.3-SNAPSHOT</version>

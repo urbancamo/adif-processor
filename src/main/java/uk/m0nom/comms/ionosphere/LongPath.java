@@ -63,12 +63,12 @@ public class LongPath implements CommsLinkGenerator {
             if (currentBearing < 0) {
                 currentBearing = 360 + currentBearing;
             }
-            logger.info(String.format("%d: bearing: %.3f, distanceToTargetStation: %.0f", steps.size(), currentBearing, distanceToTargetStation));
+            //logger.info(String.format("%d: bearing: %.3f, distanceToTargetStation: %.0f", steps.size(), currentBearing, distanceToTargetStation));
         }
         // This is the distance remaining, which is less than the bounce distance
         double delta = bounceDistance - distanceToTargetStation;
-        logger.info(String.format("last distanceToTargetStation: %.0f, bounceDistance: %.0f, delta: %.0f",
-                distanceToTargetStation, bounceDistance, delta));
+        //logger.info(String.format("last distanceToTargetStation: %.0f, bounceDistance: %.0f, delta: %.0f",
+        //        distanceToTargetStation, bounceDistance, delta));
 
         // Round up the number of bounces then
         double totalDistance = (bounceDistance * steps.size()) + delta;
