@@ -1,5 +1,6 @@
 package uk.m0nom.comms.ionosphere;
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
@@ -8,6 +9,7 @@ import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.comms.CommsLinkGenerator;
 import uk.m0nom.comms.CommsLinkResult;
+import uk.m0nom.comms.PropagationApex;
 import uk.m0nom.coords.GlobalCoords3D;
 
 import java.util.ArrayList;
@@ -34,14 +36,16 @@ public class LongPath implements CommsLinkGenerator {
         // Step 1 - get the shortest path curve
         GeodeticCurve shortestPath = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, start, end);
 
-        double longPathBearing = shortestPath.getAzimuth() + 180.0;
+        double longPathBearing = IonosphereUtils.normalisedAngleAddition(shortestPath.getAzimuth(), 180.0);
 
         // The short path bounce distance across the earth is used as a step size for determining the long path
-        double bounceDistance = shortPathResult.getApexes().get(0).getDistanceAcrossEarth() * 1000.0;
+        //double bounceDistance = shortPathResult.getApexes().get(0).getDistanceAcrossEarth() * 1000.0;
+
+        //double stepDistance = bounceDistance / 2.0;
 
         double endBearing[] = new double[1];
 
-        List<GlobalCoordinates> steps = new ArrayList<>();
+        int steps = 0;
 
         // Now we're going to use the short path bounce distance to determine the number of bounces via long path
         // this won't be exact, so we'll need to then round up the number of bounces then divide by the total
@@ -50,29 +54,40 @@ public class LongPath implements CommsLinkGenerator {
         double currentBearing = longPathBearing;
 
         GlobalCoordinates stepLocation = start;
-        while (distanceToTargetStation >= bounceDistance) {
-            stepLocation = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, stepLocation, currentBearing, bounceDistance, endBearing);
-            steps.add(stepLocation);
+        // Determine the distance between start and end by incrementally calculating using the start bearing and
+        // wait for convergence. We us  as a nominal step
+        double stepDistance = 50000.00;
+        while (distanceToTargetStation >= stepDistance) {
+            stepLocation = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, stepLocation, currentBearing, stepDistance, endBearing);
+            steps++;
 
             // Use the short path calculation to determine distance from current step position to target station.
-            // To start with the distance will increase, but eventually this will start closing
+            // To start with the distance will increase, but after a while this will close in on the end to within a single step
             GeodeticCurve shortestPathFromStepToTargetStation = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, stepLocation, end);
             distanceToTargetStation = shortestPathFromStepToTargetStation.getEllipsoidalDistance();
 
-            currentBearing = endBearing[0];
-            if (currentBearing < 0) {
-                currentBearing = 360 + currentBearing;
-            }
-            //logger.info(String.format("%d: bearing: %.3f, distanceToTargetStation: %.0f", steps.size(), currentBearing, distanceToTargetStation));
+            currentBearing = IonosphereUtils.normaliseAngle(endBearing[0]);
+            logger.info(String.format("%d: bearing: %.3f, distanceToTargetStation: %.0f", steps, currentBearing, distanceToTargetStation));
         }
-        // This is the distance remaining, which is less than the bounce distance
-        double delta = bounceDistance - distanceToTargetStation;
+
         //logger.info(String.format("last distanceToTargetStation: %.0f, bounceDistance: %.0f, delta: %.0f",
         //        distanceToTargetStation, bounceDistance, delta));
 
-        // Round up the number of bounces then
-        double totalDistance = (bounceDistance * steps.size()) + delta;
-        double longPathBounceDistance = totalDistance / (steps.size() + 1);
+        // Calculate the total distance to the target station
+        double totalDistance = (stepDistance * steps) + distanceToTargetStation;
+
+        // Use the antenna angle to calculate the maximum distance across the earth
+        double takeOffAngle = control.getAntenna().getTakeOffAngle();
+
+        PropagationApex apex = IonosphericApexCalculator.calculateDistanceOfApex(shortPathResult.getAltitude()/1000.0, takeOffAngle);
+        // Now work out distance across the earth
+        double longPathBounceDistance = IonosphericApexCalculator.calculateDistanceAcrossEarth(apex) * 2.0;
+
+        int bounces = (int)(totalDistance / (longPathBounceDistance * 1000.0));
+        bounces = bounces + 1;
+
+        int stepCount = bounces * 2;
+        double longPathStepDistance = totalDistance / stepCount;
 
         // Now we do it all again with the new bounce distance.
         CommsLinkResult result = new CommsLinkResult();
@@ -82,38 +97,38 @@ public class LongPath implements CommsLinkGenerator {
         result.setAzimuth(longPathBearing);
         result.setDistanceInKm(totalDistance / 1000.0);
 
-        int bounceCount = steps.size() + 1;
-        result.setBounces(bounceCount);
+        result.setBounces(stepCount);
         result.setPropagation(shortPathResult.getPropagation());
         result.setStart(start);
         result.setEnd(end);
 
+
         // We now have a long path bounce distance, so we can calculate the new angle and sky distance from this
         // knowing the reflection height
-        bounceDistance = longPathBounceDistance / 2.0;
 
         // Apex calculator works in km, adjust parameters accordingly
-        double takeoffAngle = IonosphericApexCalculator.calculateTakeoffAngleFromDistanceAcrossEarth(bounceDistance / 1000.0, reflectionAltitude / 1000.0);
+        double takeoffAngle = IonosphericApexCalculator.calculateTakeoffAngleFromDistanceAcrossEarth(longPathStepDistance / 1000.0, reflectionAltitude / 1000.0);
         result.setFromAngle(takeoffAngle);
         // Determine sky distance
-        double skyDistance = IonosphericApexCalculator.calculateDistanceToIonosphere(reflectionAltitude, takeoffAngle);
-        result.setSkyDistance(skyDistance * bounceCount / 1000.0);
+        double skyDistance = IonosphericApexCalculator.calculateDistanceToIonosphere(reflectionAltitude / 1000.0, takeoffAngle);
+        result.setSkyDistance(skyDistance * stepCount);
 
         List<GlobalCoords3D> path = new ArrayList<>(result.getBounces());
         currentBearing = longPathBearing;
         path.add(new GlobalCoords3D(start.getLatitude(), start.getLongitude(), 0.0));
         stepLocation = start;
 
+        int bounceCount = stepCount / 2;
         for (int i = 1; i <= bounceCount; i++) {
-            stepLocation = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, stepLocation, currentBearing, bounceDistance, endBearing);
-            path.add(new GlobalCoords3D(stepLocation.getLatitude(), stepLocation.getLongitude(), reflectionAltitude));
-            currentBearing = endBearing[0];
-            if (currentBearing < 0) {
-                currentBearing = 360 + currentBearing;
-            }
 
+            // Up to the Ionosphere
+            stepLocation = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, stepLocation, currentBearing, longPathStepDistance, endBearing);
+            path.add(new GlobalCoords3D(stepLocation.getLatitude(), stepLocation.getLongitude(), reflectionAltitude));
+            currentBearing = IonosphereUtils.normaliseAngle(endBearing[0]);
+
+            // Back down, except on the last bounce
             if (i < bounceCount) {
-                stepLocation = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, stepLocation, currentBearing, bounceDistance, endBearing);
+                stepLocation = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, stepLocation, currentBearing, longPathStepDistance, endBearing);
                 path.add(new GlobalCoords3D(stepLocation.getLatitude(), stepLocation.getLongitude(), 0.0));
             }
 
@@ -122,6 +137,7 @@ public class LongPath implements CommsLinkGenerator {
                 currentBearing = 360 + currentBearing;
             }
         }
+        // Add the destination as the final location
         path.add(new GlobalCoords3D(end.getLatitude(), end.getLongitude(), 0.0));
         result.setPath(path);
         return result;

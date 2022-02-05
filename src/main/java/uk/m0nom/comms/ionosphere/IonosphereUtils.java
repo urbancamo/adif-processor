@@ -80,4 +80,19 @@ public class IonosphereUtils {
 
         return result;
     }
+
+    public static double normaliseAngle(double angle) {
+        double result = angle;
+        while (result < 0.0) {
+            result += 360.0;
+        }
+        while (result > 360.0) {
+            result -= 360.0;
+        }
+        return result;
+    }
+
+    public static double normalisedAngleAddition(double start, double delta) {
+        return normaliseAngle(start + delta);
+    }
 }
