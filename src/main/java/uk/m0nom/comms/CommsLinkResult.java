@@ -21,6 +21,7 @@ public class CommsLinkResult {
     private double skyDistance;
     private Propagation propagation;
     private double azimuth;
+    private List<PropagationApex> apexes;
     private List<GlobalCoords3D> path;
     private GlobalCoords3D satellitePosition;
     private String error;

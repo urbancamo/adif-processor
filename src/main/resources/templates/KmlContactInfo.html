@@ -149,6 +149,10 @@
                             <td class="tdLabel">Reflection Angle:</td>
                             <td><span th:text="${angle}">23°</span></td>
                         </tr>
+                        <tr th:if="${propagationMode} == 'F2'">
+                            <td class="tdLabel">Path:</td>
+                            <td><span th:text="${antPath}">S</span></td>
+                        </tr>
 
 
                         <tr th:if="${propagationMode} == 'SAT'">

@@ -2,6 +2,7 @@ package uk.m0nom.kml.info;
 
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
+import org.marsik.ham.adif.enums.AntPath;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.TemplateSpec;
 import org.thymeleaf.context.Context;
@@ -54,6 +55,7 @@ public class KmlContactInfoPanel {
                 case F2_REFLECTION:
                     context.setVariable("skyDist", String.format("%,.0f", result.getSkyDistance()));
                     context.setVariable("bounces", String.format("%d", result.getBounces()));
+                    context.setVariable("antPath", rec.getAntPath() == null ? AntPath.SHORT : rec.getAntPath());
                     break;
                 case SATELLITE:
                     context.setVariable("satName", qso.getRecord().getSatName());

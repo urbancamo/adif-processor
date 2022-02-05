@@ -51,20 +51,21 @@ public class IonosphereUtils {
         double avgAltitude = 0.0;
         double avgAngle = 0.0;
         Propagation mode = rec.getPropMode();
-        List<PropagationApex> bounces = new Ionosphere().getBounces(mode, frequencyInKhz, result.getDistanceInKm(), time, start.getAltitude(), end.getAltitude(), control.getAntenna().getTakeOffAngle());
+        List<PropagationApex> apexes = new Ionosphere().getBounces(mode, frequencyInKhz, result.getDistanceInKm(), time, start.getAltitude(), end.getAltitude(), control.getAntenna().getTakeOffAngle());
 
-        double skyDistance = GeodesicUtils.calculatePath(result.getPath(), bounces, start, end, azimuth);
+        double skyDistance = GeodesicUtils.calculatePath(result.getPath(), apexes, start, end, azimuth);
         result.setSkyDistance(skyDistance);
 
-        for (PropagationApex bounce : bounces) {
+        for (PropagationApex bounce : apexes) {
             avgAltitude += bounce.getApexHeight();
             avgAngle += bounce.getRadiationAngle();
             mode = bounce.getMode();
         }
+        result.setApexes(apexes);
         result.setPropagation(mode);
-        result.setAltitude(avgAltitude / bounces.size());
-        result.setFromAngle(avgAngle / bounces.size());
-        result.setBounces(bounces.size());
+        result.setAltitude(avgAltitude / apexes.size());
+        result.setFromAngle(avgAngle / apexes.size());
+        result.setBounces(apexes.size());
 
         return result;
     }

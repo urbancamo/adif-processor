@@ -1,6 +1,5 @@
 package uk.m0nom.comms.ionosphere;
 
-import de.micromata.opengis.kml.v_2_2_0.LineString;
 import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
@@ -9,29 +8,112 @@ import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.comms.CommsLinkGenerator;
 import uk.m0nom.comms.CommsLinkResult;
-import uk.m0nom.comms.PropagationUtils;
 import uk.m0nom.coords.GlobalCoords3D;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+/**
+ * Long Path HF Propagation Visualization.
+ * We do a short path computation, take the 180 degree angle and the fire off the signal in that direction, with the
+ * same hop distance until we get close to the target station.
+ * Then we add a hop to cover the difference and recalculate.
+ * This is the longest path long path.
+ */
 public class LongPath implements CommsLinkGenerator {
+    private static final Logger logger = Logger.getLogger(LongPath.class.getName());
 
     public CommsLinkResult getCommunicationsLink(TransformControl control,
                                                  GlobalCoords3D start, GlobalCoords3D end,
-                                                 Adif3Record rec) {
+                                                 Adif3Record rec)
+    {
+        CommsLinkResult shortPathResult = IonosphereUtils.getShortestPath(control, start, end, rec);
+
         GeodeticCalculator calculator = new GeodeticCalculator();
         // Step 1 - get the shortest path curve
         GeodeticCurve shortestPath = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, start, end);
 
-        double shortestPathDistance = shortestPath.getEllipsoidalDistance();
-        double reverseAzimuth = shortestPath.getReverseAzimuth();
+        double longPathBearing = shortestPath.getAzimuth() + 180.0;
 
-        // We are going to iteratively work out the long path distance now.
+        // The short path bounce distance across the earth is used as a step size for determining the long path
+        double bounceDistance = shortPathResult.getApexes().get(0).getDistanceAcrossEarth() * 1000.0;
+
+        // We are going to iteratively work out the long path distance now
         double endBearing[] = new double[1];
 
-        GlobalCoordinates inter = null;
-        //while (calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, start, reverseAzimuth, shortestPathDistance, endBearing)) {
-            //TODO
-        //}
-        CommsLinkResult result = null;
+        List<GlobalCoordinates> steps = new ArrayList<>();
+
+        // Now we're going to use the short path bounce distance to determine the number of bounces via long path
+        // this won't be exact, so we'll need to then round up the number of bounces then divide the bounce
+        // distance accordingly
+        double distanceToTargetStation = Double.MAX_VALUE;
+        double currentBearing = longPathBearing;
+
+        GlobalCoordinates stepLocation = start;
+        while (distanceToTargetStation >= bounceDistance) {
+            stepLocation = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, stepLocation, currentBearing, bounceDistance, endBearing);
+            steps.add(stepLocation);
+
+            // Use the short path calculation to determine distance from current step position to target station.
+            // Eventually this will start closing
+            GeodeticCurve shortestPathFromStepToTargetStation = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, stepLocation, end);
+            distanceToTargetStation = shortestPathFromStepToTargetStation.getEllipsoidalDistance();
+
+            currentBearing = endBearing[0];
+            if (currentBearing < 0) {
+                currentBearing = 360 + currentBearing;
+            }
+            logger.info(String.format("%d: bearing: %.3f, distanceToTargetStation: %.0f", steps.size(), currentBearing, distanceToTargetStation));
+        }
+        double delta = bounceDistance - distanceToTargetStation;
+        logger.info(String.format("last distanceToTargetStation: %.0f, bounceDistance: %.0f, delta: %.0f",
+                distanceToTargetStation, bounceDistance, delta));
+
+        // Round up the number of bounces then
+        double totalDistance = (bounceDistance * steps.size()) + delta;
+        double longPathBounceDistance = totalDistance / (steps.size() + 1);
+
+        // Now we do it all again with the new bounce distance.
+        CommsLinkResult result = new CommsLinkResult();
+        double reflectionAltitude = shortPathResult.getAltitude();
+        result.setAltitude(reflectionAltitude);
+
+        result.setAzimuth(longPathBearing);
+        result.setDistanceInKm(totalDistance / 1000.0);
+        result.setBounces(steps.size() + 1);
+        result.setPropagation(shortPathResult.getPropagation());
+        result.setStart(start);
+        result.setEnd(end);
+
+        bounceDistance = longPathBounceDistance / 2.0;
+        int bounceCount = result.getBounces();
+
+        List<GlobalCoords3D> path = new ArrayList<>(result.getBounces());
+        currentBearing = longPathBearing;
+        path.add(start);
+        stepLocation = start;
+
+        for (int i = 1; i <= bounceCount; i++) {
+            stepLocation = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, stepLocation, currentBearing, bounceDistance, endBearing);
+            path.add(new GlobalCoords3D(stepLocation.getLatitude(), stepLocation.getLongitude(), reflectionAltitude));
+            currentBearing = endBearing[0];
+            if (currentBearing < 0) {
+                currentBearing = 360 + currentBearing;
+            }
+
+            if (i < bounceCount) {
+                stepLocation = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, stepLocation, currentBearing, bounceDistance, endBearing);
+                path.add(new GlobalCoords3D(stepLocation.getLatitude(), stepLocation.getLongitude(), 0.0));
+            }
+
+            currentBearing = endBearing[0];
+            if (currentBearing < 0) {
+                currentBearing = 360 + currentBearing;
+            }
+        }
+        path.add(end);
+        result.setPath(path);
         return result;
     }
 }
