@@ -1,6 +1,5 @@
 package uk.m0nom.comms.ionosphere;
 
-import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Propagation;
 import uk.m0nom.adif3.control.TransformControl;
@@ -16,6 +15,11 @@ import java.util.List;
 public class IonosphereUtils {
     private final static LocalTime MIDDAY = LocalTime.of(12,0);
 
+    /**
+     * Returns the recorded time, or midday if no time is recorded for the QSO
+     * @param rec ADIF record to check the Time On
+     * @return Midday if time on is null, otherwise time on
+     */
     private static LocalTime getTime(Adif3Record rec) {
         LocalTime time = MIDDAY;
         if (rec.getTimeOn() != null) {
@@ -24,6 +28,13 @@ public class IonosphereUtils {
         return time;
     }
 
+    /**
+     * Determine the contact frequency. If specfied in the ADIF record, happy days, otherwise we take the
+     * middle of the band as the frequency
+     * TODO take into account mode to determine a more accurate midpoint frequency
+     * @param rec ADIF record to check frequency and band
+     * @return recorded frequency, or the mid-point frequency of the band
+     */
     private static double getFrequency(Adif3Record rec) {
         double frequencyInKhz = 145 * 1000;
 

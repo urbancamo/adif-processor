@@ -9,7 +9,7 @@ public class Antennas {
         antennaMap = new HashMap<>();
 
         // Vertical
-        Antenna vertical = new Antenna(AntennaType.VERTICAL, "Vertical", 10);
+        Antenna vertical = new Antenna(AntennaType.VERTICAL, "Vertical", 15);
         antennaMap.put(vertical.getName(), vertical);
 
         // Dipole
@@ -17,8 +17,12 @@ public class Antennas {
         antennaMap.put(dipole.getName(), dipole);
 
         // Inverted-V
-        Antenna invertedV = new Antenna(AntennaType.INV_V, "Inverted-V", 30);
+        Antenna invertedV = new Antenna(AntennaType.INV_V, "Inverted-V", 25);
         antennaMap.put(invertedV.getName(), invertedV);
+
+        // YAGI
+        Antenna yagi = new Antenna(AntennaType.YAGI, "YAGI", 10);
+        antennaMap.put(yagi.getName(), yagi);
     }
 
 

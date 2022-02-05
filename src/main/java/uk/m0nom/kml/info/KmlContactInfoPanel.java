@@ -46,10 +46,8 @@ public class KmlContactInfoPanel {
             context.setVariable("txPwr", String.format("%,.1f", rec.getTxPwr()));
         }
         context.setVariable("gndDist", String.format("%,.0f", result.getDistanceInKm()));
-        Double bearing = GeodesicUtils.getBearing(rec.getMyCoordinates(), rec.getCoordinates());
-        if (bearing != null) {
-            context.setVariable("bearing", String.format("%03.03f", bearing));
-        }
+        context.setVariable("azimuth", String.format("%03.03f", result.getAzimuth()));
+
         if (result.getPropagation() != null) {
             switch (result.getPropagation()) {
                 case F2_REFLECTION:
