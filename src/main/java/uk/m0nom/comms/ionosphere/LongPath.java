@@ -56,7 +56,7 @@ public class LongPath implements CommsLinkGenerator {
         GlobalCoordinates stepLocation = start;
         // Determine the distance between start and end by incrementally calculating using the start bearing and
         // wait for convergence. We use 50km as a nominal step
-        double stepDistance = 50000.00;
+        double stepDistance = 100000.00;
         while (distanceToTargetStation >= stepDistance) {
             stepLocation = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, stepLocation, currentBearing, stepDistance, endBearing);
             steps++;
