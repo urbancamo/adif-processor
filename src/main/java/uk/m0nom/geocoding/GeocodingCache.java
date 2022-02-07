@@ -7,7 +7,7 @@ import java.util.Map;
 public class GeocodingCache {
     private final static int MAXSIZE = 1000;
 
-    private HashMap<String, GeocodingResult> cache = new LinkedHashMap<>() {
+    private final HashMap<String, GeocodingResult> cache = new LinkedHashMap<>() {
         @Override
         protected boolean removeEldestEntry(Map.Entry<String, GeocodingResult> eldest) {
             return this.size() > MAXSIZE;

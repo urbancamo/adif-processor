@@ -27,7 +27,6 @@ public class KmlCommsUtils {
     private final static String S2S_LINE = "s2S";
     private final static String COMM_LINE = "comm";
     private final static String SHADOW_LINE = "shadow";
-    private final static String SATELLITE_ID = "satellite";
 
     private final ActivityDatabases activities;
     private final KmlBandLineStyles bandLineStyles;
@@ -113,7 +112,7 @@ public class KmlCommsUtils {
 
         // Set the contact distance in the ADIF output file
         rec.setDistance(result.getDistanceInKm());
-        String description = new KmlContactInfoPanel().getPanelContentForCommsLink(control, qso, result, control.getTemplateEngine());
+        String description = new KmlContactInfoPanel().getPanelContentForCommsLink(qso, result, control.getTemplateEngine());
         placemark.withDescription(description);
         commsLine.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
         commsLine.setExtrude(false);
@@ -163,7 +162,6 @@ public class KmlCommsUtils {
      * @param document Kml document
      * @param qso QSO to add appropriate style
      * @param control Controls the rendering of line styles
-     * @return
      */
      private void addStyleIfUsed(Document document, TransformControl control, Qso qso, Map<String, String> commsStyleMap) {
         if (control.isKmlS2s() && qso.doingSameActivity()) {
@@ -197,9 +195,8 @@ public class KmlCommsUtils {
 
          if (control.isKmlContactShadow()) {
              if (!commsStyleMap.containsKey(SHADOW_LINE)) {
-                 String styleId = SHADOW_LINE;
                  Style style = document.createAndAddStyle()
-                         .withId(getStyleId(styleId));
+                         .withId(getStyleId(SHADOW_LINE));
                  style.createAndSetLineStyle().withColor("40000000").withWidth(3);
                  commsStyleMap.put(SHADOW_LINE, getStyleUrl(SHADOW_LINE));
              }

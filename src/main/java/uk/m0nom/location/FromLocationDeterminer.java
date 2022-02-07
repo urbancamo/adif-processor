@@ -7,10 +7,13 @@ import org.marsik.ham.adif.types.Sota;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Station;
-import uk.m0nom.coords.*;
+import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.coords.GlobalCoords3D;
+import uk.m0nom.coords.LocationParserResult;
+import uk.m0nom.coords.LocationParsers;
+import uk.m0nom.coords.LocationSource;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzCallsign;
 import uk.m0nom.qrz.QrzService;
@@ -24,11 +27,11 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
         super(control, qrzService, activities);
     }
 
-    private void setMyLocationFromGrid(Qso qso, LocationSource source, String myGrid) {
+    private void setMyLocationFromGrid(Qso qso, String myGrid) {
         Adif3Record rec = qso.getRecord();
         qso.getRecord().setMyGridSquare(myGrid.substring(0, 6));
         qso.getFrom().setGrid(myGrid);
-        GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(source, myGrid);
+        GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.QRZ, myGrid);
         rec.setMyCoordinates(coords);
         qso.getFrom().setCoordinates(coords);
     }
@@ -119,7 +122,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
         if (callsignData != null && callsignData.getGrid() != null) {
             if (MaidenheadLocatorConversion.isAValidGridSquare(callsignData.getGrid())) {
                 rec.setMyGridSquare(callsignData.getGrid());
-                setMyLocationFromGrid(qso, LocationSource.QRZ, callsignData.getGrid());
+                setMyLocationFromGrid(qso, callsignData.getGrid());
                 return true;
             }
         }

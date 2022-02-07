@@ -4,14 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.marsik.ham.adif.Adif3;
-import org.marsik.ham.adif.Adif3Record;
-import uk.m0nom.satellite.SatellitePass;
-import uk.m0nom.satellite.SatellitePassId;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**

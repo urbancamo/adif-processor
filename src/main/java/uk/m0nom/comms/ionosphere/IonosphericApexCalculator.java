@@ -27,7 +27,7 @@ public class IonosphericApexCalculator {
     }
 
     public static double calculateTakeoffAngleFromDistanceAcrossEarth(double de, double h) {
-        double takeOffAngle = 0.0;
+        double takeOffAngle;
 
 
         // Calculate angle for arc of length d which is the distance across the earth, in degrees
@@ -66,9 +66,8 @@ public class IonosphericApexCalculator {
         double A = 180 - B - C;
 
         // Now use the Sine rule again to work out the sky distance
-        double a = (c * Math.sin(Math.toRadians(A)) / Math.sin(Math.toRadians(C)));
 
-        return a;
+        return (c * Math.sin(Math.toRadians(A)) / Math.sin(Math.toRadians(C)));
     }
 
     @Deprecated
@@ -78,14 +77,12 @@ public class IonosphericApexCalculator {
         double r2 = Math.pow(R, 2);
         double h2 = Math.pow(h, 2);
 
-        double d = (-R*sinA2)+Math.sqrt((r2*sinA2)+h2+(2*R*h));
-        return d;
+        return (-R*sinA2)+Math.sqrt((r2*sinA2)+h2+(2*R*h));
     }
 
 
     /**
-     * Apex must contain the take off angle and the distance to Apex for this calculation to complete
-     * @param apex
+     * Apex must contain the take-off angle and the distance to Apex for this calculation to complete
      */
     public static double calculateDistanceAcrossEarth(@NotNull PropagationApex apex) {
         double pi = Math.PI;
@@ -97,7 +94,6 @@ public class IonosphericApexCalculator {
         double a = (R+h) / Math.toDegrees(Math.sin(Math.toRadians(90 + theta)));
         double A = Math.asin(Math.toRadians(d / a));
         // find distance across arc of earth
-        double p = (Math.toDegrees(A) / 360.0) * 2.0 * pi * R;
-        return p;
+        return (Math.toDegrees(A) / 360.0) * 2.0 * pi * R;
     }
 }

@@ -23,7 +23,9 @@ public class CommaSeparatedDecimalWithNsewLatLongParser implements LocationParse
             String longEastWest = matcher.group(4);
             Double latitude = LatLongUtils.parseDecimalLatitude(latString, latNorthSouth);
             Double longitude = LatLongUtils.parseDecimalLongitude(longString, longEastWest);
-            return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
+            if (latitude != null && longitude != null) {
+                return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
+            }
         }
         return null;
     }

@@ -59,11 +59,9 @@ public class NoradSatellite implements ApSatellite {
         double latitude = satPos.getLatitude() / (Math.PI * 2.0) * 360;
         double longitude = satPos.getLongitude() / (Math.PI * 2.0) * 360;
         double altitudeInMetres = satPos.getAltitude() * 1000.0;
-        GlobalCoords3D position =
-                new GlobalCoords3D(latitude,
-                        longitude, altitudeInMetres,
-                        LocationSource.SATELLITE, LocationAccuracy.LAT_LONG);
-        return position;
+        return new GlobalCoords3D(latitude,
+                longitude, altitudeInMetres,
+                LocationSource.SATELLITE, LocationAccuracy.LAT_LONG);
 
     }
 

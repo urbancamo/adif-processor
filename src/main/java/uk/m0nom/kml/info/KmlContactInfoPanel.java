@@ -8,12 +8,10 @@ import org.thymeleaf.TemplateSpec;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
 import uk.m0nom.adif3.contacts.Qso;
-import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.comms.CommsLinkResult;
-import uk.m0nom.geodesic.GeodesicUtils;
 
 public class KmlContactInfoPanel {
-    public String getPanelContentForCommsLink(TransformControl control, Qso qso, CommsLinkResult result, TemplateEngine templateEngine) {
+    public String getPanelContentForCommsLink(Qso qso, CommsLinkResult result, TemplateEngine templateEngine) {
         Adif3Record rec = qso.getRecord();
 
         final Context context = new Context();

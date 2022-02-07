@@ -93,8 +93,7 @@ public class KmlStationUtils {
         return null;
     }
 
-    public String createSatelliteContactMarker(TransformControl control, Document document, Folder folder, Qso qso, GlobalCoords3D position) {
-        String id = getSatelliteMarkerId(qso);
+    public void createSatelliteContactMarker(TransformControl control, Document document, Folder folder, Qso qso, GlobalCoords3D position) {
         String name = getSatelliteMarkerName(qso);
         String folderName = getSatelliteFolderName(qso);
 
@@ -130,7 +129,6 @@ public class KmlStationUtils {
                 .addToCoordinates(position.getLongitude(), position.getLatitude(), position.getAltitude())
                 .setAltitudeMode(AltitudeMode.ABSOLUTE); // set coordinates
 
-        return null;
     }
 
 

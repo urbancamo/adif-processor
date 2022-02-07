@@ -29,9 +29,9 @@ public class IonosphereUtils {
     }
 
     /**
-     * Determine the contact frequency. If specfied in the ADIF record, happy days, otherwise we take the
+     * Determine the contact frequency. If specified in the ADIF record, happy days, otherwise we take the
      * middle of the band as the frequency
-     * TODO take into account mode to determine a more accurate midpoint frequency based on bandplan sections
+     * TODO take into account mode to determine a more accurate midpoint frequency based on band-plan sections
      * @param rec ADIF record to check frequency and band
      * @return recorded frequency, or the mid-point frequency of the band
      */

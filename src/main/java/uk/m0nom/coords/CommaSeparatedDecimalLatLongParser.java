@@ -21,7 +21,9 @@ public class CommaSeparatedDecimalLatLongParser implements LocationParser, Locat
             String longString = matcher.group(2);
             Double latitude = LatLongUtils.parseDecimalLatitude(latString);
             Double longitude = LatLongUtils.parseDecimalLongitude(longString);
-            return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
+            if (latitude != null && longitude != null) {
+                return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
+            }
         }
         return null;
     }

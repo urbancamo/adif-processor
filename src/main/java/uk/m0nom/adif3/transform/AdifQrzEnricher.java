@@ -77,7 +77,7 @@ public class AdifQrzEnricher {
         return name;
     }
 
-    public QrzCallsign lookupLocationFromQrz(Qso qso) {
+    public void lookupLocationFromQrz(Qso qso) {
         QrzCallsign callsignData = qso.getTo().getQrzInfo();
         Adif3Record rec = qso.getRecord();
         String callsign = rec.getCall();
@@ -100,7 +100,6 @@ public class AdifQrzEnricher {
                 updateQsoFromQrzLocation(qso, callsignData);
             }
         }
-        return callsignData;
     }
 
     /**

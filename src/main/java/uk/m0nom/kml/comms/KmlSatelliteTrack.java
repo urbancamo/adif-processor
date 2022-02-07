@@ -14,7 +14,6 @@ import uk.m0nom.satellite.SatellitePassId;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import static uk.m0nom.kml.KmlUtils.getStyleId;
 import static uk.m0nom.kml.KmlUtils.getStyleUrl;
@@ -34,7 +33,7 @@ public class KmlSatelliteTrack {
                                    GlobalCoords3D groundStation) {
         String styleUrl = addSatelliteTrackStyle(control, doc);
 
-        /** Add an icon to indicate the name and date of the satellite pass */
+        // Add an icon to indicate the name and date of the satellite pass
         IconResource icon = IconResource.getSatelliteTrackResource(control);
         Icon kmlIcon = new Icon().withHref(icon.getUrl());
         Style style = doc.createAndAddStyle()

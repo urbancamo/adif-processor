@@ -1,20 +1,16 @@
 package uk.m0nom.geodesic;
 
-import de.micromata.opengis.kml.v_2_2_0.LineString;
-import org.gavaghan.geodesy.*;
-import uk.m0nom.comms.*;
+import org.gavaghan.geodesy.Ellipsoid;
+import org.gavaghan.geodesy.GeodeticCalculator;
+import org.gavaghan.geodesy.GeodeticCurve;
+import org.gavaghan.geodesy.GlobalCoordinates;
+import uk.m0nom.comms.PropagationApex;
 import uk.m0nom.coords.GlobalCoords3D;
 
 import java.util.List;
 
 public class GeodesicUtils
 {
-    public static void addSurfaceLine(LineString hfLine, GlobalCoordinates startGc, GlobalCoordinates endGc) {
-        hfLine.addToCoordinates(startGc.getLongitude(), startGc.getLatitude(), 0);
-        hfLine.addToCoordinates(endGc.getLongitude(), endGc.getLatitude(), 0);
-    }
-
-
     public static double calculatePath(List<GlobalCoords3D> path, List<PropagationApex> bounces, GlobalCoords3D start, GlobalCoords3D end,
                                        double initialAzimuth) {
         GeodeticCalculator calculator = new GeodeticCalculator();
@@ -86,9 +82,7 @@ public class GeodesicUtils
     public static double geodesicDistanceToStraightLineDistance(double geodesicDistance) {
         double r = EARTH_RADIUS_IN_METRES;
 
-        double d = 2 * r * Math.sin(geodesicDistance / (2 * r));
-
-        return d;
+        return 2 * r * Math.sin(geodesicDistance / (2 * r));
     }
 
     /**

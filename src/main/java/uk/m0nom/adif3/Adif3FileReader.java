@@ -11,13 +11,11 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * Wrapper to the Adif3 library for reading ADIF format files
  */
 public class Adif3FileReader implements QsoFileReader {
-    private static final Logger logger = Logger.getLogger(Adif3FileReader.class.getName());
 
     public Adif3 read(String filename, String encoding, boolean sort) throws IOException {
         AdiReader reader = new AdiReader();

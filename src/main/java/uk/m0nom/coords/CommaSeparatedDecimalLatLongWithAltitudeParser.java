@@ -21,7 +21,9 @@ public class CommaSeparatedDecimalLatLongWithAltitudeParser implements LocationP
             Double latitude = LatLongUtils.parseDecimalLatitude(latString);
             Double longitude = LatLongUtils.parseDecimalLongitude(longString);
             Double altitude = Double.parseDouble(altString);
-            return new GlobalCoords3D(latitude, longitude, altitude, source, LocationAccuracy.LAT_LONG);
+            if (latitude != null && longitude != null) {
+                return new GlobalCoords3D(latitude, longitude, altitude, source, LocationAccuracy.LAT_LONG);
+            }
         }
         return null;
     }

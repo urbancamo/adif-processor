@@ -50,7 +50,7 @@ public class KmlWriter {
             results.getSatelliteActivity().spaceOutContactsInPasses();
         }
 
-        // create Placemark elements
+        // create Place-mark elements
         boolean first = true;
         for (Qso qso : qsos.getQsos()) {
             if (first) {

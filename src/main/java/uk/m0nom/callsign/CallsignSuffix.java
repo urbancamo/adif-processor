@@ -16,6 +16,6 @@ public enum CallsignSuffix {
     ALTERNATIVE_ADDRESS("/A", "Alternate Address"),
     QRP("/QRP", "QRP Low Power");
 
-    private String suffix;
-    private String description;
+    private final String suffix;
+    private final String description;
 }

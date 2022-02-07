@@ -3,7 +3,10 @@ package uk.m0nom.satellite;
 import uk.m0nom.satellite.norad.NoradSatelliteOrbitReader;
 import uk.m0nom.satellite.satellites.QO100;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 /**
@@ -41,13 +44,7 @@ public class ApSatellites {
     }
 
     public Set<String> getSatelliteNames() {
-        SortedSet<String> names = new TreeSet<>();
-        names.addAll(satelliteIdentifierMap.keySet());
-        return names;
-    }
-
-    public void addSatellite(ApSatellite apSatellite) {
-        satelliteIdentifierMap.put(apSatellite.getName(), apSatellite);
+        return new TreeSet<>(satelliteIdentifierMap.keySet());
     }
 
     public int size() {

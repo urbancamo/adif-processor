@@ -1,6 +1,5 @@
 package uk.m0nom.coords;
 
-import lombok.SneakyThrows;
 import org.gavaghan.geodesy.GlobalCoordinates;
 
 public class LatLongUtils {

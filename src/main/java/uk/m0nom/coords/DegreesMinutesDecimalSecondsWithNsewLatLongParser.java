@@ -29,7 +29,9 @@ public class DegreesMinutesDecimalSecondsWithNsewLatLongParser implements Locati
 
             Double latitude = LatLongUtils.parseDegMinSecLatitude(latDegrees, latMinutes, latSeconds, latNorthSouth);
             Double longitude = LatLongUtils.parseDegMinSecLongitude(longDegrees, longMinutes, longSeconds, longEastWest);
-            return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
+            if (latitude != null && longitude != null) {
+                return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
+            }
         }
         return null;
     }

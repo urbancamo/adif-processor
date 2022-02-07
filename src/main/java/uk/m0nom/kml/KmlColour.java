@@ -42,7 +42,4 @@ public class KmlColour {
         return String.format("%02X%02X%02X%02X", transparency, blue, green, red);
     }
 
-    public String getStringSpecifier(int transparency) {
-        return String.format("%02X%02X%02X%02X", transparency, blue, green, red);
-    }
 }
