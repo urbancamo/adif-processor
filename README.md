@@ -4,10 +4,17 @@ Written by Mark Wickens [mark@wickensonline.co.uk](mailto:"mark@wickensonline.co
 
 ## What is this?
 
-Currently the post-processor can generate three types of output:
-  - Enriched ADIF 
-  - Google Earth KML file 
-  - Pretty Printed contact listing file.
+The [ADIF Processor](http://adifweb-env.eba-saseumwd.eu-west-2.elasticbeanstalk.com/) is an online application
+that visualizes amateur radio contacts from an ADIF log file using [Google Earth](https://earth.google.com).
+[SOTA](https://www.sotadata.org.uk/en/) CSV log files are also supported.
+
+The processor looks for specially formatted comments in your input file which are transposed into the
+correct ADIF fields in your output file.
+
+The post-processor generates three types of output:
+  - Enriched ADIF files
+  - Google Earth KML files  
+  - Customizable Contact listing files
 
 ## Documentation
 
