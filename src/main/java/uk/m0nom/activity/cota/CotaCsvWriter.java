@@ -30,8 +30,8 @@ public class CotaCsvWriter {
             String country = cota.getRef().split("-")[0];
 
             if (cotaBasedOnCountry.get(country) == null) {
-                List<CotaInfo> countryCotas = new ArrayList<>();
-                cotaBasedOnCountry.put(country, countryCotas);
+                List<CotaInfo> countryCota = new ArrayList<>();
+                cotaBasedOnCountry.put(country, countryCota);
             }
 
             cotaBasedOnCountry.get(country).add(cota);
@@ -42,7 +42,7 @@ public class CotaCsvWriter {
         // Now process each country in turn
         for (String country : cotaBasedOnCountry.keySet()) {
             BufferedWriter out = null;
-            String outPath = "target/cotaCsvs";
+            String outPath = "target/cotaCsv";
             try {
                 Files.createDirectories(Paths.get(outPath));
                 File outFile = new File(String.format("%s/%s.csv", outPath, country.toUpperCase()));

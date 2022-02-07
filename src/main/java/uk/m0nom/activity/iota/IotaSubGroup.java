@@ -3,7 +3,6 @@ package uk.m0nom.activity.iota;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
-import uk.m0nom.activity.iota.IotaIsland;
 
 import java.util.Collection;
 

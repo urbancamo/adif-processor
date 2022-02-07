@@ -22,8 +22,4 @@ public class IotaIsland {
 
     @JsonProperty("excluded")
     private int excluded;
-
-    public boolean isExcluded() {
-        return excluded == 1;
-    }
 }

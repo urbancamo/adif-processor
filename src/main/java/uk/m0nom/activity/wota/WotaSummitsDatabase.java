@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * We extend the standard Activity Database here to store two Map's to cross reference
+ * We extend the standard Activity Database here to store two Maps to cross-reference
  * WOTA summits with HEMA and SOTA summits. Where a WOTA coincides with one of these summits
  * we record all activity references. In the case of WOTA and SOTA both references can also be
  * retained in the ADIF output file as SOTA has its own field SOTA_REF

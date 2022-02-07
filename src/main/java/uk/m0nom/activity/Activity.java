@@ -37,10 +37,6 @@ public abstract class Activity implements Comparable<Activity> {
 
     public abstract String getUrl();
 
-    public String getAltitudeInMetres() {
-        return String.format("%.0f", altitude);
-    }
-
     @Override
     public boolean equals(Object other) {
         boolean rtn = false;

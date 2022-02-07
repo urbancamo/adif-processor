@@ -1,6 +1,5 @@
 package uk.m0nom.comms.ionosphere;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
@@ -18,10 +17,12 @@ import java.util.logging.Logger;
 
 /**
  * Long Path HF Propagation Visualization.
- * We do a short path computation, take the 180 degree angle and then fire off the signal in that direction, with the
- * same hop distance until we get close to the target station.
+ *
+ * We do a short path computation, take the 180-degree angle and then fire off the signal in that direction, with
+ * a short-ish hop distance until we get converge on the target station.
  * Then we add a hop to cover the difference and recalculate.
- * This is the longest path long path.
+ *
+ * This is the longest path long path and doesn't take into account any antenna directionality as it stands
  */
 public class LongPath implements CommsLinkGenerator {
     private static final Logger logger = Logger.getLogger(LongPath.class.getName());
@@ -37,13 +38,7 @@ public class LongPath implements CommsLinkGenerator {
         GeodeticCurve shortestPath = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, start, end);
 
         double longPathBearing = IonosphereUtils.normalisedAngleAddition(shortestPath.getAzimuth(), 180.0);
-
-        // The short path bounce distance across the earth is used as a step size for determining the long path
-        //double bounceDistance = shortPathResult.getApexes().get(0).getDistanceAcrossEarth() * 1000.0;
-
-        //double stepDistance = bounceDistance / 2.0;
-
-        double endBearing[] = new double[1];
+        double[] endBearing = new double[1];
 
         int steps = 0;
 
@@ -55,7 +50,7 @@ public class LongPath implements CommsLinkGenerator {
 
         GlobalCoordinates stepLocation = start;
         // Determine the distance between start and end by incrementally calculating using the start bearing and
-        // wait for convergence. We use 50km as a nominal step
+        // wait for convergence.
         double stepDistance = 100000.00;
         while (distanceToTargetStation >= stepDistance) {
             stepLocation = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, stepLocation, currentBearing, stepDistance, endBearing);
