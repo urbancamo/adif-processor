@@ -3,7 +3,6 @@ Processor for Amateur Radio ADIF files.
 Written by Mark Wickens [mark@wickensonline.co.uk](mailto:"mark@wickensonline.co.uk").
 
 ## What is this?
-The post processor was originally designed to enrich ADIF content by 
 
 Currently the post-processor can generate three types of output:
   - Enriched ADIF 
