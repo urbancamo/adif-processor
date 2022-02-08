@@ -37,8 +37,9 @@ public abstract class Activity implements Comparable<Activity> {
 
     public abstract String getUrl();
 
+    // Do not refactor out - used in Thymeleaf template
     public String getAltitudeInMetres() {
-        return String.format("%.0f", altitude);
+        return String.format("%.0f m", altitude);
     }
 
     @Override
