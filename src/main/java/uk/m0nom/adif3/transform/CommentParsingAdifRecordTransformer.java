@@ -363,6 +363,12 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                         callsignWithInvalidActivity = toLocationDeterminer.setTheirLocationFromWotaId(qso, wotaId.toUpperCase(), unmapped);
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.WOTA).get(wotaId));
                         break;
+                    case "GmaRef":
+                        // Strip off any S2s reference
+                        String gmaId = StringUtils.split(value, ' ')[0];
+                        callsignWithInvalidActivity = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.GMA, gmaId.toUpperCase(), unmapped);
+                        qso.getTo().addActivity(activities.getDatabase(ActivityType.GMA).get(gmaId));
+                        break;
                     case "HemaRef":
                         // Strip off any S2s reference
                         String hemaId = StringUtils.split(value, ' ')[0];

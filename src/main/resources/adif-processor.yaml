@@ -6,6 +6,7 @@ IOTA: Iota
 GRID: GridSquare
 PWR: RxPwr
 SOTA: SotaRef
+GMA: GmaRef
 SRX: SerialRx
 STX: SerialTx
 QSL: Qsl

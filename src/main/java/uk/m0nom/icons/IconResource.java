@@ -3,8 +3,8 @@ package uk.m0nom.icons;
 import lombok.Getter;
 import org.marsik.ham.adif.enums.Mode;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Station;
+import uk.m0nom.adif3.control.TransformControl;
 
 @Getter
 public class IconResource {
@@ -27,7 +27,8 @@ public class IconResource {
     public final static String SATELLITE_TRACK_DEFAULT_ICON_URL = "http://maps.google.com/mapfiles/kml/shapes/capital_big_highlight.png";
 
 	public final static String POTA_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/picnic.png";
-	public final static String SOTA_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/mountains.png";
+    public final static String SOTA_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/mountains.png";
+    public final static String GMA_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/mountains.png";
     public final static String HEMA_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/hospitals.png";
     public final static String WOTA_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/trail.png";
     public final static String WWFF_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/parks.png";
