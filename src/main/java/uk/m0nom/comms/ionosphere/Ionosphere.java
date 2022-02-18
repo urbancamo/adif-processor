@@ -22,7 +22,7 @@ public class Ionosphere {
 
     /* Height at which we map ground wave communications, per 1000m */
     private final static double GROUNDWAVE_BOUNCE_ALT = 12.0;
-    public final static double MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM = 200.0;
+    public final static double MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM = 500.0;
     public final static double MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM = 50.0;
 
     public final static double MAX_FREQUENCY = 22000.0;
@@ -87,7 +87,7 @@ public class Ionosphere {
                     layers = getLayerForTimeOfDay(timeOfDay);
                     bounceLayer = layers.get("E");
                     altInKm = bounceLayer.getAverageHeight() / 1000.0;
-                    bounces.add(new PropagationApex(mode, distanceInKm, altInKm, altInKm, 0, 0.0));
+                    bounces.add(new PropagationApex(mode, distanceInKm, altInKm*1000.0, altInKm*1000.0, 0, 0.0));
                     break;
             }
         }
