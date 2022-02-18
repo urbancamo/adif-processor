@@ -8,7 +8,7 @@ import org.marsik.ham.adif.Adif3Record;
 
 /**
  * Captures the information relating to a single contact. Each station in the QSO is recorded as a single
- * instance of Station which allows some more OO-centric processing compared ot the raw data in the Adif3Record
+ * instance of Station which allows some more OO-centric processing compared to the raw data in the Adif3Record
  */
 @Getter
 @Setter
@@ -19,6 +19,11 @@ public class Qso {
     private Station from;
     private Station to;
     private Adif3Record record;
+
+    public Qso(Adif3Record rec, int index) {
+        setIndex(index);
+        setRecord(rec);
+    }
 
     public boolean doingSameActivity() {
        return from.doingSameActivityAs(to);

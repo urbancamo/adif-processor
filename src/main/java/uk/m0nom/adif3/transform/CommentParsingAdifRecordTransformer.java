@@ -49,6 +49,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private final GeocodingProvider geocodingProvider;
     private final CommentTokenizer tokenizer;
     private final LocationParsers locationParsers;
+    private Map<String, String> unmapped;
 
     public CommentParsingAdifRecordTransformer(YamlMapping config, ActivityDatabases activities, QrzService qrzService, TransformControl control, TransformResults results) {
         fieldMap = config.asMapping();
@@ -65,6 +66,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         this.geocodingProvider = new NominatimGeocodingProvider();
         this.tokenizer = new ColonTokenizer();
         this.locationParsers = new LocationParsers();
+        this.unmapped = new HashMap<>();
     }
 
     private void issueWarnings(Adif3Record rec) {
@@ -76,28 +78,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
     }
 
-    @Override
-    public void transform(Qsos qsos, Adif3Record rec, int index) {
-        /* Add Adif3Record details to the Qsos meta structure */
-        Qso qso = createQsoFromAdif3Record(qsos, rec, index);
-
-        activityProcessor.processActivities(qso.getFrom(), rec);
-
-        // Attempt a lookup from QRZ.com
-        QrzCallsign myQrzData = qrzService.getCallsignData(rec.getStationCallsign());
-
-        Map<String, String> unmapped = new HashMap<>();
-        if (!fromLocationDeterminer.setMyLocation(qso, myQrzData)) {
-            logger.warning("Unable to determine from station location");
-        }
-
-        qso.getFrom().setQrzInfo(myQrzData);
-        enricher.enrichAdifForMe(qso.getRecord(), myQrzData);
-
-        /* Load QRZ.COM info for the worked station as a fixed station, for information */
-        QrzCallsign theirQrzData = qrzService.getCallsignData(qso.getTo().getCallsign());
-        qso.getTo().setQrzInfo(theirQrzData);
-        enricher.enrichAdifForThem(qso.getRecord(), theirQrzData);
+    private void processSotaRef(Qso qso) {
+        Adif3Record rec = qso.getRecord();
 
         if (rec.getSotaRef() != null && StringUtils.isNotBlank(rec.getSotaRef().getValue())) {
             String sotaId = rec.getSotaRef().getValue();
@@ -112,7 +94,10 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 results.addContactWithDubiousLocation(String.format("%s (SOTA %s invalid)", qso.getTo().getCallsign(), sotaId));
             }
         }
+    }
 
+    private void processRailwaysOnTheAirCallsign(Qso qso) {
+        Adif3Record rec = qso.getRecord();
         // Check the callsign for a Railways on the Air
         Activity rotaInfo = activities.getDatabase(ActivityType.ROTA).get(rec.getCall().toUpperCase());
         if (rotaInfo != null) {
@@ -122,7 +107,30 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             }
             qso.getTo().addActivity(rotaInfo);
         }
+    }
 
+    private void setMyInfoFromQrz(Qso qso) {
+        // Attempt a lookup from QRZ.com
+        QrzCallsign myQrzData = qrzService.getCallsignData(qso.getRecord().getStationCallsign());
+
+        if (!fromLocationDeterminer.setMyLocation(qso, myQrzData)) {
+            logger.warning("Unable to determine from station location");
+        }
+
+        qso.getFrom().setQrzInfo(myQrzData);
+        enricher.enrichAdifForMe(qso.getRecord(), myQrzData);
+    }
+
+    private QrzCallsign setTheirInfoFromQrz(Qso qso) {
+        /* Load QRZ.COM info for the worked station as a fixed station, for information */
+        QrzCallsign theirQrzData = qrzService.getCallsignData(qso.getTo().getCallsign());
+        qso.getTo().setQrzInfo(theirQrzData);
+        enricher.enrichAdifForThem(qso.getRecord(), theirQrzData);
+        return theirQrzData;
+    }
+
+    private void processSatelliteInfo(Qso qso) {
+        Adif3Record rec = qso.getRecord();
         if (StringUtils.isBlank(control.getSatelliteBand()) || rec.getBand() == Band.findByCode(control.getSatelliteBand().toLowerCase())) {
             if (StringUtils.isNotBlank(control.getSatelliteMode())) {
                 rec.setSatMode(control.getSatelliteMode().toUpperCase());
@@ -133,44 +141,75 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 rec.setPropMode(Propagation.SATELLITE);
             }
         }
+    }
 
-        if (StringUtils.isNotBlank(rec.getComment())) {
-            transformComment(qso, rec.getComment(), unmapped);
+    private boolean hasValidGridsquareNoCoords(Adif3Record rec) {
+        return rec.getCoordinates() == null &&
+                MaidenheadLocatorConversion.isAValidGridSquare(rec.getGridsquare()) &&
+                !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare());
+    }
+
+    private void setCoordinatesFromGridsquare(Qso qso) {
+        Adif3Record rec = qso.getRecord();
+        // Set Coordinates from GridSquare that has been supplied in the input file
+        GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, rec.getGridsquare());
+        rec.setCoordinates(coords);
+        qso.getTo().setCoordinates(coords);
+        qso.getTo().setGrid(rec.getGridsquare());
+    }
+
+    private boolean hasNoValidGridsquareOrCoords(Adif3Record rec) {
+        return rec.getCoordinates() == null &&
+                (!MaidenheadLocatorConversion.isAValidGridSquare(rec.getGridsquare()) ||
+                        MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare()));
+    }
+
+    private void setTheirLocationFromGeocodedAddress(Qso qso, QrzCallsign theirQrzData) {
+        Adif3Record rec = qso.getRecord();
+        try {
+            GeocodingResult result = geocodingProvider.getLocationFromAddress(theirQrzData);
+            rec.setCoordinates(result.getCoordinates());
+            qso.getTo().setCoordinates(result.getCoordinates());
+            if (rec.getCoordinates() != null) {
+                logger.info(String.format("Location for %s set based on geolocation data to: %s", rec.getCall(), rec.getCoordinates()));
+                if (MaidenheadLocatorConversion.isEmptyOrInvalid(rec.getGridsquare())) {
+                    rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(rec.getCoordinates()));
+                }
+            }
+        } catch (Exception e) {
+            logger.severe(String.format("Caught Exception from Geolocation Provider looking up %s: %s", rec.getCall(), e.getMessage()));
         }
+    }
+
+    @Override
+    public void transform(Qsos qsos, Adif3Record rec, int index) {
+        unmapped = new HashMap<>();
+
+        /* Add Adif3Record details to the Qsos meta structure */
+        Qso qso = new Qso(rec, index);
+        qsos.addQso(qso);
+
+        activityProcessor.processActivities(qso.getFrom(), rec);
+
+        setMyInfoFromQrz(qso);
+        QrzCallsign theirQrzData = setTheirInfoFromQrz(qso);
+        processSotaRef(qso);
+        processRailwaysOnTheAirCallsign(qso);
+        processSatelliteInfo(qso);
+        transformComment(qso, rec.getComment(), unmapped);
 
         if (rec.getCoordinates() == null && rec.getGridsquare() == null) {
             enricher.lookupLocationFromQrz(qso);
         }
 
         // IF qrz.com can't fill in the coordinates, and the gridsquare is set, fill in coordinates from that
-        if (rec.getCoordinates() == null &&
-                MaidenheadLocatorConversion.isAValidGridSquare(rec.getGridsquare()) &&
-                !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare())) {
-            // Set Coordinates from GridSquare that has been supplied in the input file
-            GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, rec.getGridsquare());
-            rec.setCoordinates(coords);
-            qso.getTo().setCoordinates(coords);
-            qso.getTo().setGrid(rec.getGridsquare());
+        if (hasValidGridsquareNoCoords(rec)) {
+            setCoordinatesFromGridsquare(qso);
         }
 
         // Last resort, attempt to find location from qrz.com address data via geolocation provider
-        if (rec.getCoordinates() == null &&
-                (!MaidenheadLocatorConversion.isAValidGridSquare(rec.getGridsquare()) ||
-                MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare())) &&
-                theirQrzData != null) {
-            try {
-                GeocodingResult result = geocodingProvider.getLocationFromAddress(theirQrzData);
-                rec.setCoordinates(result.getCoordinates());
-                qso.getTo().setCoordinates(result.getCoordinates());
-                if (rec.getCoordinates() != null) {
-                    logger.info(String.format("Location for %s set based on geolocation data to: %s", rec.getCall(), rec.getCoordinates()));
-                    if (MaidenheadLocatorConversion.isEmptyOrInvalid(rec.getGridsquare())) {
-                        rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(rec.getCoordinates()));
-                    }
-                }
-            } catch (Exception e) {
-                logger.severe(String.format("Caught Exception from Geolocation Provider looking up %s: %s", rec.getCall(), e.getMessage()));
-            }
+        if (hasNoValidGridsquareOrCoords(rec) && theirQrzData != null) {
+            setTheirLocationFromGeocodedAddress(qso, theirQrzData);
         }
 
         // Look to see if there is anything in the SIG/SIGINFO fields
@@ -221,13 +260,6 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
     }
 
-    private Qso createQsoFromAdif3Record(Qsos qsos, Adif3Record rec, int index) {
-        Qso qso = new Qso();
-        qso.setIndex(index);
-        qso.setRecord(rec);
-        qsos.addQso(qso);
-        return qso;
-    }
 
     /**
      * Parse the Fast Log Entry comment string for pairs of key and values, for example
@@ -236,6 +268,10 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
      * and ANT/WX records are appended to the comment
      */
     private void transformComment(Qso qso, String comment, Map<String, String> unmapped) {
+        if (StringUtils.isBlank(comment)) {
+            return;
+        }
+
         Adif3Record rec = qso.getRecord();
         // try and split the comment up into comma separated list
         Map<String, String> tokens = tokenizer.tokenize(comment);
