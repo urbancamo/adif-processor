@@ -15,15 +15,15 @@ import java.util.Map;
  * of a signal based on the signal frequency.
  */
 public class Ionosphere {
-    public final static double HF_ANTENNA_DEFAULT_TAKEOFF_ANGLE = 6;
+    public final static double HF_ANTENNA_DEFAULT_TAKEOFF_ANGLE = 6.0;
 
     private final Map<String, IonosphericLayer> dayTimeLayers;
     private final Map<String, IonosphericLayer> nightTimeLayers;
 
     /* Height at which we map ground wave communications, per 1000m */
-    private final static double GROUNDWAVE_BOUNCE_ALT = 6;
-    public final static double MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM = 200;
-    public final static double MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM = 50;
+    private final static double GROUNDWAVE_BOUNCE_ALT = 12.0;
+    public final static double MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM = 200.0;
+    public final static double MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM = 50.0;
 
     public final static double MAX_FREQUENCY = 22000.0;
 
