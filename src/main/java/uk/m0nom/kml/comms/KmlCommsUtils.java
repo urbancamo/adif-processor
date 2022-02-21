@@ -24,9 +24,9 @@ import static uk.m0nom.kml.KmlUtils.getStyleId;
 import static uk.m0nom.kml.KmlUtils.getStyleUrl;
 
 public class KmlCommsUtils {
-    private final static String S2S_LINE = "s2S";
-    private final static String COMM_LINE = "comm";
-    private final static String SHADOW_LINE = "shadow";
+    public final static String S2S_LINE = "s2S";
+    public final static String COMM_LINE = "comm";
+    public final static String SHADOW_LINE = "shadow";
 
     private final ActivityDatabases activities;
     private final KmlBandLineStyles bandLineStyles;
@@ -38,7 +38,7 @@ public class KmlCommsUtils {
         commsStyleMap = new HashMap<>();
     }
 
-    private String getCommsLinkId(Qso qso) {
+    public static String getCommsLinkId(Qso qso) {
         String fromName = qso.getFrom().getCallsign();
         String toName = qso.getTo().getCallsign();
         String dateTime = KmlStationUtils.getQsoDateTimeAsString(qso);
@@ -47,14 +47,14 @@ public class KmlCommsUtils {
         return id.replaceAll(" ", "_");
     }
 
-    private String getCommsLinkName(Qso qso) {
+    public static String getCommsLinkName(Qso qso) {
         String fromName = qso.getFrom().getCallsign();
         String toName = qso.getTo().getCallsign();
 
         return String.format("%s ⇋ %s", fromName, toName);
     }
 
-    private String getCommsLinkShadowId(Qso qso) {
+    public static String getCommsLinkShadowId(Qso qso) {
         String commsLinkLabel = getCommsLinkId(qso);
         String id = String.format("%s Shadow", commsLinkLabel);
         return id.replaceAll(" ", "_");
