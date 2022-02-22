@@ -8,6 +8,7 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.adif3.contacts.Qso;
 import uk.m0nom.adif3.contacts.Qsos;
+import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.transform.TransformResults;
 import uk.m0nom.coords.GlobalCoords3D;
@@ -21,6 +22,7 @@ import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 public class KmlWriter {
@@ -43,17 +45,21 @@ public class KmlWriter {
         Document doc = kml.createAndSetDocument().withName(name).withOpen(true);
 
         // create a Folder
-        Folder folder = doc.createAndAddFolder();
-        folder.withName("Contacts").withOpen(true);
+        Folder contactsFolder = doc.createAndAddFolder();
+        contactsFolder.withName("Contacts").withOpen(true);
 
         if (results.getSatelliteActivity().hasActivity()) {
             results.getSatelliteActivity().spaceOutContactsInPasses();
         }
 
-        // create Placemark elements
-        boolean first = true;
-        for (Qso qso : qsos.getQsos()) {
-            if (first) {
+        Station myStation = null;
+        Iterator<Qso> qsoIterator = qsos.getQsos().iterator();
+        Folder folder = null;
+        while (qsoIterator.hasNext()) {
+            Qso qso = qsoIterator.next();
+            if (!qso.getFrom().equals(myStation)) {
+                folder = contactsFolder.createAndAddFolder().withName(qso.getFrom().getCallsign()).withOpen(true);
+
                 String error = kmlStationUtils.addMyStationToMap(doc, folder, qso);
                 if (error != null) {
                     results.setError(error);
@@ -61,7 +67,7 @@ public class KmlWriter {
                 if (qso.getFrom().hasActivity() && control.isKmlShowLocalActivationSites()) {
                     kmlLocalActivities.addLocalActivities(doc, folder, qso.getFrom(), control.getKmlLocalActivationSitesRadius(), activities);
                 }
-                first = false;
+                myStation = qso.getFrom();
             }
             Folder contactFolder = folder.createAndAddFolder().withName(qso.getTo().getCallsign()).withOpen(false);
             GlobalCoordinates coords = qso.getRecord().getCoordinates();
@@ -86,7 +92,6 @@ public class KmlWriter {
                 results.addContactWithoutLocation(qso.getTo().getCallsign());
                 logger.warning(String.format("Cannot determine communication link, no location data for: %s", qso.getTo().getCallsign()));
             }
-
         }
 
         if (!results.hasErrors()) {

@@ -9,11 +9,6 @@ public class KmlLineStyle extends KmlColour {
 
     private Integer width;
 
-    public KmlLineStyle(String key, String name, String htmlColor, int red, int green, int blue, int transparency, int width) {
-        super(key, name, htmlColor, red, green, blue, transparency);
-        this.width = width;
-    }
-
     public KmlLineStyle(String name, int red, int green, int blue, int transparency, int width) {
         super(name, red, green, blue, transparency);
         this.width = width;

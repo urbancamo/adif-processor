@@ -15,15 +15,15 @@ import java.util.Map;
  * of a signal based on the signal frequency.
  */
 public class Ionosphere {
-    public final static double HF_ANTENNA_DEFAULT_TAKEOFF_ANGLE = 6;
+    public final static double HF_ANTENNA_DEFAULT_TAKEOFF_ANGLE = 6.0;
 
     private final Map<String, IonosphericLayer> dayTimeLayers;
     private final Map<String, IonosphericLayer> nightTimeLayers;
 
-    /* Height at which we map ground wave comms, per 1000m */
-    private final static double GROUNDWAVE_BOUNCE_ALT = 6;
-    public final static double MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM = 200;
-    public final static double MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM = 50;
+    /* Height at which we map ground wave communications, per 1000m */
+    private final static double GROUNDWAVE_BOUNCE_ALT = 12.0;
+    public final static double MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM = 500.0;
+    public final static double MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM = 50.0;
 
     public final static double MAX_FREQUENCY = 22000.0;
 
@@ -65,7 +65,7 @@ public class Ionosphere {
 
                     // Here we take into account that higher frequency signals tend to bounce at a lower height in the
                     // atmosphere than higher frequency signals
-                    double altInMetres = calculateBounceHeight(frequencyInKhz, bounceLayer, MAX_FREQUENCY);
+                    double altInMetres = calculateBounceHeight(frequencyInKhz, bounceLayer);
                     double altInKm = altInMetres / 1000.0;
 
                     // We initially calculate the distance across the earth of propagation based on the takeoff angle
@@ -87,7 +87,7 @@ public class Ionosphere {
                     layers = getLayerForTimeOfDay(timeOfDay);
                     bounceLayer = layers.get("E");
                     altInKm = bounceLayer.getAverageHeight() / 1000.0;
-                    bounces.add(new PropagationApex(mode, distanceInKm, altInKm, altInKm, 0, 0.0));
+                    bounces.add(new PropagationApex(mode, distanceInKm, altInKm*1000.0, altInKm*1000.0, 0, 0.0));
                     break;
             }
         }
@@ -116,11 +116,11 @@ public class Ionosphere {
     }
 
 
-    private double calculateBounceHeight(double frequencyInKhz, IonosphericLayer bounceLayer, double maxFreq) {
+    private double calculateBounceHeight(double frequencyInKhz, IonosphericLayer bounceLayer) {
         double bounceHeight = bounceLayer.getLower();
-        if (frequencyInKhz < maxFreq && frequencyInKhz > (double) 1800) {
+        if (frequencyInKhz < Ionosphere.MAX_FREQUENCY && frequencyInKhz > (double) 1800) {
             // Normalize frequencies between 14Mhz and 1.8mhz to within 0.0 to 1.0
-            double delta = (frequencyInKhz - (double) 1800) / (maxFreq - (double) 1800);
+            double delta = (frequencyInKhz - (double) 1800) / (Ionosphere.MAX_FREQUENCY - (double) 1800);
             double layerWidth = bounceLayer.getUpper() - bounceLayer.getLower();
             bounceHeight = bounceLayer.getLower() + (delta * layerWidth);
         } else if (frequencyInKhz < (double) 1800) {

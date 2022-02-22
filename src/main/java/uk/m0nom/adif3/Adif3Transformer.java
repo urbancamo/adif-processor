@@ -15,7 +15,6 @@ import uk.m0nom.qrz.QrzService;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Logger;
 
 /**
  * Main entry into the Adif3 Transformer functionality.
@@ -23,7 +22,6 @@ import java.util.logging.Logger;
  * @see CommentParsingAdifRecordTransformer
  */
 public class Adif3Transformer {
-    private static final Logger logger = Logger.getLogger(Adif3Transformer.class.getName());
 
     private YamlMapping config = null;
     private ActivityDatabases summits;

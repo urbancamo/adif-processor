@@ -8,7 +8,7 @@ import uk.m0nom.activity.ActivityType;
 import java.util.Date;
 
 /**
- * Additional information stored for a World Wide Flora Fauna location
+ * Additional information stored for a Worldwide Flora Fauna location
  */
 @Getter
 @Setter
@@ -18,10 +18,10 @@ public class WwffInfo extends Activity {
     private String iota, iaruLocator;
 
     private String IUCNcat;
-    private Date validFrom,validTo;
+    private Date validFrom, validTo;
     private String notes;
     private String lastMod;
-    private String changeLog,reviewFlag,specialFlags,website,country,region;
+    private String changeLog, reviewFlag, specialFlags, website, country, region;
 
     public WwffInfo() {
         super(ActivityType.WWFF);

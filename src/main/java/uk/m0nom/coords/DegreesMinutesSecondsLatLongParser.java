@@ -30,7 +30,9 @@ public class DegreesMinutesSecondsLatLongParser implements LocationParser, Locat
 
             Double latitude = LatLongUtils.parseDegreesMinutesSeconds(latDegrees, latMinutes, latSeconds, "-".equalsIgnoreCase(latNegative));
             Double longitude = LatLongUtils.parseDegreesMinutesSeconds(longDegrees, longMinutes, longSeconds, "-".equalsIgnoreCase(longNegative));
-            return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
+            if (latitude != null && longitude != null) {
+                return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
+            }
         }
         return null;
     }

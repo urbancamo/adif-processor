@@ -2,17 +2,16 @@ package uk.m0nom.kml.info;
 
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
+import org.marsik.ham.adif.enums.AntPath;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.TemplateSpec;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
 import uk.m0nom.adif3.contacts.Qso;
-import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.comms.CommsLinkResult;
-import uk.m0nom.geodesic.GeodesicUtils;
 
 public class KmlContactInfoPanel {
-    public String getPanelContentForCommsLink(TransformControl control, Qso qso, CommsLinkResult result, TemplateEngine templateEngine) {
+    public String getPanelContentForCommsLink(Qso qso, CommsLinkResult result, TemplateEngine templateEngine) {
         Adif3Record rec = qso.getRecord();
 
         final Context context = new Context();
@@ -45,15 +44,14 @@ public class KmlContactInfoPanel {
             context.setVariable("txPwr", String.format("%,.1f", rec.getTxPwr()));
         }
         context.setVariable("gndDist", String.format("%,.0f", result.getDistanceInKm()));
-        Double bearing = GeodesicUtils.getBearing(rec.getMyCoordinates(), rec.getCoordinates());
-        if (bearing != null) {
-            context.setVariable("bearing", String.format("%03.03f", bearing));
-        }
+        context.setVariable("azimuth", String.format("%03.03f", result.getAzimuth()));
+
         if (result.getPropagation() != null) {
             switch (result.getPropagation()) {
                 case F2_REFLECTION:
                     context.setVariable("skyDist", String.format("%,.0f", result.getSkyDistance()));
                     context.setVariable("bounces", String.format("%d", result.getBounces()));
+                    context.setVariable("antPath", rec.getAntPath() == null ? AntPath.SHORT : rec.getAntPath());
                     break;
                 case SATELLITE:
                     context.setVariable("satName", qso.getRecord().getSatName());

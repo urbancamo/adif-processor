@@ -45,7 +45,7 @@ public class ThymleafKmlContactInfoPanelTest {
         when(clr.getPropagation()).thenReturn(null);
         when(rec.getFreqRx()).thenReturn(null);
 
-        String html = infoPanel.getPanelContentForCommsLink(control, qso, clr, TemplateEngineConstructor.create());
+        String html = infoPanel.getPanelContentForCommsLink(qso, clr, TemplateEngineConstructor.create());
         FileUtils.writeStringToFile(new File("target/contact.html"), html, StandardCharsets.UTF_8);
         //System.out.println(html);
     }

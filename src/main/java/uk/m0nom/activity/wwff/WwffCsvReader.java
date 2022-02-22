@@ -1,93 +1,73 @@
 package uk.m0nom.activity.wwff;
 
-import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.activity.Activity;
-import uk.m0nom.activity.ActivityDatabase;
-import uk.m0nom.activity.ActivityReader;
 import uk.m0nom.activity.ActivityType;
+import uk.m0nom.activity.CsvActivityReader;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
+import java.util.IllformedLocaleException;
 
 /**
- * Reader for the World Wide Flora Fauna CSV extract file
+ * Reader for the Worldwide Flora Fauna CSV extract file
  */
-public class WwffCsvReader extends ActivityReader {
-    private static final Logger logger = Logger.getLogger(WwffCsvReader.class.getName());
+public class WwffCsvReader extends CsvActivityReader {
     private static final String EMPTY_DATE = "0000-00-00";
+    private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     public WwffCsvReader(String sourceFile) {
         super(ActivityType.WWFF, sourceFile);
     }
 
-    public ActivityDatabase read(InputStream inputStream) throws IOException {
-        Map<String, Activity> wwffInfo = new HashMap<>();
 
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    @Override
+    protected Activity readRecord(CSVRecord record) throws IllegalArgumentException {
+        WwffInfo info = new WwffInfo();
 
-        final Reader reader = new InputStreamReader(new BOMInputStream(inputStream), StandardCharsets.UTF_8);
+        info.setRef(record.get("reference"));
+        info.setName(record.get("name"));
+        info.setActive(StringUtils.equals(record.get("status"), "active"));
+        info.setCoords(readCoords(record, "latitude", "longitude"));
 
-        Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(reader);
-        for (CSVRecord record : records) {
-            WwffInfo info = new WwffInfo();
+        info.setProgram(record.get("program"));
+        info.setDxcc(record.get("dxcc"));
+        info.setState(record.get("state"));
+        info.setCounty(record.get("county"));
+        info.setContinent(record.get("continent"));
+        info.setIota(record.get("iota"));
+        info.setIaruLocator(record.get("iaruLocator"));
+        info.setIUCNcat(record.get("IUCNcat"));
 
-            info.setRef(record.get("reference"));
-            info.setName(record.get("name"));
-            info.setActive(StringUtils.equals(record.get("status"), "active"));
-            info.setCoords(readCoords(record, "latitude", "longitude"));
-
-            info.setProgram(record.get("program"));
-            info.setDxcc(record.get("dxcc"));
-            info.setState(record.get("state"));
-            info.setCounty(record.get("county"));
-            info.setContinent(record.get("continent"));
-            info.setIota(record.get("iota"));
-            info.setIaruLocator(record.get("iaruLocator"));
-            info.setIUCNcat(record.get("IUCNcat"));
-
-            String validFrom = record.get("validFrom");
-            try {
-                if (isValidDate(validFrom)) {
-                    info.setValidFrom((df.parse(validFrom)));
-                }
-            } catch (ParseException pe) {
-                logger.severe(String.format("validFrom date for WWFF ref: %s is invalid, string form is: %s", info.getRef(), validFrom));
+        String validFrom = record.get("validFrom");
+        try {
+            if (isValidDate(validFrom)) {
+                info.setValidFrom((df.parse(validFrom)));
             }
-            String validTo = record.get("validTo");
-            try {
-                if (isValidDate(validTo)) {
-                    info.setValidTo((df.parse(validTo)));
-                }
-            } catch (ParseException pe) {
-                logger.severe(String.format("validTo date for WWFF ref: %s is invalid, string form is: %s", info.getRef(), validTo));
+        } catch (ParseException pe) {
+            throw new IllformedLocaleException(String.format("validFrom date for WWFF ref: %s is invalid, string form is: %s", info.getRef(), validFrom));
+        }
+        String validTo = record.get("validTo");
+        try {
+            if (isValidDate(validTo)) {
+                info.setValidTo((df.parse(validTo)));
             }
-
-            info.setNotes(record.get("notes"));
-            info.setLastMod(record.get("lastMod"));
-            info.setChangeLog(record.get("changeLog"));
-            info.setReviewFlag(record.get("reviewFlag"));
-
-            info.setSpecialFlags(record.get("specialFlags"));
-            info.setWebsite(record.get("website"));
-            info.setCountry(record.get("country"));
-            info.setRegion(record.get("region"));
-
-            wwffInfo.put(info.getRef(), info);
+        } catch (ParseException pe) {
+            throw new IllegalArgumentException(String.format("validTo date for WWFF ref: %s is invalid, string form is: %s", info.getRef(), validTo));
         }
 
-        return new ActivityDatabase(ActivityType.WWFF, wwffInfo);
+        info.setNotes(record.get("notes"));
+        info.setLastMod(record.get("lastMod"));
+        info.setChangeLog(record.get("changeLog"));
+        info.setReviewFlag(record.get("reviewFlag"));
+
+        info.setSpecialFlags(record.get("specialFlags"));
+        info.setWebsite(record.get("website"));
+        info.setCountry(record.get("country"));
+        info.setRegion(record.get("region"));
+        return info;
     }
 
     private boolean isValidDate(String dateString) {

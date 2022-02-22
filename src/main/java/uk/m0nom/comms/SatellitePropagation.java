@@ -34,8 +34,7 @@ public class SatellitePropagation implements CommsLinkGenerator {
                 return result;
             }
             apSatellite.updateAdifRec(control, rec);
-            GlobalCoords3D groundStation = start;
-            GlobalCoords3D satelliteLocation = apSatellite.getPosition(groundStation, rec.getQsoDate(), rec.getTimeOn());
+            GlobalCoords3D satelliteLocation = apSatellite.getPosition(start, rec.getQsoDate(), rec.getTimeOn());
             result.setSatellitePosition(satelliteLocation);
 
             GeodeticCalculator calculator = new GeodeticCalculator();

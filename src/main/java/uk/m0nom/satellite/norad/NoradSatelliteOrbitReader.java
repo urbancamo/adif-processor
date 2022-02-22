@@ -1,11 +1,9 @@
 package uk.m0nom.satellite.norad;
 
-import com.fasterxml.jackson.databind.DatabindException;
 import com.github.amsacode.predict4java.Satellite;
 import com.github.amsacode.predict4java.SatelliteFactory;
 import com.github.amsacode.predict4java.TLE;
 import uk.m0nom.satellite.ApSatellite;
-import uk.m0nom.satellite.ApSatellites;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,12 +44,12 @@ public class NoradSatelliteOrbitReader {
                 String tleDefinitions = readUrl(sourceFileUrl);
 
                 // Each TLE definition consists of three lines of text, so we parse the TLE file 3 lines at a time
-                String tleLines[] = tleDefinitions.split("\\n");
+                String[] tleLines = tleDefinitions.split("\\n");
                 int i = 0;
 
                 while (i < tleLines.length / 3) {
-                    String lines[] = new String[3];
-                    lines[0] = tleLines[(i * 3) + 0];
+                    String[] lines = new String[3];
+                    lines[0] = tleLines[(i * 3)];
                     lines[1] = tleLines[(i * 3) + 1];
                     lines[2] = tleLines[(i * 3) + 2];
 

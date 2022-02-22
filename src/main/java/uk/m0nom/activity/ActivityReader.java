@@ -26,7 +26,6 @@ public abstract class ActivityReader {
         this.sourceFile = sourceFile;
     }
 
-    public abstract ActivityDatabase read(InputStream inputStream) throws IOException;
 
     /**
      * Read lat/long from CSV file and convert to GlobalCoordinates. If neither is specified returns null
@@ -61,4 +60,6 @@ public abstract class ActivityReader {
         }
         return location;
     }
+
+    public abstract ActivityDatabase read(InputStream inputStream) throws IOException;
 }

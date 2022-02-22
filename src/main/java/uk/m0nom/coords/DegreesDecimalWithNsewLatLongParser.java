@@ -25,7 +25,9 @@ public class DegreesDecimalWithNsewLatLongParser implements LocationParser, Loca
 
             Double latitude = LatLongUtils.parseDecimalLatitudeWithNs(latString, latNorthSouth);
             Double longitude = LatLongUtils.parseDecimalLongitudeWithEw(longString, longEastWest);
-            return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
+            if (latitude != null && longitude != null) {
+                return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.LAT_LONG);
+            }
         }
         return null;
     }

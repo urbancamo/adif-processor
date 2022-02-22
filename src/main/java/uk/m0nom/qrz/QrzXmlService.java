@@ -13,6 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
@@ -47,9 +48,6 @@ public class QrzXmlService implements QrzService {
         logger.info("QRZ.COM lookup has been disabled");
     }
 
-    public boolean isDisabled() {
-        return !enabled;
-    }
     public boolean isEnabled() {
         return enabled;
     }
@@ -97,14 +95,13 @@ public class QrzXmlService implements QrzService {
                 .url(url)
                 .build();
         try (Response response = client.newCall(request).execute()) {
-            String xmlBody = response.body().string();
+            String xmlBody = Objects.requireNonNull(response.body()).string();
             xmlBody = StringUtils.remove(xmlBody, '\n');
             InputStream stream = new ByteArrayInputStream(xmlBody.getBytes(StandardCharsets.UTF_8));
 
             JAXBContext context = JAXBContext.newInstance(QrzDatabase.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
-            QrzDatabase database = (QrzDatabase) unmarshaller.unmarshal(stream);
-            return database;
+            return (QrzDatabase) unmarshaller.unmarshal(stream);
         }    catch (Exception e) {
             logger.warning(String.format("QRZ.COM XML query failed: %s, error is: %s", url, e.getMessage()));
         }

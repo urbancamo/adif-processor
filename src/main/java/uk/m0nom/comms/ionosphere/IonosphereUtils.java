@@ -1,6 +1,5 @@
 package uk.m0nom.comms.ionosphere;
 
-import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Propagation;
 import uk.m0nom.adif3.control.TransformControl;
@@ -16,6 +15,11 @@ import java.util.List;
 public class IonosphereUtils {
     private final static LocalTime MIDDAY = LocalTime.of(12,0);
 
+    /**
+     * Returns the recorded time, or midday if no time is recorded for the QSO
+     * @param rec ADIF record to check the Time On
+     * @return Midday if time on is null, otherwise time on
+     */
     private static LocalTime getTime(Adif3Record rec) {
         LocalTime time = MIDDAY;
         if (rec.getTimeOn() != null) {
@@ -24,6 +28,13 @@ public class IonosphereUtils {
         return time;
     }
 
+    /**
+     * Determine the contact frequency. If specified in the ADIF record, happy days, otherwise we take the
+     * middle of the band as the frequency
+     * TODO take into account mode to determine a more accurate midpoint frequency based on band-plan sections
+     * @param rec ADIF record to check frequency and band
+     * @return recorded frequency, or the mid-point frequency of the band
+     */
     private static double getFrequency(Adif3Record rec) {
         double frequencyInKhz = 145 * 1000;
 
@@ -51,21 +62,37 @@ public class IonosphereUtils {
         double avgAltitude = 0.0;
         double avgAngle = 0.0;
         Propagation mode = rec.getPropMode();
-        List<PropagationApex> bounces = new Ionosphere().getBounces(mode, frequencyInKhz, result.getDistanceInKm(), time, start.getAltitude(), end.getAltitude(), control.getAntenna().getTakeOffAngle());
+        List<PropagationApex> apexes = new Ionosphere().getBounces(mode, frequencyInKhz, result.getDistanceInKm(), time, start.getAltitude(), end.getAltitude(), control.getAntenna().getTakeOffAngle());
 
-        double skyDistance = GeodesicUtils.calculatePath(result.getPath(), bounces, start, end, azimuth);
+        double skyDistance = GeodesicUtils.calculatePath(result.getPath(), apexes, start, end, azimuth);
         result.setSkyDistance(skyDistance);
 
-        for (PropagationApex bounce : bounces) {
+        for (PropagationApex bounce : apexes) {
             avgAltitude += bounce.getApexHeight();
             avgAngle += bounce.getRadiationAngle();
             mode = bounce.getMode();
         }
+        result.setApexes(apexes);
         result.setPropagation(mode);
-        result.setAltitude(avgAltitude / bounces.size());
-        result.setFromAngle(avgAngle / bounces.size());
-        result.setBounces(bounces.size());
+        result.setAltitude(avgAltitude / apexes.size());
+        result.setFromAngle(avgAngle / apexes.size());
+        result.setBounces(apexes.size());
 
         return result;
+    }
+
+    public static double normaliseAngle(double angle) {
+        double result = angle;
+        while (result < 0.0) {
+            result += 360.0;
+        }
+        while (result > 360.0) {
+            result -= 360.0;
+        }
+        return result;
+    }
+
+    public static double normalisedAngleAddition(double start, double delta) {
+        return normaliseAngle(start + delta);
     }
 }

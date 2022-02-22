@@ -1,10 +1,6 @@
 package uk.m0nom.adif3.print;
 
 import org.apache.commons.lang3.StringUtils;
-import org.gavaghan.geodesy.Ellipsoid;
-import org.gavaghan.geodesy.GeodeticCalculator;
-import org.gavaghan.geodesy.GeodeticCurve;
-import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.types.Sota;
@@ -27,7 +23,7 @@ import java.util.logging.Logger;
 public class Adif3PrintFormatter {
     private static final Logger logger = Logger.getLogger(Adif3PrintFormatter.class.getName());
 
-    private final static List<String> FIRSTNAME_SKIP = new ArrayList<String>(Arrays.asList("Op.", "Mr", "Mr.", "Mrs", "Mrs.")) ;
+    private final static List<String> FIRSTNAME_SKIP = new ArrayList<>(Arrays.asList("Op.", "Mr", "Mr.", "Mrs", "Mrs.")) ;
 
     static class PrintState {
         StringBuilder sb;
@@ -273,7 +269,7 @@ public class Adif3PrintFormatter {
                 break;
             case "FIRSTNAME":
                 // Attempt to extract the firstname. This isn't foolproof by any means!
-                String names[] = StringUtils.split(rec.getName());
+                String[] names = StringUtils.split(rec.getName());
                 if (names != null && names.length > 0) {
                     value = names[0];
                     // This one primarily for Guru EA2IF

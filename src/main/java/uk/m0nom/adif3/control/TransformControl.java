@@ -1,18 +1,20 @@
 package uk.m0nom.adif3.control;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.thymeleaf.TemplateEngine;
 import uk.m0nom.activity.ActivityType;
-import uk.m0nom.adif3.FileTransformerApp;
 import uk.m0nom.adif3.xsdquery.Adif3Element;
 import uk.m0nom.antenna.Antenna;
 import uk.m0nom.antenna.Antennas;
 import uk.m0nom.dxcc.DxccEntities;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class captures the control information that is used to define the file to process and any other
@@ -81,18 +83,18 @@ public class TransformControl {
     private String satelliteName;
 
     // List of Satellite modes harvested from: https://www.eqsl.cc/QSLCard/SatelliteInfo.cfm
-    //    A = Uplink: 2m Downlink: 10m
-    //    AU = Uplink: 10m Downlink: 70cm
-    //    B = Uplink: 70cm Downlink: 2m
-    //    J = Uplink: 2m Downlink: 70cm
-    //    K = Uplink: 15m Downlink: 10m
-    //    L = Uplink: 23cm Downlink: 70cm
-    //    LU = Uplink: 23cm Downlink: 70cm
-    //    LV = Uplink: 23cm Downlink: 2m
-    //    SX = Uplink: 13cm Downlink: 3cm
-    //    T = Uplink: 15m Downlink: 2m
-    //    UV = Uplink: 70cm Downlink: 2m
-    //    VU = Uplink: 2m Downlink: 70cm
+    //    A = Uplink: 2m Down-link: 10m
+    //    AU = Uplink: 10m Down-link: 70cm
+    //    B = Uplink: 70cm Down-link: 2m
+    //    J = Uplink: 2m Down-link: 70cm
+    //    K = Uplink: 15m Down-link: 10m
+    //    L = Uplink: 23cm Down-link: 70cm
+    //    LU = Uplink: 23cm Down-link: 70cm
+    //    LV = Uplink: 23cm Down-link: 2m
+    //    SX = Uplink: 13cm Down-link: 3cm
+    //    T = Uplink: 15m Down-link: 2m
+    //    UV = Uplink: 70cm Down-link: 2m
+    //    VU = Uplink: 2m Down-link: 70cm
     private String satelliteMode;
     private String satelliteBand;
     private boolean sotaMicrowaveAwardComment;

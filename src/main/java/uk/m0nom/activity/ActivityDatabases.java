@@ -4,10 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.activity.cota.CotaCsvReader;
+import uk.m0nom.activity.gma.GmaCsvReader;
+import uk.m0nom.activity.hema.HemaCsvReader;
 import uk.m0nom.activity.iota.IotaJsonReader;
 import uk.m0nom.activity.lota.LotaCsvReader;
 import uk.m0nom.activity.pota.PotaCsvReader;
-import uk.m0nom.activity.hema.HemaCsvReader;
 import uk.m0nom.activity.rota.RotaCsvReader;
 import uk.m0nom.activity.sota.SotaCsvReader;
 import uk.m0nom.activity.wota.WotaCsvReader;
@@ -40,6 +41,7 @@ public class ActivityDatabases {
 
         readers.put(ActivityType.HEMA, new HemaCsvReader("hema/HEMA-summits.csv"));
         readers.put(ActivityType.SOTA, new SotaCsvReader( "sota/summitslist.csv"));
+        readers.put(ActivityType.GMA, new GmaCsvReader( "gma/gma_summits.csv"));
         readers.put(ActivityType.POTA, new PotaCsvReader("pota/all_parks_ext.csv"));
         readers.put(ActivityType.WOTA, new WotaCsvReader( "wota/summits.csv"));
         readers.put(ActivityType.WWFF, new WwffCsvReader("wwff/wwff_directory.csv"));
@@ -92,7 +94,7 @@ public class ActivityDatabases {
 
     /**
      * Get the database for the named activity based on the activityName field in each activity type
-     * @param requested name of the actitity type
+     * @param requested name of the activity type
      * @return database if activity type found, otherwise null
      */
     public ActivityDatabase getDatabase(String requested) {

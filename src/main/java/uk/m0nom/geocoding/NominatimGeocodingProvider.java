@@ -42,10 +42,8 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
             result = cache.get(addressToCheck);
             if (result == null) {
                 result = queryUsingAddressSubstring(qrzData.getCall(), addressToCheck);
-                if (result != null) {
-                    // Stick in the cache with the original search string
-                    cache.put(addressToCheck, result);
-                }
+                // Stick in the cache with the original search string
+                cache.put(addressToCheck, result);
             } else {
                 logger.info(String.format("Geocoding cache hit for address: %s", addressToCheck));
             }

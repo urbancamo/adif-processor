@@ -115,9 +115,9 @@
                             <td class="tdLabel">Gnd Dist:</td>
                             <td><span th:text="${gndDist}">25 </span> km</td>
                         </tr>
-                        <tr th:if="${bearing} != null">
-                            <td class="tdLabel">Bearing:</td>
-                            <td><span th:text="${bearing}">180</span>°</td>
+                        <tr th:if="${azimuth} != null">
+                            <td class="tdLabel">Azimuth:</td>
+                            <td><span th:text="${azimuth}">180</span>°</td>
                         </tr>
                     </tbody>
                 </table>
@@ -138,7 +138,7 @@
                             <td><span th:text="${skyDist}">25</span> km</td>
                         </tr>
                         <tr th:if="${propagationMode} == 'F2'">
-                            <td class="tdLabel">Bounces:</td>
+                            <td class="tdLabel">Reflections:</td>
                             <td><span th:text="${bounces}">5</span></td>
                         </tr>
                         <tr th:if="${propagationMode} == 'F2'">
@@ -148,6 +148,10 @@
                         <tr th:if="${propagationMode} == 'F2'">
                             <td class="tdLabel">Reflection Angle:</td>
                             <td><span th:text="${angle}">23°</span></td>
+                        </tr>
+                        <tr th:if="${propagationMode} == 'F2'">
+                            <td class="tdLabel">Path:</td>
+                            <td><span th:text="${antPath}">S</span></td>
                         </tr>
 
 

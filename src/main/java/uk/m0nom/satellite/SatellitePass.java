@@ -65,7 +65,7 @@ public class SatellitePass {
                 for (int i = 1; i < numberOfQsosSharingTime; i++) {
                     // No need to adjust the first one which will be on 0 seconds
                     qso = qsoIterator.next();
-                    LocalTime adjustedTime = qsoTime.plusSeconds(60 / numberOfQsosSharingTime * i);
+                    LocalTime adjustedTime = qsoTime.plusSeconds((long) 60 / numberOfQsosSharingTime * i);
                     qso.getRecord().setTimeOn(adjustedTime);
                 }
             }

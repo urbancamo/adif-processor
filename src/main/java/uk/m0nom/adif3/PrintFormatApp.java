@@ -53,10 +53,16 @@ public class PrintFormatApp implements Runnable
                 Adif3 log = readerWriter.read(in, formatter.getPrintJobConfig().getInEncoding(), true);
                 StringBuilder sb = formatter.format(log);
                 File outFile = new File(out);
-                outFile.delete();
-                outFile.createNewFile();
-                writer = Files.newBufferedWriter(new File(out).toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);
-                writer.write(sb.toString());
+                if (outFile.delete()) {
+                    if (outFile.createNewFile()) {
+                        writer = Files.newBufferedWriter(new File(out).toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);
+                        writer.write(sb.toString());
+                    } else {
+                        logger.severe(String.format("Error creating new file: %s", outFile.getAbsolutePath()));
+                    }
+                } else {
+                    logger.severe(String.format("Error deleting file: %s", outFile.getAbsolutePath()));
+                }
             }
         } catch(IOException e){
                 logger.severe(String.format("Caught exception processing file: %s exception is:\n\t%s", in, e.getMessage()));
