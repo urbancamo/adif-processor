@@ -5,8 +5,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static uk.m0nom.callsign.CallsignUtils.*;
 
 public class CallsignUtilsTest {
@@ -20,7 +19,7 @@ public class CallsignUtilsTest {
     @Test
     public void getUkCallsignVariantsforG() {
         List<Callsign> callsigns = getCallsignVariants("M0NOM");
-        assertTrue("Variants doesn't contain correct number", callsigns.size() == 6);
+        assertEquals("Variants doesn't contain correct number", 6, callsigns.size());
         assertTrue(StringUtils.equals(callsigns.get(0).getCallsign(), "M0NOM"));
         assertTrue(StringUtils.equals(callsigns.get(1).getCallsign(), "MD0NOM"));
         assertTrue(StringUtils.equals(callsigns.get(2).getCallsign(), "MG0NOM"));
@@ -32,7 +31,7 @@ public class CallsignUtilsTest {
     @Test
     public void getUkCallsignVariantsforGM() {
         List<Callsign> callsigns = getUkCallsignVariants("MM0NOM");
-        assertTrue("Variants doesn't contain correct number", callsigns.size() == 6);
+        assertEquals("Variants doesn't contain correct number", 6, callsigns.size());
         assertTrue(StringUtils.equals(callsigns.get(0).getCallsign(), "MM0NOM"));
         assertTrue(StringUtils.equals(callsigns.get(1).getCallsign(), "M0NOM"));
         assertTrue(StringUtils.equals(callsigns.get(2).getCallsign(), "MD0NOM"));
@@ -109,7 +108,6 @@ public class CallsignUtilsTest {
 
         assertTrue("M0NOM/P should not be higher in the list than EA7/M0NOM/P", indexOfMeAbroadPortable < indexOfMeAtHomePortable);
         assertTrue("M0NOM should not be higher in the list than M0NOM/P", indexOfMeAtHomeFixed > indexOfMeAtHomePortable);
-        assertTrue("M0NOM should not be higher in the list than EA7/M0NOM/P", indexOfMeAtHomeFixed > indexOfMeAbroadPortable);
 
         assertTrue(String.format("Didn't detect correct base address %s for %s", baseCallsign, callsign),
                 containsCallsign(alternatives,baseCallsign));
