@@ -12,6 +12,7 @@ import uk.m0nom.antenna.Antenna;
 import uk.m0nom.antenna.Antennas;
 import uk.m0nom.dxcc.DxccEntities;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +29,11 @@ import java.util.Set;
 @EqualsAndHashCode
 @ToString
 public class TransformControl {
+    public TransformControl() {
+        runTimestamp = new Date().getTime();
+    }
+
+    private long runTimestamp;
     private String location;
 
     private String pathname;
@@ -144,8 +150,5 @@ public class TransformControl {
 
     public boolean isQrzDotComEnabled() {
         return (StringUtils.isNotEmpty(qrzUsername) && StringUtils.isNotEmpty(qrzPassword));
-    }
-
-    public TransformControl() {
     }
 }

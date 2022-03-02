@@ -9,7 +9,7 @@
 
   <groupId>uk.m0nom</groupId>
   <artifactId>adif-processor</artifactId>
-  <version>1.0.4-SNAPSHOT</version>
+  <version>1.0.5</version>
 
   <name>adif-processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
@@ -39,10 +39,11 @@
   </developers>
 
   <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
+    <repository>
+      <id>internal.repo</id>
+      <name>Temporary Staging Repository</name>
+      <url>file://${project.build.directory}/mvn-artifact</url>
+    </repository>
   </distributionManagement>
 
   <dependencies>

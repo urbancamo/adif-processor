@@ -114,7 +114,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         QrzCallsign myQrzData = qrzService.getCallsignData(qso.getRecord().getStationCallsign());
 
         if (!fromLocationDeterminer.setMyLocation(qso, myQrzData)) {
-            logger.warning("Unable to determine from station location");
+            logger.warning("Unable to determine location of 'from' station");
         }
 
         qso.getFrom().setQrzInfo(myQrzData);
