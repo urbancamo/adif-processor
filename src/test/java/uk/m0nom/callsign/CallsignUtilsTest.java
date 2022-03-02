@@ -1,43 +1,42 @@
 package uk.m0nom.callsign;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static uk.m0nom.callsign.CallsignUtils.*;
 
 public class CallsignUtilsTest {
     @Test
     public void getVariantsForM0NOM_slash_Portable() {
         List<Callsign> callsigns = getCallsignVariants("M0NOM/P");
-        assertTrue(StringUtils.equals(callsigns.get(0).getCallsign(), "M0NOM/P"));
-        assertFalse(callsigns.contains("P"));
+        assertThat(callsigns.get(0).getCallsign()).isEqualTo("M0NOM/P");
     }
 
     @Test
     public void getUkCallsignVariantsforG() {
         List<Callsign> callsigns = getCallsignVariants("M0NOM");
-        assertEquals("Variants doesn't contain correct number", 6, callsigns.size());
-        assertTrue(StringUtils.equals(callsigns.get(0).getCallsign(), "M0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(1).getCallsign(), "MD0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(2).getCallsign(), "MG0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(3).getCallsign(), "MI0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(4).getCallsign(), "MM0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(5).getCallsign(), "MW0NOM"));
+        assertThat(callsigns).hasSize(6);
+        assertThat(callsigns.get(0).getCallsign()).isEqualTo("M0NOM");
+        assertThat(callsigns.get(1).getCallsign()).isEqualTo("MD0NOM");
+        assertThat(callsigns.get(2).getCallsign()).isEqualTo("MG0NOM");
+        assertThat(callsigns.get(3).getCallsign()).isEqualTo("MI0NOM");
+        assertThat(callsigns.get(4).getCallsign()).isEqualTo("MM0NOM");
+        assertThat(callsigns.get(5).getCallsign()).isEqualTo("MW0NOM");
     }
 
     @Test
     public void getUkCallsignVariantsforGM() {
         List<Callsign> callsigns = getUkCallsignVariants("MM0NOM");
-        assertEquals("Variants doesn't contain correct number", 6, callsigns.size());
-        assertTrue(StringUtils.equals(callsigns.get(0).getCallsign(), "MM0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(1).getCallsign(), "M0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(2).getCallsign(), "MD0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(3).getCallsign(), "MG0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(4).getCallsign(), "MI0NOM"));
-        assertTrue(StringUtils.equals(callsigns.get(5).getCallsign(), "MW0NOM"));
+        assertThat(callsigns).hasSize(6);
+        assertThat(callsigns.get(0).getCallsign()).isEqualTo("MM0NOM");
+        assertThat(callsigns.get(1).getCallsign()).isEqualTo("M0NOM");
+        assertThat(callsigns.get(2).getCallsign()).isEqualTo("MD0NOM");
+        assertThat(callsigns.get(3).getCallsign()).isEqualTo("MG0NOM");
+        assertThat(callsigns.get(4).getCallsign()).isEqualTo("MI0NOM");
+        assertThat(callsigns.get(5).getCallsign()).isEqualTo("MW0NOM");
     }
 
     @Test
@@ -46,8 +45,7 @@ public class CallsignUtilsTest {
         String baseCallsign = "M0NOM";
 
         List<Callsign> alternatives = getCallsignVariants(callsign);
-        assertTrue(String.format("Didn't detect correct base address %s for %s", baseCallsign, callsign),
-                CallsignUtils.containsCallsign(alternatives, "M0NOM"));
+        assertThat(CallsignUtils.containsCallsign(alternatives,baseCallsign)).isTrue();
     }
 
     @Test
@@ -55,8 +53,7 @@ public class CallsignUtilsTest {
         String callsign = "MW0BLA/P";
         String baseCallsign = "M0BLA";
         List<Callsign> alternatives = getCallsignVariants(callsign);
-        assertTrue(String.format("Didn't detect correct base address %s for %s", baseCallsign, callsign),
-                CallsignUtils.containsCallsign(alternatives, baseCallsign));
+        assertThat(CallsignUtils.containsCallsign(alternatives, baseCallsign)).isTrue();
     }
 
     @Test
@@ -64,8 +61,7 @@ public class CallsignUtilsTest {
         String callsign = "MW0VIK/P";
         String baseCallsign = "MM0VIK";
         List<Callsign> alternatives = getCallsignVariants(callsign);
-        assertTrue(String.format("Didn't detect correct base address %s for %s", baseCallsign, callsign),
-                CallsignUtils.containsCallsign(alternatives, baseCallsign));
+        assertThat(CallsignUtils.containsCallsign(alternatives, baseCallsign)).isTrue();
     }
 
     @Test
@@ -74,8 +70,7 @@ public class CallsignUtilsTest {
         String baseCallsign = "M0NOM/P";
         List<Callsign> alternatives = getCallsignVariants(callsign);
 
-        assertTrue(String.format("Didn't detect correct base address %s for %s", baseCallsign, callsign),
-                CallsignUtils.containsCallsign(alternatives, baseCallsign));
+        assertThat(CallsignUtils.containsCallsign(alternatives, baseCallsign)).isTrue();
     }
 
     @Test
@@ -83,8 +78,7 @@ public class CallsignUtilsTest {
         String callsign = "EA7/M0NOM/P";
         String baseCallsign = "M0NOM";
         List<Callsign> alternatives = getCallsignVariants(callsign);
-        assertTrue(String.format("Didn't detect correct base address %s for %s", baseCallsign, callsign),
-                CallsignUtils.containsCallsign(alternatives, baseCallsign));
+        assertThat(CallsignUtils.containsCallsign(alternatives, baseCallsign)).isTrue();
     }
 
     @Test
@@ -98,19 +92,18 @@ public class CallsignUtilsTest {
         int indexOfMeAtHomeFixed;
 
         indexOfMeAbroadPortable = indexOfCallsignInList(alternatives, "EA7/M0NOM/P");
-        assertTrue(String.format("Didn't determine that EA7/M0NOM is a variant of %s", callsign), indexOfMeAbroadPortable != -1);
+        assertThat(indexOfMeAbroadPortable).isNotEqualTo(-1);
 
         indexOfMeAtHomePortable = indexOfCallsignInList(alternatives,"M0NOM/P");
-        assertTrue(String.format("Didn't determine that M0NOM/P is a variant of %s", callsign), indexOfMeAtHomePortable != -1);
+        assertThat(indexOfMeAtHomePortable).isNotEqualTo(-1);
 
         indexOfMeAtHomeFixed = indexOfCallsignInList(alternatives,"M0NOM");
-        assertTrue(String.format("Didn't determine that M0NOM is a variant of %s", callsign), indexOfMeAtHomeFixed != -1);
+        assertThat(indexOfMeAtHomeFixed).isNotEqualTo(-1);
 
-        assertTrue("M0NOM/P should not be higher in the list than EA7/M0NOM/P", indexOfMeAbroadPortable < indexOfMeAtHomePortable);
-        assertTrue("M0NOM should not be higher in the list than M0NOM/P", indexOfMeAtHomeFixed > indexOfMeAtHomePortable);
+        assertThat(indexOfMeAbroadPortable).isLessThan(indexOfMeAtHomePortable);
+        assertThat(indexOfMeAtHomeFixed).isGreaterThan(indexOfMeAtHomePortable);
 
-        assertTrue(String.format("Didn't detect correct base address %s for %s", baseCallsign, callsign),
-                containsCallsign(alternatives,baseCallsign));
+        assertThat(containsCallsign(alternatives,baseCallsign)).isTrue();
     }
 
     private int indexOfCallsignInList(List<Callsign> variants, String callsign) {

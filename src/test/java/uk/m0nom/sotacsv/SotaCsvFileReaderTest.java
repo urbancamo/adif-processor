@@ -1,13 +1,12 @@
 package uk.m0nom.sotacsv;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.marsik.ham.adif.Adif3;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SotaCsvFileReaderTest {
 
@@ -17,7 +16,7 @@ public class SotaCsvFileReaderTest {
 
         SotaCsvFileReader reader = new SotaCsvFileReader();
         Adif3 log = reader.read(filename, StandardCharsets.UTF_8.name(), false);
-        assertNotNull(log);
-        assertEquals(log.getRecords().size(), 145);
+        assertThat(log).isNotNull();
+        assertThat(log.getRecords().size()).isEqualTo(145);
     }
 }

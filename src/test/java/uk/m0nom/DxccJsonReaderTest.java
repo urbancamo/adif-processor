@@ -1,18 +1,16 @@
 package uk.m0nom;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.m0nom.dxcc.DxccEntities;
 import uk.m0nom.dxcc.DxccJsonReader;
 
-import java.io.IOException;
-
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DxccJsonReaderTest {
     @Test
-    public void loadJsonTest() throws IOException {
+    public void loadJsonTest() {
         DxccJsonReader reader = new DxccJsonReader();
         DxccEntities entities = reader.read();
-        assertNotNull(entities);
+        assertThat(entities).isNotNull();
     }
 }

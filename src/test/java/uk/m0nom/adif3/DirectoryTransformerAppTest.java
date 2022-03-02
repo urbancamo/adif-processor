@@ -1,14 +1,12 @@
 package uk.m0nom.adif3;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FilenameFilter;
 
 public class DirectoryTransformerAppTest
 {
-    @Ignore
     @Test
     public void testApp() {
         String args[] = new String[1];

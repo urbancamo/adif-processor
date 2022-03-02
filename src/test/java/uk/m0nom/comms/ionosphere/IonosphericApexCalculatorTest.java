@@ -1,19 +1,17 @@
 package uk.m0nom.comms.ionosphere;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.m0nom.comms.PropagationApex;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IonosphericApexCalculatorTest {
 
     private void checkResult(PropagationApex apex, double expectedDistanceToApex, double expectedDistanceAcrossEarth) {
-        assertTrue(apex != null);
+        assertThat(apex).isNotNull();
 
-        assertTrue(String.format("Distance to Apex %f doesn't match expected: %f", apex.getDistanceToApex(), expectedDistanceToApex),
-                Math.abs(apex.getDistanceToApex() - expectedDistanceToApex) < 0.1);
-        assertTrue(String.format("Distance across Earth %f doesn't match expected: %f", apex.getDistanceAcrossEarth(), expectedDistanceAcrossEarth),
-                Math.abs(apex.getDistanceAcrossEarth() - expectedDistanceAcrossEarth) < 0.1);
+        assertThat(Math.abs(apex.getDistanceToApex() - expectedDistanceToApex)).isLessThan(0.1);
+        assertThat(Math.abs(apex.getDistanceAcrossEarth() - expectedDistanceAcrossEarth)).isLessThan(0.1);
     }
 
     @Test
@@ -38,14 +36,14 @@ public class IonosphericApexCalculatorTest {
     public void testTakeOffAngleCalculator400kmAnd366km() {
         double takeOffAngle = IonosphericApexCalculator.calculateTakeoffAngleFromDistanceAcrossEarth(366.1, 400.0);
         double difference = Math.abs(takeOffAngle - 45);
-        assertTrue(difference < 0.1);
+        assertThat(difference).isLessThan(0.1);
     }
 
     @Test
     public void testTakeOffAngleCalculator400kmAnd1711km() {
         double takeOffAngle = IonosphericApexCalculator.calculateTakeoffAngleFromDistanceAcrossEarth(1711.3, 400.0);
         double difference = Math.abs(takeOffAngle - 5.0);
-        assertTrue(difference < 0.1);
+        assertThat(difference).isLessThan(0.1);
     }
 
     private PropagationApex testCalculator(double height, double angle) {

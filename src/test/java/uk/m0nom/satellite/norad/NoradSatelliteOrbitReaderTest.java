@@ -1,14 +1,14 @@
 package uk.m0nom.satellite.norad;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.m0nom.satellite.ApSatellites;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class NoradSatelliteOrbitReaderTest {
     @Test
     public void readTest() {
         ApSatellites apSatellites = new ApSatellites();
-        assertEquals(91, apSatellites.size());
+        assertThat(apSatellites.size()).isEqualTo(91);
     }
 }

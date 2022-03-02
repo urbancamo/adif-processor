@@ -1,7 +1,7 @@
 package uk.m0nom.kml.info;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Band;
 import org.thymeleaf.TemplateEngine;
@@ -47,6 +47,5 @@ public class ThymleafKmlContactInfoPanelTest {
 
         String html = infoPanel.getPanelContentForCommsLink(qso, clr, TemplateEngineConstructor.create());
         FileUtils.writeStringToFile(new File("target/contact.html"), html, StandardCharsets.UTF_8);
-        //System.out.println(html);
     }
 }

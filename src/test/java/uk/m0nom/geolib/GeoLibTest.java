@@ -1,10 +1,11 @@
 package uk.m0nom.geolib;
 
 import org.gavaghan.geodesy.*;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.m0nom.coords.LocationSource;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GeoLibTest {
     @Test
@@ -30,7 +31,7 @@ public class GeoLibTest {
         GlobalCoordinates midpoint2 = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, end, reverseAzimuth, distance / 2.0);
         System.out.printf("Midpoint2: %s\n", midpoint2.toString());
 
-        Assert.assertEquals(String.format("%.3f", midpoint1.getLatitude()), String.format("%.3f", midpoint2.getLatitude()));
-        Assert.assertEquals(String.format("%.3f", midpoint2.getLongitude()), String.format("%.3f", midpoint1.getLongitude()));
+        assertThat(String.format("%.3f", midpoint1.getLatitude())).isEqualTo(String.format("%.3f", midpoint2.getLatitude()));
+        assertThat(String.format("%.3f", midpoint2.getLongitude())).isEqualTo(String.format("%.3f", midpoint1.getLongitude()));
     }
 }

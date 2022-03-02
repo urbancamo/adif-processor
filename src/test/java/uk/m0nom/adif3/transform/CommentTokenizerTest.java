@@ -1,13 +1,14 @@
 package uk.m0nom.adif3.transform;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import uk.m0nom.adif3.transform.tokenizer.ColonCommaTokenizer;
 import uk.m0nom.adif3.transform.tokenizer.ColonTokenizer;
 import uk.m0nom.adif3.transform.tokenizer.CommentTokenizer;
 
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /** Check that each tokenizer does the right thing for comment strings */
 public class CommentTokenizerTest {
@@ -38,6 +39,7 @@ public class CommentTokenizerTest {
 
     private final static String TEST9_INPUT = "COORD: 54.37037777557802, -2.922647707561104, OP: Matthias,QTH: Ravenna,WX: 30 degC,RIG: Yaesu FT-891,PWR: 100,ANT: EFHW 13m Long";
     private final static String TEST9_EXPECTED[] = {"COORD", "54.37037777557802, -2.922647707561104", "OP", "Matthias", "QTH", "Ravenna", "WX", "30 degC", "RIG", "Yaesu FT-891", "PWR", "100", "ANT", "EFHW 13m Long"};
+
     @Test
     public final void colonCommaTokenizerTest() {
         CommentTokenizer tokenizer = new ColonCommaTokenizer();
@@ -66,8 +68,8 @@ public class CommentTokenizerTest {
         int i = 0;
         for (String tokenKey : tokens.keySet()) {
             String value = tokens.get(tokenKey);
-            assertEquals(String.format("Token Key: %s doesn't match expected: %s", tokenKey, expected[i]), tokenKey, expected[i]);
-            assertEquals(String.format("Token value: %s doesn't match expected: %s", value, expected[i+1]), value, expected[i+1]);
+            assertThat(tokenKey).isEqualTo(expected[i]);
+            assertThat(value).isEqualTo(expected[i+1]);
             i+=2;
         }
     }

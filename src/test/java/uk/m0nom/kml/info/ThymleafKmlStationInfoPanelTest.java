@@ -1,7 +1,7 @@
 package uk.m0nom.kml.info;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.thymeleaf.TemplateEngine;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityType;

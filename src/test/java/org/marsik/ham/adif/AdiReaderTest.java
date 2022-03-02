@@ -1,9 +1,7 @@
 package org.marsik.ham.adif;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.marsik.ham.adif.enums.Band.*;
-import static org.marsik.ham.adif.enums.Mode.*;
-import static org.marsik.ham.adif.enums.Submode.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -15,8 +13,12 @@ import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Optional;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.marsik.ham.adif.enums.Band.*;
+import static org.marsik.ham.adif.enums.Mode.*;
+import static org.marsik.ham.adif.enums.Submode.JT9H_FAST;
+import static org.marsik.ham.adif.enums.Submode.PSK63;
+
 
 public class AdiReaderTest {
     @Test
@@ -128,7 +130,6 @@ public class AdiReaderTest {
     }
 
     @Test
-    @Ignore
     public void testAdifSample() throws Exception {
         AdiReader reader = new AdiReader();
         BufferedReader inputReader = resourceInput("adif/sample.adi");
@@ -151,7 +152,7 @@ public class AdiReaderTest {
         assertThat(adif.get().records.get(1).getCall()).isEqualTo("ON4UN");
         assertThat(adif.get().records.get(1).getBand()).isEqualTo(BAND_40m);
         assertThat(adif.get().records.get(1).getMode()).isEqualTo(PSK);
-        assertThat(adif.get().records.get(1).getAddress()).isEqualTo("John Doe\r\n100 Main Street\r\nCity, ST 12345");
+        assertThat(adif.get().records.get(1).getAddress()).isEqualTo("John Doe\n100 Main Street\nCity, ST 12345");
         assertThat(adif.get().records.get(1).getSilentKey()).isEqualTo(true);
         assertThat(adif.get().records.get(1).getSubmode()).isEqualTo(PSK63.adifCode());
         assertThat(adif.get().records.get(1).getTxPwr()).isEqualTo(2.0);
@@ -172,11 +173,14 @@ public class AdiReaderTest {
         reader.read(inputReader);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testLotwNormalMode() throws Exception {
-        AdiReader reader = new AdiReader();
-        BufferedReader inputReader = mockInput("<MODE:5>PSK31");
-        reader.read(inputReader);
+    @Test
+    public void testLotwNormalMode() {
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            AdiReader reader = new AdiReader();
+            BufferedReader inputReader = mockInput("<MODE:5>PSK31");
+            reader.read(inputReader);
+        });
+        Assertions.assertEquals("No enum constant org.marsik.ham.adif.enums.Mode.PSK31", thrown.getMessage());
     }
 
     @Test
