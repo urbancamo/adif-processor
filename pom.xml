@@ -6,7 +6,6 @@
 
   <description>ADIF Processor visualizes contacts in your input file on Google Earth. It generates a Google Earth Project file, also known as a KML file, for each contact in the ADIF input file.</description>
 
-
   <groupId>uk.m0nom</groupId>
   <artifactId>adif-processor</artifactId>
   <version>1.0.7-SNAPSHOT</version>
@@ -93,14 +92,14 @@
     <dependency>
       <groupId>javax.xml.bind</groupId>
       <artifactId>jaxb-api</artifactId>
-      <version>2.3.1</version>
+      <version>2.4.0-b180830.0359</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-ri -->
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-ri</artifactId>
-      <version>3.0.0</version>
+      <version>3.0.1</version>
       <type>pom</type>
     </dependency>
 
@@ -108,7 +107,7 @@
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
-      <version>4.9.2</version>
+      <version>4.9.3</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
@@ -129,19 +128,19 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.10.0</version>
+      <version>2.11.0</version>
     </dependency>
 
     <dependency>
       <groupId>com.amihaiemil.web</groupId>
       <artifactId>eo-yaml</artifactId>
-      <version>6.0.0</version>
+      <version>6.0.1</version>
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.13.0</version>
+      <version>2.13.1</version>
     </dependency>
 
     <dependency>
@@ -154,13 +153,13 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.0.0</version>
+      <version>4.3.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.21.0</version>
+      <version>3.22.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -179,14 +178,14 @@
     <dependency>
       <groupId>org.thymeleaf</groupId>
       <artifactId>thymeleaf</artifactId>
-      <version>3.0.12.RELEASE</version>
+      <version>3.0.14.RELEASE</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.32</version>
+      <version>1.7.36</version>
       <scope>test</scope>
     </dependency>
 
@@ -194,7 +193,7 @@
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-gpg-plugin</artifactId>
-      <version>1.6</version>
+      <version>3.0.1</version>
     </dependency>
 
   </dependencies>
