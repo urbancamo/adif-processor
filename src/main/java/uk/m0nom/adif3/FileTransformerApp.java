@@ -4,9 +4,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.marsik.ham.adif.Adif3;
+import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.adif3.args.CommandLineArgs;
-import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qsos;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.print.Adif3PrintFormatter;
 import uk.m0nom.adif3.transform.TransformResults;
 import uk.m0nom.contest.ContestResultsCalculator;
@@ -14,7 +15,6 @@ import uk.m0nom.dxcc.DxccJsonReader;
 import uk.m0nom.kml.KmlWriter;
 import uk.m0nom.qrz.CachingQrzXmlService;
 import uk.m0nom.qrz.QrzService;
-import uk.m0nom.activity.ActivityDatabases;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -142,7 +142,7 @@ public class FileTransformerApp implements Runnable
             logger.info(String.format("Writing output file %s with encoding %s", out, control.getEncoding()));
             if (control.getGenerateKml()) {
                 kmlWriter.write(kml, inBasename, summits, qsos, results);
-                if (results.getError() != null) {
+                if (StringUtils.isNotEmpty(results.getError())) {
                     logger.severe(results.getError());
                 }
             }
@@ -160,7 +160,8 @@ public class FileTransformerApp implements Runnable
                         }
                     }
                     if (formattedQsoFile.createNewFile()) {
-                        formatter.getPrintJobConfig().configure(MARKDOWN_CONTROL_FILE, new FileInputStream(MARKDOWN_CONTROL_FILE));
+                        formatter.getPrintJobConfig().configure(MARKDOWN_CONTROL_FILE,
+                                FileTransformerApp.class.getClassLoader().getResourceAsStream(MARKDOWN_CONTROL_FILE));
                         logger.info(String.format("Writing Markdown to: %s", markdown));
                         StringBuilder sb = formatter.format(log);
                         markdownWriter = Files.newBufferedWriter(formattedQsoFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);
@@ -169,7 +170,7 @@ public class FileTransformerApp implements Runnable
                         logger.severe(String.format("Error creating Markdown file %s, check permissions?", markdown));
                     }
                 } catch (IOException ioe) {
-                    logger.severe(String.format("Error writing Markdown file %s: %s", markdown, ioe.getMessage()));
+                    logger.severe(String.format("Exception caught whilst writing Markdown file %s: %s", markdown, ioe.getMessage()));
                 } finally {
                     if (markdownWriter != null) {
                         markdownWriter.close();

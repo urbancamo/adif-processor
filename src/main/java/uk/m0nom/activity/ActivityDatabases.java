@@ -62,10 +62,10 @@ public class ActivityDatabases {
                 if (inputStream == null) {
                     logger.severe(String.format("Can't load %s using classloader %s", reader.getSourceFile(), getClass().getClassLoader().toString()));
                 }
-                logger.info(String.format("Loading %s data from: %s", reader.getType().getActivityDescription(), reader.getSourceFile()));
+                //logger.info(String.format("Loading %s data from: %s", reader.getType().getActivityDescription(), reader.getSourceFile()));
                 ActivityDatabase database = reader.read(inputStream);
                 databases.put(reader.getType(), database);
-                logger.info(String.format("%d %s records loaded", database.size(), reader.getType().getActivityDescription()));
+                //logger.info(String.format("%d %s records loaded", database.size(), reader.getType().getActivityDescription()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
