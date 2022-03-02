@@ -40,9 +40,9 @@
 
   <distributionManagement>
     <repository>
-      <id>internal.repo</id>
-      <name>Temporary Staging Repository</name>
-      <url>file://${project.build.directory}/mvn-artifact</url>
+      <id>github</id>
+      <name>GitHub urbancamo Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/urbancamo/adif-processor</url>
     </repository>
   </distributionManagement>
 
