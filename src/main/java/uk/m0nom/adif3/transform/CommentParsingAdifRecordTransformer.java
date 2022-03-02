@@ -150,7 +150,12 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private void setCoordinatesFromGridsquare(Qso qso) {
         Adif3Record rec = qso.getRecord();
         // Set Coordinates from GridSquare that has been supplied in the input file
-        GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, rec.getGridsquare());
+        GlobalCoords3D coords = null;
+        try {
+            MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, rec.getGridsquare());
+        } catch (UnsupportedOperationException e) {
+            logger.warning(e.getMessage());
+        }
         rec.setCoordinates(coords);
         qso.getTo().setCoordinates(coords);
         qso.getTo().setGrid(rec.getGridsquare());
