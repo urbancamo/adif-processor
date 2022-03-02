@@ -1,11 +1,11 @@
 package uk.m0nom.activity;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FindActivitiesInRadiusTest {
 
@@ -20,17 +20,17 @@ public class FindActivitiesInRadiusTest {
         // Find summits within 5km
 
         Collection<Activity> localSummits = sotaSummits.findActivitiesInRadius(stSundayCrag, 5000);
-        assertEquals(String.format("Number of local summits %s not as expected 3", localSummits.size()), 3, localSummits.size());
-        assertTrue("Expected localSummits to contain Fairfield", localSummits.contains(sotaSummits.get("G/LD-007")));
-        assertTrue("Expected localSummits to contain Seat Sandal", localSummits.contains(sotaSummits.get("G/LD-022")));
-        assertTrue("Expected localSummits to contain Helvelly", localSummits.contains(sotaSummits.get("G/LD-003")));
+        assertEquals(3, localSummits.size(), String.format("Number of local summits %s not as expected 3", localSummits.size()));
+        assertTrue(localSummits.contains(sotaSummits.get("G/LD-007")), "Expected localSummits to contain Fairfield");
+        assertTrue(localSummits.contains(sotaSummits.get("G/LD-022")), "Expected localSummits to contain Seat Sandal");
+        assertTrue(localSummits.contains(sotaSummits.get("G/LD-003")), "Expected localSummits to contain Helvelly");
 
         Activity theCalf = sotaSummits.get("G/NP-013");
         localSummits = sotaSummits.findActivitiesInRadius(theCalf, 9000);
-        assertEquals(String.format("Number of local summits %s not as expected 3", localSummits.size()), 3, localSummits.size());
-        assertTrue("Expected localSummits to contain Yarlside", localSummits.contains(sotaSummits.get("G/NP-019")));
-        assertTrue("Expected localSummits to contain Grayrigg Forest", localSummits.contains(sotaSummits.get("G/LD-038")));
-        assertTrue("Expected localSummits to contain Lambrigg Fell", localSummits.contains(sotaSummits.get("G/LD-046")));
+        assertEquals(3, localSummits.size(), String.format("Number of local summits %s not as expected 3", localSummits.size()));
+        assertTrue(localSummits.contains(sotaSummits.get("G/NP-019")), "Expected localSummits to contain Yarlside");
+        assertTrue(localSummits.contains(sotaSummits.get("G/LD-038")), "Expected localSummits to contain Grayrigg Forest");
+        assertTrue(localSummits.contains(sotaSummits.get("G/LD-046")), "Expected localSummits to contain Lambrigg Fell");
 
     }
 }

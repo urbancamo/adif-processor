@@ -1,9 +1,9 @@
 package uk.m0nom.coords;
 
 import org.gavaghan.geodesy.GlobalCoordinates;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DegreesMinutesDecimalSecondsLatLongFormatterTest {
     private final String DMS_STRING_1 = "43° 53' 37.700\"N 22° 17' 9.700\"E";
@@ -18,12 +18,12 @@ public class DegreesMinutesDecimalSecondsLatLongFormatterTest {
     private void check(String input, Double latitude, Double longitude) {
         DegreesMinutesDecimalSecondsWithNsewLatLongParser dms = new DegreesMinutesDecimalSecondsWithNsewLatLongParser();
         GlobalCoordinates coords = dms.parse(LocationSource.UNDEFINED, input);
-        assertNotNull("Coords is null", coords);
-        assertTrue(Math.abs(coords.getLatitude() - latitude) < 0.0001);
-        assertTrue(Math.abs(coords.getLongitude() - longitude) < 0.0001);
+        assertThat(coords).isNotNull();
+        assertThat(Math.abs(coords.getLatitude() - latitude)).isLessThan(0.0001);
+        assertThat(Math.abs(coords.getLongitude() - longitude)).isLessThan(0.0001);
 
         // Right now check the formatted output matches
         String formatted = dms.format(coords);
-        assertEquals(String.format("Formatted String: %s doesn't match expected: %s", formatted, input), formatted, input);
+        assertThat(formatted).isEqualTo(input);
     }
 }

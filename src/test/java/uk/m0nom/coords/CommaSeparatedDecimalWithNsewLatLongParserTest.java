@@ -1,12 +1,9 @@
 package uk.m0nom.coords;
 
 import org.gavaghan.geodesy.GlobalCoordinates;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import javax.xml.stream.Location;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CommaSeparatedDecimalWithNsewLatLongParserTest {
     @Test
@@ -16,8 +13,8 @@ public class CommaSeparatedDecimalWithNsewLatLongParserTest {
         double longitude = -13.0318131;
 
         GlobalCoordinates coords = new CommaSeparatedDecimalWithNsewLatLongParser().parse(LocationSource.UNDEFINED, input);
-        assertNotNull("Coords is null", coords);
-        assertTrue(Math.abs(coords.getLatitude() - latitude) < 0.0001);
-        assertTrue(Math.abs(coords.getLongitude() - longitude) < 0.0001);
+        assertThat(coords).isNotNull();
+        assertThat(Math.abs(coords.getLatitude() - latitude)).isLessThan(0.0001);
+        assertThat(Math.abs(coords.getLongitude() - longitude)).isLessThan(0.0001);
     }
 }

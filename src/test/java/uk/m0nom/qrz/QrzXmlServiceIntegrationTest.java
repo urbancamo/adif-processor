@@ -1,10 +1,10 @@
 package uk.m0nom.qrz;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
 
-import java.io.IOException;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test the QrzXmlService is able to look up data on a callsign
@@ -15,14 +15,15 @@ public class QrzXmlServiceIntegrationTest {
     private final static String USERNAME = "";
     private final static String PASSWORD = "";
 
-    @Ignore
     @Test
     public void testCallSignLookup() {
-        QrzXmlService service = new QrzXmlService(USERNAME, PASSWORD);
-        Assert.assertTrue(service.getSessionKey());
+        if (StringUtils.isNotEmpty(USERNAME)) {
+            QrzXmlService service = new QrzXmlService(USERNAME, PASSWORD);
+            assertThat(service.getSessionKey()).isNotNull();
 
-        // Now have a session key
-        QrzCallsign callsign = service.getCallsignData("M0NOM");
-        Assert.assertNotNull(callsign);
+            // Now have a session key
+            QrzCallsign callsign = service.getCallsignData("M0NOM");
+            assertThat(callsign).isNotNull();
+        }
     }
 }

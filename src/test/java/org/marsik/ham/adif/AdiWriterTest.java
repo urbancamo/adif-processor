@@ -1,8 +1,7 @@
 package org.marsik.ham.adif;
 
-import org.junit.Test;
-import org.marsik.ham.adif.AdiWriter;
-import org.marsik.ham.adif.Adif3Record;
+
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
 
@@ -10,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AdiWriterTest {
     @Test
-    public void testBool() throws Exception {
+    public void testBool() {
         org.marsik.ham.adif.AdiWriter writer = new org.marsik.ham.adif.AdiWriter();
         writer.append("TRUE", true);
         writer.append("FALSE", false);
@@ -20,7 +19,7 @@ public class AdiWriterTest {
     }
 
     @Test
-    public void testSimpleQso() throws Exception {
+    public void testSimpleQso() {
         org.marsik.ham.adif.AdiWriter writer = new org.marsik.ham.adif.AdiWriter();
 
         org.marsik.ham.adif.Adif3Record record = new org.marsik.ham.adif.Adif3Record();
@@ -32,7 +31,7 @@ public class AdiWriterTest {
     }
 
     @Test
-    public void testSimpleQsoWithTime() throws Exception {
+    public void testSimpleQsoWithTime() {
         org.marsik.ham.adif.AdiWriter writer = new AdiWriter();
 
         org.marsik.ham.adif.Adif3Record record = new Adif3Record();

@@ -1,23 +1,24 @@
 package uk.m0nom.maidenheadlocator;
 
 import org.gavaghan.geodesy.GlobalCoordinates;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.m0nom.coords.LocationSource;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class MaidenheadLocatorConversionTest {
     @Test
     public void testLocatorToLatLng6Char() {
         GlobalCoordinates ll = MaidenheadLocatorConversion.locatorToCoords(LocationSource.UNDEFINED, "IO84ni");
-        assertEquals("-2.875", String.format("%.3f", ll.getLongitude()));
-        assertEquals("54.354", String.format("%.3f", ll.getLatitude()));
+        assertThat(String.format("%.3f", ll.getLongitude())).isEqualTo("-2.875");
+        assertThat(String.format("%.3f", ll.getLatitude())).isEqualTo("54.354");
     }
 
     @Test
     public void testLocatorToLatLng10Char() {
         GlobalCoordinates ll = MaidenheadLocatorConversion.locatorToCoords(LocationSource.UNDEFINED, "IO84mj91mb");
-        assertEquals("-2.921", String.format("%.3f", ll.getLongitude()));
-        assertEquals("54.379", String.format("%.3f", ll.getLatitude()));
+        assertThat(String.format("%.3f", ll.getLongitude())).isEqualTo("-2.921");
+        assertThat(String.format("%.3f", ll.getLatitude())).isEqualTo("54.379");
     }
 }
