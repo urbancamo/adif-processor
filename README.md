@@ -18,4 +18,4 @@ The post-processor generates three types of output:
 
 ## Documentation
 
-The documentation for the ADIF Processor can be found on [urbancamo.github.io/adif-procesor](https://urbancamo.github.io/adif-processor).
+Here is the [documentation for the ADIF Processor](https://urbancamo.github.io/adif-processor/adif-processor).
