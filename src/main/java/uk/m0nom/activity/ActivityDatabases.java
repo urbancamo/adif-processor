@@ -67,7 +67,7 @@ public class ActivityDatabases {
                 databases.put(reader.getType(), database);
                 //logger.info(String.format("%d %s records loaded", database.size(), reader.getType().getActivityDescription()));
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.severe(String.format("Exception thrown reading activity databases: %s", e.getMessage()));
             }
         }
     }
