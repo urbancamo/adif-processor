@@ -1,9 +1,6 @@
 package uk.m0nom.adif3.control;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 import org.thymeleaf.TemplateEngine;
 import uk.m0nom.activity.ActivityType;
@@ -12,7 +9,6 @@ import uk.m0nom.antenna.Antenna;
 import uk.m0nom.antenna.Antennas;
 import uk.m0nom.dxcc.DxccEntities;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -26,12 +22,10 @@ import java.util.Set;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class TransformControl {
-    public TransformControl() {
-        runTimestamp = new Date().getTime();
-    }
 
     private long runTimestamp;
     private String location;
