@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -61,7 +60,7 @@ public class NoradSatelliteOrbitReader {
                     i++;
                 }
                 logger.info(String.format("Read %d satellite definitions", i));
-                lastRead = new Date().getTime();
+                lastRead = java.time.Instant.now().toEpochMilli();
 
                 return cache;
             } catch (IOException e) {
@@ -72,7 +71,7 @@ public class NoradSatelliteOrbitReader {
     }
 
     private boolean isCacheCurrent() {
-        long millisSinceEpoch = new Date().getTime();
+        long millisSinceEpoch = java.time.Instant.now().toEpochMilli();
         return millisSinceEpoch - lastRead < CACHE_EXPIRES_MILLIS;
     }
 

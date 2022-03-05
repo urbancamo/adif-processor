@@ -30,7 +30,7 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
     private final static GeocodingCache cache = new GeocodingCache();
 
     public NominatimGeocodingProvider() {
-        lastTimestamp = new Date().getTime();
+        lastTimestamp = java.time.Instant.now().toEpochMilli();
     }
 
     @Override
@@ -100,7 +100,7 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
         }
         logger.info(String.format("Searching for a location for %s based on address search string: %s", callsign, searchString));
         List<Address> addressMatches = new JsonNominatimClient(HttpClientBuilder.create().build(), "mark@wickensonline.co.uk").search(StringUtils.trim(searchString));
-        lastTimestamp = new Date().getTime();
+        lastTimestamp = java.time.Instant.now().toEpochMilli();
 
         if (addressMatches.size() > 0) {
             Address match = addressMatches.get(0);
