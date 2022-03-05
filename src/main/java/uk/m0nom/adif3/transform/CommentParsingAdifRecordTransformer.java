@@ -147,18 +147,20 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare());
     }
 
-    private void setCoordinatesFromGridsquare(Qso qso) {
+    private boolean setCoordinatesFromGridsquare(Qso qso) {
         Adif3Record rec = qso.getRecord();
         // Set Coordinates from GridSquare that has been supplied in the input file
-        GlobalCoords3D coords = null;
         try {
-            MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, rec.getGridsquare());
+            // Only set the gridsquare if it is a valid maidenhead locator
+            GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, rec.getGridsquare());
+            rec.setCoordinates(coords);
+            qso.getTo().setCoordinates(coords);
+            qso.getTo().setGrid(rec.getGridsquare());
         } catch (UnsupportedOperationException e) {
             logger.warning(e.getMessage());
+            return false;
         }
-        rec.setCoordinates(coords);
-        qso.getTo().setCoordinates(coords);
-        qso.getTo().setGrid(rec.getGridsquare());
+        return true;
     }
 
     private boolean hasNoValidGridsquareOrCoords(Adif3Record rec) {
@@ -207,7 +209,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
         // IF qrz.com can't fill in the coordinates, and the gridsquare is set, fill in coordinates from that
         if (hasValidGridsquareNoCoords(rec)) {
-            setCoordinatesFromGridsquare(qso);
+            if (!setCoordinatesFromGridsquare(qso)) {
+                results.addContactWithDubiousLocation(String.format("%s (Locator %s invalid)", qso.getTo().getCallsign(), rec.getGridsquare()));
+            }
         }
 
         // Last resort, attempt to find location from qrz.com address data via geolocation provider

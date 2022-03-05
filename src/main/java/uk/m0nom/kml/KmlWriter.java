@@ -70,8 +70,9 @@ public class KmlWriter {
                 myStation = qso.getFrom();
             }
             Folder contactFolder = folder.createAndAddFolder().withName(qso.getTo().getCallsign()).withOpen(false);
-            GlobalCoordinates coords = qso.getRecord().getCoordinates();
-            if (LatLongUtils.isCoordinateValid(coords)) {
+            GlobalCoordinates myCoords = qso.getRecord().getMyCoordinates();
+            GlobalCoordinates theirCoords = qso.getRecord().getCoordinates();
+            if (LatLongUtils.isCoordinateValid(myCoords) && LatLongUtils.isCoordinateValid(theirCoords)) {
                 String error = kmlStationUtils.createStationMarker(control, doc, contactFolder, qso);
                 if (error != null) {
                     results.setError(error);
