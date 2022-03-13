@@ -7,7 +7,6 @@ import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.adif3.contacts.Station;
 import uk.m0nom.kml.station.KmlStationUtils;
 
-import java.util.Collection;
 import java.util.Locale;
 
 import static uk.m0nom.kml.KmlUtils.getStyleId;
@@ -18,12 +17,10 @@ public class KmlLocalActivities {
 
     public void addLocalActivities(Document doc, Folder folder, Station to, double radius, ActivityDatabases activities) {
         // Determine activities within the pre-defined radius
-        for (Activity activity : to.getActivities().values()) {
-            Collection<Activity> localActivities = activities.getDatabase(activity.getType()).findActivitiesInRadius(activity, radius);
-            for (Activity localActivity : localActivities) {
-                addActivityMarker(doc, folder, localActivity);
-            }
-        }
+        to.getActivities().values().forEach(activity -> {
+            activities.getDatabase(activity.getType()).findActivitiesInRadius(activity, radius)
+                    .forEach(localActivity -> addActivityMarker(doc, folder, localActivity));
+        });
     }
 
     public void addActivityMarker(Document document, Folder folder, Activity activity) {

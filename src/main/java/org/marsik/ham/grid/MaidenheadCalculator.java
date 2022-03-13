@@ -11,6 +11,9 @@ public class MaidenheadCalculator {
     /**
      * Get coordinates as a Maidenhead locator string.
      * http://home.comcast.net/~lespeters/PROJECTS/How%20to%20calculate%20your%208-digit%20grid%20square.pdf
+     * @param coordinates coordinates to convert
+     * @param precision precision of the generated maidenhead locator 4/6/8/10 characters
+     * @return maidenhead for given coordinates, at precision
      */
     public static String toMaidenhead(GlobalCoordinates coordinates, int precision)
     {

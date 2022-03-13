@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.gavaghan.geodesy.Ellipsoid;
+import org.gavaghan.geodesy.GeodeticCalculator;
+import org.gavaghan.geodesy.GeodeticCurve;
 import uk.m0nom.coords.GlobalCoords3D;
 
 /**
@@ -58,4 +61,12 @@ public abstract class Activity implements Comparable<Activity> {
         String otherRef = other.getRef() != null ? other.getRef() : "";
         return ref.compareTo(otherRef);
     }
+
+    public boolean inRadius(Activity other, double radius) {
+        GeodeticCalculator calculator = new GeodeticCalculator();
+        GeodeticCurve curve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, other.getCoords(), coords);
+        return curve.getEllipsoidalDistance() < radius && !other.equals(this);
+
+    }
+
 }
