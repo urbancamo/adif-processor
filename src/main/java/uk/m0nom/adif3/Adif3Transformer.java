@@ -40,12 +40,25 @@ public class Adif3Transformer {
 
         transformer = new CommentParsingAdifRecordTransformer(config, summits, qrzService, control, results);
         int index = 1;
+        boolean myCallsignIssue = false;
+        boolean theirCallsignIssue = false;
         for (Adif3Record rec : log.getRecords()) {
-            if ((rec.getStationCallsign() != null || rec.getOperator() != null) && rec.getCall() != null) {
+            boolean haveMyCallsign = rec.getStationCallsign() != null || rec.getOperator() != null;
+            boolean haveTheirCallsign = rec.getCall() != null;
+            if (haveMyCallsign && haveTheirCallsign) {
                 transformer.transform(qsos, rec, index++);
+            } else {
+                myCallsignIssue |= haveMyCallsign;
+                theirCallsignIssue |= haveTheirCallsign;
             }
         }
 
+        if (theirCallsignIssue) {
+            results.setError("Check you have CALLSIGN or OPERATOR defined for every record");
+        }
+        else if (myCallsignIssue) {
+            results.setError("Check you have MY_CALLSIGN or MY_OPERATOR defined for every record");
+        }
 
         AdifHeader header = new AdifHeader();
         header.setProgramId("M0NOM ADIF Processor");

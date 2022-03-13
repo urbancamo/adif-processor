@@ -20,21 +20,24 @@ public abstract class CsvActivityReader extends ActivityReader {
         super(type, sourceFile);
     }
 
+    private int line = 0;
+
     public Map<String, Activity> readRecords(InputStream inputStream) throws IOException {
         Map<String, Activity> activityMap = new HashMap<>();
-
+        line = 0;
         final Reader reader = new InputStreamReader(new BOMInputStream(inputStream), StandardCharsets.UTF_8);
         Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(reader);
-        int line = 0;
-        for (CSVRecord record : records) {
-            line++;
-            try {
-                Activity info = readRecord(record);
-                activityMap.put(info.getRef(), info);
-            } catch (IllegalArgumentException e) {
-                logger.severe(String.format("Error reading line %d: %s", line, e.getMessage()));
-            }
+
+        try {
+            records.forEach(record -> {
+                    Activity info = readRecord(record);
+                    activityMap.put(info.getRef(), info);
+                    line++;
+            });
+        } catch (IllegalArgumentException e) {
+            logger.severe(String.format("Error reading line %d: %s", line, e.getMessage()));
         }
+
         return activityMap;
     }
 
