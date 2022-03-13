@@ -1,14 +1,9 @@
 package uk.m0nom.activity;
 
-import org.gavaghan.geodesy.Ellipsoid;
-import org.gavaghan.geodesy.GeodeticCalculator;
-import org.gavaghan.geodesy.GeodeticCurve;
-import org.gavaghan.geodesy.GlobalCoordinates;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * This class groups all locations for an activity in a Map that can be searched using the primary reference
@@ -49,28 +44,20 @@ public class ActivityDatabase {
 
     /**
      * Search for all activities that are within the given radius
-     * @param activity centre activity reference to search from
+     * @param centre centre activity reference to search from
      * @param radius radius in metres to search against
      * @return collection of activities in the given radius
      */
-    public Collection<Activity> findActivitiesInRadius(Activity activity, double radius) {
-        List<Activity> matches = new ArrayList<>(10);
+    public Collection<Activity> findActivitiesInRadius(Activity centre, double radius) {
 
-        if (activity.hasCoords()) {
-            for (Activity toCheck : database.values()) {
-                if (toCheck.hasCoords()) {
-                    GlobalCoordinates to = toCheck.getCoords();
-                    GeodeticCalculator calculator = new GeodeticCalculator();
-                    GeodeticCurve curve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, activity.getCoords(), to);
-                    double distance = curve.getEllipsoidalDistance();
-
-                    if (distance < radius && !activity.equals(toCheck)) {
-                        matches.add(toCheck);
-                    }
-                }
-            }
+        if (centre.hasCoords()) {
+            return database.values()
+                    .parallelStream()
+                    .filter(Activity::hasCoords)
+                    .filter(match -> match.inRadius(centre, radius))
+                    .collect(Collectors.toUnmodifiableList());
         }
-        return matches;
+        return new ArrayList<>();
     }
 
     public int size() { return database.size(); }
