@@ -2,7 +2,6 @@ package uk.m0nom.adif3;
 
 import org.marsik.ham.adif.AdiWriter;
 import org.marsik.ham.adif.Adif3;
-import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.qsofile.QsoFileWriter;
 
 import java.io.BufferedWriter;
@@ -23,24 +22,13 @@ public class Adif3FileWriter implements QsoFileWriter {
             writer.append(log.getHeader(), true);
         }
 
-        for (Adif3Record rec : log.getRecords()) {
-            writer.append(rec);
-        }
+        log.getRecords().forEach(writer::append);
 
-        FileWriter fileWriter = null;
-        BufferedWriter out = null;
-        try {
-            fileWriter = new FileWriter(filename, Charset.forName(encoding));
-            out = new BufferedWriter(fileWriter);
-        } finally {
-            assert out != null;
+
+        try (FileWriter fileWriter = new FileWriter(filename, Charset.forName(encoding));
+             BufferedWriter out = new BufferedWriter(fileWriter))
+        {
             out.write(writer.toString());
-            out.close();
-            try {
-                fileWriter.close();
-            } catch (Exception e) {
-                logger.severe(String.format("Eror closing output file: %s, error is: %s", filename, e.getMessage()));
-            }
         }
     }
 

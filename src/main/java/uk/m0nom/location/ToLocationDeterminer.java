@@ -7,14 +7,12 @@ import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.activity.wota.WotaInfo;
 import uk.m0nom.activity.wota.WotaSummitsDatabase;
-import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.adif3.contacts.Qso;
+import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.coords.GlobalCoords3D;
 import uk.m0nom.coords.LocationSource;
 import uk.m0nom.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.qrz.QrzService;
-
-import java.util.Map;
 
 public class ToLocationDeterminer extends BaseLocationDeterminer {
     private final static String BAD_ACTIVITY_REPORT = "%s: (%s %s invalid)";
@@ -22,7 +20,7 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
         super(control, qrzService, activities);
     }
 
-    public String setTheirLocationFromActivity(Qso qso, ActivityType activity, String reference, Map<String, String> unmapped) {
+    public String setTheirLocationFromActivity(Qso qso, ActivityType activity, String reference) {
         Activity info = activities.getDatabase(activity).get(reference);
         Adif3Record rec = qso.getRecord();
         if (info != null) {
@@ -44,40 +42,33 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
                 rec.setSig(activity.getActivityName());
                 rec.setSigInfo(reference);
             }
-            // Add the activity to the unmapped list
-            unmapped.put(activity.getActivityName(), reference);
         } else {
             return String.format(BAD_ACTIVITY_REPORT, qso.getTo().getCallsign(), activity.getActivityName(), reference);
         }
         return null;
     }
 
-    public String setTheirLocationFromSotaId(Qso qso, String sotaId, Map<String, String> unmapped) {
-        setTheirLocationFromActivity(qso, ActivityType.SOTA, sotaId, unmapped);
+    public String setTheirLocationFromSotaId(Qso qso, String sotaId) {
+        setTheirLocationFromActivity(qso, ActivityType.SOTA, sotaId);
         Activity sotaInfo = activities.getDatabase(ActivityType.SOTA).get(sotaId);
         if (sotaInfo != null) {
             // See if this is also a WOTA
             WotaSummitsDatabase wotaSummitsDatabase = (WotaSummitsDatabase) activities.getDatabase(ActivityType.WOTA);
             Activity wotaInfo = wotaSummitsDatabase.getFromSotaId(sotaId);
-            if (wotaInfo != null) {
-                unmapped.put("WOTA", wotaInfo.getRef());
-            }
-        } else {
+       } else {
             return String.format(BAD_ACTIVITY_REPORT, qso.getTo().getCallsign(), "SOTA", sotaId);
         }
         return null;
     }
 
-    public String setTheirLocationFromWotaId(Qso qso, String wotaId, Map<String, String> unmapped) {
-        setTheirLocationFromActivity(qso, ActivityType.WOTA, wotaId, unmapped);
+    public String setTheirLocationFromWotaId(Qso qso, String wotaId) {
+        setTheirLocationFromActivity(qso, ActivityType.WOTA, wotaId);
         WotaInfo wotaInfo = (WotaInfo) activities.getDatabase(ActivityType.WOTA).get(wotaId);
         if (wotaInfo != null) {
             String sotaId = wotaInfo.getSotaId();
             if (sotaId != null) {
                 // SOTA Latitude/Longitude is more accurate, so overwrite from that information
-                setTheirLocationFromSotaId(qso, sotaId, unmapped);
-            } else {
-                unmapped.put("WOTA", wotaInfo.getRef());
+                setTheirLocationFromSotaId(qso, sotaId);
             }
         } else {
             return String.format(BAD_ACTIVITY_REPORT, qso.getTo().getCallsign(), "WOTA", wotaId);

@@ -62,12 +62,7 @@ public class Station {
     public boolean hasActivity() { return activities.size() > 0; }
 
     public boolean doingSameActivityAs(Station other) {
-        for (Activity activity : activities.values()) {
-            if (other.isDoing(activity.getType())) {
-                return true;
-            }
-        }
-        return false;
+        return activities.values().stream().anyMatch(a -> other.isDoing(a.getType()));
     }
 
     /**
@@ -78,12 +73,7 @@ public class Station {
      */
     @Override
     public boolean equals(Object other) {
-        if (other == null) {
-            return false;
-        }
-
-        if (other instanceof Station) {
-            Station otherStation = (Station) other;
+        if (other instanceof Station otherStation) {
             return otherStation.getKey().equals(getKey());
         }
         return false;

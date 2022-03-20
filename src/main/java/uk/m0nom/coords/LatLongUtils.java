@@ -158,11 +158,11 @@ public class LatLongUtils {
         return valid;
     }
 
-    private static boolean checkLatitudeRange(double latitude) {
+    public static boolean checkLatitudeRange(double latitude) {
         return (latitude >= -90.0 || latitude <= 90.0) ;
     }
 
-    private static boolean checkLongitudeRange(double longitude) {
+    public static boolean checkLongitudeRange(double longitude) {
         return (longitude >= -180.0 || longitude <= 180.0);
     }
 
