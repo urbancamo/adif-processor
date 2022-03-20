@@ -16,8 +16,12 @@ public class QslFieldParser implements CommentFieldParser {
         rec.setQslSent(QslSent.SENT);
         // This could either be a bureau or direct QSL depending on value
         switch (value) {
-            case "D" -> rec.setQslSentVia(QslVia.DIRECT);
-            case "B" -> rec.setQslSentVia(QslVia.BUREAU);
+            case "D":
+                rec.setQslSentVia(QslVia.DIRECT);
+                break;
+            case "B":
+                rec.setQslSentVia(QslVia.BUREAU);
+                break;
         }
 
         return FieldParseResult.SUCCESS;

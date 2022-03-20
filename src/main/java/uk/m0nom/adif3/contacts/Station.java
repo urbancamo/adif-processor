@@ -73,8 +73,8 @@ public class Station {
      */
     @Override
     public boolean equals(Object other) {
-        if (other instanceof Station otherStation) {
-            return otherStation.getKey().equals(getKey());
+        if (other instanceof Station) {
+            return ((Station) other).getKey().equals(getKey());
         }
         return false;
     }

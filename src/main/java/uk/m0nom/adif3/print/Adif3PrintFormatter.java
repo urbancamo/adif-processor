@@ -145,11 +145,15 @@ public class Adif3PrintFormatter {
         if (align == null) {
             align = "left";
         }
-        String formatString = switch (align) {
-            case "left" -> "%-" + String.format("%d", width) + "s";
-            case "right" -> "%" + String.format("%d", width) + "s";
-            default -> "";
-        };
+        String formatString = "";
+        switch (align) {
+            case "left":
+                formatString = "%-" + String.format("%d", width) + "s";
+                break;
+            case "right":
+                formatString = "%" + String.format("%d", width) + "s";
+                break;
+        }
         String content = String.format(formatString, value == null ? "" : value);
 
         if (state.currentColumn != position) {

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * This class groups all locations for an activity in a Map that can be searched using the primary reference
@@ -66,7 +67,7 @@ public class ActivityDatabase {
                     .filter(Activity::hasCoords)
                     .filter(match -> match.isValid(onDate)) // only return valid activities
                     .filter(match -> match.inRadius(centre, radius))
-                    .toList();
+                    .collect(Collectors.toUnmodifiableList());
         }
         return new ArrayList<>();
     }

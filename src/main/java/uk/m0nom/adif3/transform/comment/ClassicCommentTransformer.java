@@ -106,7 +106,10 @@ public class ClassicCommentTransformer implements CommentTransformer {
                     case "GridSquare":
                         if (MaidenheadLocatorConversion.isAValidGridSquare(value)) {
                             switch (value.length()) {
-                                case 4, 6, 8, 10 -> {
+                                case 4:
+                                case 6:
+                                case 8:
+                                case 10:
                                     if (value.length() > 6) {
                                         // Truncate more accurate grid square values to 6 characters to put in the record
                                         // as it doesn't support any more accuracy than 6
@@ -118,8 +121,10 @@ public class ClassicCommentTransformer implements CommentTransformer {
                                     GlobalCoords3D coordinates = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, value);
                                     rec.setCoordinates(coordinates);
                                     qso.getTo().setCoordinates(coordinates);
-                                }
-                                default -> logger.severe(String.format("Gridsquare %s isn't valid", value));
+                                    break;
+                                default:
+                                    logger.severe(String.format("Gridsquare %s isn't valid", value));
+                                    break;
                             }
                         } else {
                             logger.severe(String.format("Gridsquare %s isn't valid", value));
@@ -239,8 +244,12 @@ public class ClassicCommentTransformer implements CommentTransformer {
                         rec.setQslSent(QslSent.SENT);
                         // This could either be a bureau or direct QSL depending on value
                         switch (value) {
-                            case "D" -> rec.setQslSentVia(QslVia.DIRECT);
-                            case "B" -> rec.setQslSentVia(QslVia.BUREAU);
+                            case "D":
+                                rec.setQslSentVia(QslVia.DIRECT);
+                                break;
+                            case "B":
+                                rec.setQslSentVia(QslVia.BUREAU);
+                                break;
                         }
                         break;
                     case "Coordinates":

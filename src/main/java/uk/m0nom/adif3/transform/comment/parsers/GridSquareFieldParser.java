@@ -13,7 +13,10 @@ public class GridSquareFieldParser implements CommentFieldParser {
 
         if (MaidenheadLocatorConversion.isAValidGridSquare(value)) {
             switch (value.length()) {
-                case 4, 6, 8, 10 -> {
+                case 4:
+                case 6:
+                case 8:
+                case 10:
                     if (value.length() > 6) {
                         // Truncate more accurate grid square values to 6 characters to put in the record
                         // as it doesn't support any more accuracy than 6
@@ -25,8 +28,9 @@ public class GridSquareFieldParser implements CommentFieldParser {
                     GlobalCoords3D coordinates = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, value);
                     rec.setCoordinates(coordinates);
                     qso.getTo().setCoordinates(coordinates);
-                }
-                default -> throw new CommentFieldParserException(this.getClass().getName(), "parseError", qso, true, value, rec.getCall(), rec.getTimeOn().toString());
+                    break;
+                default:
+                    throw new CommentFieldParserException(this.getClass().getName(), "parseError", qso, true, value, rec.getCall(), rec.getTimeOn().toString());
             }
         } else {
             throw new CommentFieldParserException(this.getClass().getName(), "parseError", qso, true, value, rec.getCall(), rec.getTimeOn().toString());
