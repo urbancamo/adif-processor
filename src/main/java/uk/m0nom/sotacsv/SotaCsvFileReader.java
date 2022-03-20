@@ -73,29 +73,33 @@ public class SotaCsvFileReader implements QsoFileReader {
         List<Adif3Record> recs = new ArrayList<>();
 
         for (CSVRecord record : records) {
-            line++;
-            Adif3Record rec = new Adif3Record();
             try {
-                rec.setStationCallsign(toUpperAndTrim(record.get(1)));
-                rec.setMySotaRef(parseSotaRef(record.get(2)));
-                rec.setQsoDate(parseSotaDate(record.get(3)));
-                rec.setTimeOn(parseSotaTime(record.get(4)));
-                parseSotaBand(rec, record.get(5));
-                rec.setMode(parseSotaMode(record.get(6)));
-                rec.setCall(toUpperAndTrim(record.get(7)));
-                if (record.size() > 7) {
-                    rec.setSotaRef(parseSotaRef(record.get(8)));
-                }
-                if (record.size() > 8) {
-                    rec.setComment(toUpperAndTrim(record.get(9)));
-                }
-                recs.add(rec);
+                line++;
+                recs.add(readRecord(record));
             } catch (IllegalArgumentException | ParseException e) {
                 logger.severe(String.format("Error reading line %d: %s", line, e.getMessage()));
             }
         }
         log.setRecords(recs);
         return log;
+    }
+
+    private Adif3Record readRecord(CSVRecord record) throws IllegalArgumentException, ParseException {
+        Adif3Record rec = new Adif3Record();
+        rec.setStationCallsign(toUpperAndTrim(record.get(1)));
+        rec.setMySotaRef(parseSotaRef(record.get(2)));
+        rec.setQsoDate(parseSotaDate(record.get(3)));
+        rec.setTimeOn(parseSotaTime(record.get(4)));
+        parseSotaBand(rec, record.get(5));
+        rec.setMode(parseSotaMode(record.get(6)));
+        rec.setCall(toUpperAndTrim(record.get(7)));
+        if (record.size() > 7) {
+            rec.setSotaRef(parseSotaRef(record.get(8)));
+        }
+        if (record.size() > 8) {
+            rec.setComment(toUpperAndTrim(record.get(9)));
+        }
+        return rec;
     }
 
     private Sota parseSotaRef(String ref) {
@@ -125,19 +129,7 @@ public class SotaCsvFileReader implements QsoFileReader {
 
     private void setBandFromSotaBand(Adif3Record rec, String bandOrFreq) {
         // Assume meters
-        try {
-            double freq = Double.parseDouble(bandOrFreq);
-            rec.setFreq(freq);
-            for (Band toCheck : Band.values()) {
-                if (freq >= toCheck.getLowerFrequency() && freq <= toCheck.getUpperFrequency()) {
-                    rec.setBand(toCheck);
-                }
-            }
-
-        } catch (NumberFormatException nfe) {
-            logger.severe(String.format("Unable to parse frequency value of: %s", bandOrFreq));
-        }
-
+        parseFrequency(rec, bandOrFreq);
         rec.setBand(Band.valueOf(bandOrFreq));
     }
 
@@ -156,18 +148,21 @@ public class SotaCsvFileReader implements QsoFileReader {
 
         if (rec.getBand() == null) {
             String freqValue = StringUtils.removeEnd(bandOrFreq, "mhz");
+            parseFrequency(rec, freqValue);
+        }
+    }
 
-            try {
-                double freq = Double.parseDouble(freqValue);
-                rec.setFreq(freq);
-                for (Band toCheck : Band.values()) {
-                    if (freq >= toCheck.getLowerFrequency() && freq <= toCheck.getUpperFrequency()) {
-                        rec.setBand(toCheck);
-                    }
+    private void parseFrequency(Adif3Record rec, String freqValue) {
+        try {
+            double freq = Double.parseDouble(freqValue);
+            rec.setFreq(freq);
+            for (Band toCheck : Band.values()) {
+                if (freq >= toCheck.getLowerFrequency() && freq <= toCheck.getUpperFrequency()) {
+                    rec.setBand(toCheck);
                 }
-            } catch (NumberFormatException nfe) {
-                logger.severe(String.format("Unable to parse frequency value of: %s", freqValue));
             }
+        } catch (NumberFormatException nfe) {
+            logger.severe(String.format("Unable to parse frequency value of: %s", freqValue));
         }
     }
 

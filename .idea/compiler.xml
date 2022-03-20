@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="adif-processor" target="11" />
+      <module name="adif-processor" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

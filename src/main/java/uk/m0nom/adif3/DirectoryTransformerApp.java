@@ -31,7 +31,7 @@ public class DirectoryTransformerApp implements Runnable
 
     private final String[] args;
 
-    private final static String configFilePath = "./src/main/resources/adif-processor.yaml";
+    private final static String configFilePath = "adif-processor.yaml";
 
     public DirectoryTransformerApp(String[] args) {
         this.args = args;

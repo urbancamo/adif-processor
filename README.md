@@ -19,3 +19,14 @@ The post-processor generates three types of output:
 ## Documentation
 
 Here is the [documentation for the ADIF Processor](https://urbancamo.github.io/adif-processor/adif-processor).
+
+## JavaApi4Kml
+
+This is unmaintained and now throws runtime exceptions due to the use of the built-in JAXB
+implementation in previous JDKs. I'm looking at either forking or depending on a fork
+that has been updated.
+
+Possible options are:
+
+ - [KikiManjaro-javaapiforkml](https://github.com/KikiManjaro/javaapiforkml)
+ - 
