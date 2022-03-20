@@ -1,0 +1,67 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        .panel {
+            font-family: "Bitstream Vera Sans Mono",monospace;
+            color: black;
+        }
+        .image_box {
+        }
+        .content {
+            padding: 2px;
+        }
+        h3 {
+            color: midnightblue;
+            font-family: "Bitstream Vera Sans",sans-serif;
+        }
+        .tdLabel {
+            width: 200px;
+        }
+        div.info {
+            padding-top: 1em;
+        }
+        .profile {
+            max-height:380px;
+            max-width:440px;
+            height:auto;
+            width:auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #earth-balloon-content{
+            display:flex;
+        }
+        #balloon-content{
+            display:inline-block;
+            width: 450px;
+            height: 700px;
+        }
+        card-template{
+            height:640px;
+        }
+    </style>
+</head>
+<body>
+<div class="panel">
+    <div class="content">
+        <h1>Activity&nbsp;Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+    </div>
+    <div class="content">
+
+        <div th:replace="CotaInfo :: ${cota} ? 'info' : 'blank' "></div>
+        <div th:replace="HemaInfo :: ${hema} ? 'info' : 'blank' "></div>
+        <div th:replace="IotaInfo :: ${iota} ? 'info' : 'blank' "></div>
+        <div th:replace="LotaInfo :: ${lota} ? 'info' : 'blank' "></div>
+        <div th:replace="PotaInfo :: ${pota} ? 'info' : 'blank' "></div>
+        <div th:replace="RotaInfo :: ${rota} ? 'info' : 'blank' "></div>
+        <div th:replace="SotaInfo :: ${sota} ? 'info' : 'blank' "></div>
+        <div th:replace="GmaInfo :: ${gma} ? 'info' : 'blank' "></div>
+        <div th:replace="WotaInfo :: ${wota} ? 'info' : 'blank' "></div>
+        <div th:replace="WwffInfo :: ${wwff} ? 'info' : 'blank' "></div>
+
+    </div>
+</div>
+</body>
+</html>

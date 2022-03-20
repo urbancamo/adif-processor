@@ -1,9 +1,9 @@
 package uk.m0nom.activity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * This class groups all locations for an activity in a Map that can be searched using the primary reference
@@ -34,6 +34,14 @@ public class ActivityDatabase {
         return database.get(ref);
     }
 
+    public Activity get(String ref, LocalDate onDate) {
+        Activity activity = database.get(ref);
+        if (activity.isValid(onDate)) {
+            return activity;
+        }
+        return null;
+    }
+
     public boolean isSpecialEventActivity() {
         return specialEventActivity;
     }
@@ -46,16 +54,19 @@ public class ActivityDatabase {
      * Search for all activities that are within the given radius
      * @param centre centre activity reference to search from
      * @param radius radius in metres to search against
+     * @param onDate
      * @return collection of activities in the given radius
      */
-    public Collection<Activity> findActivitiesInRadius(Activity centre, double radius) {
+    public Collection<Activity> findActivitiesInRadius(Activity centre, double radius, LocalDate onDate) {
 
         if (centre.hasCoords()) {
-            return database.values()
+            return database
+                    .values()
                     .parallelStream()
                     .filter(Activity::hasCoords)
+                    .filter(match -> match.isValid(onDate)) // only return valid activities
                     .filter(match -> match.inRadius(centre, radius))
-                    .collect(Collectors.toUnmodifiableList());
+                    .toList();
         }
         return new ArrayList<>();
     }

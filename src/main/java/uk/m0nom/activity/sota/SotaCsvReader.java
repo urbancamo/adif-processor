@@ -5,6 +5,9 @@ import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityType;
 import uk.m0nom.activity.CsvActivityReader;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Expects a SOTA Summits Database Export file, reformatted as UTF-8 CSV with the following columns retained:
  *
@@ -16,6 +19,7 @@ import uk.m0nom.activity.CsvActivityReader;
  * BonusPoints
  */
 public class SotaCsvReader extends CsvActivityReader {
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
 
     public SotaCsvReader(String sourceFile) {
         super(ActivityType.SOTA, sourceFile);
@@ -32,6 +36,12 @@ public class SotaCsvReader extends CsvActivityReader {
         info.setCoords(readCoords(record,"Latitude", "Longitude"));
         info.setPoints(Integer.parseInt(record.get("Points")));
         info.setBonusPoints(Integer.parseInt(record.get("BonusPoints")));
+
+        String validFrom = record.get("ValidFrom");
+        info.setValidFrom(LocalDate.parse(validFrom, formatter));
+        String validTo = record.get("ValidTo");
+        info.setValidTo(LocalDate.parse(validTo, formatter));
+
         return info;
     }
 }

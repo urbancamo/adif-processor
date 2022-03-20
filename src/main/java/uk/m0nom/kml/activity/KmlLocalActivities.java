@@ -5,8 +5,11 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.activity.Activity;
 import uk.m0nom.activity.ActivityDatabases;
 import uk.m0nom.adif3.contacts.Station;
+import uk.m0nom.adif3.control.TransformControl;
+import uk.m0nom.kml.info.KmlActivityInfoPanel;
 import uk.m0nom.kml.station.KmlStationUtils;
 
+import java.time.LocalDate;
 import java.util.Locale;
 
 import static uk.m0nom.kml.KmlUtils.getStyleId;
@@ -15,15 +18,17 @@ import static uk.m0nom.kml.KmlUtils.getStyleUrl;
 public class KmlLocalActivities {
     public final static String DEFAULT_RADIUS = "5000";
 
-    public void addLocalActivities(Document doc, Folder folder, Station to, double radius, ActivityDatabases activities) {
+    public void addLocalActivities(TransformControl control,  Document doc, Folder folder, Station to, ActivityDatabases activities) {
+        LocalDate onDate = to.getQsos().get(0).getRecord().getQsoDate();
         // Determine activities within the pre-defined radius
-        to.getActivities().values().forEach(activity -> {
-            activities.getDatabase(activity.getType()).findActivitiesInRadius(activity, radius)
-                    .forEach(localActivity -> addActivityMarker(doc, folder, localActivity));
-        });
+        to.getActivities()
+                .values()
+                .forEach(activity -> activities.getDatabase(activity.getType())
+                        .findActivitiesInRadius(activity, control.getKmlLocalActivationSitesRadius(), onDate)
+                .forEach(localActivity -> addActivityMarker(control, doc, folder, localActivity)));
     }
 
-    public void addActivityMarker(Document document, Folder folder, Activity activity) {
+    public void addActivityMarker(TransformControl control,  Document document, Folder folder, Activity activity) {
         String id = activity.getRef();
 
         GlobalCoordinates coords = activity.getCoords();
@@ -46,7 +51,7 @@ public class KmlLocalActivities {
             style.createAndSetLabelStyle().withColor("ffffffff").withScale(0.75); // set color and size of the station marker
             style.createAndSetLineStyle().withColor("000000ff").withWidth(3);
 
-            String htmlPanelContent = ""; //infoMap.get(activity.getType()).getInfo(activity);
+            String htmlPanelContent = new KmlActivityInfoPanel().getPanelContentForActivity(control, activity);
             Placemark placemark = folder.createAndAddPlacemark();
             // use the style for each continent
             placemark.withName(id)
