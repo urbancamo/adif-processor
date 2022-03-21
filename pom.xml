@@ -8,7 +8,7 @@
 
   <groupId>uk.m0nom</groupId>
   <artifactId>adif-processor</artifactId>
-  <version>1.0.14-SNAPSHOT</version>
+  <version>1.0.14</version>
 
   <name>adif-processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
@@ -76,9 +76,9 @@
 
     <!-- https://mvnrepository.com/artifact/de.micromata.jak/JavaAPIforKml -->
     <dependency>
-      <groupId>de.micromata.jak</groupId>
+      <groupId>uk.m0nom</groupId>
       <artifactId>JavaAPIforKml</artifactId>
-      <version>3.0.0</version>
+      <version>3.0.1</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/net.sourceforge.argparse4j/argparse4j -->
