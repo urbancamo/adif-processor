@@ -9,6 +9,8 @@ import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
 import uk.m0nom.coords.GlobalCoords3D;
 
+import java.time.LocalDate;
+
 /**
  * An activity is any amateur radio activity programme or awards programme that you can participate in.
  * This class captures the typical common data set for an activity.
@@ -62,11 +64,14 @@ public abstract class Activity implements Comparable<Activity> {
         return ref.compareTo(otherRef);
     }
 
+    public boolean isValid(LocalDate onDate) {
+        return true;
+    }
+    
     public boolean inRadius(Activity other, double radius) {
         GeodeticCalculator calculator = new GeodeticCalculator();
         GeodeticCurve curve = calculator.calculateGeodeticCurve(Ellipsoid.WGS84, other.getCoords(), coords);
         return curve.getEllipsoidalDistance() < radius && !other.equals(this);
-
     }
 
 }

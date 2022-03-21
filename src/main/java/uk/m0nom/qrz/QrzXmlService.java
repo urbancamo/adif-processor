@@ -1,5 +1,7 @@
 package uk.m0nom.qrz;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Unmarshaller;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -7,8 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.callsign.Callsign;
 import uk.m0nom.callsign.CallsignUtils;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;

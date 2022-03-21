@@ -19,7 +19,7 @@ import java.io.InputStream;
 /**
  * Main entry into the Adif3 Transformer functionality.
  * Current set to use the:
- * @see CommentParsingAdifRecordTransformer
+ * 
  */
 public class Adif3Transformer {
 

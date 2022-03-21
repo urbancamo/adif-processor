@@ -1,7 +1,7 @@
 package uk.m0nom.qrz;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "Session", namespace = QrzNamespace.URI)
 public class QrzSession {

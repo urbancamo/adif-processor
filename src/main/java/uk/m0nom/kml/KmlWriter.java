@@ -65,7 +65,7 @@ public class KmlWriter {
                     results.setError(error);
                 }
                 if (qso.getFrom().hasActivity() && control.isKmlShowLocalActivationSites()) {
-                    kmlLocalActivities.addLocalActivities(doc, folder, qso.getFrom(), control.getKmlLocalActivationSitesRadius(), activities);
+                    kmlLocalActivities.addLocalActivities(control, doc, folder, qso.getFrom(), activities);
                 }
                 myStation = qso.getFrom();
             }
@@ -80,7 +80,7 @@ public class KmlWriter {
 
                 if (qso.getTo().hasActivity() && control.isKmlShowLocalActivationSites()) {
                     Folder localActivityFolder = contactFolder.createAndAddFolder().withName("Local Activity").withOpen(false);
-                    kmlLocalActivities.addLocalActivities(doc, localActivityFolder, qso.getTo(), control.getKmlLocalActivationSitesRadius(), activities);
+                    kmlLocalActivities.addLocalActivities(control, doc, localActivityFolder, qso.getTo(), activities);
                 }
                 error = kmlCommsUtils.createCommsLink(doc, contactFolder, qso, control, kmlStationUtils);
                 if (error != null) {
