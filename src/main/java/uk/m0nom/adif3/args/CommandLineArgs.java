@@ -11,10 +11,13 @@ import uk.m0nom.adif3.control.TransformControl;
 import uk.m0nom.antenna.Antennas;
 import uk.m0nom.icons.IconResource;
 
+import java.util.Set;
+
 /**
  * Sets up a TransformControl instance based on command line arguments for the standalone transformer
  */
 public class CommandLineArgs {
+
     public TransformControl parseArgs(String[] args) {
         TransformControl control = new TransformControl();
         ArgumentParser parser = ArgumentParsers.newFor("AdifFileTransformer").build()
@@ -42,7 +45,12 @@ public class CommandLineArgs {
         parser.addArgument("-e", "--encoding").required(false).setDefault("windows-1251")
                 .help("Specify encoding of input ADIF file");
 
-        parser.addArgument("-a", "--antenna").required(false).setDefault("Vertical").help("Antenna Type, one of: Vertical (default), Dipole or Inverted-V");
+        Set<String> antennaNames = new Antennas().getAntennaNames();
+        parser.addArgument("-a", "--antenna")
+                .required(false)
+                .setDefault("Vertical")
+                .choices(antennaNames)
+                .help(String.format("Antenna Type, one of: %s", String.join(", ", antennaNames)));
 
         parser.addArgument("-k", "--kml").required(false).action(Arguments.storeTrue())
                 .help("Generate a KML output file for mapping direct to Google Earth");
@@ -92,16 +100,20 @@ public class CommandLineArgs {
             control.setLocation(ns.getString("location"));
             control.setPathname(ns.getString("input")); //.substring(1, ns.getString("path").length()-1));
             control.setEncoding(ns.getString("encoding"));
+
+            control.setQrzUsername(ns.getString("qrz_username"));
+            control.setQrzPassword(ns.getString("qrz_password"));
+
             control.setKmlS2s(ns.getBoolean("kml_s2s"));
             control.setKmlS2sContactLineStyle(ns.getString("kml_s2s_line_style"));
             control.setKmlSatelliteTrackLineStyle(ns.getString("kml_satellite_track_line_style"));
             control.setKmlContactLineStyle(ns.getString("kml_contact_line_style"));
-            control.setQrzUsername(ns.getString("qrz_username"));
-            control.setQrzPassword(ns.getString("qrz_password"));
             control.setKmlContactShadow(ns.getBoolean("kml_contact_shadow"));
+
             control.setIcon(IconResource.FIXED_ICON_NAME, ns.getString("kml_fixed_station"));
             control.setIcon(IconResource.MOBILE_ICON_NAME, ns.getString("kml_mobile_station"));
             control.setIcon(IconResource.PORTABLE_ICON_NAME, ns.getString("kml_portable_station"));
+            control.setIcon(IconResource.MARITIME_MOBILE_ICON_NAME, ns.getString("kml_maritime_station"));
 
             for (ActivityType activity : ActivityType.values()) {
                 control.setIcon(activity.getActivityName(), String.format("kml_%s_station", activity.getActivityName().toLowerCase()));
@@ -109,8 +121,6 @@ public class CommandLineArgs {
                     control.setActivityRef(activity, ns.getString(activity.getActivityName()).toLowerCase());
                 }
             }
-
-            control.setIcon(IconResource.MARITIME_MOBILE_ICON_NAME, ns.getString("kml_maritime_station"));
             control.setKmlContactTransparency(100-ns.getInt("kml_contact_transparency"));
             control.setKmlContactWidth(ns.getInt("kml_contact_width"));
             control.setKmlContactColourByBand(ns.getBoolean("kml_contact_colour_band"));

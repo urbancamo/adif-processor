@@ -16,7 +16,10 @@ import uk.m0nom.kml.KmlWriter;
 import uk.m0nom.qrz.CachingQrzXmlService;
 import uk.m0nom.qrz.QrzService;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -134,7 +137,10 @@ public class FileTransformerApp implements Runnable
                     qrzService.disable();
                 }
             }
-            transformer.configure(new FileInputStream(configFilePath), summits, qrzService);
+            InputStream configStream = FileTransformerApp.class.getClassLoader().
+                    getResourceAsStream(configFilePath);
+
+            transformer.configure(configStream, summits, qrzService);
 
             logger.info(String.format("Reading input file %s with encoding %s", inPath, control.getEncoding()));
             Adif3 log = reader.read(inPath, control.getEncoding(), false);
