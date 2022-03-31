@@ -14,15 +14,15 @@ import uk.m0nom.icons.IconResource;
 import java.util.Set;
 
 /**
- * Sets up a TransformControl instance based on command line arguments for the standalone transformer
+ * Sets up a TransformControl instance based on command line arguments for the standalone processor
  */
 public class CommandLineArgs {
 
     public TransformControl parseArgs(String[] args) {
         TransformControl control = new TransformControl();
-        ArgumentParser parser = ArgumentParsers.newFor("AdifFileTransformer").build()
+        ArgumentParser parser = ArgumentParsers.newFor("AdifProcessor").build()
                 .defaultHelp(true)
-                .description("Transform an ADIF file prior to storing or mapping it by enriching it with positional data.");
+                .description("Process an ADIF file by locating stations and enriching output ADIF file, also optionally produces markdown and Google Earth KML files");
 
         parser.addArgument("-qu", "--qrz-username").required(false)
                 .help("Username for the QRZ XML Service");
