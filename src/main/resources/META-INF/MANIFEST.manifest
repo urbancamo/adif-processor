@@ -1,1 +1,1 @@
-Main-Class: uk.m0nom.adif3.FileTransformerApp
+Main-Class: uk.m0nom.adif3.cli.FileTransformerApp

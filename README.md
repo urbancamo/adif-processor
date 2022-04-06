@@ -22,11 +22,5 @@ Here is the [documentation for the ADIF Processor](https://urbancamo.github.io/a
 
 ## JavaApi4Kml
 
-This is unmaintained and now throws runtime exceptions due to the use of the built-in JAXB
-implementation in previous JDKs. I'm looking at either forking or depending on a fork
-that has been updated.
-
-Possible options are:
-
- - [KikiManjaro-javaapiforkml](https://github.com/KikiManjaro/javaapiforkml)
- - 
+This has been forked in [urbancamo/javaapiforkml](https://github.com/urbancamo/javaapiforkml) and updated to
+work with Java 11+.
