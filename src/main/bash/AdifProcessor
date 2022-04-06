@@ -1,0 +1,13 @@
+#!/bin/bash
+ADIF_PROCESSOR_HOME=/home/msw/Projects/adif-web/adif-processor/
+JAR=$(find "$ADIF_PROCESSOR_HOME/target" -name "adif-processor-*-with-dependencies.jar")
+QU_OPT=
+if [ "$QRZ_USERNAME" != '' ]; then
+QU_OPT="-qu"
+fi
+QP_OPT=
+if [ "$QRZ_PASSWORD" != '' ]; then
+QP_OPT="-qp"
+fi
+java -cp "$JAR" uk.m0nom.adif3.FileTransformerApp $QU_OPT "$QRZ_USERNAME" $QP_OPT "$QRZ_PASSWORD" "$@"
+

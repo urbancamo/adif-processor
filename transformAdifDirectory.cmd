@@ -1,1 +1,1 @@
-java -cp target\adif-processor-1.0-SNAPSHOT-jar-with-dependencies.jar uk.m0nom.adif3.FileTransformerApp %1 %2
+java -cp target\adif-processor-1.0-SNAPSHOT-jar-with-dependencies.jar uk.m0nom.adif3.cli.FileTransformerApp %1 %2
