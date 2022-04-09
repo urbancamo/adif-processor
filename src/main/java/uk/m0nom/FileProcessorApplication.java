@@ -120,11 +120,9 @@ public class FileProcessorApplication implements CommandLineRunner {
         try {
             summits.loadData();
             control.setDxccEntities(new DxccJsonReader().read());
-            if (control.isQrzDotComEnabled()) {
-                qrzXmlService.enable();
-                if (!qrzXmlService.getSessionKey()) {
+            if (control.hasQrzCredentials()) {
+                if (!qrzXmlService.refreshSessionKey()) {
                     logger.warning("Could not connect to QRZ.COM, disabling lookups and continuing...");
-                    qrzXmlService.disable();
                 }
             }
 

@@ -37,17 +37,12 @@ public class CachingQrzXmlService implements QrzService {
     }
 
     @Override
-    public boolean getSessionKey() {
-        return service.getSessionKey();
+    public boolean refreshSessionKey() {
+        return service.refreshSessionKey();
     }
 
     @Override
-    public void enable() {
-        service.enable();
-    }
-
-    @Override
-    public void disable() {
-        service.disable();
+    public boolean hasCredentials() {
+        return service.hasCredentials();
     }
 }

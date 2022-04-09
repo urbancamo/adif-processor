@@ -3,14 +3,17 @@ package uk.m0nom.adifproc.satellite.norad;
 import com.github.amsacode.predict4java.Satellite;
 import com.github.amsacode.predict4java.SatelliteFactory;
 import com.github.amsacode.predict4java.TLE;
-import uk.m0nom.adifproc.satellite.ApSatellite;
+import org.springframework.stereotype.Service;
+import uk.m0nom.adifproc.file.InternalFileService;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Logger;
 
 /**
@@ -23,56 +26,62 @@ import java.util.logging.Logger;
  * KEY: A-CATALOGNUM B-EPOCHTIME C-DECAY D-ELSETNUM E-INCLINATION F-RAAN
  * G-ECCENTRICITY H-ARGPERIGEE I-MNANOM J-MNMOTION K-ORBITNUM Z-CHECKSUM
  */
+@Service
 public class NoradSatelliteOrbitReader {
     public final static String NORAD_TLE_FILE_LOCATION = "http://www.celestrak.com/NORAD/elements/amateur.txt";
+    private final static String NORAD_S3_FOLDER = "norad";
+
     private static final Logger logger = Logger.getLogger(NoradSatelliteOrbitReader.class.getName());
 
-    private static final Map<String, ApSatellite> cache = new HashMap<>();
-    private static long lastRead = 0L;
-    private static final long CACHE_EXPIRES_MILLIS = 1000L * 60L * 60L * 24L;
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-    public Map<String, ApSatellite> readSatellites(String sourceFileUrl)
-    {
-        if (isCacheCurrent()) {
-            //logger.info(String.format("Returning %d cached satellites", cache.size()));
-            return cache;
-        } else {
-            cache.clear();
-            logger.info(String.format("Reading NORAD Satellite Definition File: %s", sourceFileUrl));
-            try {
-                String tleDefinitions = readUrl(sourceFileUrl);
+    private final InternalFileService internalFileService;
 
-                // Each TLE definition consists of three lines of text, so we parse the TLE file 3 lines at a time
-                String[] tleLines = tleDefinitions.split("\\n");
-                int i = 0;
+    public NoradSatelliteOrbitReader(InternalFileService internalFileService) {
+        this.internalFileService = internalFileService;
+    }
 
-                while (i < tleLines.length / 3) {
-                    String[] lines = new String[3];
-                    lines[0] = tleLines[(i * 3)];
-                    lines[1] = tleLines[(i * 3) + 1];
-                    lines[2] = tleLines[(i * 3) + 2];
+    public Collection<NoradSatellite> readFromArchive(LocalDate date) {
+        String filename = String.format("%s-amateur.txt", dateFormatter.format(date));
+        String tleDefinitions = internalFileService.readFile(NORAD_S3_FOLDER, filename);
+        return parseTleData(tleDefinitions);
+    }
 
-                    TLE tle = new TLE(lines);
+    public Collection<NoradSatellite> readCurrentSatellitesFromCelestrak(String sourceFileUrl) {
+        logger.info(String.format("Reading NORAD Satellite Definition File: %s", sourceFileUrl));
+        try {
+            String tleDefinitions = readUrl(sourceFileUrl);
+            return parseTleData(tleDefinitions);
 
-                    Satellite satellite = SatelliteFactory.createSatellite(tle);
-                    ApSatellite apSatellite = new NoradSatellite(satellite);
-                    cache.put(apSatellite.getName(), apSatellite);
-                    i++;
-                }
-                logger.info(String.format("Read %d satellite definitions", i));
-                lastRead = java.time.Instant.now().toEpochMilli();
-
-                return cache;
-            } catch (IOException e) {
-                logger.severe(String.format("Unable to read TLE definition file: %s", NORAD_TLE_FILE_LOCATION));
-            }
+        } catch (IOException e) {
+            logger.severe(String.format("Unable to read TLE definition file: %s", NORAD_TLE_FILE_LOCATION));
         }
         return null;
     }
 
-    private boolean isCacheCurrent() {
-        long millisSinceEpoch = java.time.Instant.now().toEpochMilli();
-        return millisSinceEpoch - lastRead < CACHE_EXPIRES_MILLIS;
+    private Collection<NoradSatellite> parseTleData(String tleDefinitions) {
+        Collection<NoradSatellite> satellites = new ArrayList<>();
+
+            // Each TLE definition consists of three lines of text, so we parse the TLE file 3 lines at a time
+            String[] tleLines = tleDefinitions.split("\\n");
+            int i = 0;
+
+            while (i < tleLines.length / 3) {
+                String[] lines = new String[3];
+                lines[0] = tleLines[(i * 3)];
+                lines[1] = tleLines[(i * 3) + 1];
+                lines[2] = tleLines[(i * 3) + 2];
+
+                TLE tle = new TLE(lines);
+
+                Satellite satellite = SatelliteFactory.createSatellite(tle);
+                NoradSatellite noradSatellite = new NoradSatellite(satellite);
+                satellites.add(noradSatellite);
+                i++;
+            }
+            logger.info(String.format("Read %d satellite definitions", i));
+
+        return satellites;
     }
 
     private String readUrl(String tleDefinitionFile) throws IOException {

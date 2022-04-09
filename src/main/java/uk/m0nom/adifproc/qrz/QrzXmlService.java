@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.callsign.Callsign;
 import uk.m0nom.adifproc.callsign.CallsignUtils;
@@ -29,14 +30,12 @@ public class QrzXmlService implements QrzService {
 
     private final OkHttpClient client;
     private String sessionKey;
-    private boolean enabled;
     private String username;
     private String password;
 
     public QrzXmlService() {
         client = new OkHttpClient();
         sessionKey = null;
-        enabled = true;
     }
 
     public void setCredentials(String username, String password) {
@@ -44,21 +43,12 @@ public class QrzXmlService implements QrzService {
         this.password = password;
     }
 
-    public void enable() {
-        enabled = true;
-        logger.info("QRZ.COM lookup has been enabled");
-    }
-    public void disable() {
-        enabled = false;
-        logger.info("QRZ.COM lookup has been disabled");
+    public boolean hasCredentials() {
+        return !Strings.isEmpty(username) && !Strings.isEmpty(password);
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public boolean getSessionKey()  {
-        if (sessionKey == null && enabled) {
+    public boolean refreshSessionKey()  {
+        if (hasCredentials()) {
             String url = String.format("%s/%s/?username=%s&password=%s", QRZ_XML_SERVICE_BASE_URL, QRZ_XML_SERVICE_VERSION, username, password);
             logger.info("Obtaining QRZ.COM session key");
             QrzDatabase database = runQuery(url);

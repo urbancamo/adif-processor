@@ -14,7 +14,7 @@
 
   <groupId>uk.m0nom</groupId>
   <artifactId>adif-processor</artifactId>
-  <version>1.0.15-SNAPSHOT</version>
+  <version>1.0.16</version>
 
   <name>adif-processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
@@ -206,6 +206,12 @@
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-gpg-plugin</artifactId>
       <version>3.0.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk</artifactId>
+      <version>1.12.173</version>
     </dependency>
 
     <dependency>

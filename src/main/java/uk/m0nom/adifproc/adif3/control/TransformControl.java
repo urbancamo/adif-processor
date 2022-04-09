@@ -138,7 +138,7 @@ public class TransformControl {
         activityRefs.put(activity, ref);
     }
 
-    public boolean isQrzDotComEnabled() {
+    public boolean hasQrzCredentials() {
         return (StringUtils.isNotEmpty(qrzUsername) && StringUtils.isNotEmpty(qrzPassword));
     }
 }

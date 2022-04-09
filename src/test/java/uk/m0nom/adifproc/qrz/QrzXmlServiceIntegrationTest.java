@@ -20,7 +20,7 @@ public class QrzXmlServiceIntegrationTest {
         if (StringUtils.isNotEmpty(USERNAME)) {
             QrzXmlService service = new QrzXmlService();
             service.setCredentials(USERNAME, PASSWORD);
-            assertThat(service.getSessionKey()).isNotNull();
+            assertThat(service.refreshSessionKey()).isNotNull();
 
             // Now have a session key
             QrzCallsign callsign = service.getCallsignData("M0NOM");
