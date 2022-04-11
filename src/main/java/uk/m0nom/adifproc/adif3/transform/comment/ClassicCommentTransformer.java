@@ -19,7 +19,7 @@ import uk.m0nom.adifproc.adif3.transform.tokenizer.CommentTokenizer;
 import uk.m0nom.adifproc.coords.*;
 import uk.m0nom.adifproc.location.ToLocationDeterminer;
 import uk.m0nom.adifproc.maidenheadlocator.MaidenheadLocatorConversion;
-import uk.m0nom.adifproc.satellite.ApSatellites;
+import uk.m0nom.adifproc.satellite.ApSatelliteService;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -41,18 +41,18 @@ public class ClassicCommentTransformer implements CommentTransformer {
     private final ActivityDatabaseService activities;
     private final ToLocationDeterminer toLocationDeterminer;
     private final LocationParsingService locationParsingService;
-    private final ApSatellites apSatellites;
+    private final ApSatelliteService apSatelliteService;
 
     public ClassicCommentTransformer(TransformerConfig config,
                                      ActivityDatabaseService activities,
                                      ToLocationDeterminer toLocationDeterminer,
-                                     ApSatellites apSatellites) {
+                                     ApSatelliteService apSatelliteService) {
         this.tokenizer = new ColonTokenizer();
         this.fieldMap = config.getConfig().asMapping();
         this.activities = activities;
         this.toLocationDeterminer = toLocationDeterminer;
         this.locationParsingService = new LocationParsingService();
-        this.apSatellites = apSatellites;
+        this.apSatelliteService = apSatelliteService;
     }
 
     @Override
@@ -294,7 +294,7 @@ public class ClassicCommentTransformer implements CommentTransformer {
                         rec.setPropMode(mode);
                         break;
                     case "SatelliteName":
-                        if (apSatellites.getSatellite(value.toUpperCase()) != null) {
+                        if (apSatelliteService.getSatellite(value, rec.getQsoDate())  != null) {
                             rec.setSatName(value.toUpperCase());
                         } else {
                             logger.warning(String.format("Satellite: %s isn't currently supported", value));

@@ -8,10 +8,10 @@ import uk.m0nom.adifproc.kml.KmlLineStyle;
 import uk.m0nom.adifproc.kml.KmlStyling;
 import uk.m0nom.adifproc.kml.KmlUtils;
 import uk.m0nom.adifproc.kml.station.KmlStationUtils;
+import uk.m0nom.adifproc.satellite.ApSatellite;
 import uk.m0nom.adifproc.satellite.SatelliteActivity;
 import uk.m0nom.adifproc.satellite.SatellitePass;
 import uk.m0nom.adifproc.satellite.SatellitePassId;
-import uk.m0nom.adifproc.satellite.ApSatellite;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,7 +46,7 @@ public class KmlSatelliteTrack {
         folder.withName("Satellite Tracks").withOpen(false);
 
         drawSatelliteTracks(control, folder, activity, groundStation, styleUrl, false);
-        drawSatelliteTracks(control, folder, activity, groundStation, KmlUtils.getStyleId(KmlCommsUtils.SHADOW_LINE), true);
+        drawSatelliteTracks(control, folder, activity, groundStation, KmlUtils.getStyleId(KmlCommsService.SHADOW_LINE), true);
     }
 
     private void drawSatelliteTracks(TransformControl control, Folder folder, SatelliteActivity activity,
@@ -55,7 +55,7 @@ public class KmlSatelliteTrack {
             SatellitePassId id = pass.getId();
             LocalDate passDate = id.getDate();
             String satName = id.getSatelliteName();
-            ApSatellite satellite = activity.getSatellites().getSatellite(satName);
+            ApSatellite satellite = activity.getSatellites().getSatellite(satName, passDate);
 
             // Create KML folder for the pass points
             String folderId = pass.getId().toString();

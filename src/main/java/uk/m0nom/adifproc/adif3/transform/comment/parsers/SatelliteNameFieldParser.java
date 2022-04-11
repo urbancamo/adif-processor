@@ -1,18 +1,18 @@
 package uk.m0nom.adifproc.adif3.transform.comment.parsers;
 
 import uk.m0nom.adifproc.adif3.contacts.Qso;
-import uk.m0nom.adifproc.satellite.ApSatellites;
+import uk.m0nom.adifproc.satellite.ApSatelliteService;
 
 public class SatelliteNameFieldParser implements CommentFieldParser {
-    private final ApSatellites apSatellites;
+    private final ApSatelliteService apSatelliteService;
 
-    public SatelliteNameFieldParser(ApSatellites apSatellites) {
-        this.apSatellites = apSatellites;
+    public SatelliteNameFieldParser(ApSatelliteService apSatelliteService) {
+        this.apSatelliteService = apSatelliteService;
     }
 
     @Override
     public FieldParseResult parseField(String value, Qso qso) throws CommentFieldParserException {
-        if (apSatellites.getSatellite(value.toUpperCase()) != null) {
+        if (apSatelliteService.getSatellite(value, qso.getRecord().getQsoDate()) != null) {
             qso.getRecord().setSatName(value.toUpperCase());
         } else {
             throw new CommentFieldParserException(this.getClass().getName(), "unknownSatellite", qso, false, value);

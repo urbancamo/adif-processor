@@ -1,37 +1,59 @@
 package uk.m0nom.adifproc.satellite;
 
-import org.springframework.stereotype.Service;
-import uk.m0nom.adifproc.satellite.satellites.QO100;
+import java.time.LocalDate;
+import java.util.*;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
-
-/**
- * Map of the satellites that the ADIF Processor supports, both LEO and Geostationary
- * Satellites can be identified either by their name or a code
- */
-@Service
 public class ApSatellites {
-    private static final Logger logger = Logger.getLogger(ApSatellites.class.getName());
+    private final Map<String, ApSatellite> satelliteMap;
+    private final Map<String, String> satelliteDesignatorToNameMap;
 
-    private final Map<String, ApSatellite> satelliteIdentifierMap = new HashMap<>();
+    private final Set<LocalDate> datesLoaded;
 
     public ApSatellites() {
-        QO100 qo100 = new QO100();
-        satelliteIdentifierMap.put(qo100.getIdentifier(), qo100);
+        satelliteMap = new HashMap<>();
+        satelliteDesignatorToNameMap = new HashMap<>();
+        datesLoaded = new TreeSet<>();
     }
 
-    public ApSatellite getSatellite(String ident) {
-        return satelliteIdentifierMap.get(ident);
+    public void addOrReplace(ApSatellite satellite, LocalDate date) {
+        String name = satellite.getName();
+
+        if (satelliteMap.get(name) != null) {
+            satelliteMap.remove(name);
+            satelliteDesignatorToNameMap.remove(satellite.getDesignator());
+        }
+        satelliteMap.put(name, satellite);
+        satelliteDesignatorToNameMap.put(satellite.getDesignator(), satellite.getName());
+        if (date != null) {
+            datesLoaded.add(date);
+        }
+    }
+
+    public boolean hasDataFor(LocalDate date) {
+        return date == null || datesLoaded.contains(date);
+    }
+
+    /**
+     * Retrieve a satellite using either the name or designator
+     * @param id may be either a name or designator
+     * @return satellite if loaded with either the name or designator
+     */
+    public ApSatellite get(String id) {
+        ApSatellite satellite = satelliteMap.get(id);
+        if (satellite == null) {
+            String name = satelliteDesignatorToNameMap.get(id);
+            if (name != null) {
+                satellite = satelliteMap.get(name);
+            }
+        }
+        return satellite;
     }
 
     public Collection<String> getSatelliteNames() {
-        return satelliteIdentifierMap.keySet();
+        return satelliteMap.keySet();
     }
 
-    public int size() {
-        return satelliteIdentifierMap.size();
+    public int getSatelliteCount() {
+        return satelliteMap.size();
     }
 }

@@ -24,7 +24,7 @@ import uk.m0nom.adifproc.location.ToLocationDeterminer;
 import uk.m0nom.adifproc.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.adifproc.qrz.CachingQrzXmlService;
 import uk.m0nom.adifproc.qrz.QrzCallsign;
-import uk.m0nom.adifproc.satellite.ApSatellites;
+import uk.m0nom.adifproc.satellite.ApSatelliteService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +43,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private final ActivityProcessor activityProcessor;
     private final GeocodingProvider geocodingProvider;
     private final CommentTransformer commentTransformer;
-    private final ApSatellites apSatellites;
+    private final ApSatelliteService apSatelliteService;
 
     public CommentParsingAdifRecordTransformer(ActivityDatabaseService activities,
                                                CachingQrzXmlService qrzXmlService,
@@ -52,11 +52,11 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                                                ToLocationDeterminer toLocationDeterminer,
                                                ActivityProcessor activityProcessor,
                                                NominatimGeocodingProvider geocodingProvider,
-                                               ApSatellites apSatellites) {
+                                               ApSatelliteService apSatelliteService) {
         this.activities = activities;
         this.qrzXmlService = qrzXmlService;
         this.enricher = new AdifQrzEnricher(qrzXmlService);
-        this.apSatellites = apSatellites;
+        this.apSatelliteService = apSatelliteService;
         this.fromLocationDeterminer = fromLocationDeterminer;
         this.toLocationDeterminer = toLocationDeterminer;
         this.activityProcessor = activityProcessor;
@@ -175,7 +175,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     @Override
     public void transform(TransformControl control, TransformResults results, Qsos qsos, Adif3Record rec, int index) {
         Map<String, String> unmapped = new HashMap<>();
-        results.getSatelliteActivity().setSatellites(apSatellites);
+        results.getSatelliteActivity().setSatellites(apSatelliteService);
 
 
         /* Add Adif3Record details to the Qsos meta structure */

@@ -5,19 +5,21 @@ import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Propagation;
+import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.geodesic.GeodesicUtils;
 import uk.m0nom.adifproc.satellite.ApSatellite;
-import uk.m0nom.adifproc.satellite.ApSatellites;
+import uk.m0nom.adifproc.satellite.ApSatelliteService;
 
 import java.util.List;
 
-public class SatellitePropagation implements CommsLinkGenerator {
-    private final ApSatellites apSatellites;
+@Service
+public class SatellitePropagationService implements CommsLinkGenerator {
+    private final ApSatelliteService apSatelliteService;
 
-    public SatellitePropagation() {
-        apSatellites = new ApSatellites();
+    public SatellitePropagationService(ApSatelliteService apSatelliteService) {
+        this.apSatelliteService = apSatelliteService;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class SatellitePropagation implements CommsLinkGenerator {
         CommsLinkResult result = new CommsLinkResult();
 
         if (rec.getSatName() != null) {
-            ApSatellite apSatellite = apSatellites.getSatellite(rec.getSatName());
+            ApSatellite apSatellite = apSatelliteService.getSatellite(rec.getSatName(), rec.getQsoDate());
             if (apSatellite == null) {
                 result.setError(String.format("Unknown satellite: %s", rec.getSatName()));
                 return result;
