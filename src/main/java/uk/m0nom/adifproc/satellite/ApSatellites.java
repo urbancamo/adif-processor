@@ -1,55 +1,59 @@
 package uk.m0nom.adifproc.satellite;
 
-import org.springframework.stereotype.Service;
-import uk.m0nom.adifproc.satellite.norad.NoradSatelliteOrbitReader;
-import uk.m0nom.adifproc.satellite.satellites.QO100;
+import java.time.LocalDate;
+import java.util.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.logging.Logger;
-
-/**
- * Map of the satellites that the ADIF Processor supports, both LEO and Geostationary
- * Satellites can be identified either by their name or a code
- */
-@Service
 public class ApSatellites {
-    private static final Logger logger = Logger.getLogger(ApSatellites.class.getName());
+    private final Map<String, ApSatellite> satelliteMap;
+    private final Map<String, String> satelliteDesignatorToNameMap;
 
-    private final Map<String, ApSatellite> satelliteIdentifierMap = new HashMap<>();
+    private final Set<LocalDate> datesLoaded;
 
     public ApSatellites() {
-        QO100 qo100 = new QO100();
-        satelliteIdentifierMap.put(qo100.getIdentifier(), qo100);
+        satelliteMap = new HashMap<>();
+        satelliteDesignatorToNameMap = new HashMap<>();
+        datesLoaded = new TreeSet<>();
+    }
 
-        // read from Norad
-        NoradSatelliteOrbitReader reader = new NoradSatelliteOrbitReader();
-        Map<String, ApSatellite> noradSats = reader.readSatellites(NoradSatelliteOrbitReader.NORAD_TLE_FILE_LOCATION);
-        if (noradSats != null) {
-            for (ApSatellite noradSat: noradSats.values()) {
-                satelliteIdentifierMap.put(noradSat.getIdentifier(), noradSat);
-            }
-        } else {
-            logger.severe(String.format("Error reading from satellite file: %s", NoradSatelliteOrbitReader.NORAD_TLE_FILE_LOCATION));
+    public void addOrReplace(ApSatellite satellite, LocalDate date) {
+        String name = satellite.getName();
+
+        if (satelliteMap.get(name) != null) {
+            satelliteMap.remove(name);
+            satelliteDesignatorToNameMap.remove(satellite.getDesignator());
+        }
+        satelliteMap.put(name, satellite);
+        satelliteDesignatorToNameMap.put(satellite.getDesignator(), satellite.getName());
+        if (date != null) {
+            datesLoaded.add(date);
         }
     }
 
-    public ApSatellite getSatellite(String ident) {
-        for (String identifier : satelliteIdentifierMap.keySet()) {
-            if (identifier.toUpperCase().contains(ident.toUpperCase())) {
-                return satelliteIdentifierMap.get(identifier);
+    public boolean hasDataFor(LocalDate date) {
+        return date == null || datesLoaded.contains(date);
+    }
+
+    /**
+     * Retrieve a satellite using either the name or designator
+     * @param id may be either a name or designator
+     * @return satellite if loaded with either the name or designator
+     */
+    public ApSatellite get(String id) {
+        ApSatellite satellite = satelliteMap.get(id);
+        if (satellite == null) {
+            String name = satelliteDesignatorToNameMap.get(id);
+            if (name != null) {
+                satellite = satelliteMap.get(name);
             }
         }
-        return null;
+        return satellite;
     }
 
-    public Set<String> getSatelliteNames() {
-        return new TreeSet<>(satelliteIdentifierMap.keySet());
+    public Collection<String> getSatelliteNames() {
+        return satelliteMap.keySet();
     }
 
-    public int size() {
-        return satelliteIdentifierMap.size();
+    public int getSatelliteCount() {
+        return satelliteMap.size();
     }
 }

@@ -2,37 +2,40 @@ package uk.m0nom.adifproc.kml.comms;
 
 import de.micromata.opengis.kml.v_2_2_0.*;
 import org.marsik.ham.adif.Adif3Record;
+import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.activity.ActivityDatabaseService;
 import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.activity.sota.SotaInfo;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.comms.CommsLinkResult;
+import uk.m0nom.adifproc.comms.CommsVisualizationService;
+import uk.m0nom.adifproc.coords.GlobalCoords3D;
+import uk.m0nom.adifproc.geodesic.GeodesicUtils;
 import uk.m0nom.adifproc.kml.KmlBandLineStyles;
 import uk.m0nom.adifproc.kml.KmlLineStyle;
 import uk.m0nom.adifproc.kml.KmlStyling;
 import uk.m0nom.adifproc.kml.KmlUtils;
 import uk.m0nom.adifproc.kml.info.KmlContactInfoPanel;
-import uk.m0nom.adifproc.comms.CommsVisualizer;
-import uk.m0nom.adifproc.coords.GlobalCoords3D;
-import uk.m0nom.adifproc.geodesic.GeodesicUtils;
 import uk.m0nom.adifproc.kml.station.KmlStationUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class KmlCommsUtils {
+@Service
+public class KmlCommsService {
     public final static String S2S_LINE = "s2S";
     public final static String COMM_LINE = "comm";
     public final static String SHADOW_LINE = "shadow";
 
-    private final ActivityDatabaseService activities;
-    private final KmlBandLineStyles bandLineStyles;
+    private final ActivityDatabaseService activityDatabaseService;
+    private final CommsVisualizationService commsVisualizationService;
     private final Map<String,String> commsStyleMap;
+    private KmlBandLineStyles bandLineStyles;
 
-    public KmlCommsUtils(TransformControl control, ActivityDatabaseService activities) {
-        this.activities = activities;
-        bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());
+    public KmlCommsService(ActivityDatabaseService activities, CommsVisualizationService commsVisualizationService) {
+        this.activityDatabaseService = activities;
+        this.commsVisualizationService = commsVisualizationService;
         commsStyleMap = new HashMap<>();
     }
 
@@ -59,6 +62,7 @@ public class KmlCommsUtils {
     }
 
     public String createCommsLink(Document document, Folder folder, Qso qso, TransformControl control, KmlStationUtils stationUtils) {
+        bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());
         String commsLinkId = getCommsLinkId(qso);
         String commsLinkName = getCommsLinkName(qso);
         String commsLinkShadowId = getCommsLinkShadowId(qso);
@@ -83,13 +87,13 @@ public class KmlCommsUtils {
         double myAltitude = 0.0;
         double theirAltitude = 0.0;
         if (qso.getRecord().getMySotaRef() != null) {
-            SotaInfo summitInfo = (SotaInfo) activities.getDatabase(ActivityType.SOTA).get(qso.getRecord().getMySotaRef().getValue());
+            SotaInfo summitInfo = (SotaInfo) activityDatabaseService.getDatabase(ActivityType.SOTA).get(qso.getRecord().getMySotaRef().getValue());
             if (summitInfo != null) {
                 myAltitude = summitInfo.getAltitude();
             }
         }
         if (qso.getRecord().getSotaRef() != null) {
-            SotaInfo summitInfo = (SotaInfo) activities.getDatabase(ActivityType.SOTA).get(qso.getRecord().getSotaRef().getValue());
+            SotaInfo summitInfo = (SotaInfo) activityDatabaseService.getDatabase(ActivityType.SOTA).get(qso.getRecord().getSotaRef().getValue());
             if (summitInfo != null) {
                 theirAltitude = summitInfo.getAltitude();
             }
@@ -103,7 +107,7 @@ public class KmlCommsUtils {
             return String.format("Your location and the location of station %s at %.3f, %.3f are equal - check the log!", qso.getTo().getCallsign(), coords.getLatitude(), coords.getLongitude());
         }
 
-        CommsLinkResult result = new CommsVisualizer().getCommunicationsLink(control, myCoords, coords, rec);
+        CommsLinkResult result = commsVisualizationService.getCommunicationsLink(control, myCoords, coords, rec);
         if (!result.isValid()) {
             return result.getError();
         }

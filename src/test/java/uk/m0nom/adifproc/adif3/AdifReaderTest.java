@@ -62,7 +62,7 @@ public class AdifReaderTest {
             ActivityDatabaseService summits = new ActivityDatabaseService();
             summits.loadData();
             QrzXmlService qrzXmlService = new QrzXmlService();
-            if (!qrzXmlService.getSessionKey()) {
+            if (!qrzXmlService.refreshSessionKey()) {
                 System.err.println("Could not connect to QRZ.COM, continuing...");
             }
 

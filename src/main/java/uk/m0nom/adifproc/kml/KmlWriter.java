@@ -15,7 +15,7 @@ import uk.m0nom.adifproc.adif3.transform.TransformResults;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LatLongUtils;
 import uk.m0nom.adifproc.kml.activity.KmlLocalActivities;
-import uk.m0nom.adifproc.kml.comms.KmlCommsUtils;
+import uk.m0nom.adifproc.kml.comms.KmlCommsService;
 import uk.m0nom.adifproc.kml.comms.KmlSatelliteTrack;
 import uk.m0nom.adifproc.kml.info.TemplateEngineConstructor;
 import uk.m0nom.adifproc.kml.station.KmlStationUtils;
@@ -30,14 +30,16 @@ import java.util.logging.Logger;
 public class KmlWriter {
     private static final Logger logger = Logger.getLogger(KmlWriter.class.getName());
 
-    public KmlWriter() {
+    private final KmlCommsService kmlCommsService;
+
+    public KmlWriter(KmlCommsService kmlCommsService) {
+        this.kmlCommsService = kmlCommsService;
     }
 
     public void write(TransformControl control, String pathname, String name, ActivityDatabaseService activities, Qsos qsos, TransformResults results) {
         control.setTemplateEngine(TemplateEngineConstructor.create());
 
         KmlLocalActivities kmlLocalActivities = new KmlLocalActivities();
-        KmlCommsUtils kmlCommsUtils = new KmlCommsUtils(control, activities);
         KmlStationUtils kmlStationUtils = new KmlStationUtils(control);
         KmlSatelliteTrack kmlSatelliteTrack = new KmlSatelliteTrack();
 
@@ -82,7 +84,7 @@ public class KmlWriter {
                     Folder localActivityFolder = contactFolder.createAndAddFolder().withName("Local Activity").withOpen(false);
                     kmlLocalActivities.addLocalActivities(control, doc, localActivityFolder, qso.getTo(), activities);
                 }
-                error = kmlCommsUtils.createCommsLink(doc, contactFolder, qso, control, kmlStationUtils);
+                error = kmlCommsService.createCommsLink(doc, contactFolder, qso, control, kmlStationUtils);
                 if (error != null) {
                     results.setError(error);
                 }

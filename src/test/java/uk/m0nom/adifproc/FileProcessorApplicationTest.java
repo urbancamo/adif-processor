@@ -41,11 +41,22 @@ public class FileProcessorApplicationTest
     private CachingQrzXmlService qrzXmlService;
 
     @Test
-    public void testApp() {
-        String cli = "-k --encoding windows-1251 --qrz-username M0NOM --qrz-password WindermereIsMyQTH -l IO84MJ91MB -md -o ../ ./target/test-classes/adif/2021-07-08-Queen-Adelaides-Hill.adi";
+    public void testAppAdif() {
+        String cli = "-k --encoding windows-1251 -l IO84MJ91MB -md -o ../ ./target/test-classes/adif/2021-07-08-Queen-Adelaides-Hill.adi";
         String[] args = cli.split(" ");
 
         FileProcessorApplication app = new FileProcessorApplication(transformer, reader, writer, summits, formatter, kmlWriter, qrzXmlService);
         app.run(args);
     }
+
+
+    // TODO - command line application should be able to process SOTA CSV files
+//    @Test
+//    public void testAppCsv() {
+//        String cli = "-k --encoding windows-1251 -l IO84MJ91MB -md -o ../ ./target/test-classes/sotacsv/M0NOM_567534_activator_20210928.csv";
+//        String[] args = cli.split(" ");
+//
+//        FileProcessorApplication app = new FileProcessorApplication(transformer, reader, writer, summits, formatter, kmlWriter, qrzXmlService);
+//        app.run(args);
+//    }
 }

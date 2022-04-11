@@ -152,7 +152,9 @@ public class AdiReaderTest {
         assertThat(adif.get().records.get(1).getCall()).isEqualTo("ON4UN");
         assertThat(adif.get().records.get(1).getBand()).isEqualTo(BAND_40m);
         assertThat(adif.get().records.get(1).getMode()).isEqualTo(PSK);
-        assertThat(adif.get().records.get(1).getAddress()).isEqualTo("John Doe\n100 Main Street\nCity, ST 12345");
+        assertThat(adif.get().records.get(1).getAddress()).contains("John Doe");
+        assertThat(adif.get().records.get(1).getAddress()).contains("100 Main Street");
+        assertThat(adif.get().records.get(1).getAddress()).contains("City, ST 12345");
         assertThat(adif.get().records.get(1).getSilentKey()).isEqualTo(true);
         assertThat(adif.get().records.get(1).getSubmode()).isEqualTo(PSK63.adifCode());
         assertThat(adif.get().records.get(1).getTxPwr()).isEqualTo(2.0);

@@ -5,7 +5,7 @@ import uk.m0nom.adifproc.activity.ActivityDatabaseService;
 import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.coords.LocationParsingService;
 import uk.m0nom.adifproc.location.ToLocationDeterminer;
-import uk.m0nom.adifproc.satellite.ApSatellites;
+import uk.m0nom.adifproc.satellite.ApSatelliteService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,7 @@ public class CommentFieldParserFactory {
     public CommentFieldParserFactory(ActivityDatabaseService activities,
                                      ToLocationDeterminer toLocationDeterminer,
                                      LocationParsingService locationParsingService,
-                                     ApSatellites apSatellites) {
+                                     ApSatelliteService apSatelliteService) {
         parserMap = new HashMap<>();
         parserMap.put("Name", new NameFieldParser());
         parserMap.put("Operator", new OperatorFieldParser());
@@ -44,7 +44,7 @@ public class CommentFieldParserFactory {
         parserMap.put("Longitude", new LongitudeParser());
         parserMap.put("AntPath", new AntPathFieldParser());
         parserMap.put("Propagation", new PropagationFieldParser());
-        parserMap.put("SatelliteName", new SatelliteNameFieldParser(apSatellites));
+        parserMap.put("SatelliteName", new SatelliteNameFieldParser(apSatelliteService));
         parserMap.put("SatelliteMode", new SatelliteModeFieldParser());
         parserMap.put("Notes", new NotesFieldParser());
     }

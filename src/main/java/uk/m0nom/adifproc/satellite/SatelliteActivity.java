@@ -15,7 +15,7 @@ import java.util.Map;
 @Getter
 @Setter
 public class SatelliteActivity {
-    private ApSatellites satellites;
+    private ApSatelliteService satellites;
     private Map<SatellitePassId, SatellitePass> satellitePasses;
 
     public SatelliteActivity() {

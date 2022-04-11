@@ -11,7 +11,6 @@ import org.marsik.ham.adif.enums.Band;
 import org.marsik.ham.adif.enums.Mode;
 import org.marsik.ham.adif.types.Sota;
 import org.springframework.stereotype.Service;
-import uk.m0nom.adifproc.adif3.io.Adif3FileReader;
 import uk.m0nom.adifproc.qsofile.QsoFileReader;
 
 import java.io.*;
@@ -29,9 +28,11 @@ import java.util.logging.Logger;
 
 @Service
 public class SotaCsvFileReader implements QsoFileReader {
-    private static final Logger logger = Logger.getLogger(Adif3FileReader.class.getName());
-    private final DateFormat internationalDateFormat =  new SimpleDateFormat("dd/MM/yy");
-    private final DateFormat internationalTimeFormat = new SimpleDateFormat("hh:mm");
+    private static final Logger logger = Logger.getLogger(SotaCsvFileReader.class.getName());
+    private final DateFormat internationalDateFormat1 =  new SimpleDateFormat("dd/MM/yy");
+    private final DateFormat internationalDateFormat2 =  new SimpleDateFormat("ddMMyy");
+    private final DateFormat internationalTimeFormat1 = new SimpleDateFormat("hh:mm");
+    private final DateFormat internationalTimeFormat2 = new SimpleDateFormat("hhmm");
 
     private final Map<String, String> sotaBandFreqMap = new HashMap<>();
 
@@ -95,10 +96,10 @@ public class SotaCsvFileReader implements QsoFileReader {
         parseSotaBand(rec, record.get(5));
         rec.setMode(parseSotaMode(record.get(6)));
         rec.setCall(toUpperAndTrim(record.get(7)));
-        if (record.size() > 7) {
+        if (record.size() > 8) {
             rec.setSotaRef(parseSotaRef(record.get(8)));
         }
-        if (record.size() > 8) {
+        if (record.size() > 9) {
             rec.setComment(toUpperAndTrim(record.get(9)));
         }
         return rec;
@@ -169,7 +170,13 @@ public class SotaCsvFileReader implements QsoFileReader {
     }
 
     private LocalTime parseSotaTime(String sotaTime) throws ParseException {
-        return new java.sql.Time(internationalTimeFormat.parse(sotaTime).getTime()).toLocalTime();
+        LocalTime time;
+        try {
+            time = new java.sql.Time(internationalTimeFormat1.parse(sotaTime).getTime()).toLocalTime();
+        } catch (ParseException e) {
+            time = new java.sql.Time(internationalTimeFormat2.parse(sotaTime).getTime()).toLocalTime();
+        }
+        return time;
     }
 
     private String toUpperAndTrim(String value) {
@@ -181,6 +188,12 @@ public class SotaCsvFileReader implements QsoFileReader {
     }
 
     private LocalDate parseSotaDate(String sotaDate) throws ParseException {
-        return new java.sql.Date(internationalDateFormat.parse(sotaDate).getTime()).toLocalDate();
+        LocalDate date;
+        try {
+            date = new java.sql.Date(internationalDateFormat1.parse(sotaDate).getTime()).toLocalDate();
+        } catch (ParseException e) {
+            date = new java.sql.Date(internationalDateFormat2.parse(sotaDate).getTime()).toLocalDate();
+        }
+        return date;
     }
 }

@@ -15,29 +15,46 @@ import uk.m0nom.adifproc.satellite.ApSatellite;
 
 import java.sql.Date;
 import java.time.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Definition for a satellite derived from a NASA TLE file entry.
+ * Definition for a satellite. Data is derived from a NASA TLE file entry.
+ * Note that information is only accurate for the day of the pass, this class allows
+ * multiple day entries to be associated with a satellite.
  */
 @Getter
 @Setter
 public class NoradSatellite implements ApSatellite {
-    private Satellite satellite;
+    private Map<LocalDate, Satellite> satelliteTleDataForDate;
     private String name;
     private String designator;
 
-    public NoradSatellite(Satellite satellite) {
-        this.satellite = satellite;
-        String identifier = satellite.getTLE().getName();
+    public static String getIdentifier(String name) {
+        String identifier = name.trim();
+        if (identifier.contains("(")) {
+            identifier = StringUtils.substringBefore(identifier, "(").trim();
+        }
+        return identifier;
+    }
+
+    public NoradSatellite(LocalDate date, Satellite satelliteTleData) {
+        satelliteTleDataForDate = new HashMap<>();
+        String identifier = satelliteTleData.getTLE().getName();
         // Name is either just a name, or a name and designator in brackets
         if (identifier.contains("(")) {
-            name = StringUtils.substringBefore(identifier, "(");
+            name = StringUtils.substringBefore(identifier, "(").trim();
             designator = StringUtils.substringAfter(identifier, "(");
             designator = StringUtils.substringBefore(designator, ")");
         } else {
             name = identifier;
             designator = "";
         }
+        satelliteTleDataForDate.put(date, satelliteTleData);
+    }
+
+    public void addTleData(LocalDate date, Satellite satellite) {
+        satelliteTleDataForDate.put(date, satellite);
     }
 
     @Override
@@ -48,8 +65,18 @@ public class NoradSatellite implements ApSatellite {
         return getName();
     }
 
+    public Satellite getSatelliteTleDataForDate(LocalDate date) {
+        Satellite satellite = satelliteTleDataForDate.get(date);
+        if (satellite == null) {
+            satellite = satelliteTleDataForDate.get(LocalDate.now());
+        }
+        return satellite;
+    }
+
     @Override
     public GlobalCoords3D getPosition(GlobalCoords3D coords, LocalDate date, LocalTime time) {
+        Satellite satellite = getSatelliteTleDataForDate(date);
+
         GroundStationPosition groundStationPosition = new GroundStationPosition(coords.getLatitude(), coords.getLongitude(), coords.getAltitude());
         LocalDateTime dateTime = LocalDateTime.of(date, time);
         ZonedDateTime utcDateTime = dateTime.atZone(ZoneId.of("UTC"));
