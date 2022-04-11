@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SotaCsvFileReaderTest {
 
     @Test
-    public void testSotaCsvConverter() throws IOException {
+    public void testSotaCsvReader() throws IOException {
         String filename = "./target/test-classes/sotacsv/M0NOM_567534_activator_20210928.csv";
 
         SotaCsvFileReader reader = new SotaCsvFileReader();
