@@ -23,7 +23,9 @@ import uk.m0nom.adifproc.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @Service
@@ -42,6 +44,7 @@ public class KmlWriter {
         KmlLocalActivities kmlLocalActivities = new KmlLocalActivities();
         KmlStationUtils kmlStationUtils = new KmlStationUtils(control);
         KmlSatelliteTrack kmlSatelliteTrack = new KmlSatelliteTrack();
+        Map<String,String> commsStyleMap = new HashMap<>();
 
         final Kml kml = new Kml();
         Document doc = kml.createAndSetDocument().withName(name).withOpen(true);
@@ -84,7 +87,7 @@ public class KmlWriter {
                     Folder localActivityFolder = contactFolder.createAndAddFolder().withName("Local Activity").withOpen(false);
                     kmlLocalActivities.addLocalActivities(control, doc, localActivityFolder, qso.getTo(), activities);
                 }
-                error = kmlCommsService.createCommsLink(doc, contactFolder, qso, control, kmlStationUtils);
+                error = kmlCommsService.createCommsLink(doc, contactFolder, commsStyleMap, qso, control, kmlStationUtils);
                 if (error != null) {
                     results.setError(error);
                 }

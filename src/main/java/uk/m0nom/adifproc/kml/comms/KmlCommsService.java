@@ -19,7 +19,6 @@ import uk.m0nom.adifproc.kml.KmlUtils;
 import uk.m0nom.adifproc.kml.info.KmlContactInfoPanel;
 import uk.m0nom.adifproc.kml.station.KmlStationUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -30,13 +29,11 @@ public class KmlCommsService {
 
     private final ActivityDatabaseService activityDatabaseService;
     private final CommsVisualizationService commsVisualizationService;
-    private final Map<String,String> commsStyleMap;
     private KmlBandLineStyles bandLineStyles;
 
     public KmlCommsService(ActivityDatabaseService activities, CommsVisualizationService commsVisualizationService) {
         this.activityDatabaseService = activities;
         this.commsVisualizationService = commsVisualizationService;
-        commsStyleMap = new HashMap<>();
     }
 
     public static String getCommsLinkId(Qso qso) {
@@ -61,7 +58,7 @@ public class KmlCommsService {
         return id.replaceAll(" ", "_");
     }
 
-    public String createCommsLink(Document document, Folder folder, Qso qso, TransformControl control, KmlStationUtils stationUtils) {
+    public String createCommsLink(Document document, Folder folder, Map<String, String> commsStyleMap, Qso qso, TransformControl control, KmlStationUtils stationUtils) {
         bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());
         String commsLinkId = getCommsLinkId(qso);
         String commsLinkName = getCommsLinkName(qso);
