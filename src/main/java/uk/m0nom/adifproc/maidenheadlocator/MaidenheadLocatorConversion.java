@@ -56,23 +56,27 @@ public class MaidenheadLocatorConversion {
 
         double longitude, latitude;
 
-        if (matcher10Char.matches()) {
-            longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.0) / 12 + (locator[6] - '0' + 0.0) / 120 + (locator[8] - 'A' + 0.5) / 120 / 24 - 180;
-            latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.0) / 24 + (locator[7] - '0' + 0.0) / 240 + (locator[9] - 'A' + 0.5) / 240 / 24 - 90;
-            return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.MHL10);
-        } else if (matcher8Char.matches()) {
-            longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.0) / 12 + (locator[6] - '0' + 0.5) / 120 - 180;
-            latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.0) / 24 + (locator[7] - '0' + 0.5) / 240 - 90;
-            return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.MHL8);
-        } else if (matcher6Char.matches()) {
-            longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.5) / 12 - 180;
-            latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.5) / 24 - 90;
-            return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.MHL6);
-        } else if (matcher4Char.matches()) {
-            latitude = (locator[1] - 'A') * 10 + (locator[3] - '0' + 0.5) - 90;
-            longitude = (locator[0] - 'A') * 20 + (locator[2] - '0' + 0.5) * 2 - 180;
-            return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.MHL4);
-        } else {
+        try {
+            if (matcher10Char.matches()) {
+                longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.0) / 12 + (locator[6] - '0' + 0.0) / 120 + (locator[8] - 'A' + 0.5) / 120 / 24 - 180;
+                latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.0) / 24 + (locator[7] - '0' + 0.0) / 240 + (locator[9] - 'A' + 0.5) / 240 / 24 - 90;
+                return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.MHL10);
+            } else if (matcher8Char.matches()) {
+                longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.0) / 12 + (locator[6] - '0' + 0.5) / 120 - 180;
+                latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.0) / 24 + (locator[7] - '0' + 0.5) / 240 - 90;
+                return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.MHL8);
+            } else if (matcher6Char.matches()) {
+                longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.5) / 12 - 180;
+                latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.5) / 24 - 90;
+                return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.MHL6);
+            } else if (matcher4Char.matches()) {
+                latitude = (locator[1] - 'A') * 10 + (locator[3] - '0' + 0.5) - 90;
+                longitude = (locator[0] - 'A') * 20 + (locator[2] - '0' + 0.5) * 2 - 180;
+                return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.MHL4);
+            } else {
+                throw new UnsupportedOperationException(String.format("Invalid locator format: %s", locatorTrimmed));
+            }
+        } catch (Exception e) {
             throw new UnsupportedOperationException(String.format("Invalid locator format: %s", locatorTrimmed));
         }
     }

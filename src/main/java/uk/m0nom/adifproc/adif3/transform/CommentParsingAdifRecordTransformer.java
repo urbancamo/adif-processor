@@ -143,7 +143,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             qso.getTo().setCoordinates(coords);
             qso.getTo().setGrid(rec.getGridsquare());
         } catch (UnsupportedOperationException e) {
-            logger.warning(e.getMessage());
+            logger.warning(String.format("For QSO with %s: %s", qso.getTo().getCallsign(), e.getMessage()));
             return false;
         }
         return true;
