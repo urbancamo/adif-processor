@@ -34,7 +34,7 @@ public class ApSatellites {
     }
 
     /**
-     * Retrieve a satellite using either the name or designator
+     * Retrieve a satellite using the name, designator or alias
      * @param id may be either a name or designator
      * @return satellite if loaded with either the name or designator
      */

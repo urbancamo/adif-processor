@@ -24,7 +24,9 @@ public class CommsLinkResult {
     private List<PropagationApex> apexes;
     private List<GlobalCoords3D> path;
     private GlobalCoords3D satellitePosition;
-    private String error;
+    private String error = null;
+    private String unknownSatellite = null;
+    private boolean unknownSatellitePass = false;
 
     public CommsLinkResult() {
         path = new ArrayList<>();
@@ -37,7 +39,7 @@ public class CommsLinkResult {
     }
 
     public boolean isValid() {
-        return error == null;
+        return error == null && unknownSatellite == null && !unknownSatellitePass;
     }
 }
 

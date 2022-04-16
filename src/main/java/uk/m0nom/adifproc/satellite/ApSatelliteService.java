@@ -3,6 +3,7 @@ package uk.m0nom.adifproc.satellite;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.satellite.norad.NoradSatelliteOrbitReader;
 import uk.m0nom.adifproc.satellite.satellites.QO100;
+import uk.m0nom.adifproc.satellite.satellites.SatelliteNameAliases;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -16,10 +17,15 @@ public class ApSatelliteService {
 
     private final NoradSatelliteOrbitReader noradSatelliteOrbitReader;
 
+    private final SatelliteNameAliases satelliteNameAliases;
+
     private final ApSatellites satellites;
 
-    public ApSatelliteService(NoradSatelliteOrbitReader noradSatelliteOrbitReader) {
+    private final LocalDate earliestDataAvailable = LocalDate.of(2022, 02, 23);
+
+    public ApSatelliteService(NoradSatelliteOrbitReader noradSatelliteOrbitReader, SatelliteNameAliases satelliteNameAliases) {
         satellites = new ApSatellites();
+        this.satelliteNameAliases = satelliteNameAliases;
 
         this.noradSatelliteOrbitReader = noradSatelliteOrbitReader;
         satellites.addOrReplace(new QO100(), null);
@@ -37,8 +43,25 @@ public class ApSatelliteService {
         } else if (!satellites.hasDataFor(date)) {
             noradSatelliteOrbitReader.loadTleDataFromArchive(satellites, date);
         }
-        return satellites.get(id.toUpperCase());
+        return getSatellite(id);
     }
+
+    public ApSatellite getSatellite(String id) {
+        return getSatelliteByNameIdOrAlias(id);
+    }
+
+    public ApSatellite getSatelliteByNameIdOrAlias(String id) {
+        String satName = satelliteNameAliases.getSatelliteName(id.toUpperCase());
+        if (satName == null) {
+            satName = id.toUpperCase();
+        }
+        return satellites.get(satName);
+    }
+
+
+     public boolean isAKnownSatellite(String id) {
+        return getSatellite(id) != null;
+     }
 
     public Collection<String> getSatelliteNames() {
         loadCurrentNoradSatelliteTleDataIfRequired();
@@ -49,4 +72,6 @@ public class ApSatelliteService {
         loadCurrentNoradSatelliteTleDataIfRequired();
         return satellites.getSatelliteCount();
     }
+
+    public LocalDate getEarliestDataAvailable() { return earliestDataAvailable; }
 }

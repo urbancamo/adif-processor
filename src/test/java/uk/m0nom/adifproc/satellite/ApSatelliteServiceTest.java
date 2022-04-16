@@ -42,4 +42,17 @@ public class ApSatelliteServiceTest {
         NoradSatellite noradSatellite = (NoradSatellite) satellite;
         assertThat(noradSatellite.getSatelliteTleDataForDate(date)).isNotNull();
     }
+
+    @Test
+    public void testHistorySatelliteReadUsingAlias() {
+        LocalDate date = LocalDate.of(2022,4,1);
+
+        ApSatellite satellite = apSatelliteService.getSatellite("ARISS", date);
+        assertThat(satellite).isNotNull();
+        assertThat(satellite).isInstanceOf(NoradSatellite.class);
+        NoradSatellite noradSatellite = (NoradSatellite) satellite;
+        assertThat(noradSatellite.getName()).isEqualTo("ISS");
+        assertThat(noradSatellite.getSatelliteTleDataForDate(date)).isNotNull();
+
+    }
 }
