@@ -40,10 +40,14 @@ public class NoradSatelliteOrbitReader {
         this.internalFileService = internalFileService;
     }
 
-    public void loadTleDataFromArchive(ApSatellites satellites, LocalDate date) {
+    public boolean loadTleDataFromArchive(ApSatellites satellites, LocalDate date) {
         String filename = String.format("%s-amateur.txt", dateFormatter.format(date));
         String tleDefinitions = internalFileService.readFile(NORAD_S3_FOLDER, filename);
-        parseTleData(satellites, tleDefinitions, date);
+        if (tleDefinitions != null) {
+            parseTleData(satellites, tleDefinitions, date);
+            return true;
+        }
+        return false;
     }
 
     public void loadCurrentSatelliteTleDataFromCelestrak(ApSatellites satellites) {

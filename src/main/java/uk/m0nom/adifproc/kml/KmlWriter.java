@@ -20,6 +20,7 @@ import uk.m0nom.adifproc.kml.comms.KmlSatelliteTrack;
 import uk.m0nom.adifproc.kml.info.TemplateEngineConstructor;
 import uk.m0nom.adifproc.kml.station.KmlStationUtils;
 import uk.m0nom.adifproc.maidenheadlocator.MaidenheadLocatorConversion;
+import uk.m0nom.adifproc.zip.ZipUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class KmlWriter {
         this.kmlCommsService = kmlCommsService;
     }
 
-    public void write(TransformControl control, String pathname, String name, ActivityDatabaseService activities, Qsos qsos, TransformResults results) {
+    public String write(TransformControl control, String pathname, String name, ActivityDatabaseService activities, Qsos qsos, TransformResults results) {
         control.setTemplateEngine(TemplateEngineConstructor.create());
 
         KmlLocalActivities kmlLocalActivities = new KmlLocalActivities();
@@ -113,9 +114,12 @@ public class KmlWriter {
                 String kmlContent = FileUtils.readFileToString(file, "UTF-8");
                 kmlContent = kmlContent.replaceAll("ns2:", "").replace("<kml xmlns:ns2=\"http://www.opengis.net/kml/2.2\" xmlns:ns3=\"http://www.w3.org/2005/Atom\" xmlns:ns4=\"urn:oasis:names:tc:ciq:xsdschema:xAL:2.0\" xmlns:ns5=\"http://www.google.com/kml/ext/2.2\">", "<kml>");
                 FileUtils.write(file, kmlContent, "UTF-8");
+                return ZipUtils.compress(pathname, "kmz");
             } catch (IOException e) {
                 results.setError(e.getMessage());
+                return "";
             }
         }
+        return "";
     }
 }

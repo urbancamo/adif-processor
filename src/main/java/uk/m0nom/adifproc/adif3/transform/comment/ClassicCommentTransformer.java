@@ -294,7 +294,7 @@ public class ClassicCommentTransformer implements CommentTransformer {
                         rec.setPropMode(mode);
                         break;
                     case "SatelliteName":
-                        if (apSatelliteService.getSatellite(value, rec.getQsoDate())  != null) {
+                        if (apSatelliteService.getSatellite(value, rec.getQsoDate()) != null) {
                             rec.setSatName(value.toUpperCase());
                         } else {
                             logger.warning(String.format("Satellite: %s isn't currently supported", value));

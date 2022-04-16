@@ -32,8 +32,13 @@ public class SatellitePropagationService implements CommsLinkGenerator {
         if (rec.getSatName() != null) {
             ApSatellite apSatellite = apSatelliteService.getSatellite(rec.getSatName(), rec.getQsoDate());
             if (apSatellite == null) {
-                result.setError(String.format("Unknown satellite: %s", rec.getSatName()));
+                result.setUnknownSatellite(rec.getSatName());
                 return result;
+            } else {
+                if (rec.getQsoDate().isBefore(apSatelliteService.getEarliestDataAvailable())) {
+                    result.setUnknownSatellitePass(true);
+                    return result;
+                }
             }
             apSatellite.updateAdifRec(control, rec);
             GlobalCoords3D satelliteLocation = apSatellite.getPosition(start, rec.getQsoDate(), rec.getTimeOn());

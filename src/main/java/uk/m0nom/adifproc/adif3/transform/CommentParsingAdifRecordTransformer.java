@@ -227,7 +227,15 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
 
         if (rec.getSatName() != null) {
-            results.getSatelliteActivity().recordSatelliteActivity(qso);
+            if (apSatelliteService.isAKnownSatellite(rec.getSatName())) {
+                if (apSatelliteService.getEarliestDataAvailable().isBefore(rec.getQsoDate())) {
+                    results.getSatelliteActivity().recordSatelliteActivity(qso);
+                } else {
+                    results.addUnknownSatellitePass(String.format("%s: %s", rec.getSatName(), rec.getQsoDate()));
+                }
+            } else {
+                results.addUnknownSatellite(rec.getSatName());
+            }
         }
     }
 

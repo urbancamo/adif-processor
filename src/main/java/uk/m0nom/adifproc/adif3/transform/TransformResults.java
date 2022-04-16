@@ -7,6 +7,8 @@ import uk.m0nom.adifproc.satellite.SatelliteActivity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,11 +19,15 @@ public class TransformResults {
     private String error = "";
     private Collection<String> contactsWithoutLocation;
     private Collection<String> contactsWithDubiousLocation;
+    private Set<String> unknownSatellites;
+    private Set<String> unknownSatellitePasses;
     private SatelliteActivity satelliteActivity;
 
     public TransformResults() {
         contactsWithoutLocation = new ArrayList<>();
         contactsWithDubiousLocation = new ArrayList<>();
+        unknownSatellites = new HashSet<>();
+        unknownSatellitePasses = new HashSet<>();
         satelliteActivity = new SatelliteActivity();
     }
 
@@ -40,4 +46,8 @@ public class TransformResults {
     public void addContactWithDubiousLocation(String callsign) {
         contactsWithDubiousLocation.add(callsign);
     }
+
+    public void addUnknownSatellite(String satellite) { unknownSatellites.add(satellite); }
+
+    public void addUnknownSatellitePass(String satellitePass) { unknownSatellitePasses.add(satellitePass); }
 }
