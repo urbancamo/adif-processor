@@ -53,7 +53,7 @@ public class AdiWriter {
     public void append(String name, AdifEnumCode value) {
         if (value == null) return;
         String code = encode(value);
-        appendFieldHeader(name, code.length(), "E");
+        appendFieldHeader(name, code.length());
         builder.append(code);
     }
 
