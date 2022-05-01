@@ -24,6 +24,7 @@ import uk.m0nom.adifproc.location.ToLocationDeterminer;
 import uk.m0nom.adifproc.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.adifproc.qrz.CachingQrzXmlService;
 import uk.m0nom.adifproc.qrz.QrzCallsign;
+import uk.m0nom.adifproc.satellite.ApSatellite;
 import uk.m0nom.adifproc.satellite.ApSatelliteService;
 
 import java.util.HashMap;
@@ -228,7 +229,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
         if (rec.getSatName() != null) {
             if (apSatelliteService.isAKnownSatellite(rec.getSatName())) {
-                if (apSatelliteService.getEarliestDataAvailable().isBefore(rec.getQsoDate())) {
+                ApSatellite satellite = apSatelliteService.getSatellite(rec.getSatName());
+                if (satellite.isGeostationary() || apSatelliteService.getEarliestDataAvailable().isBefore(rec.getQsoDate())) {
                     results.getSatelliteActivity().recordSatelliteActivity(qso);
                 } else {
                     results.addUnknownSatellitePass(String.format("%s: %s", rec.getSatName(), rec.getQsoDate()));

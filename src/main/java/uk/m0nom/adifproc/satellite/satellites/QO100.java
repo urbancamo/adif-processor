@@ -47,4 +47,9 @@ public class QO100 implements ApSatellite {
         rec.setBand(Band.BAND_13cm);
         rec.setBandRx(Band.BAND_3cm);
     }
+
+    @Override
+    public boolean isGeostationary() {
+        return true;
+    }
 }

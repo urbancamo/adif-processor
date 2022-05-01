@@ -95,4 +95,9 @@ public class NoradSatellite implements ApSatellite {
     @Override
     public void updateAdifRec(TransformControl control, Adif3Record rec) {
     }
+
+    @Override
+    public boolean isGeostationary() {
+        return false;
+    }
 }
