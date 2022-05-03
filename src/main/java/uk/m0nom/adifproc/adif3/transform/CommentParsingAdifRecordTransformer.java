@@ -1,6 +1,7 @@
 package uk.m0nom.adifproc.adif3.transform;
 
 import org.apache.commons.lang3.StringUtils;
+import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Band;
 import org.marsik.ham.adif.enums.Propagation;
@@ -173,11 +174,26 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
     }
 
+    private boolean coordsAreZero(GlobalCoordinates coords) {
+        return coords.getLatitude() == 0.0 && coords.getLongitude() == 0.0;
+    }
+
+    private void nullCoordsIfZero(Adif3Record rec) {
+        if (rec.getCoordinates() != null && coordsAreZero(rec.getCoordinates())) {
+            rec.setCoordinates(null);
+        }
+        if (rec.getMyCoordinates() != null && coordsAreZero(rec.getMyCoordinates())) {
+            rec.setMyCoordinates(null);
+        }
+    }
+
     @Override
     public void transform(TransformControl control, TransformResults results, Qsos qsos, Adif3Record rec, int index) {
         Map<String, String> unmapped = new HashMap<>();
         results.getSatelliteActivity().setSatellites(apSatelliteService);
 
+        // A HAM Radio Log ADI input file had both my/their coords set to 0/0 - clearly these aren't right!
+        nullCoordsIfZero(rec);
 
         /* Add Adif3Record details to the Qsos meta structure */
         Qso qso = new Qso(rec, index);
