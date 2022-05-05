@@ -89,6 +89,8 @@ public class FieldParserCommentTransformer implements CommentTransformer {
                         results.setError(ErrorReporter.formatError(exception.getClassName(), exception.getMessageKey(), exception.getArgs()));
                     }
                 }
+
+                // TODO: remove from comment if option set
             }
             if (callsignWithInvalidActivity != null) {
                 results.addContactWithDubiousLocation(callsignWithInvalidActivity);
