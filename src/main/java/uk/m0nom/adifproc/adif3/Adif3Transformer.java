@@ -1,5 +1,6 @@
 package uk.m0nom.adifproc.adif3;
 
+import org.apache.commons.lang.StringUtils;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.AdifHeader;
@@ -24,25 +25,40 @@ public class Adif3Transformer {
     public Qsos transform(Adif3 log, TransformControl control, TransformResults results) throws UnsupportedHeaderException {
         Qsos qsos = new Qsos(log);
 
+        int firstError = 0;
         int index = 1;
+        String additionalInfo = "";
         boolean myCallsignIssue = false;
         boolean theirCallsignIssue = false;
         for (Adif3Record rec : log.getRecords()) {
             boolean haveMyCallsign = rec.getStationCallsign() != null || rec.getOperator() != null;
             boolean haveTheirCallsign = rec.getCall() != null;
             if (haveMyCallsign && haveTheirCallsign) {
-                transformer.transform(control, results, qsos, rec, index++);
+                transformer.transform(control, results, qsos, rec, index);
             } else {
-                myCallsignIssue |= haveMyCallsign;
-                theirCallsignIssue |= haveTheirCallsign;
+                if (!haveMyCallsign) {
+                    myCallsignIssue = true;
+                    if (firstError == 0) {
+                        firstError = index;
+                        additionalInfo = String.format("record %d %s", firstError, StringUtils.defaultIfEmpty(String.format(", their call: %s", rec.getCall()), ""));
+                    }
+                }
+                if (!haveTheirCallsign) {
+                    theirCallsignIssue = true;
+                    if (firstError == 0) {
+                        firstError = index;
+                        additionalInfo = String.format("record %d", firstError);
+                    }
+                }
             }
+            index++;
         }
 
         if (theirCallsignIssue) {
-            results.setError("Check you have CALLSIGN or OPERATOR defined for every record");
+            results.setError(String.format("CALL not defined for every record, first error on %s", additionalInfo));
         }
         else if (myCallsignIssue) {
-            results.setError("Check you have MY_CALLSIGN or MY_OPERATOR defined for every record");
+            results.setError(String.format("STATION_CALLSIGN or OPERATOR not defined for every record, first error on %s", additionalInfo));
         }
 
         AdifHeader header = new AdifHeader();
