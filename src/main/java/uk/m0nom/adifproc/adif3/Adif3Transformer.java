@@ -40,7 +40,7 @@ public class Adif3Transformer {
                     myCallsignIssue = true;
                     if (firstError == 0) {
                         firstError = index;
-                        additionalInfo = String.format("record %d %s", firstError, StringUtils.defaultIfEmpty(String.format(", their call: %s", rec.getCall()), ""));
+                        additionalInfo = String.format("record %d%s", firstError, StringUtils.defaultIfEmpty(String.format(", their call: %s", rec.getCall()), ""));
                     }
                 }
                 if (!haveTheirCallsign) {
