@@ -47,6 +47,7 @@ public class CommentFieldParserFactory {
         parserMap.put("SatelliteName", new SatelliteNameFieldParser(apSatelliteService));
         parserMap.put("SatelliteMode", new SatelliteModeFieldParser());
         parserMap.put("Notes", new NotesFieldParser());
+        parserMap.put("Web", new WebFieldParser());
     }
 
     public CommentFieldParser get(String name) {

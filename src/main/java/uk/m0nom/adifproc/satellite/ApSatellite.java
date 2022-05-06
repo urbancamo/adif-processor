@@ -16,4 +16,5 @@ public interface ApSatellite {
     String getIdentifier();
     GlobalCoords3D getPosition(GlobalCoords3D groundStation, LocalDate date, LocalTime time);
     void updateAdifRec(TransformControl control, Adif3Record rec);
+    boolean isGeostationary();
 }

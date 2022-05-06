@@ -17,6 +17,6 @@ public class LongitudeParser implements CommentFieldParser {
         } catch (NumberFormatException e) {
             throw new CommentFieldParserException(this.getClass().getName(), "parseError", qso, false, rec.getCall(), rec.getTimeOn().toString(), value);
         }
-        return new FieldParseResult(longitude, null);
+        return new FieldParseResult(null, longitude);
     }
 }

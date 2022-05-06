@@ -11,6 +11,7 @@ import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.geodesic.GeodesicUtils;
 import uk.m0nom.adifproc.satellite.ApSatellite;
 import uk.m0nom.adifproc.satellite.ApSatelliteService;
+import uk.m0nom.adifproc.satellite.norad.NoradSatellite;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class SatellitePropagationService implements CommsLinkGenerator {
                 result.setUnknownSatellite(rec.getSatName());
                 return result;
             } else {
-                if (rec.getQsoDate().isBefore(apSatelliteService.getEarliestDataAvailable())) {
+                if (apSatellite instanceof NoradSatellite && rec.getQsoDate().isBefore(apSatelliteService.getEarliestDataAvailable())) {
                     result.setUnknownSatellitePass(true);
                     return result;
                 }

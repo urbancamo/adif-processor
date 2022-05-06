@@ -30,9 +30,7 @@ public class FieldParserCommentTransformer implements CommentTransformer {
     private final CommentTokenizer tokenizer;
     private final TransformerConfig config;
 
-    public FieldParserCommentTransformer(TransformerConfig config,
-                                         CommentFieldParserFactory factory,
-                                         ColonTokenizer tokenizer) {
+    public FieldParserCommentTransformer(TransformerConfig config, CommentFieldParserFactory factory, ColonTokenizer tokenizer) {
         this.config = config;
         this.tokenizer = tokenizer;
         this.factory = factory;
@@ -91,6 +89,8 @@ public class FieldParserCommentTransformer implements CommentTransformer {
                         results.setError(ErrorReporter.formatError(exception.getClassName(), exception.getMessageKey(), exception.getArgs()));
                     }
                 }
+
+                // TODO: remove from comment if option set
             }
             if (callsignWithInvalidActivity != null) {
                 results.addContactWithDubiousLocation(callsignWithInvalidActivity);
@@ -98,14 +98,14 @@ public class FieldParserCommentTransformer implements CommentTransformer {
         }
 
         if (coords != null || (latitude != null && longitude != null)) {
-        if (coords == null) {
-            coords = new GlobalCoords3D(latitude, longitude, LocationSource.OVERRIDE, LocationAccuracy.LAT_LONG);
+            if (coords == null) {
+                coords = new GlobalCoords3D(latitude, longitude, LocationSource.OVERRIDE, LocationAccuracy.LAT_LONG);
+            }
+            qso.getTo().setCoordinates(coords);
+            rec.setCoordinates(coords);
+            rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(coords));
+            logger.info(String.format("Override location of %s: %s", rec.getCall(), rec.getCoordinates().toString()));
         }
-        qso.getTo().setCoordinates(coords);
-        rec.setCoordinates(coords);
-        rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(coords));
-        logger.info(String.format("Override location of %s: %s", rec.getCall(), rec.getCoordinates().toString()));
-    }
 
-}
+    }
 }

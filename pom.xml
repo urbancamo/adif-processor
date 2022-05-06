@@ -7,14 +7,14 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.6.6</version>
+    <version>2.6.7</version>
   </parent>
 
   <description>ADIF Processor visualizes contacts in your input file on Google Earth. It generates a Google Earth Project file, also known as a KML file, for each contact in the ADIF/SOTA CSV input file.</description>
 
   <groupId>uk.m0nom</groupId>
   <artifactId>adif-processor</artifactId>
-  <version>1.0.27-SNAPSHOT</version>
+  <version>1.0.31</version>
 
   <name>adif-processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
@@ -215,16 +215,41 @@
       <version>3.0.1</version>
     </dependency>
 
+    <!-- This will need overriding until there is a maven-gpg-plugin > 3.0.1 -->
+    <!-- https://mvnrepository.com/artifact/org.apache.maven/maven-core -->
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>3.8.5</version>
+    </dependency>
+
+    <!-- This will need overriding until there is a maven-gpg-plugin > 3.0.1 -->
+    <!-- https://mvnrepository.com/artifact/org.apache.maven.shared/maven-shared-utils -->
+    <dependency>
+      <groupId>org.apache.maven.shared</groupId>
+      <artifactId>maven-shared-utils</artifactId>
+      <version>3.3.4</version>
+    </dependency>
+
+    <!-- This will need overriding until there is a maven-gpg-plugin > 3.0.1 -->
+    <!-- https://mvnrepository.com/artifact/org.apache.maven/maven-settings -->
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-settings</artifactId>
+      <version>3.8.5</version>
+    </dependency>
+
+
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk</artifactId>
-      <version>1.12.173</version>
+      <version>1.12.206</version>
     </dependency>
 
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-junit-jupiter</artifactId>
-      <version>4.3.1</version>
+      <version>4.5.1</version>
       <scope>test</scope>
     </dependency>
 

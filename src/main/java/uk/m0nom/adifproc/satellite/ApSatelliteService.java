@@ -1,6 +1,7 @@
 package uk.m0nom.adifproc.satellite;
 
 import org.springframework.stereotype.Service;
+import uk.m0nom.adifproc.satellite.norad.NoradSatellite;
 import uk.m0nom.adifproc.satellite.norad.NoradSatelliteOrbitReader;
 import uk.m0nom.adifproc.satellite.satellites.QO100;
 import uk.m0nom.adifproc.satellite.satellites.SatelliteNameAliases;
@@ -38,12 +39,16 @@ public class ApSatelliteService {
     }
 
     public ApSatellite getSatellite(String id, LocalDate date) {
-        if (LocalDate.now().isEqual(date)) {
-            loadCurrentNoradSatelliteTleDataIfRequired();
-        } else if (!satellites.hasDataFor(date)) {
-            noradSatelliteOrbitReader.loadTleDataFromArchive(satellites, date);
+        ApSatellite satellite = getSatellite(id);
+        if (satellite == null || satellite instanceof NoradSatellite) {
+            if (LocalDate.now().isEqual(date)) {
+                loadCurrentNoradSatelliteTleDataIfRequired();
+            } else if (!satellites.hasDataFor(date)) {
+                noradSatelliteOrbitReader.loadTleDataFromArchive(satellites, date);
+            }
+            satellite = getSatellite(id);
         }
-        return getSatellite(id);
+        return satellite;
     }
 
     public ApSatellite getSatellite(String id) {
