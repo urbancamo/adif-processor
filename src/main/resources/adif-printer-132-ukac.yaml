@@ -16,7 +16,7 @@ page:
   bottomMargin: 1
   leftMargin:   0
   rightMargin:  0
-  columnSeparator: ''
+  columnSeparator: ' '
 columns:
   - column:
       adif: 'QSO_DATE'
