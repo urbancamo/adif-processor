@@ -32,7 +32,7 @@ public class Qsos {
         if (fromCallsign == null) {
             if (qso.getRecord().getOperator() != null) {
                 fromCallsign = qso.getRecord().getOperator();
-                logger.warning(String.format("Station callsign not set in ADIF file, falling back to operator: %s", fromCallsign));
+                //logger.warning(String.format("Station callsign not set in ADIF file, falling back to operator: %s", fromCallsign));
                 qso.getRecord().setStationCallsign(fromCallsign);
             } else {
                 logger.severe(String.format("Could not determine station callsign for ADIF record at %s with %s", qso.getRecord().getTimeOn(), qso.getRecord().getCall()));
