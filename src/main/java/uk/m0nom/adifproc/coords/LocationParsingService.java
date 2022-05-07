@@ -36,6 +36,7 @@ public class LocationParsingService {
         parsers.add(new OsGb36Parser5Digit());
         parsers.add(new OsGb36Parser4Digit());
         parsers.add(new OsGb36Parser3Digit());
+        parsers.add(new IrishGridParser5Digit());
     }
 
     public LocationParserResult parseStringForCoordinates(LocationSource source, String value) {
