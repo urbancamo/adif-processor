@@ -14,7 +14,7 @@
 
   <groupId>uk.m0nom</groupId>
   <artifactId>adif-processor</artifactId>
-  <version>1.0.33</version>
+  <version>1.0.34</version>
 
   <name>adif-processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
@@ -411,6 +411,7 @@
           <target>11</target>
         </configuration>
       </plugin>
+      <!-- This generates the standalone version of the adif-processor with dependencies, if required
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -432,7 +433,7 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
     </plugins>
     <resources>
       <resource>

@@ -6,8 +6,6 @@ import java.util.regex.Pattern;
 public class CoordinateWriter {
     private static final Pattern LAT_RE = Pattern.compile("([NS]) ?([0-9]{0,3}) +([0-9]{1,2}(\\.[0-9]+)?)", Pattern.CASE_INSENSITIVE);
     private static final Pattern LON_RE = Pattern.compile("([EW]) ?([01]?[0-9]{0,3}) +([0-9]{1,2}(\\.[0-9]+)?)", Pattern.CASE_INSENSITIVE);
-    private static final Pattern LAT_LOGOM_RE = Pattern.compile("([-]*[0-9]{0,3}\\.[0-9]+)", Pattern.CASE_INSENSITIVE);
-    private static final Pattern LON_LOGOM_RE = Pattern.compile("([-]*[0-9]{0,3}\\.[0-9]+)", Pattern.CASE_INSENSITIVE);
 
     private static String getLatitudePrefix(Double lat) {
         return lat >= 0.0 ? "N" : "S";
@@ -39,31 +37,33 @@ public class CoordinateWriter {
 
     public static double dmToLat(String string) {
         Matcher matcher = LAT_RE.matcher(string);
-        Matcher matcherOm = LAT_LOGOM_RE.matcher(string);
         if (matcher.matches()) {
             String prefix = matcher.group(1);
             int deg = Integer.parseInt(matcher.group(2));
             double min = Double.parseDouble(matcher.group(3));
             return (prefix.equalsIgnoreCase("N") ? 1 : -1) * (deg + (min / 60.0));
-        } else if (matcherOm.matches()) {
-            return Double.parseDouble(matcherOm.group(1));
         } else {
-            throw new IllegalArgumentException(String.format("Bad latitude format: '%s'", string));
+            try {
+                return Double.parseDouble(string);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException(String.format("Bad latitude format: '%s'", string));
+            }
         }
     }
 
     public static double dmToLon(String string) {
         Matcher matcher = LON_RE.matcher(string);
-        Matcher matcherOm = LON_LOGOM_RE.matcher(string);
         if (matcher.matches()) {
             String prefix = matcher.group(1);
             int deg = Integer.parseInt(matcher.group(2));
             double min = Double.parseDouble(matcher.group(3));
             return (prefix.equalsIgnoreCase("E") ? 1 : -1) * (deg + (min / 60.0));
-        } else if (matcherOm.matches()) {
-            return Double.parseDouble(matcherOm.group(1));
         } else {
-            throw new IllegalArgumentException("Bad longitude format");
+            try {
+                return Double.parseDouble(string);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException(String.format("Bad longitude format: '%s'", string));
+            }
         }
     }
 }
