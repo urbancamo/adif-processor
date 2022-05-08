@@ -16,6 +16,9 @@ public class Qso {
     private Station to;
     private Adif3Record record;
 
+    private Double myAltitude = 0.0;
+    private Double theirAltitude = 0.0;
+
     public Qso(Adif3Record rec, int index) {
         setIndex(index);
         setRecord(rec);

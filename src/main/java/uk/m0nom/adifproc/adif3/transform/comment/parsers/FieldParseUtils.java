@@ -22,4 +22,18 @@ public class FieldParseUtils {
             pwr = StringUtils.replace(pwr, "k", "000");
         }
         return Double.parseDouble(pwr);
-    }}
+    }
+
+    public static double parseAlt(String value) throws NumberFormatException {
+        String alt = value.toLowerCase().trim();
+        double multiplier = 1;
+
+        if (alt.endsWith("ft")) {
+            multiplier = 1.0/3.28084;
+            alt = StringUtils.replace(alt, "ft", "").trim();
+        } else if (alt.endsWith("m")) {
+            alt = StringUtils.replace(alt, "m", "").trim();
+        }
+        return Double.parseDouble(alt) * multiplier;
+    }
+}

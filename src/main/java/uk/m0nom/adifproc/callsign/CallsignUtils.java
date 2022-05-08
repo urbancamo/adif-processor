@@ -16,6 +16,7 @@ public class CallsignUtils {
             CallsignSuffix.PORTABLE,
             CallsignSuffix.MOBILE,
             CallsignSuffix.MARITIME_MOBILE,
+            CallsignSuffix.AERONAUTICAL_MOBILE,
             CallsignSuffix.PEDESTRIAN_MOBILE,
             CallsignSuffix.ALTERNATIVE_ADDRESS,
             CallsignSuffix.QRP

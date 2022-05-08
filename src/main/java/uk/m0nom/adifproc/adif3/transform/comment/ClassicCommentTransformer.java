@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import static uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseUtils.parseAlt;
 import static uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseUtils.parsePwr;
 
 /**
@@ -305,6 +306,14 @@ public class ClassicCommentTransformer implements CommentTransformer {
                         break;
                     case "Notes":
                         rec.setNotes(value);
+                        break;
+                    case "Alt":
+                        try {
+                            qso.setTheirAltitude(parseAlt(value));
+                        } catch (NumberFormatException nfe) {
+                            logger.warning(String.format("Couldn't parse their altitude field: %s, leaving it unmapped", value));
+                            unmapped.put(key, value);
+                        }
                         break;
                 }
             } else {

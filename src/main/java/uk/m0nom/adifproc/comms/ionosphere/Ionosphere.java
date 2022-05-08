@@ -1,8 +1,8 @@
 package uk.m0nom.adifproc.comms.ionosphere;
 
 import org.marsik.ham.adif.enums.Propagation;
-import uk.m0nom.adifproc.comms.PropagationModePredictor;
 import uk.m0nom.adifproc.comms.PropagationApex;
+import uk.m0nom.adifproc.comms.PropagationModePredictor;
 
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -81,6 +81,12 @@ public class Ionosphere {
                         double hopDistance = apexResult.getDistanceAcrossEarth() * 2.0;
                         PropagationApex bounce = new PropagationApex(mode, hopDistance, apexResult.getDistanceToApex()*1000, altInKm*1000, 0, apexResult.getRadiationAngle());
                         bounces.add(bounce);
+                    }
+                    if (myAltitude > 0.0) {
+                        bounces.get(0).setBaseHeight(myAltitude);
+                    }
+                    if (theirAltitude > 0.0) {
+                        bounces.get(hops-1).setBaseHeight(theirAltitude);
                     }
                     break;
                 case SPORADIC_E:

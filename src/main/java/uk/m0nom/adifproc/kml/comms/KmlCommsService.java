@@ -95,6 +95,9 @@ public class KmlCommsService {
                 theirAltitude = summitInfo.getAltitude();
             }
         }
+        if (qso.getTheirAltitude() != null) {
+            theirAltitude = qso.getTheirAltitude();
+        }
 
         GlobalCoords3D myCoords = new GlobalCoords3D(rec.getMyCoordinates(), myAltitude);
         GlobalCoords3D coords = new GlobalCoords3D(rec.getCoordinates(), theirAltitude);

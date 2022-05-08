@@ -8,7 +8,7 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 @Setter
 public class GlobalCoords3D extends GlobalCoordinates {
     private LocationInfo locationInfo;
-    private Double altitude;
+    private Double altitude = 0.0;
 
     public GlobalCoords3D(double latitude, double longitude) {
         super(latitude, longitude);

@@ -78,6 +78,8 @@ public class CommandLineArgs {
                 .help("URL of the icon to use for fixed/home station locations");
         parser.addArgument("-kmmi", "--kml-maritime-station").required(false).setDefault("https://maps.google.com/mapfiles/kml/shapes/sailing.png")
                 .help("URL of the icon to use for maritime mobile station locations");
+        parser.addArgument("-kmai", "--kml-aeronautical-station").required(false).setDefault("http://maps.google.com/mapfiles/kml/shapes/airports.png")
+                .help("URL of the icon to use for aeronautical mobile station locations");
         parser.addArgument("-kparki", "--kml-park-station").required(false).setDefault("https://maps.google.com/mapfiles/kml/shapes/picnic.png")
                 .help("URL of the icon to use for Parks on the Air station locations");
         parser.addArgument("-ksotai", "--kml-sota-station").required(false).setDefault("https://maps.google.com/mapfiles/kml/shapes/mountains.png")
@@ -114,6 +116,7 @@ public class CommandLineArgs {
             control.setIcon(IconResource.MOBILE_ICON_NAME, ns.getString("kml_mobile_station"));
             control.setIcon(IconResource.PORTABLE_ICON_NAME, ns.getString("kml_portable_station"));
             control.setIcon(IconResource.MARITIME_MOBILE_ICON_NAME, ns.getString("kml_maritime_station"));
+            control.setIcon(IconResource.AERONAUTICAL_MOBILE_ICON_NAME, ns.getString("kml_aeronautical_station"));
 
             for (ActivityType activity : ActivityType.values()) {
                 control.setIcon(activity.getActivityName(), String.format("kml_%s_station", activity.getActivityName().toLowerCase()));

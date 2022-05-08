@@ -12,6 +12,7 @@ public enum CallsignSuffix {
     PORTABLE("/P", "Portable"),
     MOBILE("/M", "Mobile"),
     MARITIME_MOBILE("/MM", "Maritime Mobile"),
+    AERONAUTICAL_MOBILE("/AM", "Aeronautical Mobile"),
     PEDESTRIAN_MOBILE("/PM", "Pedestrian Mobile"),
     ALTERNATIVE_ADDRESS("/A", "Alternate Address"),
     QRP("/QRP", "QRP Low Power");

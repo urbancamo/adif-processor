@@ -63,6 +63,8 @@ public class KmlStationUtils {
         }
         double longitude = coords.getLongitude();
         double latitude = coords.getLatitude();
+        double altitude = qso.getMyAltitude();
+
         String callsign = qso.getFrom().getCallsign();
         Folder myFolder = folder.createAndAddFolder().withName(callsign).withOpen(false);
 
@@ -85,7 +87,7 @@ public class KmlStationUtils {
                 // 3D chart image
                 .withDescription(htmlPanelContent)
                 // coordinates and distance (zoom level) of the viewer
-                .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(0).withRange(DEFAULT_RANGE_METRES);
+                .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(altitude).withRange(DEFAULT_RANGE_METRES);
 
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
 
@@ -145,6 +147,7 @@ public class KmlStationUtils {
         GlobalCoordinates coords = rec.getCoordinates();
         double longitude = coords.getLongitude();
         double latitude = coords.getLatitude();
+        double altitude = qso.getTheirAltitude();
 
         IconResource icon = IconResource.getIconFromStation(control, qso.getTo());
         if (!iconStyles.contains(icon.getName())) {
@@ -171,11 +174,15 @@ public class KmlStationUtils {
                 // 3D chart image
                 .withDescription(htmlPanelContent)
                 // coordinates and distance (zoom level) of the viewer
-                .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(0).withRange(DEFAULT_RANGE_METRES);
+                .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(altitude).withRange(DEFAULT_RANGE_METRES);
 
         placemark.createAndSetLineString().addToCoordinates(myLongitude, myLatitude).addToCoordinates(longitude, latitude).setExtrude(true);
-        placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
-
+        placemark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude); // set coordinates
+        if (altitude > 0.0) {
+            placemark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude).setAltitudeMode(AltitudeMode.ABSOLUTE); // set coordinates
+        } else {
+            placemark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude);
+        }
         if (control.isKmlShowStationSubLabel()) {
             icon = IconResource.getIconFromMode(control, qso.getRecord().getMode());
             String modeId = qso.getRecord().getMode().name();
@@ -195,7 +202,11 @@ public class KmlStationUtils {
                 modePlaceMark.withId(KmlUtils.getModeId(id))
                         .withName(getModeLabel(qso))
                         .withStyleUrl(KmlUtils.getModeStyleUrl(modeId));
-                modePlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
+                if (altitude > 0.0) {
+                    modePlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude).setAltitudeMode(AltitudeMode.ABSOLUTE); // set coordinates
+                } else {
+                    modePlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude);
+                }
             }
         }
         return null;

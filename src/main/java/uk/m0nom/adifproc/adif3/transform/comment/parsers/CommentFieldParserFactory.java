@@ -19,6 +19,8 @@ public class CommentFieldParserFactory {
                                      LocationParsingService locationParsingService,
                                      ApSatelliteService apSatelliteService) {
         parserMap = new HashMap<>();
+        parserMap.put("Alt", new AltFieldParser());
+        parserMap.put("MyAlt", new MyAltFieldParser());
         parserMap.put("Name", new NameFieldParser());
         parserMap.put("Operator", new OperatorFieldParser());
         parserMap.put("Qth", new QthFieldParser());
