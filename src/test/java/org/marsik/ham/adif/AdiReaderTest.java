@@ -177,12 +177,12 @@ public class AdiReaderTest {
 
     @Test
     public void testLotwNormalMode() {
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        AdifReaderException thrown = Assertions.assertThrows(AdifReaderException.class, () -> {
             AdiReader reader = new AdiReader();
             BufferedReader inputReader = mockInput("<MODE:5>PSK31");
             reader.read(inputReader);
         });
-        Assertions.assertEquals("No enum constant org.marsik.ham.adif.enums.Mode.PSK31", thrown.getMessage());
+        Assertions.assertEquals("No enum constant org.marsik.ham.adif.enums.Mode.PSK31 (check record: 1)", thrown.getMessage());
     }
 
     @Test

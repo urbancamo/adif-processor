@@ -3,10 +3,6 @@ package org.marsik.ham.adif;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.gavaghan.geodesy.GlobalCoordinates;
-import org.marsik.ham.adif.AdiWriter;
-import org.marsik.ham.adif.Adif3;
-import org.marsik.ham.adif.Adif3Record;
-import org.marsik.ham.adif.AdifHeader;
 import org.marsik.ham.adif.enums.*;
 import org.marsik.ham.adif.types.Iota;
 import org.marsik.ham.adif.types.Sota;
@@ -75,6 +71,9 @@ public class AdiReader {
                         String.format("Caught unmappable character exception reading record number : %d, field: %s",
                                 recordCount, current));
                 throw e;
+            } catch (RuntimeException e) {
+                String msg = e.getMessage();
+                throw new AdifReaderException(msg, recordCount, e);
             }
         }
 
@@ -133,8 +132,8 @@ public class AdiReader {
         maybeGet(recordFields, "FISTS").map(Function.identity()).ifPresent(record::setFists);
         maybeGet(recordFields, "FISTS_CC").map(Function.identity()).ifPresent(record::setFistsCc);
         maybeGet(recordFields, "FORCE_INT").map(this::parseBool).ifPresent(record::setForceInt);
-        maybeGet(recordFields, "FREQ").map(Double::parseDouble).ifPresent(record::setFreq);
-        maybeGet(recordFields, "FREQ_RX").map(Double::parseDouble).ifPresent(record::setFreqRx);
+        maybeGet(recordFields, "FREQ").filter(AdiReader::isNotEmpty).map(Double::parseDouble).ifPresent(record::setFreq);
+        maybeGet(recordFields, "FREQ_RX").filter(AdiReader::isNotEmpty).map(Double::parseDouble).ifPresent(record::setFreqRx);
         maybeGet(recordFields, "GRIDSQUARE").map(Function.identity()).ifPresent(record::setGridsquare);
         maybeGet(recordFields, "HRDLOG_QSO_UPLOAD_DATE")
                 .map(this::parseDate)
@@ -419,6 +418,11 @@ public class AdiReader {
     private static boolean isNumeric(String s)
     {
         return NUMERIC_RE.matcher(s).matches();
+    }
+
+    private static boolean isNotEmpty(String s)
+    {
+        return s != null && s.length() > 0;
     }
 
     private <T> List<T> parseColonArray(String s, Function<String, T> fieldConverter) {
