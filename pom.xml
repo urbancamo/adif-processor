@@ -14,7 +14,7 @@
 
   <groupId>uk.m0nom</groupId>
   <artifactId>adif-processor</artifactId>
-  <version>1.0.39</version>
+  <version>1.0.40-SNAPSHOT</version>
 
   <name>adif-processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
