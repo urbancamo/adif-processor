@@ -75,6 +75,11 @@ public class Station {
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        return getKey().hashCode();
+    }
+
     /**
      * Unique key for this station including callsign and either coords/grid or both/neither
      * @return unique key for this station

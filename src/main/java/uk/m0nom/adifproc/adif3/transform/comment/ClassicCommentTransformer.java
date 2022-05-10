@@ -12,6 +12,7 @@ import uk.m0nom.adifproc.activity.ActivityDatabaseService;
 import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.adif3.config.TransformerConfig;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
+import uk.m0nom.adifproc.adif3.transform.ApplicationDefinedFields;
 import uk.m0nom.adifproc.adif3.transform.CallsignUtils;
 import uk.m0nom.adifproc.adif3.transform.TransformResults;
 import uk.m0nom.adifproc.adif3.transform.tokenizer.ColonTokenizer;
@@ -25,7 +26,6 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import static uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseUtils.parseAlt;
 import static uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseUtils.parsePwr;
 
 /**
@@ -309,7 +309,7 @@ public class ClassicCommentTransformer implements CommentTransformer {
                         break;
                     case "Alt":
                         try {
-                            qso.setTheirAltitude(parseAlt(value));
+                            rec.addApplicationDefinedField(ApplicationDefinedFields.ALT, value);
                         } catch (NumberFormatException nfe) {
                             logger.warning(String.format("Couldn't parse their altitude field: %s, leaving it unmapped", value));
                             unmapped.put(key, value);

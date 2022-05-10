@@ -16,10 +16,7 @@ import java.io.Reader;
 import java.nio.charset.UnmappableCharacterException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -266,7 +263,17 @@ public class AdiReader {
                 .ifPresent(record::setVuccGrids);
         maybeGet(recordFields, "WEB").map(Function.identity()).ifPresent(record::setWeb);
 
+        maybeGetCustomDefinedFields("APP_", recordFields, record.getApplicationDefinedFields());
+        maybeGetCustomDefinedFields("USER_", recordFields, record.getUserDefinedFields());
         return record;
+    }
+
+    private void maybeGetCustomDefinedFields(String prefix, Map<String, String> recordFields, Map<String, String> customFieldMap) {
+        Set<String> appDefinedFields = recordFields.keySet().stream().filter(s -> s.startsWith(prefix)).collect(Collectors.toSet());
+
+        for (String appDefinedField : appDefinedFields) {
+            customFieldMap.put(appDefinedField, recordFields.get(appDefinedField));
+        }
     }
 
     private <K, V> Optional<V> maybeGet(Map<K, V> map, K key) {

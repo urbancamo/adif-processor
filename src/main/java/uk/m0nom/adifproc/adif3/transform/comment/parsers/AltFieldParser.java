@@ -1,6 +1,7 @@
 package uk.m0nom.adifproc.adif3.transform.comment.parsers;
 
 import uk.m0nom.adifproc.adif3.contacts.Qso;
+import uk.m0nom.adifproc.adif3.transform.ApplicationDefinedFields;
 
 public class AltFieldParser implements CommentFieldParser {
     @Override
@@ -10,7 +11,7 @@ public class AltFieldParser implements CommentFieldParser {
             if (alt < 0.0) {
                 throw new CommentFieldParserException(this.getClass().getName(), "parseError", qso, true, value);
             }
-            qso.setTheirAltitude(alt);
+            qso.getRecord().addApplicationDefinedField(ApplicationDefinedFields.ALT, value);
         } catch (NumberFormatException e) {
             throw new CommentFieldParserException(this.getClass().getName(), "parseError", qso, e, true, value);
         }

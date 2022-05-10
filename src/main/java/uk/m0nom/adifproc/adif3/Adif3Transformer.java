@@ -17,7 +17,6 @@ import uk.m0nom.adifproc.adif3.transform.TransformResults;
  */
 @Service
 public class Adif3Transformer {
-
     private final CommentParsingAdifRecordTransformer transformer;
 
     public Adif3Transformer(CommentParsingAdifRecordTransformer transformer) {

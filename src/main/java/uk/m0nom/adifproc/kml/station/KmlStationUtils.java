@@ -5,6 +5,7 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
+import uk.m0nom.adifproc.adif3.transform.ApplicationDefinedFields;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.icons.IconResource;
 import uk.m0nom.adifproc.kml.KmlUtils;
@@ -16,6 +17,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
+
+import static uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseUtils.parseAlt;
 
 public class KmlStationUtils {
     public final static double DEFAULT_RANGE_METRES = 500.0;
@@ -63,7 +66,7 @@ public class KmlStationUtils {
         }
         double longitude = coords.getLongitude();
         double latitude = coords.getLatitude();
-        double altitude = qso.getMyAltitude();
+        double altitude = parseAlt(qso.getRecord().getApplicationDefinedField(ApplicationDefinedFields.MY_ALT));
 
         String callsign = qso.getFrom().getCallsign();
         Folder myFolder = folder.createAndAddFolder().withName(callsign).withOpen(false);
@@ -147,7 +150,7 @@ public class KmlStationUtils {
         GlobalCoordinates coords = rec.getCoordinates();
         double longitude = coords.getLongitude();
         double latitude = coords.getLatitude();
-        double altitude = qso.getTheirAltitude();
+        double altitude = parseAlt(rec.getApplicationDefinedField(ApplicationDefinedFields.ALT));
 
         IconResource icon = IconResource.getIconFromStation(control, qso.getTo());
         if (!iconStyles.contains(icon.getName())) {

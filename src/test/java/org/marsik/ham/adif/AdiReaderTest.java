@@ -146,6 +146,7 @@ public class AdiReaderTest {
         assertThat(adif.get().records.get(0).getBand()).isEqualTo(BAND_20m);
         assertThat(adif.get().records.get(0).getMode()).isEqualTo(RTTY);
         assertThat(adif.get().records.get(0).getTxPwr()).isEqualTo(10.0);
+        assertThat(adif.get().records.get(0).getApplicationDefinedField("APP_APROC_ALT")).isEqualTo("9000");
 
         assertThat(adif.get().records.get(1).getQsoDate()).isEqualTo(LocalDate.of(2010, 10, 22));
         assertThat(adif.get().records.get(1).getTimeOn()).isEqualTo(LocalTime.of(01, 11));
@@ -158,6 +159,7 @@ public class AdiReaderTest {
         assertThat(adif.get().records.get(1).getSilentKey()).isEqualTo(true);
         assertThat(adif.get().records.get(1).getSubmode()).isEqualTo(PSK63.adifCode());
         assertThat(adif.get().records.get(1).getTxPwr()).isEqualTo(2.0);
+        assertThat(adif.get().records.get(1).getUserDefinedField("USER_ANT")).isEqualTo("Dipole");
 
         assertThat(adif.get().records.get(2).getQsoDate()).isEqualTo(LocalDate.of(2018, 10, 16));
         assertThat(adif.get().records.get(2).getTimeOn()).isEqualTo(LocalTime.of(23, 12));

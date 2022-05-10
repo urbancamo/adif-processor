@@ -25,6 +25,10 @@ public class FieldParseUtils {
     }
 
     public static double parseAlt(String value) throws NumberFormatException {
+        if (value == null) {
+            return 0.0;
+        }
+
         String alt = value.toLowerCase().trim();
         double multiplier = 1;
 

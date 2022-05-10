@@ -49,6 +49,10 @@ public class KmlStationInfoPanel {
             setVariable(context, "cqZone", qrzInfo.getCqzone());
         }
 
+        if (station.getCoordinates().getAltitude() > 0.0) {
+            setVariable(context,"altitude", String.format("%.0f m", station.getCoordinates().getAltitude()));
+        }
+
         String grid = station.getGrid();
         if (grid == null && qrzInfo != null) {
             grid = qrzInfo.getGrid();
