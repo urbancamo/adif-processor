@@ -8,7 +8,8 @@ public enum LocationSource {
     OVERRIDE("Overriden"),
     QRZ("QRZ.COM"),
     GEOCODING("Geocoding"),
-    OSGB36_CONVERTER("OSGB36 Converter"),
+    OSGB36_CONVERTER("OSGB36 Grid Reference"),
+    IRISH_GRID_REF_CONVERTER("Irish Grid Reference"),
     UNDEFINED("Undefined"),
     SATELLITE("Satellite");
 

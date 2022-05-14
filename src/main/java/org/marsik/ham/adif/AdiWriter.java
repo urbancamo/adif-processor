@@ -10,6 +10,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AdiWriter {
@@ -179,6 +180,12 @@ public class AdiWriter {
         builder.append(value);
     }
 
+    public void appendCustomFields(Map<String, String> customFields) {
+        for (String name: customFields.keySet()) {
+            append(name, customFields.get(name));
+        }
+    }
+
     public String toString() {
         return builder.toString();
     }
@@ -324,6 +331,8 @@ public class AdiWriter {
         appendStrings("USACA_COUNTIES", rec.getUsaCaCounties());
         appendStrings("VUCC_GRIDS", rec.getVuccGrids());
         append("WEB", rec.getWeb());
+        appendCustomFields(rec.getApplicationDefinedFields());
+        appendCustomFields(rec.getUserDefinedFields());
         appendEndOfRecord();
     }
 

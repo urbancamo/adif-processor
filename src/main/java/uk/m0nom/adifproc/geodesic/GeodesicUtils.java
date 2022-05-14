@@ -4,8 +4,8 @@ import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
 import org.gavaghan.geodesy.GlobalCoordinates;
-import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.comms.PropagationApex;
+import uk.m0nom.adifproc.coords.GlobalCoords3D;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class GeodesicUtils
                                        double initialAzimuth) {
         GeodeticCalculator calculator = new GeodeticCalculator();
 
-        path.add(new GlobalCoords3D(start.getLatitude(), start.getLongitude(), 0.0));
+        path.add(new GlobalCoords3D(start.getLatitude(), start.getLongitude(), start.getAltitude()));
         GlobalCoordinates previous = start;
         double azimuth = initialAzimuth;
         double skyDistance = 0.0;
@@ -50,7 +50,7 @@ public class GeodesicUtils
 
             /* Handle the last return by working backwards from the end point, so we don't lose accuracy */
             if  (i == bounces.size() - 1) {
-                path.add(new GlobalCoords3D(end.getLatitude(), end.getLongitude(), 0.0));
+                path.add(new GlobalCoords3D(end.getLatitude(), end.getLongitude(), end.getAltitude()));
             } else {
                 GlobalCoordinates rtn = calculator.calculateEndingGlobalCoordinates(Ellipsoid.WGS84, apex, azimuth, distanceAcrossGlobal / 2.0);
                 path.add(new GlobalCoords3D(rtn.getLatitude(), rtn.getLongitude(), baseHeight));

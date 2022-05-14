@@ -5,6 +5,7 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
+import uk.m0nom.adifproc.adif3.transform.ApplicationDefinedFields;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.icons.IconResource;
 import uk.m0nom.adifproc.kml.KmlUtils;
@@ -16,6 +17,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
+
+import static uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseUtils.parseAlt;
 
 public class KmlStationUtils {
     public final static double DEFAULT_RANGE_METRES = 500.0;
@@ -63,6 +66,8 @@ public class KmlStationUtils {
         }
         double longitude = coords.getLongitude();
         double latitude = coords.getLatitude();
+        double altitude = parseAlt(qso.getRecord().getApplicationDefinedField(ApplicationDefinedFields.MY_ALT));
+
         String callsign = qso.getFrom().getCallsign();
         Folder myFolder = folder.createAndAddFolder().withName(callsign).withOpen(false);
 
@@ -85,7 +90,7 @@ public class KmlStationUtils {
                 // 3D chart image
                 .withDescription(htmlPanelContent)
                 // coordinates and distance (zoom level) of the viewer
-                .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(0).withRange(DEFAULT_RANGE_METRES);
+                .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(altitude).withRange(DEFAULT_RANGE_METRES);
 
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
 
@@ -145,6 +150,7 @@ public class KmlStationUtils {
         GlobalCoordinates coords = rec.getCoordinates();
         double longitude = coords.getLongitude();
         double latitude = coords.getLatitude();
+        double altitude = parseAlt(rec.getApplicationDefinedField(ApplicationDefinedFields.ALT));
 
         IconResource icon = IconResource.getIconFromStation(control, qso.getTo());
         if (!iconStyles.contains(icon.getName())) {
@@ -171,11 +177,15 @@ public class KmlStationUtils {
                 // 3D chart image
                 .withDescription(htmlPanelContent)
                 // coordinates and distance (zoom level) of the viewer
-                .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(0).withRange(DEFAULT_RANGE_METRES);
+                .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(altitude).withRange(DEFAULT_RANGE_METRES);
 
         placemark.createAndSetLineString().addToCoordinates(myLongitude, myLatitude).addToCoordinates(longitude, latitude).setExtrude(true);
-        placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
-
+        placemark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude); // set coordinates
+        if (altitude > 0.0) {
+            placemark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude).setAltitudeMode(AltitudeMode.ABSOLUTE); // set coordinates
+        } else {
+            placemark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude);
+        }
         if (control.isKmlShowStationSubLabel()) {
             icon = IconResource.getIconFromMode(control, qso.getRecord().getMode());
             String modeId = qso.getRecord().getMode().name();
@@ -195,7 +205,11 @@ public class KmlStationUtils {
                 modePlaceMark.withId(KmlUtils.getModeId(id))
                         .withName(getModeLabel(qso))
                         .withStyleUrl(KmlUtils.getModeStyleUrl(modeId));
-                modePlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
+                if (altitude > 0.0) {
+                    modePlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude).setAltitudeMode(AltitudeMode.ABSOLUTE); // set coordinates
+                } else {
+                    modePlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude);
+                }
             }
         }
         return null;

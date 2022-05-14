@@ -17,6 +17,7 @@ Generated on 2011-11-22 at 02:15:23Z for WN4AZY
 <shoesize:2>11
 <app_monolog_compression:3>off
 <tx_pwr:2>10
+<app_aproc_alt:4>9000
 <eor>
 
 <qso_date:8>20101022
@@ -32,6 +33,7 @@ City, ST 12345
 <epc:5>32123
 <app_monolog_compression:3>off
 <tx_pwr:2>2W
+<user_ant:6>Dipole
 <eor>
 
 <qso_date:8>20181016

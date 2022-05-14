@@ -11,7 +11,8 @@ public enum CallsignSuffix {
     MOBILE("/M", "Mobile", true),
     MARITIME_MOBILE("/MM", "Maritime Mobile", true),
     PEDESTRIAN_MOBILE("/PM", "Pedestrian Mobile", true),
-    ALTERNATIVE("/A", "Alternative QTH", false);
+    ALTERNATIVE("/A", "Alternative QTH", false),
+    AERONAUTICAL_MOBILE("/AM", "Aeronautical Mobile", true);
 
     private final String suffix;
     private final String description;

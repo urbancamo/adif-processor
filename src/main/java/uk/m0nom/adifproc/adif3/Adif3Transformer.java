@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.adif3.contacts.Qsos;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.adif3.transform.CommentParsingAdifRecordTransformer;
+import uk.m0nom.adifproc.adif3.transform.MyCallsignCheck;
+import uk.m0nom.adifproc.adif3.transform.MyCallsignCheckResults;
 import uk.m0nom.adifproc.adif3.transform.TransformResults;
 
 /**
@@ -15,7 +17,6 @@ import uk.m0nom.adifproc.adif3.transform.TransformResults;
  */
 @Service
 public class Adif3Transformer {
-
     private final CommentParsingAdifRecordTransformer transformer;
 
     public Adif3Transformer(CommentParsingAdifRecordTransformer transformer) {
@@ -28,23 +29,33 @@ public class Adif3Transformer {
         int firstError = 0;
         int index = 1;
         String additionalInfo = "";
-        boolean myCallsignIssue = false;
-        boolean theirCallsignIssue = false;
+        int myCallsignIssues = 0;
+        int theirCallsignIssues = 0;
+
+        MyCallsignCheckResults callsigns = MyCallsignCheck.checkForSingleMyCallsign(log);
+
         for (Adif3Record rec : log.getRecords()) {
+            if (StringUtils.isBlank(rec.getOperator()) && callsigns.isOneOperator()) {
+                rec.setOperator(callsigns.getSingleOperator());
+            }
+            if (StringUtils.isBlank(rec.getStationCallsign()) && callsigns.isOneStationCallsign()) {
+                rec.setStationCallsign(callsigns.getSingleStationCallsign());
+            }
+
             boolean haveMyCallsign = rec.getStationCallsign() != null || rec.getOperator() != null;
             boolean haveTheirCallsign = rec.getCall() != null;
             if (haveMyCallsign && haveTheirCallsign) {
                 transformer.transform(control, results, qsos, rec, index);
             } else {
                 if (!haveMyCallsign) {
-                    myCallsignIssue = true;
+                    myCallsignIssues++;
                     if (firstError == 0) {
                         firstError = index;
                         additionalInfo = String.format("record %d%s", firstError, StringUtils.defaultIfEmpty(String.format(", their call: %s", rec.getCall()), ""));
                     }
                 }
                 if (!haveTheirCallsign) {
-                    theirCallsignIssue = true;
+                    theirCallsignIssues++;
                     if (firstError == 0) {
                         firstError = index;
                         additionalInfo = String.format("record %d", firstError);
@@ -54,11 +65,11 @@ public class Adif3Transformer {
             index++;
         }
 
-        if (theirCallsignIssue) {
-            results.setError(String.format("CALL not defined for every record, first error on %s", additionalInfo));
+        if (theirCallsignIssues > 0) {
+            results.setError(String.format("CALL not defined for %d record(s), first error on %s", theirCallsignIssues, additionalInfo));
         }
-        else if (myCallsignIssue) {
-            results.setError(String.format("STATION_CALLSIGN or OPERATOR not defined for every record, first error on %s", additionalInfo));
+        else if (myCallsignIssues > 0) {
+            results.setError(String.format("STATION_CALLSIGN or OPERATOR not defined for %d record(s), first error on %s", myCallsignIssues, additionalInfo));
         }
 
         AdifHeader header = new AdifHeader();

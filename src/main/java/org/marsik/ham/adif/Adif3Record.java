@@ -11,7 +11,9 @@ import org.marsik.ham.adif.types.Sota;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Getter
@@ -766,7 +768,7 @@ public class Adif3Record {
 
     /**
      * HHMM or HHMMSS in UTC
-     * in the absence of <QSO_DATE_OFF>, the QSO duration is less than 24 hours
+     * in the absence of QSO_DATE_OFF, the QSO duration is less than 24 hours
      */
     private LocalTime timeOff;
 
@@ -811,5 +813,34 @@ public class Adif3Record {
      */
     private String web;
 
-    // todo app specific fields, user defined fields
+    /**
+     * Application defined fields, must start with APP_
+     */
+    private Map<String, String> applicationDefinedFields = new HashMap<>();
+
+    public String getApplicationDefinedField(String name) {
+        return applicationDefinedFields.get(name);
+    }
+
+    public void addApplicationDefinedField(String name, String value) {
+        if (name != null && name.toUpperCase().startsWith("APP_")) {
+            applicationDefinedFields.put(name, value);
+        }
+    }
+
+    /**
+     * User defined fields, must start with USER_
+     */
+    private Map<String, String> userDefinedFields = new HashMap<>();
+
+    public String getUserDefinedField(String name) {
+        return userDefinedFields.get(name);
+    }
+
+    public void addUserDefinedField(String name, String value) {
+        if (name != null && name.toUpperCase().startsWith("USER_")) {
+            userDefinedFields.put(name, value);
+        }
+    }
+
 }

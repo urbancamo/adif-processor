@@ -33,6 +33,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import static uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseUtils.parseAlt;
+
 @Service
 public class CommentParsingAdifRecordTransformer implements Adif3RecordTransformer {
     private static final Logger logger = Logger.getLogger(CommentParsingAdifRecordTransformer.class.getName());
@@ -253,6 +255,22 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 }
             } else {
                 results.addUnknownSatellite(rec.getSatName());
+            }
+        }
+
+        // Override your altitude if defined
+        if (rec.getApplicationDefinedField(ApplicationDefinedFields.MY_ALT) != null) {
+            double alt = parseAlt(rec.getApplicationDefinedField(ApplicationDefinedFields.MY_ALT));
+            if (qso.getFrom().getCoordinates() != null) {
+                qso.getFrom().getCoordinates().setAltitude(alt);
+            }
+        }
+
+        // Override their altitude if defined
+        if (rec.getApplicationDefinedField(ApplicationDefinedFields.ALT) != null) {
+            double alt = parseAlt(rec.getApplicationDefinedField(ApplicationDefinedFields.ALT));
+            if (qso.getTo().getCoordinates() != null) {
+                qso.getTo().getCoordinates().setAltitude(alt);
             }
         }
     }

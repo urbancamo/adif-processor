@@ -26,6 +26,8 @@ public class LocationParsingService {
         parsers.add(new DegreesMinutesSecondsWithNsewLatLongParser());
         parsers.add(new DegreesMinutesDecimalSecondsWithNsewLatLongParser());
         parsers.add(new DegreesMinutesWithNsewLatLongParser());
+        parsers.add(new AdifLatLongParser("MY_"));
+        parsers.add(new AdifLatLongParser(""));
         parsers.add(new Maidenhead10CharLocatorParser());
         parsers.add(new Maidenhead8CharLocatorParser());
         parsers.add(new Maidenhead6CharLocatorParser());
@@ -36,6 +38,7 @@ public class LocationParsingService {
         parsers.add(new OsGb36Parser5Digit());
         parsers.add(new OsGb36Parser4Digit());
         parsers.add(new OsGb36Parser3Digit());
+        parsers.add(new IrishGridParser5Digit());
     }
 
     public LocationParserResult parseStringForCoordinates(LocationSource source, String value) {

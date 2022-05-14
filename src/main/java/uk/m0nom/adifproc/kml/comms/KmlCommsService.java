@@ -4,10 +4,9 @@ import de.micromata.opengis.kml.v_2_2_0.*;
 import org.marsik.ham.adif.Adif3Record;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.activity.ActivityDatabaseService;
-import uk.m0nom.adifproc.activity.ActivityType;
-import uk.m0nom.adifproc.activity.sota.SotaInfo;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
+import uk.m0nom.adifproc.adif3.transform.ApplicationDefinedFields;
 import uk.m0nom.adifproc.comms.CommsLinkResult;
 import uk.m0nom.adifproc.comms.CommsVisualizationService;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
@@ -20,6 +19,8 @@ import uk.m0nom.adifproc.kml.info.KmlContactInfoPanel;
 import uk.m0nom.adifproc.kml.station.KmlStationUtils;
 
 import java.util.Map;
+
+import static uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseUtils.parseAlt;
 
 @Service
 public class KmlCommsService {
@@ -81,30 +82,30 @@ public class KmlCommsService {
                 .withStyleUrl(commsStyleMap.get(id));
 
         LineString commsLine = placemark.createAndSetLineString();
+
+        /* All altitudes relative to ground */
         double myAltitude = 0.0;
         double theirAltitude = 0.0;
-        if (qso.getRecord().getMySotaRef() != null) {
-            SotaInfo summitInfo = (SotaInfo) activityDatabaseService.getDatabase(ActivityType.SOTA).get(qso.getRecord().getMySotaRef().getValue());
-            if (summitInfo != null) {
-                myAltitude = summitInfo.getAltitude();
-            }
-        }
-        if (qso.getRecord().getSotaRef() != null) {
-            SotaInfo summitInfo = (SotaInfo) activityDatabaseService.getDatabase(ActivityType.SOTA).get(qso.getRecord().getSotaRef().getValue());
-            if (summitInfo != null) {
-                theirAltitude = summitInfo.getAltitude();
-            }
+
+        String theirAlt = qso.getRecord().getApplicationDefinedField(ApplicationDefinedFields.ALT);
+        if (theirAlt != null) {
+            theirAltitude = parseAlt(theirAlt);
         }
 
-        GlobalCoords3D myCoords = new GlobalCoords3D(rec.getMyCoordinates(), myAltitude);
-        GlobalCoords3D coords = new GlobalCoords3D(rec.getCoordinates(), theirAltitude);
+        String myAlt = qso.getRecord().getApplicationDefinedField(ApplicationDefinedFields.MY_ALT);
+        if (myAlt != null) {
+            myAltitude = parseAlt(myAlt);
+        }
+
+        GlobalCoords3D myCoord = new GlobalCoords3D(rec.getMyCoordinates(), myAltitude);
+        GlobalCoords3D theirCoord = new GlobalCoords3D(rec.getCoordinates(), theirAltitude);
 
         // Sanity check - if their coords and our coords are the same then the geodesic calculations are going to stall
-        if (GeodesicUtils.areCoordsEqual(myCoords, coords)) {
-            return String.format("Your location and the location of station %s at %.3f, %.3f are equal - check the log!", qso.getTo().getCallsign(), coords.getLatitude(), coords.getLongitude());
+        if (GeodesicUtils.areCoordsEqual(myCoord, theirCoord)) {
+            return String.format("Your location and the location of station %s at %.3f, %.3f are equal - check the log!", qso.getTo().getCallsign(), theirCoord.getLatitude(), theirCoord.getLongitude());
         }
 
-        CommsLinkResult result = commsVisualizationService.getCommunicationsLink(control, myCoords, coords, rec);
+        CommsLinkResult result = commsVisualizationService.getCommunicationsLink(control, myCoord, theirCoord, rec);
         if (!result.isValid()) {
             return result.getError();
         }
@@ -113,6 +114,8 @@ public class KmlCommsService {
         rec.setDistance(result.getDistanceInKm());
         String description = new KmlContactInfoPanel().getPanelContentForCommsLink(qso, result, control.getTemplateEngine());
         placemark.withDescription(description);
+
+        // TODO not sure how we do absolute altitude contacts, so everything is relative to ground ATM
         commsLine.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
         commsLine.setExtrude(false);
 

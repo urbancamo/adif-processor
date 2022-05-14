@@ -12,6 +12,7 @@ public class IconResource {
     public final static String PORTABLE_ICON_NAME = "portable";
     public final static String MOBILE_ICON_NAME = "mobile";
     public final static String MARITIME_MOBILE_ICON_NAME = "maritime";
+    public final static String AERONAUTICAL_MOBILE_ICON_NAME = "aeroplane";
     public final static String CW_ICON_NAME = "cw";
     public final static String SSB_ICON_NAME = "ssb";
     public final static String FM_ICON_NAME = "fm";
@@ -23,6 +24,7 @@ public class IconResource {
 	public final static String PORTABLE_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/hiker.png";
 	public final static String MOBILE_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/cabs.png";
     public final static String MARITIME_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/sailing.png";
+    public final static String AERONAUTICAL_DEFAULT_ICON_URL = "http://maps.google.com/mapfiles/kml/shapes/airports.png";
     public final static String SATELLITE_DEFAULT_ICON_URL = "http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png";
     public final static String SATELLITE_TRACK_DEFAULT_ICON_URL = "http://maps.google.com/mapfiles/kml/shapes/capital_big_highlight.png";
 
@@ -74,6 +76,9 @@ public class IconResource {
         }
         if (cs.endsWith("/MM")) {
             return new IconResource(MARITIME_MOBILE_ICON_NAME, control.getIcon(MARITIME_MOBILE_ICON_NAME));
+        }
+        if (cs.endsWith("/AM")) {
+            return new IconResource(AERONAUTICAL_MOBILE_ICON_NAME, control.getIcon(AERONAUTICAL_MOBILE_ICON_NAME));
         }
         return icon;
     }
