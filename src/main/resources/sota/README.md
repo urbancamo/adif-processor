@@ -1,0 +1,1 @@
+Latest list available from [summitslist.csv](https://www.sotadata.org.uk/summitslist.csv).
