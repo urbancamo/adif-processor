@@ -6,7 +6,9 @@ import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Band;
 import org.thymeleaf.TemplateEngine;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
+import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
+import uk.m0nom.adifproc.antenna.Antenna;
 import uk.m0nom.adifproc.comms.CommsLinkResult;
 
 import java.io.File;
@@ -28,12 +30,17 @@ public class ThymleafKmlContactInfoPanelTest {
         when(control.getTemplateEngine()).thenReturn(templateEngine);
         Adif3Record rec = mock(Adif3Record.class);
         Qso qso = mock(Qso.class);
+        Station fromStation = mock(Station.class);
+        Antenna fromAntenna = mock(Antenna.class);
         CommsLinkResult clr = mock(CommsLinkResult.class);
 
         LocalDate qsoDate = LocalDate.of(2021,11,10);
         LocalTime qsoTime = LocalTime.of(21,24);
 
+        when(fromAntenna.getName()).thenReturn("Vertical");
+        when(fromStation.getAntenna()).thenReturn(fromAntenna);
         when(qso.getRecord()).thenReturn(rec);
+        when(qso.getFrom()).thenReturn(fromStation);
         when(rec.getCall()).thenReturn("G8CPZ");
         when(rec.getStationCallsign()).thenReturn("M0NOM");
         when(rec.getQsoDate()).thenReturn(qsoDate);
