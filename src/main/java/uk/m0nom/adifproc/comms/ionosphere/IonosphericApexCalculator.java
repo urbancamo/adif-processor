@@ -7,7 +7,7 @@ import uk.m0nom.adifproc.comms.PropagationApex;
  * This code assumes a spherical model of the Earth
  */
 public class IonosphericApexCalculator {
-    /** Earth average radius in KM */
+    /* Earth average radius in KM */
     public final static double R = 6371;
 
     public static PropagationApex calculateDistanceOfApex(double h, double hfAntennaTakeoffAngleInDegrees) {
@@ -81,7 +81,7 @@ public class IonosphericApexCalculator {
     }
 
 
-    /**
+    /*
      * Apex must contain the take-off angle and the distance to Apex for this calculation to complete
      */
     public static double calculateDistanceAcrossEarth(@NotNull PropagationApex apex) {
