@@ -203,6 +203,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
         activityProcessor.processActivities(control, qso.getFrom(), rec);
 
+        qso.getFrom().setAntenna(control.getAntenna());
         setMyInfoFromQrz(control, qso);
         QrzCallsign theirQrzData = setTheirInfoFromQrz(qso);
         processSotaRef(qso, results);

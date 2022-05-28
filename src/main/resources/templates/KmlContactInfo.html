@@ -127,13 +127,17 @@
                 <table>
                     <thead></thead>
                     <tbody>
-                        <tr th:if="${propagationMode} == 'GND'">
-                            <td class="tdLabel">Max Height:</td>
-                            <td><span th:text="${avgAlt}">6 km</span></td>
-                        </tr>
+                    <tr th:if="${fromAntenna} != null">
+                        <td class="tdLabel">Antenna Model:</td>
+                        <td><span th:text="${fromAntenna}">Vertical</span></td>
+                    </tr>
+                    <tr th:if="${propagationMode} == 'GND'">
+                        <td class="tdLabel">Max Height:</td>
+                        <td><span th:text="${avgAlt}">6 km</span></td>
+                    </tr>
 
 
-                        <tr th:if="${propagationMode} == 'F2'">
+                    <tr th:if="${propagationMode} == 'F2'">
                             <td class="tdLabel">Sky dist: </td>
                             <td><span th:text="${skyDist}">25</span> km</td>
                         </tr>
