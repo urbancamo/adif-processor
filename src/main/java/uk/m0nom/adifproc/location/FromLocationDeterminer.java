@@ -11,10 +11,7 @@ import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
-import uk.m0nom.adifproc.coords.GlobalCoords3D;
-import uk.m0nom.adifproc.coords.LocationParserResult;
-import uk.m0nom.adifproc.coords.LocationParsingService;
-import uk.m0nom.adifproc.coords.LocationSource;
+import uk.m0nom.adifproc.coords.*;
 import uk.m0nom.adifproc.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.adifproc.qrz.CachingQrzXmlService;
 import uk.m0nom.adifproc.qrz.QrzCallsign;
@@ -135,21 +132,26 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
         Adif3Record rec = qso.getRecord();
         boolean locationSet = true;
 
-        // Query the record MYSOTA_REF field - if this isn't empty add it as an activity for onward processing
-        if (rec.getMySotaRef() != null) {
-            String sotaRef = rec.getMySotaRef().getValue().toUpperCase();
-            qso.getFrom().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaRef));
-        }
+        if (rec.getMyCoordinates() != null) {
+            qso.getFrom().setCoordinates(new GlobalCoords3D(rec.getMyCoordinates(), LocationSource.FROM_ADIF, LocationAccuracy.LAT_LONG));
+        } else {
 
-        // Update my SIG/SIG_INFO if there is an activity defined
-        updateMySigInfoFromActivity(qso);
+            // Query the record MYSOTA_REF field - if this isn't empty add it as an activity for onward processing
+            if (rec.getMySotaRef() != null) {
+                String sotaRef = rec.getMySotaRef().getValue().toUpperCase();
+                qso.getFrom().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaRef));
+            }
 
-        if (!setMyLocationFromControl(qso, control)) {
-            if (!setMyLocationFromActivities(qso)) {
-                if (!setMyLocationFromRecGridsquare(qso)) {
-                    if (!setMyLocationFromQrzLatLong(qso, callsignData)) {
-                        if (!setMyLocationFromQrzGrid(qso, callsignData)) {
-                            locationSet = false;
+            // Update my SIG/SIG_INFO if there is an activity defined
+            updateMySigInfoFromActivity(qso);
+
+            if (!setMyLocationFromControl(qso, control)) {
+                if (!setMyLocationFromActivities(qso)) {
+                    if (!setMyLocationFromRecGridsquare(qso)) {
+                        if (!setMyLocationFromQrzLatLong(qso, callsignData)) {
+                            if (!setMyLocationFromQrzGrid(qso, callsignData)) {
+                                locationSet = false;
+                            }
                         }
                     }
                 }
