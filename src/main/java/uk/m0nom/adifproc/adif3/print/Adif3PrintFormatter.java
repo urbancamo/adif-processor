@@ -235,7 +235,9 @@ public class Adif3PrintFormatter {
                 value = rec.getCall();
                 break;
             case "BAND":
-                value = rec.getBand().adifCode();
+                if (rec.getBand() != null) {
+                    value = rec.getBand().adifCode();
+                }
                 break;
             case "FREQ":
                 if (rec.getFreq() != null) {
