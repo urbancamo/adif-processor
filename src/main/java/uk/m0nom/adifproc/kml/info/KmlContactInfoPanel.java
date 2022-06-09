@@ -23,6 +23,16 @@ public class KmlContactInfoPanel {
         context.setVariable("call", rec.getCall());
         context.setVariable("stationCallsign", rec.getStationCallsign());
 
+        if (qso.getTo().getQrzInfo() != null) {
+            context.setVariable("callForQrz", qso.getTo().getQrzInfo().getCall());
+        } else {
+            context.setVariable("callForQrz", rec.getCall());
+        }
+        if (qso.getFrom().getQrzInfo() != null) {
+            context.setVariable("stationCallsignForQrz", qso.getFrom().getQrzInfo().getCall());
+        } else {
+            context.setVariable("stationCallsignForQrz", rec.getStationCallsign());
+        }
 
         if (rec.getBand() != null) {
             if (rec.getBandRx() != null) {

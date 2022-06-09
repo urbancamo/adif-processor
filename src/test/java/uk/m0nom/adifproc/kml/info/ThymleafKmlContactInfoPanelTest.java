@@ -10,6 +10,7 @@ import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.antenna.Antenna;
 import uk.m0nom.adifproc.comms.CommsLinkResult;
+import uk.m0nom.adifproc.qrz.QrzCallsign;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,18 +32,27 @@ public class ThymleafKmlContactInfoPanelTest {
         Adif3Record rec = mock(Adif3Record.class);
         Qso qso = mock(Qso.class);
         Station fromStation = mock(Station.class);
+        Station toStation = mock(Station.class);
+
         Antenna fromAntenna = mock(Antenna.class);
         CommsLinkResult clr = mock(CommsLinkResult.class);
+        QrzCallsign fromInfo = mock(QrzCallsign.class);
+        QrzCallsign toInfo = mock(QrzCallsign.class);
 
         LocalDate qsoDate = LocalDate.of(2021,11,10);
         LocalTime qsoTime = LocalTime.of(21,24);
+
+        when(fromInfo.getCall()).thenReturn("M0NOM/P");
+        when(toInfo.getCall()).thenReturn("G8CPZ");
+        when(qso.getFrom()).thenReturn(fromStation);
+        when(qso.getTo()).thenReturn(toStation);
 
         when(fromAntenna.getName()).thenReturn("Vertical");
         when(fromStation.getAntenna()).thenReturn(fromAntenna);
         when(qso.getRecord()).thenReturn(rec);
         when(qso.getFrom()).thenReturn(fromStation);
-        when(rec.getCall()).thenReturn("G8CPZ");
-        when(rec.getStationCallsign()).thenReturn("M0NOM");
+        when(rec.getCall()).thenReturn("G8CPZ/P");
+        when(rec.getStationCallsign()).thenReturn("EA8/M0NOM/P");
         when(rec.getQsoDate()).thenReturn(qsoDate);
         when(rec.getTimeOn()).thenReturn(qsoTime);
         when(rec.getBand()).thenReturn(Band.BAND_2m);
