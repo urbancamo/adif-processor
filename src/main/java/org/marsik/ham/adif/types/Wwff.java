@@ -22,7 +22,7 @@ public class Wwff implements AdifType {
         return value;
     }
 
-    private static Pattern WWFF_RE = Pattern.compile("([\\dA-Z]+){1,4}FF-(\\d{4})", Pattern.CASE_INSENSITIVE);
+    public static Pattern WWFF_RE = Pattern.compile("([\\dA-Z]+){1,4}FF-(\\d{4})", Pattern.CASE_INSENSITIVE);
 
     public static Wwff valueOf(String s) {
         if (StringUtils.isBlank(s)) {

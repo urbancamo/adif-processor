@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.types.Sota;
+import org.marsik.ham.adif.types.Wwff;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityDatabaseService;
@@ -136,12 +137,17 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
             qso.getFrom().setCoordinates(new GlobalCoords3D(rec.getMyCoordinates(), LocationSource.FROM_ADIF, LocationAccuracy.LAT_LONG));
         } else {
 
-            // Query the record MYSOTA_REF field - if this isn't empty add it as an activity for onward processing
+            // Query the record MY_SOTA_REF field - if this isn't empty add it as an activity for onward processing
             if (rec.getMySotaRef() != null) {
                 String sotaRef = rec.getMySotaRef().getValue().toUpperCase();
                 qso.getFrom().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaRef));
             }
 
+            // Query the record MY_WWFF_REF field - if this isn't empty add it as an activity for onward processing
+            if (rec.getMyWwffRef() != null) {
+                String wwffRef = rec.getMyWwffRef().getValue().toUpperCase();
+                qso.getFrom().addActivity(activities.getDatabase(ActivityType.WWFF).get(wwffRef));
+            }
             // Update my SIG/SIG_INFO if there is an activity defined
             updateMySigInfoFromActivity(qso);
 
@@ -161,18 +167,24 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
     }
 
     private void updateMySigInfoFromActivity(Qso qso) {
-        if (qso.getRecord().getMySig() == null && qso.getFrom().getActivities() != null) {
+        if (qso.getFrom().getActivities() != null) {
             // We don't bother with SOTA here because it has its own ADIF record
             for (Activity activity : qso.getFrom().getActivities().values()) {
-                if (activity.getType() != ActivityType.SOTA) {
+                if (qso.getRecord().getMySig() == null && activity.getType() != ActivityType.SOTA && activity.getType() != ActivityType.WWFF) {
                     // Can only process one, however. If required the transformer will have to be run multiple times with each SIG defined separately
                     qso.getRecord().setMySig(activity.getType().getActivityName());
                     qso.getRecord().setMySigInfo(activity.getRef());
                     //logger.info(String.format("Setting MYSIG to be: %s with MY_SIGINFO: %s", qso.getRecord().getMySig(), qso.getRecord().getMySigInfo()));
                     return;
-                } else if (qso.getRecord().getMySotaRef() == null) {
+                }
+                if (activity.getType() == ActivityType.SOTA && qso.getRecord().getMySotaRef() == null) {
                     Sota sota = Sota.valueOf(activity.getRef().toUpperCase());
                     qso.getRecord().setMySotaRef(sota);
+                }
+                /* Use ADIF Spec 3.1.3 MY_WWFF_REF */
+                if (activity.getType() == ActivityType.WWFF && qso.getRecord().getMyWwffRef() == null) {
+                    Wwff wwff = Wwff.valueOf(activity.getRef().toUpperCase());
+                    qso.getRecord().setMyWwffRef(wwff);
                 }
             }
         }
