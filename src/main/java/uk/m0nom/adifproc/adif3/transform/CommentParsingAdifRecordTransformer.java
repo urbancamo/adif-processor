@@ -86,6 +86,24 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
     }
 
+    private void processWwffRef(Qso qso, TransformResults results) {
+        Adif3Record rec = qso.getRecord();
+
+        if (rec.getWwffRef() != null && StringUtils.isNotBlank(rec.getWwffRef().getValue())) {
+            String wwffId = rec.getWwffRef().getValue();
+            Activity activity = activities.getDatabase(ActivityType.WWFF).get(wwffId);
+            if (activity != null) {
+                qso.getTo().addActivity(activity);
+                String result = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.WWFF, wwffId);
+                if (result != null) {
+                    results.addContactWithDubiousLocation(result);
+                }
+            } else {
+                results.addContactWithDubiousLocation(String.format("%s (WWFF %s invalid)", qso.getTo().getCallsign(), wwffId));
+            }
+        }
+    }
+
     private void processRailwaysOnTheAirCallsign(Qso qso, TransformResults results) {
         Adif3Record rec = qso.getRecord();
         // Check the callsign for a Railways on the Air
@@ -203,9 +221,11 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
         activityProcessor.processActivities(control, qso.getFrom(), rec);
 
+        qso.getFrom().setAntenna(control.getAntenna());
         setMyInfoFromQrz(control, qso);
         QrzCallsign theirQrzData = setTheirInfoFromQrz(qso);
         processSotaRef(qso, results);
+        processWwffRef(qso, results);
         processRailwaysOnTheAirCallsign(qso, results);
         processSatelliteInfo(control, qso);
         commentTransformer.transformComment(qso, rec.getComment(), unmapped, results);

@@ -4,6 +4,7 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityType;
+import uk.m0nom.adifproc.antenna.Antenna;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.qrz.QrzCallsign;
 
@@ -25,6 +26,7 @@ public class Station {
     private Map<ActivityType, Activity> activities;
     private String grid;
     private GlobalCoords3D coordinates;
+    private Antenna antenna;
 
     public Station() {
         activities = new HashMap<>();

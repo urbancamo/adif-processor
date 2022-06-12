@@ -2,6 +2,7 @@ package uk.m0nom.adifproc.coords;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.marsik.ham.adif.types.Wwff;
 import uk.m0nom.adifproc.activity.ActivityDatabase;
 import uk.m0nom.adifproc.activity.wwff.WwffInfo;
 
@@ -11,7 +12,7 @@ import java.util.regex.Pattern;
 @Setter
 public class WwffLocationParser implements LocationParser {
     private ActivityDatabase wwffDatabase;
-    private final static Pattern PATTERN = Pattern.compile("([\\w\\d]+FF-\\d\\d\\d\\d)");
+    private final static Pattern PATTERN = Wwff.WWFF_RE;
 
     public WwffLocationParser(ActivityDatabase wwffDatabase) {
         setWwffDatabase(wwffDatabase);

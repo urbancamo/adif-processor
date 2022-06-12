@@ -49,7 +49,7 @@
         <h1>Station&nbsp;Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
     </div>
     <div class="image_box" th:if="${image} != null">
-        <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" target="_blank">
+        <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${callForQrz}|}" target="_blank">
             <img class="profile" src="https://cdn-bio.qrz.com/p/m0nom_p/IMG_20180211_131628.jpg" th:src="${image}" alt=""/>
         </a>
     </div>
@@ -59,7 +59,7 @@
             <tbody>
             <tr>
                 <td class="tdLabel">Callsign:</td>
-                <td><a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${call}|}" th:text="${call}" target="_blank" >M0NOM/P</a></td>
+                <td><a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${callForQrz}|}" th:text="${call}" target="_blank" >M0NOM/P</a></td>
             </tr>
             <tr th:if="${name} != null">
                 <td class="tdLabel">Name:</td>

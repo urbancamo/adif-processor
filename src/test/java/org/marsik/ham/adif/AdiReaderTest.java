@@ -2,6 +2,8 @@ package org.marsik.ham.adif;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.marsik.ham.adif.enums.ArrlSection;
+import org.marsik.ham.adif.types.Wwff;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -134,7 +136,7 @@ public class AdiReaderTest {
         AdiReader reader = new AdiReader();
         BufferedReader inputReader = resourceInput("adif/sample.adi");
         Optional<Adif3> adif = reader.read(inputReader);
-        assertThat(adif.get().header.version).isEqualTo("3.0.4");
+        assertThat(adif.get().header.version).isEqualTo("3.1.3");
         assertThat(adif.get().header.programId).isEqualTo("monolog");
         assertThat(adif.get().records)
                 .isNotNull()
@@ -153,9 +155,10 @@ public class AdiReaderTest {
         assertThat(adif.get().records.get(1).getCall()).isEqualTo("ON4UN");
         assertThat(adif.get().records.get(1).getBand()).isEqualTo(BAND_40m);
         assertThat(adif.get().records.get(1).getMode()).isEqualTo(PSK);
-        assertThat(adif.get().records.get(1).getAddress()).contains("John Doe");
-        assertThat(adif.get().records.get(1).getAddress()).contains("100 Main Street");
-        assertThat(adif.get().records.get(1).getAddress()).contains("City, ST 12345");
+
+        String ls = System.getProperty("line.separator");
+        String address = String.format("John Doe%s100 Main Street%sCity, ST 12345", ls, ls);
+        assertThat(adif.get().records.get(1).getAddress()).isEqualTo(address);
         assertThat(adif.get().records.get(1).getSilentKey()).isEqualTo(true);
         assertThat(adif.get().records.get(1).getSubmode()).isEqualTo(PSK63.adifCode());
         assertThat(adif.get().records.get(1).getTxPwr()).isEqualTo(2.0);
@@ -168,7 +171,12 @@ public class AdiReaderTest {
         assertThat(adif.get().records.get(2).getMode()).isEqualTo(JT9);
         assertThat(adif.get().records.get(2).getSubmode()).isEqualTo(JT9H_FAST.adifCode());
         assertThat(adif.get().records.get(2).getTxPwr()).isEqualTo(100.0);
-    }
+
+    
+        assertThat(adif.get().records.get(2).getMyWwffRef()).isEqualTo(Wwff.valueOf("GFF-0350"));
+        assertThat(adif.get().records.get(2).getWwffRef()).isEqualTo(Wwff.valueOf("S9FF-0001"));
+        assertThat(adif.get().records.get(2).getArrlSect()).isEqualTo(ArrlSection.CT.adifCode());
+}
 
     @Test
     public void testAdifSampleHandleUnsupportedCharacter() throws Exception {

@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum LocationSource {
+    FROM_ADIF("From ADIF"),
     ACTIVITY("Activity"),
     OVERRIDE("Overriden"),
     QRZ("QRZ.COM"),

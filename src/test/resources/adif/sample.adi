@@ -1,6 +1,6 @@
 Generated on 2011-11-22 at 02:15:23Z for WN4AZY
 
-<adif_ver:5>3.0.4
+<adif_ver:5>3.1.3
 <programid:7>monolog
 <USERDEF1:14:N>EPC
 <USERDEF2:19:E>SweaterSize,{S,M,L}
@@ -44,4 +44,7 @@ City, ST 12345
 <submode:9>JT9H FAST
 <app_monolog_compression:3>off
 <tx_pwr:3>100
-<eor>
+<wwff_ref:9>S9FF-0001
+<my_wwff_ref:8>GFF-0350
+<arrl_sect:2>CT
+eor>

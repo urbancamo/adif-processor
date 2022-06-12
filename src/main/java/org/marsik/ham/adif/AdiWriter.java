@@ -333,6 +333,11 @@ public class AdiWriter {
         append("WEB", rec.getWeb());
         appendCustomFields(rec.getApplicationDefinedFields());
         appendCustomFields(rec.getUserDefinedFields());
+
+        /* ADIF 3.1.3 */
+        append("MY_WWFF_REF", rec.getMyWwffRef());
+        append("WWFF_REF", rec.getWwffRef());
+        
         appendEndOfRecord();
     }
 

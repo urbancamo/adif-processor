@@ -2,6 +2,8 @@ package uk.m0nom.adifproc.location;
 
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
+import org.marsik.ham.adif.types.Sota;
+import org.marsik.ham.adif.types.Wwff;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityDatabaseService;
@@ -39,8 +41,12 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
                 qso.getTo().setGrid(info.getGrid());
                 qso.getTo().setCoordinates(coords);
             }
-            // If the SIG isn't set, add it here
-            if (StringUtils.isEmpty(rec.getSig())) {
+            if (activity == ActivityType.SOTA) {
+                rec.setSotaRef(Sota.valueOf(reference));
+            } else if (activity == ActivityType.WWFF) {
+                rec.setWwffRef(Wwff.valueOf(reference));
+            } else if (StringUtils.isEmpty(rec.getSig())) {
+                // If the SIG isn't set, add it here
                 rec.setSig(activity.getActivityName());
                 rec.setSigInfo(reference);
             }

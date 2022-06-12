@@ -10,6 +10,7 @@ public enum CallsignVariant {
     IN_COUNTRY(""),
     HOME_COUNTRY(""),
     G_ALT(""),
+    GQ_ALT("Q"),
     GI_ALT("I"),
     GM_ALT("M"),
     GG_ALT("G"),

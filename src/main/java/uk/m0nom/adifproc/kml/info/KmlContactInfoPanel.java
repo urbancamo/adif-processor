@@ -11,6 +11,9 @@ import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.comms.CommsLinkResult;
 
 public class KmlContactInfoPanel {
+    /** One Hz in MHz */
+    private static final double ONE_HZ = 1.0/1000000.0;
+
     public String getPanelContentForCommsLink(Qso qso, CommsLinkResult result, TemplateEngine templateEngine) {
         Adif3Record rec = qso.getRecord();
 
@@ -20,6 +23,16 @@ public class KmlContactInfoPanel {
         context.setVariable("call", rec.getCall());
         context.setVariable("stationCallsign", rec.getStationCallsign());
 
+        if (qso.getTo().getQrzInfo() != null) {
+            context.setVariable("callForQrz", qso.getTo().getQrzInfo().getCall());
+        } else {
+            context.setVariable("callForQrz", rec.getCall());
+        }
+        if (qso.getFrom().getQrzInfo() != null) {
+            context.setVariable("stationCallsignForQrz", qso.getFrom().getQrzInfo().getCall());
+        } else {
+            context.setVariable("stationCallsignForQrz", rec.getStationCallsign());
+        }
 
         if (rec.getBand() != null) {
             if (rec.getBandRx() != null) {
@@ -33,11 +46,11 @@ public class KmlContactInfoPanel {
             context.setVariable("mode", rec.getMode().toString());
         }
         if (rec.getFreq() != null) {
-            if (rec.getFreqRx() != null) {
-                context.setVariable("freq", String.format("%,.3f", rec.getFreq()));
+            context.setVariable("freq", String.format("%,.3f", rec.getFreq()));
+            /* Only display uplink/downlink frequencies separately if they differ by more than 1 Hz*/
+            if (rec.getFreqRx() != null && Math.abs(rec.getFreq() - (rec.getFreqRx())) >= ONE_HZ) {
                 context.setVariable("downlinkFreq", String.format("%,.3f", rec.getFreqRx()));
             } else {
-                context.setVariable("freq", String.format("%,.3f", rec.getFreq()));
             }
         }
         if (rec.getTxPwr() != null) {
@@ -70,6 +83,7 @@ public class KmlContactInfoPanel {
         } else {
             context.setVariable("avgAlt", String.format("%,.0f metres", result.getAltitude()));
         }
+        context.setVariable("fromAntenna", qso.getFrom().getAntenna().getName());
         context.setVariable("angle", String.format("%,.0f°", result.getFromAngle()));
 
         String mode = (result.getPropagation() != null) ? result.getPropagation().adifCode() : "GND";

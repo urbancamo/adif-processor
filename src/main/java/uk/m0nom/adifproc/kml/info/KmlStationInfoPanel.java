@@ -14,17 +14,19 @@ import uk.m0nom.adifproc.qrz.QrzCallsign;
 
 public class KmlStationInfoPanel {
     public String getPanelContentForStation(TransformControl control, Station station) {
-        String callSign = station.getCallsign();
-
         final Context context = new Context();
+
+        String callSign = station.getCallsign();
+        context.setVariable("call", callSign);
+
         QrzCallsign qrzInfo = station.getQrzInfo();
         if (qrzInfo != null) {
-            setVariable(context,"call", station.getQrzInfo().getCall());
+            setVariable(context,"callForQrz", station.getQrzInfo().getCall());
             if (qrzInfo.getImage() != null) {
                 context.setVariable("image", station.getQrzInfo().getImage());
             }
         } else {
-            context.setVariable("call", callSign);
+            context.setVariable("callForQrz", callSign);
         }
 
         for (ActivityType activityType : ActivityType.values()) {

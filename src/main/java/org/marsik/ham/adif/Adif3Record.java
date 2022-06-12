@@ -7,6 +7,7 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.enums.*;
 import org.marsik.ham.adif.types.Iota;
 import org.marsik.ham.adif.types.Sota;
+import org.marsik.ham.adif.types.Wwff;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -58,7 +59,7 @@ public class Adif3Record {
 
     /**
      * the contacted station's ARRL section
-     * TODO enum
+     * 12-JUN-2022 MSW Encoded as enum
      */
     private String arrlSect;
 
@@ -843,4 +844,13 @@ public class Adif3Record {
         }
     }
 
+    /**
+     * Since ADIF 3.1.3
+     */
+    private Wwff myWwffRef;
+
+    /**
+     * Since ADIF 3.1.3
+     */
+    private Wwff wwffRef;
 }
