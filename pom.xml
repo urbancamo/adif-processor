@@ -22,7 +22,7 @@
 
   <groupId>uk.m0nom</groupId>
   <artifactId>adif-processor</artifactId>
-  <version>1.0.48-SNAPSHOT</version>
+  <version>1.0.48</version>
 
   <name>adif-processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
