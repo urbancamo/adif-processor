@@ -2,6 +2,8 @@ package org.marsik.ham.adif;
 
 
 import org.junit.jupiter.api.Test;
+import org.marsik.ham.adif.enums.ArrlSection;
+import org.marsik.ham.adif.types.Wwff;
 
 import java.time.LocalTime;
 
@@ -67,5 +69,35 @@ public class AdiWriterTest {
 
         assertThat(writer.toString())
                 .isEqualTo("<USER_ANT:6>Dipole<EOR>\n");
+    }
+    
+    @Test
+    public void test313WwffReferences() {
+        AdiWriter writer = new AdiWriter();
+
+        Adif3Record record = new Adif3Record();
+        record.setCall("OK7MS/p");
+        record.setTimeOn(LocalTime.of(15, 30));
+        record.setMyWwffRef(Wwff.valueOf("GFF-0350"));
+        record.setWwffRef(Wwff.valueOf("S9FF-0001"));
+        writer.append(record);
+
+        assertThat(writer.toString())
+                .isEqualTo("<CALL:7>OK7MS/p<TIME_ON:6>153000<MY_WWFF_REF:8>GFF-0350<WWFF_REF:9>S9FF-0001<EOR>\n");
+    }
+
+    @Test
+    public void testArrlSect() {
+        AdiWriter writer = new AdiWriter();
+
+        Adif3Record record = new Adif3Record();
+        record.setCall("OK7MS/p");
+        record.setTimeOn(LocalTime.of(15, 30));
+        record.setArrlSect(ArrlSection.CT.adifCode());
+        writer.append(record);
+
+        assertThat(writer.toString())
+                .isEqualTo("<ARRL_SECT:2>CT<CALL:7>OK7MS/p<TIME_ON:6>153000<EOR>\n");
+
     }
 }
