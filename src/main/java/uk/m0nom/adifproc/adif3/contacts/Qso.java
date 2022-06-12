@@ -4,6 +4,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.marsik.ham.adif.Adif3Record;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Captures the information relating to a single contact. Each station in the QSO is recorded as a single
  * instance of Station which allows some more OO-centric processing compared to the raw data in the Adif3Record
@@ -11,6 +14,8 @@ import org.marsik.ham.adif.Adif3Record;
 @Data
 @NoArgsConstructor
 public class Qso {
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm");
+
     private int index;
     private Station from;
     private Station to;
@@ -27,5 +32,11 @@ public class Qso {
 
     public boolean isSatelliteContact() {
         return (record != null) && (record.getSatName() != null);
+    }
+
+    @Override
+    public String toString() {
+        LocalDateTime contactDateTime = LocalDateTime.of(record.getQsoDate(), record.getTimeOn());
+        return String.format("%s %s %s", dateTimeFormatter.format(contactDateTime), record.getStationCallsign(), record.getCall());
     }
 }
