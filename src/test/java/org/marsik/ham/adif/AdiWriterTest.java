@@ -94,10 +94,11 @@ public class AdiWriterTest {
         record.setCall("OK7MS/p");
         record.setTimeOn(LocalTime.of(15, 30));
         record.setArrlSect(ArrlSection.CT.adifCode());
+        record.setMyArrlSect(ArrlSection.AZ.adifCode());
         writer.append(record);
 
         assertThat(writer.toString())
-                .isEqualTo("<ARRL_SECT:2>CT<CALL:7>OK7MS/p<TIME_ON:6>153000<EOR>\n");
+                .isEqualTo("<ARRL_SECT:2>CT<CALL:7>OK7MS/p<TIME_ON:6>153000<MY_ARRL_SECT:2>AZ<EOR>\n");
 
     }
 }

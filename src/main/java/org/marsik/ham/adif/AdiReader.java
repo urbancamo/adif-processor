@@ -268,6 +268,8 @@ public class AdiReader {
         maybeGetCustomDefinedFields("USER_", recordFields, record.getUserDefinedFields());
         
         /* ADIF 3.1.3 fields */
+        maybeGet(recordFields, "MY_ARRL_SECT").ifPresent(record::setMyArrlSect);
+
         maybeGet(recordFields, "MY_WWFF_REF").map(Wwff::valueOf).ifPresent(record::setMyWwffRef);
         maybeGet(recordFields, "WWFF_REF").map(Wwff::valueOf).ifPresent(record::setWwffRef);
 

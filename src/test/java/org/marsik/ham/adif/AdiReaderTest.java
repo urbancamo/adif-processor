@@ -176,6 +176,7 @@ public class AdiReaderTest {
         assertThat(adif.get().records.get(2).getMyWwffRef()).isEqualTo(Wwff.valueOf("GFF-0350"));
         assertThat(adif.get().records.get(2).getWwffRef()).isEqualTo(Wwff.valueOf("S9FF-0001"));
         assertThat(adif.get().records.get(2).getArrlSect()).isEqualTo(ArrlSection.CT.adifCode());
+        assertThat(adif.get().records.get(2).getMyArrlSect()).isEqualTo(ArrlSection.AZ.adifCode());
 }
 
     @Test

@@ -853,4 +853,10 @@ public class Adif3Record {
      * Since ADIF 3.1.3
      */
     private Wwff wwffRef;
+
+    /**
+     * Since ADIF 3.1.3
+     * 12-JUN-2022 MSW Encoded as enum
+     */
+    private String myArrlSect;
 }
