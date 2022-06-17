@@ -50,7 +50,6 @@ public class KmlContactInfoPanel {
             /* Only display uplink/downlink frequencies separately if they differ by more than 1 Hz*/
             if (rec.getFreqRx() != null && Math.abs(rec.getFreq() - (rec.getFreqRx())) >= ONE_HZ) {
                 context.setVariable("downlinkFreq", String.format("%,.3f", rec.getFreqRx()));
-            } else {
             }
         }
         if (rec.getTxPwr() != null) {
