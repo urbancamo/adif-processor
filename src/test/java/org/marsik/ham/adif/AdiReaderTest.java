@@ -158,6 +158,12 @@ public class AdiReaderTest {
 
         String ls = System.getProperty("line.separator");
         String address = String.format("John Doe%s100 Main Street%sCity, ST 12345", ls, ls);
+        if (ls.length() == 2) {
+            // Compensate for the fact that on Windows machines the line separator is 2
+            // characters - and these are counted in the field length. So compared to a
+            // unix delimited file the string is two characters less.
+            address = address.substring(0, address.length()-2);
+        }
         assertThat(adif.get().records.get(1).getAddress()).isEqualTo(address);
         assertThat(adif.get().records.get(1).getSilentKey()).isEqualTo(true);
         assertThat(adif.get().records.get(1).getSubmode()).isEqualTo(PSK63.adifCode());
