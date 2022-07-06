@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AdifLatLongParser  implements LocationParser, LocationFormatter{
-    private final static String patternString = "<%sLAT:11>([NnSs])(\\d{3}) (\\d{2}\\.\\d{3})<%sLON:11>([EeWw])(\\d{3}) (\\d{2}\\.\\d{3})";
+    private final static String patternString = "\\s*<%s\\s*LAT:11\\s*>\\s*([NnSs])(\\d{3})\\s+(\\d{2}\\.\\d{3})\\s*<%s\\s*LON:11\\s*>\\s*([EeWw])(\\d{3}) (\\d{2}\\.\\d{3})\\s*";
     private final Pattern pattern;
     private final String adifFieldPrefix;
 
@@ -28,7 +28,9 @@ public class AdifLatLongParser  implements LocationParser, LocationFormatter{
 
     @Override
     public GlobalCoords3D parse(LocationSource source, String location) {
-        Matcher matcher = getPattern().matcher(location);
+        // replace any CR/LF from the source string and replace with whitespace
+        String strippedLocation = location.replace('\n', ' ').replace('\r', ' ');
+        Matcher matcher = getPattern().matcher(strippedLocation);
         if (matcher.find()) {
             String latNorthSouth = matcher.group(1).toUpperCase();
             String latDegrees = matcher.group(2);
