@@ -5,6 +5,8 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Band;
 import org.marsik.ham.adif.enums.Propagation;
+import org.marsik.ham.adif.types.Sota;
+import org.marsik.ham.adif.types.Wwff;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityDatabase;
@@ -308,11 +310,25 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 if (activity != null) {
                     qso.getTo().addActivity(activity);
 
-                    // Make sure if they have a SOTA reference this takes precedence over any other reference
-                    // hence why this code is only executed if the sota ref is null
-                    if (rec.getSotaRef() == null || StringUtils.isBlank(rec.getSotaRef().getValue())) {
+                    boolean sotaFieldEmpty = rec.getSotaRef() == null || StringUtils.isBlank(rec.getSotaRef().getValue());
+                    boolean wwffFieldEmpty = rec.getWwffRef() == null || StringUtils.isBlank(rec.getWwffRef().getValue());
+
+                    // Make sure if they have a SOTA or WWFF reference specified
+                    // in their specific fields that they take precedence over any other reference
+                    // hence why this code is only executed if these specific references are null
+                    if (sotaFieldEmpty && wwffFieldEmpty) {
                         toLocationDeterminer.setTheirLocationFromActivity(qso, activity);
                     }
+
+                    // If activity in SIG_INFO/SIG_REF is SOTA and SOTA specific field isn't set, set it now
+                    if (sotaFieldEmpty && activity.getType() == ActivityType.SOTA) {
+                        rec.setSotaRef(Sota.valueOf(activity.getRef()));
+                    }
+                    // If activity in SIG_INFO/SIG_REF is WWFF and WWFF specific field isn't set, set it now
+                    if (wwffFieldEmpty && activity.getType() == ActivityType.WWFF) {
+                        rec.setWwffRef(Wwff.valueOf(activity.getRef()));
+                    }
+
                     unmapped.put(activityType, activityLocation);
                 }
             }

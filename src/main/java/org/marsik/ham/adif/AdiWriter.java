@@ -337,7 +337,8 @@ public class AdiWriter {
         /* ADIF 3.1.3 */
         append("MY_WWFF_REF", rec.getMyWwffRef());
         append("WWFF_REF", rec.getWwffRef());
-        
+        append("MY_ARRL_SECT", rec.getMyArrlSect());
+
         appendEndOfRecord();
     }
 
