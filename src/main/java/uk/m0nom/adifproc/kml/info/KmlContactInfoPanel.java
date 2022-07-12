@@ -10,6 +10,8 @@ import org.thymeleaf.templatemode.TemplateMode;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.comms.CommsLinkResult;
 
+import static uk.m0nom.adifproc.util.FrequencyFormatter.formatFrequency;
+
 public class KmlContactInfoPanel {
     /** One Hz in MHz */
     private static final double ONE_HZ = 1.0/1000000.0;
@@ -46,10 +48,10 @@ public class KmlContactInfoPanel {
             context.setVariable("mode", rec.getMode().toString());
         }
         if (rec.getFreq() != null) {
-            context.setVariable("freq", String.format("%,.3f", rec.getFreq()));
+            context.setVariable("freq", formatFrequency(rec.getFreq()));
             /* Only display uplink/downlink frequencies separately if they differ by more than 1 Hz*/
             if (rec.getFreqRx() != null && Math.abs(rec.getFreq() - (rec.getFreqRx())) >= ONE_HZ) {
-                context.setVariable("downlinkFreq", String.format("%,.3f", rec.getFreqRx()));
+                context.setVariable("downlinkFreq", formatFrequency(rec.getFreqRx()));
             }
         }
         if (rec.getTxPwr() != null) {
