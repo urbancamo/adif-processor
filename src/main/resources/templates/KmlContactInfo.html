@@ -87,7 +87,7 @@
                             <td class="tdLabel">Mode: </td>
                             <td><span th:text="${mode}">FM</span></td>
                         </tr>
-                        <tr th:if="${freq} != null">
+                        <tr th:if="${freq} != null and ${downlinkFreq} != null">
                             <td class="tdLabel"> Uplink Freq: </td>
                             <td><span th:text="${freq}">2.125 GHz</span></td>
                         </tr>
@@ -97,7 +97,7 @@
                         </tr>
                         <tr th:if="${freq} != null and ${downlinkFreq} == null">
                             <td class="tdLabel">Freq:</td>
-                            <td><span th:text="${freq}">145.450</span> Mhz</td>
+                            <td><span th:text="${freq}">145.450 Mhz</span></td>
                         </tr>
                         <tr th:if="${txPwr} != null">
                             <td class="tdLabel">TxPwr: </td>

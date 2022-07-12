@@ -322,11 +322,15 @@ public class Adif3PrintFormatter {
             case "SIG" :
                 if (rec.getSig() != null) {
                     value = rec.getSig();
+                } else if (rec.getSotaRef() != null) {
+                    value = "SOTA";
                 }
                 break;
             case "SIG_INFO" :
                 if (rec.getSigInfo() != null) {
                     value = rec.getSigInfo();
+                } else if (rec.getSotaRef() != null) {
+                    value = rec.getSotaRef().getValue();
                 }
                 break;
             case "QSL_STATUS":
