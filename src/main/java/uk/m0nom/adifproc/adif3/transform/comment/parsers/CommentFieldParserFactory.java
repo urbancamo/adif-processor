@@ -32,11 +32,11 @@ public class CommentFieldParserFactory {
         parserMap.put("BandRx", new BandRxFieldParser());
         parserMap.put("SotaRef", new SotaRefFieldParser(toLocationDeterminer, activities));
         parserMap.put("WotaRef", new WotaFieldParser(toLocationDeterminer, activities));
+        parserMap.put("WwffRef", new WwffFieldParser(toLocationDeterminer, activities));
         parserMap.put("GmaRef", new ActivityFieldParser(toLocationDeterminer, activities, ActivityType.GMA));
         parserMap.put("HemaRef", new ActivityFieldParser(toLocationDeterminer, activities, ActivityType.HEMA));
         parserMap.put("PotaRef", new ActivityFieldParser(toLocationDeterminer, activities, ActivityType.POTA));
         parserMap.put("CotaRef", new ActivityFieldParser(toLocationDeterminer, activities, ActivityType.COTA));
-        parserMap.put("WwffRef", new ActivityFieldParser(toLocationDeterminer, activities, ActivityType.WWFF));
         parserMap.put("SerialTx", new SerialTxFieldParser());
         parserMap.put("SerialRx", new SerialRxFieldParser());
         parserMap.put("Fists", new FistsFieldParser());
