@@ -34,16 +34,18 @@ public class WwffFieldParserTest {
     @BeforeEach
     void init(@Mock ToLocationDeterminer toLocationDeterminer,
               @Mock ActivityDatabaseService activityDatabaseService,
-              @Mock ActivityDatabase wwffDatabase,
-              @Mock Activity svff0185Activity) {
+              @Mock ActivityDatabase wwffDatabase) {
 
         rec = new Adif3Record();
         qso = new Qso();
         Station to = new Station();
 
+        Activity svff0185Activity = new WwffInfo();
+        svff0185Activity.setRef("SVFF-0185");
+        svff0185Activity.setName("Name");
         qso.setRecord(rec);
         qso.setTo(to);
-
+        //to.addActivity(svff0185Activity);
         wwffFieldParser = new WwffFieldParser(toLocationDeterminer, activityDatabaseService);
         when(activityDatabaseService.getDatabase(ActivityType.WWFF)).thenReturn(wwffDatabase);
         when(wwffDatabase.get("SVFF-0185")).thenReturn(svff0185Activity);
