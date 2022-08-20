@@ -19,6 +19,7 @@ import uk.m0nom.adifproc.adif3.transform.comment.CommentTransformer;
 import uk.m0nom.adifproc.adif3.transform.comment.FieldParserCommentTransformer;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LocationSource;
+import uk.m0nom.adifproc.dxcc.DxccEntities;
 import uk.m0nom.adifproc.geocoding.GeocodingProvider;
 import uk.m0nom.adifproc.geocoding.GeocodingResult;
 import uk.m0nom.adifproc.geocoding.NominatimGeocodingProvider;
@@ -50,6 +51,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private final GeocodingProvider geocodingProvider;
     private final CommentTransformer commentTransformer;
     private final ApSatelliteService apSatelliteService;
+
 
     public CommentParsingAdifRecordTransformer(ActivityDatabaseService activities,
                                                CachingQrzXmlService qrzXmlService,
@@ -295,6 +297,10 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 qso.getTo().getCoordinates().setAltitude(alt);
             }
         }
+
+        // Set DXCC Entities
+        qso.getFrom().setDxccEntity(control.getDxccEntities().findDxccEntityFromCallsign(qso.getFrom().getCallsign()));
+        qso.getTo().setDxccEntity(control.getDxccEntities().findDxccEntityFromCallsign(qso.getTo().getCallsign()));
     }
 
     private void processSig(Qso qso, Map<String, String> unmapped) {

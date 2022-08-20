@@ -22,7 +22,7 @@
 
   <groupId>uk.m0nom</groupId>
   <artifactId>adif-processor</artifactId>
-  <version>1.0.55</version>
+  <version>1.0.57-SNAPSHOT</version>
 
   <name>adif-processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
@@ -138,7 +138,7 @@
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
-      <version>4.9.3</version>
+      <version>4.10.0</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
@@ -250,7 +250,7 @@
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk</artifactId>
-      <version>1.12.237</version>
+      <version>1.12.270</version>
     </dependency>
 
     <dependency>
