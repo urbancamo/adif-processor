@@ -56,4 +56,5 @@ public class DxccEntity {
     @JsonProperty("validStart")
     private String validStart;
 
+    private Collection<String> prefixes;
 }

@@ -6,6 +6,7 @@ import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.antenna.Antenna;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
+import uk.m0nom.adifproc.dxcc.DxccEntity;
 import uk.m0nom.adifproc.qrz.QrzCallsign;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class Station {
     private String callsign;
     private QrzCallsign qrzInfo;
+    private DxccEntity dxccEntity;
     private List<Qso> qsos;
 
     private Map<ActivityType, Activity> activities;

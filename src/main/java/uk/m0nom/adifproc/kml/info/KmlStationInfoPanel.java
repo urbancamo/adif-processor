@@ -12,6 +12,9 @@ import uk.m0nom.adifproc.coords.LocationInfo;
 import uk.m0nom.adifproc.dxcc.DxccEntity;
 import uk.m0nom.adifproc.qrz.QrzCallsign;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 public class KmlStationInfoPanel {
     public String getPanelContentForStation(TransformControl control, Station station) {
         final Context context = new Context();
@@ -39,16 +42,15 @@ public class KmlStationInfoPanel {
             setVariable(context,"name", String.format("%s %s",
                     StringUtils.defaultIfBlank(qrzInfo.getFname(), ""),
                     StringUtils.defaultIfBlank(qrzInfo.getName(), "")));
-            setVariable(context, "country", qrzInfo.getCountry());
+        }
 
-            if (StringUtils.isNotEmpty(qrzInfo.getDxcc())) {
-                setVariable(context, "dxcc", qrzInfo.getDxcc());
-                int dxccCode = Integer.parseInt(qrzInfo.getDxcc());
-                DxccEntity dxcc = control.getDxccEntities().getEntity(dxccCode);
-                setVariable(context, "flag", dxcc.getFlag());
-            }
-            setVariable(context, "ituZone", qrzInfo.getItuzone());
-            setVariable(context, "cqZone", qrzInfo.getCqzone());
+        if (station.getDxccEntity() != null) {
+            DxccEntity dxcc = station.getDxccEntity();
+            setVariable(context, "country", dxcc.getCountryCode());
+            setVariable(context, "dxcc", dxcc.getName());
+            setVariable(context, "flag", dxcc.getFlag());
+            setVariable(context, "ituZone", formatIntList(dxcc.getItu()));
+            setVariable(context, "cqZone", formatIntList(dxcc.getCq()));
         }
 
         if (station.getCoordinates() != null && station.getCoordinates().getAltitude() > 0.0) {
@@ -77,6 +79,11 @@ public class KmlStationInfoPanel {
 
         String html = control.getTemplateEngine().process(new TemplateSpec("KmlStationInfo", TemplateMode.XML), context);
         return html.replace("\n", "");
+    }
+
+    private String formatIntList(Collection<Integer> intList) {
+        return intList.stream().map(String::valueOf)
+                .collect(Collectors.joining(", "));
     }
 
     private void setVariable(Context context, String key, String value) {

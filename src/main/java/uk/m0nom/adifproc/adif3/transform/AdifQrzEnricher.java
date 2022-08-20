@@ -28,10 +28,10 @@ public class AdifQrzEnricher {
         if (qrzData == null) {
             return;
         }
-
-        if (rec.getMyCountry() == null) {
-            rec.setMyCountry(qrzData.getCountry());
-        }
+        // Now comes from DxccEntity computed from callsign
+        // if (rec.getMyCountry() == null) {
+        // rec.setMyCountry(qrzData.getCountry());
+        // }
         if (rec.getMyName() == null) {
             rec.setMyName(getNameFromQrzData(qrzData));
         }
@@ -42,9 +42,10 @@ public class AdifQrzEnricher {
             return;
         }
 
-        if (rec.getCountry() == null) {
-            rec.setCountry(qrzData.getCountry());
-        }
+        // Now comes from DxccEntity computed from callsign
+        //if (rec.getCountry() == null) {
+        //    rec.setCountry(qrzData.getCountry());
+        //}
 
         if (rec.getName() == null) {
             rec.setName(getNameFromQrzData(qrzData));
