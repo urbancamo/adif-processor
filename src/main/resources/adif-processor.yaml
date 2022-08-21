@@ -19,6 +19,7 @@ WOTA: WotaRef
 HEMA: HemaRef
 LAT: Latitude
 LONG: Longitude
+LOTA: LotaRef
 POTA: PotaRef
 WWFF: WwffRef
 PATH: AntPath

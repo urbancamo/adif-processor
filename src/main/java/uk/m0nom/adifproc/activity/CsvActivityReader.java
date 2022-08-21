@@ -42,7 +42,7 @@ public abstract class CsvActivityReader extends ActivityReader {
     }
 
     public ActivityDatabase read(InputStream reader) throws IOException {
-        return new ActivityDatabase(ActivityType.SOTA, readRecords(reader));
+        return new ActivityDatabase(getType(), readRecords(reader));
     }
 
     protected abstract Activity readRecord(CSVRecord record) throws IllegalArgumentException;
