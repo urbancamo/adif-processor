@@ -37,6 +37,7 @@ public class CommentFieldParserFactory {
         parserMap.put("HemaRef", new ActivityFieldParser(toLocationDeterminer, activities, ActivityType.HEMA));
         parserMap.put("PotaRef", new ActivityFieldParser(toLocationDeterminer, activities, ActivityType.POTA));
         parserMap.put("CotaRef", new ActivityFieldParser(toLocationDeterminer, activities, ActivityType.COTA));
+        parserMap.put("LotaRef", new ActivityFieldParser(toLocationDeterminer, activities, ActivityType.LOTA));
         parserMap.put("SerialTx", new SerialTxFieldParser());
         parserMap.put("SerialRx", new SerialRxFieldParser());
         parserMap.put("Fists", new FistsFieldParser());
