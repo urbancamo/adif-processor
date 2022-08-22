@@ -128,7 +128,7 @@ public class CommandLineArgs {
             control.setKmlContactWidth(ns.getInt("kml_contact_width"));
             control.setKmlContactColourByBand(ns.getBoolean("kml_contact_colour_band"));
 
-            control.setMarkdown(ns.getBoolean("markdown"));
+            control.setFormattedOutput(ns.getBoolean("markdown"));
 
             control.setOutputPath(ns.getString("output"));
             control.setPathname(ns.getString("path").substring(1, ns.getString("path").length()-1));
