@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 /**
  * Command line interface to the print formatter mainly for checking out/testing new features
+ * TODO Needs refactoring now the formatter is processing Qsos and not Adif3 Records
  */
 public class PrintFormatApp implements Runnable
 {
@@ -51,13 +52,13 @@ public class PrintFormatApp implements Runnable
                 in = args[0];
                 out = String.format("%s.%s", FilenameUtils.removeExtension(in), "prn");
                 formatter.getPrintJobConfig().configure(args[1], new FileInputStream(args[1]));
-                Adif3 log = readerWriter.read(in, formatter.getPrintJobConfig().getInEncoding(), true);
-                StringBuilder sb = formatter.format(log);
+                //Adif3 log = readerWriter.read(in, formatter.getPrintJobConfig().getInEncoding(), true);
+                //StringBuilder sb = formatter.format(log);
                 File outFile = new File(out);
                 if (outFile.delete()) {
                     if (outFile.createNewFile()) {
                         writer = Files.newBufferedWriter(new File(out).toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);
-                        writer.write(sb.toString());
+                        //writer.write(sb.toString());
                     } else {
                         logger.severe(String.format("Error creating new file: %s", outFile.getAbsolutePath()));
                     }

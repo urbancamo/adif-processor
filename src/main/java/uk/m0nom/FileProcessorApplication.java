@@ -140,7 +140,7 @@ public class FileProcessorApplication implements CommandLineRunner {
             log.getHeader().setPreamble(new ContestResultsCalculator(summits).calculateResults(log));
 
             writer.write(out, control.getEncoding(), log);
-            if (control.isMarkdown()) {
+            if (control.isFormattedOutput()) {
                 BufferedWriter markdownWriter = null;
                 try {
                     File formattedQsoFile = new File(markdown);
@@ -153,7 +153,7 @@ public class FileProcessorApplication implements CommandLineRunner {
                         formatter.getPrintJobConfig().configure(MARKDOWN_CONTROL_FILE,
                                 FileProcessorApplication.class.getClassLoader().getResourceAsStream(MARKDOWN_CONTROL_FILE));
                         logger.info(String.format("Writing Markdown to: %s", markdown));
-                        StringBuilder sb = formatter.format(log);
+                        StringBuilder sb = formatter.format(qsos);
                         markdownWriter = Files.newBufferedWriter(formattedQsoFile.toPath(), Charset.forName(formatter.getPrintJobConfig().getOutEncoding()), StandardOpenOption.WRITE);
                         markdownWriter.write(sb.toString());
                     } else {

@@ -5,16 +5,17 @@ import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.types.Sota;
 import org.springframework.stereotype.Service;
+import uk.m0nom.adifproc.activity.Activity;
+import uk.m0nom.adifproc.activity.ActivityType;
+import uk.m0nom.adifproc.adif3.contacts.Qso;
+import uk.m0nom.adifproc.adif3.contacts.Qsos;
 import uk.m0nom.adifproc.geodesic.GeodesicUtils;
 import uk.m0nom.adifproc.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -46,15 +47,15 @@ public class Adif3PrintFormatter {
     public PrintJobConfig getPrintJobConfig() { return printJobConfig; }
 
 
-    public StringBuilder format(Adif3 log) {
+    public StringBuilder format(Qsos qsos) {
         resetPrintState();
 
-        for (Adif3Record rec : log.getRecords()) {
-            if (rec.getCall() != null && rec.getStationCallsign() != null) {
+        for (Qso qso : qsos.getQsos()) {
+            if (qso.getFrom() != null && qso.getTo() != null) {
                 if (atPageBreak()) {
                     handlePageBreak();
                 }
-                printRecord(rec);
+                printRecord(qso);
             }
         }
         return state.sb;
@@ -198,20 +199,22 @@ public class Adif3PrintFormatter {
         state.currentColumn = 1;
     }
 
-    public void printRecord(Adif3Record rec) {
+    public void printRecord(Qso qso) {
         StringBuilder line = new StringBuilder();
         String value;
         for (ColumnConfig column : printJobConfig.pageConfig.getLine().getColumns()) {
-            value = getAdif3FieldFromRecord(rec, column);
+            value = getAdif3FieldFromRecord(qso, column);
             printValueToColumn(column, value, line);
         }
         printLine(line.toString());
     }
 
-    private String getAdif3FieldFromRecord(Adif3Record rec, ColumnConfig column) {
+    private String getAdif3FieldFromRecord(Qso qso, ColumnConfig column) {
         String value = "";
         DateTimeFormatter timeFormat;
         DateTimeFormatter dateFormat;
+        Adif3Record rec = qso.getRecord();
+        boolean markdown = "md".equals(printJobConfig.filenameExtension);
 
         switch (column.getAdif()) {
             case "QSO_DATE":
@@ -229,10 +232,22 @@ public class Adif3PrintFormatter {
                 }
                 break;
             case "STATION_CALLSIGN":
-                value = rec.getStationCallsign();
+                if (markdown && qso.getFrom().getQrzInfo() != null) {
+                    value = String.format("[%s](https://qrz.com/db/%s)",
+                            qso.getFrom().getCallsign(),
+                            qso.getFrom().getQrzInfo().getCall());
+                } else {
+                    value = rec.getStationCallsign();
+                }
                 break;
             case "CALL":
-                value = rec.getCall();
+                if (markdown && qso.getTo().getQrzInfo() != null) {
+                    value = String.format("[%s](https://qrz.com/db/%s)",
+                            qso.getTo().getCallsign(),
+                            qso.getTo().getQrzInfo().getCall());
+                } else {
+                    value = rec.getCall();
+                }
                 break;
             case "BAND":
                 if (rec.getBand() != null) {
@@ -324,14 +339,12 @@ public class Adif3PrintFormatter {
                     value = rec.getSig();
                 } else if (rec.getSotaRef() != null) {
                     value = "SOTA";
+                } else if (rec.getWwffRef() != null) {
+                    value = "WWFF";
                 }
                 break;
             case "SIG_INFO" :
-                if (rec.getSigInfo() != null) {
-                    value = rec.getSigInfo();
-                } else if (rec.getSotaRef() != null) {
-                    value = rec.getSotaRef().getValue();
-                }
+                value = getActivityInfo(qso.getTo().getActivities(), markdown);
                 break;
             case "QSL_STATUS":
                 boolean sent = rec.getQslSDate() != null;
@@ -370,4 +383,18 @@ public class Adif3PrintFormatter {
         }
         return value;
     }
+
+    private String getActivityInfo(Map<ActivityType, Activity> activities, boolean markdown) {
+        String value = "";
+        if (activities != null && !activities.isEmpty()) {
+            Activity activity = activities.values().iterator().next();
+            if (markdown && StringUtils.isNotEmpty(activity.getUrl()))  {
+                value = String.format("[%s](%s)", activity.getRef(), activity.getUrl());
+            } else {
+                value = activity.getRef();
+            }
+        }
+        return value;
+    }
+
 }

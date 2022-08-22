@@ -109,7 +109,7 @@ public class TransformControl {
     private boolean kmlShowLocalActivationSites;
     private Double kmlLocalActivationSitesRadius;
 
-    private boolean markdown;
+    private boolean formattedOutput;
     private boolean contestResults;
 
     private Antenna antenna = new AntennaService().getAntenna("Vertical");
