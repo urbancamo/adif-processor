@@ -90,7 +90,7 @@ public class DxccEntitiesTest {
     @Test
     public void bestDM6KGDxccEntity() {
         DxccEntity match = entities.findDxccEntityFromCallsign("DM6KG", qsoDate);
-        assertThat(match.getName()).isEqualTo("East Germany");
+        assertThat(match.getName()).isEqualTo("Germany");
     }
 
 }
