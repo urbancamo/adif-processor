@@ -18,7 +18,9 @@ import uk.m0nom.adifproc.adif3.io.Adif3FileWriter;
 import uk.m0nom.adifproc.adif3.print.Adif3PrintFormatter;
 import uk.m0nom.adifproc.adif3.transform.TransformResults;
 import uk.m0nom.adifproc.contest.ContestResultsCalculator;
+import uk.m0nom.adifproc.dxcc.DxccEntities;
 import uk.m0nom.adifproc.dxcc.DxccJsonReader;
+import uk.m0nom.adifproc.dxcc.JsonDxccEntities;
 import uk.m0nom.adifproc.kml.KmlWriter;
 import uk.m0nom.adifproc.qrz.CachingQrzXmlService;
 
@@ -30,6 +32,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.StandardOpenOption;
+import java.text.ParseException;
 import java.util.Objects;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -119,7 +122,14 @@ public class FileProcessorApplication implements CommandLineRunner {
         logger.info(String.format("Running from: %s", new File(".").getAbsolutePath()));
         try {
             summits.loadData();
-            control.setDxccEntities(new DxccJsonReader().read());
+            JsonDxccEntities jsonDxccEntities = new DxccJsonReader().read();
+            DxccEntities dxccEntities = new DxccEntities();
+            try {
+                dxccEntities.setup(jsonDxccEntities);
+            } catch (ParseException p) {
+                logger.severe(p.getMessage());
+            }
+            control.setDxccEntities(dxccEntities);
             if (control.hasQrzCredentials()) {
                 if (!qrzXmlService.refreshSessionKey()) {
                     logger.warning("Could not connect to QRZ.COM, disabling lookups and continuing...");

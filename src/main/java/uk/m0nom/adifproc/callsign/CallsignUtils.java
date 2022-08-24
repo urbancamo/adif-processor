@@ -37,6 +37,19 @@ public class CallsignUtils {
             new CallsignRegexMap(CallsignVariant.GW_ALT, Pattern.compile("^[2GM]W\\d", Pattern.CASE_INSENSITIVE))
     ));
 
+
+    public static boolean doesCallsignHaveNonStandardSuffix(String callsign) {
+        return callsign.contains("/") && CallsignUtils.getSuffix(callsign) == null;
+    }
+
+    public static String swapSuffixToPrefix(String callsign) {
+        // example: IK2LEY/IS0 - suffix isn't one that is recognised eg /P
+        // swap the suffix to be a prefix and try that!
+        int lastSlashPos = callsign.lastIndexOf('/');
+        int len = callsign.length();
+        return String.format("%s/%s", callsign.substring(lastSlashPos + 1, len), callsign.substring(0, lastSlashPos));
+    }
+
     private static Callsign gToGxVariant(Callsign ukVariant, CallsignVariant variant) {
         String variantCallsign;
         String callsign = ukVariant.getCallsign();
@@ -175,6 +188,9 @@ public class CallsignUtils {
         if (fixedInHomeCountry != null) {
             variants.addAll(getUkCallsignVariants(fixedInHomeCountry.getCallsign()));
         }
+        if (doesCallsignHaveNonStandardSuffix(callsign)) {
+            variants.add(new Callsign(stripNonStandardSuffix(callsign), CallsignVariant.HOME_COUNTRY));
+        }
         variants = dedup(variants);
         return variants;
     }
@@ -243,6 +259,14 @@ public class CallsignUtils {
         return callsign;
     }
 
+    public static String stripNonStandardSuffix(String callsign) {
+        int loc = callsign.lastIndexOf('/');
+        if (loc != -1) {
+            return callsign.substring(0, loc);
+        }
+        return callsign;
+    }
+
     public static CallsignSuffix getSuffix(String callsign) {
         int loc = callsign.lastIndexOf('/');
         if (loc != -1) {
@@ -256,7 +280,6 @@ public class CallsignUtils {
         return null;
     }
 
-    // TODO these methods are very crude and need refactoring to include cty.dat lookups
     public static boolean isAbroad(String callsign) {
         int loc = callsign.indexOf('/');
         if (loc != -1) {

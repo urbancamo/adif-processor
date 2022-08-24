@@ -10,6 +10,7 @@ import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LocationInfo;
 import uk.m0nom.adifproc.dxcc.DxccEntity;
+import uk.m0nom.adifproc.dxcc.JsonDxccEntity;
 import uk.m0nom.adifproc.qrz.QrzCallsign;
 
 import java.util.Collection;

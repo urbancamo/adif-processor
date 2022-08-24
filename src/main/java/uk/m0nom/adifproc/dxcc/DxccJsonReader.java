@@ -8,13 +8,12 @@ import java.util.logging.Logger;
 public class DxccJsonReader {
     private static final Logger logger = Logger.getLogger(DxccJsonReader.class.getName());
 
-    public DxccEntities read() {
-        DxccEntities entities = null;
+    public JsonDxccEntities read() {
+        JsonDxccEntities entities = null;
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("dxcc/dxcc.json");
             ObjectMapper mapper = new ObjectMapper();
-            entities = mapper.readValue(inputStream, DxccEntities.class);
-            entities.setup();
+            entities = mapper.readValue(inputStream, JsonDxccEntities.class);
         } catch (Exception ex) {
             logger.severe(String.format("Error reading DXCC JSON data: %s", ex.getMessage()));
         }
