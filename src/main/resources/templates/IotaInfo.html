@@ -18,12 +18,14 @@
             <thead></thead>
             <tbody>
                 <tr>
-                    <td class="tdLabel">Name: </td>
-                    <td><span th:text="${iota.name}"> Iceland</span></td>
+                    <td class="tdLabel">IOTA:</td>
+                    <td>
+                        <a target="_blank" rel="noopener noreferrer" href="https://summits.sota.org.uk/summit/GM/SS-218" th:href="${iota.url}" th:text="${iota.ref}">EU-080</a>
+                    </td>
                 </tr>
-                <tr>
-                    <td class="tdLabel">Ref: </td>
-                    <td><span th:text="${iota.ref}"> EA-1234</span></td>
+                 <tr>
+                    <td class="tdLabel">Island(s) Name: </td>
+                    <td><span th:text="${iota.name}"> Iceland</span></td>
                 </tr>
             </tbody>
         </table>

@@ -26,13 +26,13 @@ public class CommentFieldParserFactory {
         parserMap.put("Operator", new OperatorFieldParser());
         parserMap.put("Qth", new QthFieldParser());
         parserMap.put("Rig", new RigFieldParser());
-        parserMap.put("Iota", new IotaFieldParser());
         parserMap.put("GridSquare", new GridSquareFieldParser());
         parserMap.put("RxPwr", new RxPwrFieldParser());
         parserMap.put("BandRx", new BandRxFieldParser());
         parserMap.put("SotaRef", new SotaRefFieldParser(toLocationDeterminer, activities));
         parserMap.put("WotaRef", new WotaFieldParser(toLocationDeterminer, activities));
         parserMap.put("WwffRef", new WwffFieldParser(toLocationDeterminer, activities));
+        parserMap.put("Iota", new IotaFieldParser(toLocationDeterminer, activities, ActivityType.IOTA));
         parserMap.put("GmaRef", new ActivityFieldParser(toLocationDeterminer, activities, ActivityType.GMA));
         parserMap.put("HemaRef", new ActivityFieldParser(toLocationDeterminer, activities, ActivityType.HEMA));
         parserMap.put("PotaRef", new ActivityFieldParser(toLocationDeterminer, activities, ActivityType.POTA));

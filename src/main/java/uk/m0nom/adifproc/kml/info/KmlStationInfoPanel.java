@@ -9,6 +9,7 @@ import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LocationInfo;
+import uk.m0nom.adifproc.dxcc.Country;
 import uk.m0nom.adifproc.dxcc.DxccEntity;
 import uk.m0nom.adifproc.dxcc.JsonDxccEntity;
 import uk.m0nom.adifproc.qrz.QrzCallsign;
@@ -47,7 +48,12 @@ public class KmlStationInfoPanel {
 
         if (station.getDxccEntity() != null) {
             DxccEntity dxcc = station.getDxccEntity();
-            setVariable(context, "country", dxcc.getCountryCode());
+            Country country = control.getCountries().getCountry(dxcc.getCountryCode());
+            String name = dxcc.getName();
+            if (country != null) {
+                name = country.getName();
+            }
+            setVariable(context, "country", name);
             setVariable(context, "dxcc", dxcc.getName());
             setVariable(context, "flag", dxcc.getFlag());
             setVariable(context, "ituZone", formatIntList(dxcc.getItu()));

@@ -30,14 +30,14 @@ public class IotaJsonReader extends ActivityReader {
             ObjectMapper mapper = new ObjectMapper();
             IotaResponse response = mapper.readValue(inputStream, IotaResponse.class);
             if ("ok".equals(response.getStatus())) {
-                int i = 0;
+                int i = 1;
                 for (IotaInfo info : response.getContent()) {
                     info.setType(ActivityType.IOTA);
                     info.setRef(info.getRefNo());
                     info.setName(info.getIotaName());
                     info.setCoords(info.getCoordsFromLatLongMaxMin());
                     info.setGrid(MaidenheadLocatorConversion.coordsToLocator(info.getCoords()));
-                    info.setIndex(i-1);
+                    info.setIndex(i);
                     iotaInfo.put(info.getRefNo(), info);
                     i++;
                 }

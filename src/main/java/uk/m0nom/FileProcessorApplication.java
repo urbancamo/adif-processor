@@ -18,9 +18,7 @@ import uk.m0nom.adifproc.adif3.io.Adif3FileWriter;
 import uk.m0nom.adifproc.adif3.print.Adif3PrintFormatter;
 import uk.m0nom.adifproc.adif3.transform.TransformResults;
 import uk.m0nom.adifproc.contest.ContestResultsCalculator;
-import uk.m0nom.adifproc.dxcc.DxccEntities;
-import uk.m0nom.adifproc.dxcc.DxccJsonReader;
-import uk.m0nom.adifproc.dxcc.JsonDxccEntities;
+import uk.m0nom.adifproc.dxcc.*;
 import uk.m0nom.adifproc.kml.KmlWriter;
 import uk.m0nom.adifproc.qrz.CachingQrzXmlService;
 
@@ -130,6 +128,11 @@ public class FileProcessorApplication implements CommandLineRunner {
                 logger.severe(p.getMessage());
             }
             control.setDxccEntities(dxccEntities);
+
+            Countries countries = new CountriesJsonReader().read();
+            countries.setup();
+            control.setCountries(countries);
+
             if (control.hasQrzCredentials()) {
                 if (!qrzXmlService.refreshSessionKey()) {
                     logger.warning("Could not connect to QRZ.COM, disabling lookups and continuing...");

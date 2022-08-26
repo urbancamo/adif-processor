@@ -75,6 +75,6 @@ public class IotaInfo extends Activity {
 
     @Override
     public String getUrl() {
-        return String.format("https://www.iota-world.org/islands-on-the-air/iota-groups-islands/group/%d.html", index);
+        return String.format("https://www.iota-world.org/iotamaps/?grpref=%s", refNo);
     }
 }
