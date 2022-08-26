@@ -39,7 +39,12 @@ public class CallsignUtils {
 
 
     public static boolean doesCallsignHaveNonStandardSuffix(String callsign) {
-        return callsign.contains("/") && CallsignUtils.getSuffix(callsign) == null;
+        if (callsign.contains("/")) {
+            boolean unusualSuffix = CallsignUtils.getSuffix(callsign) == null;
+            boolean longSuffix = callsign.substring(callsign.lastIndexOf('/')).length() > 3;
+            return unusualSuffix && !longSuffix;
+        }
+        return false;
     }
 
     public static String swapSuffixToPrefix(String callsign) {
