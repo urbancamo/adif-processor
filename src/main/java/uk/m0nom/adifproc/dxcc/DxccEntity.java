@@ -1,60 +1,57 @@
 package uk.m0nom.adifproc.dxcc;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 
-@Getter
-@Setter
-@NoArgsConstructor
-public class DxccEntity {
-    @JsonProperty("continent")
-    private Collection<String> continent;
+@Data
+public class DxccEntity  {
+    private final DateTimeFormatter dxccDateFormatter =  DateTimeFormatter.ofPattern("uuuu-MM-dd");
 
-    @JsonProperty("countryCode")
-    private String countryCode;
-
-    @JsonProperty("cq")
-    private Collection<Integer> cq;
-
-    @JsonProperty("deleted")
-    private boolean deleted;
-
-    @JsonProperty("entityCode")
-    private int entityCode;
-
-    @JsonProperty("flag")
-    private String flag;
-
-    @JsonProperty("itu")
-    private Collection<Integer> itu;
-
-    @JsonProperty("name")
-    private String name;
-
-    @JsonProperty("notes")
-    private String notes;
-
-    @JsonProperty("outgoingQslService")
-    private boolean outgoingQslService;
-
-    @JsonProperty("prefix")
-    private String prefix;
-
-    @JsonProperty("prefixRegex")
-    private String prefixRegex;
-
-    @JsonProperty("thirdPartyTraffic")
-    private boolean thirdPartyTraffic;
-
-    @JsonProperty("validEnd")
-    private String validEnd;
-
-    @JsonProperty("validStart")
-    private String validStart;
+    private JsonDxccEntity jsonEntity;
 
     private Collection<String> prefixes;
+
+    private LocalDate validStartDate;
+    private LocalDate validEndDate;
+
+    public DxccEntity(JsonDxccEntity jsonEntity) throws ParseException {
+        this.jsonEntity = jsonEntity;
+        setValidStartDate(parseDxccDateString(jsonEntity.getValidStart()));
+        setValidEndDate(parseDxccDateString(jsonEntity.getValidEnd()));
+
+    }
+
+    private LocalDate parseDxccDateString(String dateString) throws ParseException {
+        LocalDate date = null;
+        if (!"".equals(dateString)) {
+            date = LocalDate.parse(dateString, dxccDateFormatter);
+        }
+        return date;
+    }
+
+    public int getEntityCode() { return jsonEntity.getEntityCode(); }
+
+    public String getPrefixRegex() { return jsonEntity.getPrefixRegex(); }
+    public String getPrefix() { return jsonEntity.getPrefix(); }
+    public String getName() { return jsonEntity.getName();}
+    public String getCountryCode() { return jsonEntity.getCountryCode();}
+    public String getFlag() { return jsonEntity.getFlag();}
+
+    public Collection<Integer> getItu() { return jsonEntity.getItu(); }
+    public Collection<Integer> getCq() { return jsonEntity.getCq(); }
+    public boolean hasValidStart() { return validStartDate != null; }
+    public boolean hasValidEnd() { return validEndDate != null; }
+
+    public boolean isValidForDate(LocalDate date) {
+        boolean valid = false;
+
+        valid = !hasValidStart() || date.isAfter(getValidStartDate());
+        valid &= !hasValidEnd() || date.isBefore(getValidEndDate());
+
+        return valid;
+    }
 }

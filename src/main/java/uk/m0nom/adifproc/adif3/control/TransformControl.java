@@ -7,6 +7,7 @@ import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.adif3.xsdquery.Adif3Element;
 import uk.m0nom.adifproc.antenna.Antenna;
 import uk.m0nom.adifproc.antenna.AntennaService;
+import uk.m0nom.adifproc.dxcc.Countries;
 import uk.m0nom.adifproc.dxcc.DxccEntities;
 
 import java.util.HashMap;
@@ -121,6 +122,8 @@ public class TransformControl {
     private TemplateEngine templateEngine;
 
     private DxccEntities dxccEntities;
+
+    private Countries countries;
 
     public String getActivityRef(ActivityType type) {
         return activityRefs.get(type);

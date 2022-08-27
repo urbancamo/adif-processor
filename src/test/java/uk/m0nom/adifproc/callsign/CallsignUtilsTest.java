@@ -10,6 +10,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static uk.m0nom.adifproc.callsign.CallsignUtils.*;
 
 public class CallsignUtilsTest {
+
+    @Test
+    public void checkSuffixSwap() {
+        assertThat(CallsignUtils.swapSuffixToPrefix("IK2LEY/IS0")).isEqualTo("IS0/IK2LEY");
+    }
+
+    @Test
+    public void getVariantsForIK2LEY_slash_IS0() {
+        List<Callsign> callsigns = getCallsignVariants("IK2LEY/IS0");
+        assertThat(callsigns.get(0).getCallsign()).isEqualTo("IK2LEY/IS0");
+        assertThat(callsigns.get(1).getCallsign()).isEqualTo("IK2LEY");
+    }
+
     @Test
     public void getVariantsForM0NOM_slash_Portable() {
         List<Callsign> callsigns = getCallsignVariants("M0NOM/P");

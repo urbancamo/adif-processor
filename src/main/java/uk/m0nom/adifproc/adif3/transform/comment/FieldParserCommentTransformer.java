@@ -62,35 +62,40 @@ public class FieldParserCommentTransformer implements CommentTransformer {
         for (String key : tokens.keySet()) {
             String value = tokens.get(key).trim();
 
-            YamlNode keyNode = fieldMap.value(key);
-            if (keyNode != null) {
-                YamlNode adifFieldYn = keyNode.asScalar();
-                String adifField = adifFieldYn.asScalar().value();
+            try {
+                YamlNode keyNode = fieldMap.value(key);
+                if (keyNode != null) {
+                    YamlNode adifFieldYn = keyNode.asScalar();
+                    String adifField = adifFieldYn.asScalar().value();
 
-                CommentFieldParser parser = factory.get(adifField);
-                if (parser != null) {
-                    try {
-                        FieldParseResult result = parser.parseField(value, qso);
-                        callsignWithInvalidActivity = result.getCallsign();
+                    CommentFieldParser parser = factory.get(adifField);
+                    if (parser != null) {
+                        try {
+                            FieldParseResult result = parser.parseField(value, qso);
+                            callsignWithInvalidActivity = result.getCallsign();
 
-                        if (result.isAddToUnmapped()) {
-                            unmapped.put(key, value);
+                            if (result.isAddToUnmapped()) {
+                                unmapped.put(key, value);
+                            }
+                            if (result.getLatitude() != null) {
+                                latitude = result.getLatitude();
+                            }
+                            if (result.getLongitude() != null) {
+                                longitude = result.getLongitude();
+                            }
+                            if (result.getCoords() != null) {
+                                coords = result.getCoords();
+                            }
+                        } catch (CommentFieldParserException exception) {
+                            results.setError(ErrorReporter.formatError(exception.getClassName(), exception.getMessageKey(), exception.getArgs()));
                         }
-                        if (result.getLatitude() != null) {
-                            latitude = result.getLatitude();
-                        }
-                        if (result.getLongitude() != null) {
-                            longitude = result.getLongitude();
-                        }
-                        if (result.getCoords() != null) {
-                            coords = result.getCoords();
-                        }
-                    } catch (CommentFieldParserException exception) {
-                        results.setError(ErrorReporter.formatError(exception.getClassName(), exception.getMessageKey(), exception.getArgs()));
                     }
                 }
-
-                // TODO: remove from comment if option set
+            } catch (java.util.regex.PatternSyntaxException pse) {
+                // This can happen if the comment is an invalid regular expression,
+                // we can ignore it
+                unmapped.put(comment, "");
+                return;
             }
             if (callsignWithInvalidActivity != null) {
                 results.addContactWithDubiousLocation(callsignWithInvalidActivity);
@@ -106,6 +111,5 @@ public class FieldParserCommentTransformer implements CommentTransformer {
             rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(coords));
             logger.info(String.format("Override location of %s: %s", rec.getCall(), rec.getCoordinates().toString()));
         }
-
     }
 }
