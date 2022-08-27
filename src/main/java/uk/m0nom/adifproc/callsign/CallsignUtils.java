@@ -41,7 +41,7 @@ public class CallsignUtils {
     public static boolean doesCallsignHaveNonStandardSuffix(String callsign) {
         if (callsign.contains("/")) {
             boolean unusualSuffix = CallsignUtils.getSuffix(callsign) == null;
-            boolean longSuffix = callsign.substring(callsign.lastIndexOf('/')).length() > 3;
+            boolean longSuffix = callsign.substring(callsign.lastIndexOf('/')).length()-1 > 3;
             return unusualSuffix && !longSuffix;
         }
         return false;
