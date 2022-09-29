@@ -69,6 +69,10 @@
                 <td class="tdLabel">Country:</td>
                 <td><span th:text="${country}">England</span></td>
             </tr>
+            <tr th:if="${state} != null">
+                <td class="tdLabel">US State:</td>
+                <td><span th:text="${state}">New Hampshire</span></td>
+            </tr>
             <tr th:if="${grid} != null">
                 <td class="tdLabel">Grid:</td>
                 <td><span th:text="${grid}">IO84NI</span></td>

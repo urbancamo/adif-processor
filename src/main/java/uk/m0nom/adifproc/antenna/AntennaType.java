@@ -4,5 +4,6 @@ public enum AntennaType {
     VERTICAL,
     DIPOLE,
     INV_V,
+    SLOPER,
     YAGI
 }

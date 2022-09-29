@@ -25,6 +25,10 @@ public class AntennaService {
         Antenna invertedV = new Antenna(AntennaType.INV_V, "Inverted-V", 25);
         antennaMap.put(invertedV.getName(), invertedV);
 
+        // Sloper
+        Antenna sloper = new Antenna(AntennaType.SLOPER, "Sloper", 25);
+        antennaMap.put(sloper.getName(), sloper);
+
         // YAGI
         Antenna yagi = new Antenna(AntennaType.YAGI, "YAGI", 10);
         antennaMap.put(yagi.getName(), yagi);

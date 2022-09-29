@@ -17,6 +17,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseUtils.parseAlt;
 
@@ -186,33 +187,65 @@ public class KmlStationUtils {
         } else {
             placemark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude);
         }
-        if (control.isKmlShowStationSubLabel()) {
-            icon = IconResource.getIconFromMode(control, qso.getRecord().getMode());
-            String modeId = qso.getRecord().getMode().name();
-            if (icon != null) {
-                if (!iconStyles.contains(modeId)) {
-                    Icon modeIcon = new Icon().withHref(icon.getUrl());
-                    Style modeStyle = document.createAndAddStyle()
-                            .withId(KmlUtils.getModeStyleId(modeId));
-                    modeStyle.createAndSetIconStyle()
-                            .withScale(1.0)
-                            .withIcon(modeIcon);
-                    modeStyle.createAndSetLabelStyle().withColor("ff43b3ff").withScale(0.75); // set color and size of the station marker
-                    modeStyle.createAndSetLineStyle().withColor("ffb343ff").withWidth(3);
-                    iconStyles.add(modeId);
-                }
-                Placemark modePlaceMark = folder.createAndAddPlacemark();
-                modePlaceMark.withId(KmlUtils.getModeId(id))
-                        .withName(getModeLabel(qso))
-                        .withStyleUrl(KmlUtils.getModeStyleUrl(modeId));
-                if (altitude > 0.0) {
-                    modePlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude).setAltitudeMode(AltitudeMode.ABSOLUTE); // set coordinates
-                } else {
-                    modePlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude);
-                }
+        // Doesn't work having two sub-labels, so prefer the activity sub label if set
+        if (control.isKmlShowActivitySubLabel()) {
+            addActivitySubLabel(qso, document, folder, longitude, latitude, altitude, id);
+        } else if (control.isKmlShowStationSubLabel()) {
+            addStationSubLabel(qso, document, folder, longitude, latitude, altitude, id);
+        }
+
+        return null;
+    }
+
+    private void addStationSubLabel(Qso qso, Document document, Folder folder, double longitude, double latitude, double altitude, String id) {
+        IconResource icon = IconResource.getIconFromMode(control, qso.getRecord().getMode());
+        String modeId = qso.getRecord().getMode().name();
+        if (icon != null) {
+            if (!iconStyles.contains(modeId)) {
+                Icon modeIcon = new Icon().withHref(icon.getUrl());
+                Style modeStyle = document.createAndAddStyle()
+                        .withId(KmlUtils.getModeStyleId(modeId));
+                modeStyle.createAndSetIconStyle()
+                        .withScale(1.0)
+                        .withIcon(modeIcon);
+                modeStyle.createAndSetLabelStyle().withColor("ff43b3ff").withScale(0.75); // set color and size of the station marker
+                modeStyle.createAndSetLineStyle().withColor("ffb343ff").withWidth(3);
+                iconStyles.add(modeId);
+            }
+            Placemark modePlaceMark = folder.createAndAddPlacemark();
+            modePlaceMark.withId(KmlUtils.getModeId(id))
+                    .withName(getModeLabel(qso))
+                    .withStyleUrl(KmlUtils.getModeStyleUrl(modeId));
+            if (altitude > 0.0) {
+                modePlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude).setAltitudeMode(AltitudeMode.ABSOLUTE); // set coordinates
+            } else {
+                modePlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude);
             }
         }
-        return null;
+    }
+
+    private void addActivitySubLabel(Qso qso, Document document, Folder folder, double longitude, double latitude, double altitude, String id) {
+        IconResource icon = IconResource.getActivityIcon();
+        if (!iconStyles.contains(icon.getName())) {
+            Icon modeIcon = new Icon().withHref(icon.getUrl());
+            Style activityStyle = document.createAndAddStyle()
+                    .withId(KmlUtils.getStyleId(icon.getName()));
+            activityStyle.createAndSetIconStyle()
+                    .withScale(1.0)
+                    .withIcon(modeIcon);
+            activityStyle.createAndSetLabelStyle().withColor("ff43b3ff").withScale(0.75); // set color and size of the station marker
+            activityStyle.createAndSetLineStyle().withColor("ffb343ff").withWidth(3);
+            iconStyles.add(icon.getName());
+        }
+        Placemark activityPlaceMark = folder.createAndAddPlacemark();
+        activityPlaceMark.withId(KmlUtils.getModeId(id))
+                .withName(getActivityLabel(qso))
+                .withStyleUrl(KmlUtils.getStyleUrl(icon.getName()));
+        if (altitude > 0.0) {
+            activityPlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude).setAltitudeMode(AltitudeMode.ABSOLUTE); // set coordinates
+        } else {
+            activityPlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude);
+        }
     }
 
     public static String getModeLabel(Qso qso) {
@@ -221,6 +254,12 @@ public class KmlStationUtils {
         } else {
             return "";
         }
+    }
+
+    public static String getActivityLabel(Qso qso) {
+        return qso.getTo().getActivities().entrySet().stream()
+                .map(activityTypeActivityEntry -> activityTypeActivityEntry.getValue().getRef())
+                .collect(Collectors.joining(", "));
     }
 
     /* In order to be unique the station marker name must contain the date and time of the contact **/

@@ -107,6 +107,7 @@ public class TransformControl {
     private boolean kmlContactShadow;
 
     private boolean kmlShowStationSubLabel;
+    private boolean kmlShowActivitySubLabel;
     private boolean kmlShowLocalActivationSites;
     private Double kmlLocalActivationSitesRadius;
 
