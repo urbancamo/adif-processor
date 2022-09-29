@@ -44,7 +44,7 @@ public class ActivityDatabaseService {
         readers.put(ActivityType.WWFF, new WwffCsvReader("wwff/wwff_directory.csv"));
         readers.put(ActivityType.COTA, new CotaCsvReader("cota/cota.csv"));
         readers.put(ActivityType.LOTA, new LotaCsvReader("lota/lighthouses.csv"));
-        readers.put(ActivityType.ROTA, new RotaCsvReader("rota/2021-rota.csv"));
+        readers.put(ActivityType.ROTA, new RotaCsvReader("rota/2022-rota.csv"));
         readers.put(ActivityType.IOTA, new IotaJsonReader("iota/iota-full-list.json"));
     }
 

@@ -54,6 +54,9 @@ public class KmlStationInfoPanel {
                 name = country.getName();
             }
             setVariable(context, "country", name);
+            if ("United states".equalsIgnoreCase(name) && name.equalsIgnoreCase(qrzInfo.getCountry()))
+                setVariable(context, "state", qrzInfo.getState());
+            
             setVariable(context, "dxcc", dxcc.getName());
             setVariable(context, "flag", dxcc.getFlag());
             setVariable(context, "ituZone", formatIntList(dxcc.getItu()));

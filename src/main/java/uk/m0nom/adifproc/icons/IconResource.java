@@ -19,6 +19,7 @@ public class IconResource {
     public final static String DEFAULT_MODE_ICON_NAME = "mode";
     public final static String SATELLITE_ICON_NAME="satellite";
     public final static String SATELLITE_TRACK_ICON_NAME="satellite_track";
+    public final static String EMPTY_ICON_NAME = "empty";
 
     public final static String FIXED_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/ranger_station.png";
 	public final static String PORTABLE_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/hiker.png";
@@ -100,5 +101,9 @@ public class IconResource {
                 break;
         }
         return icon;
+    }
+
+    public static IconResource getActivityIcon() {
+        return new IconResource(EMPTY_ICON_NAME, "");
     }
 }
