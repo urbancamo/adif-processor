@@ -102,6 +102,7 @@ public class TransformControl {
     private boolean kmlContactColourByBand;
     private boolean kmlS2s;
     private String kmlS2sContactLineStyle;
+    private String kmlInternetContactLineStyle;
     private String kmlContactLineStyle;
     private String kmlSatelliteTrackLineStyle;
     private boolean kmlContactShadow;

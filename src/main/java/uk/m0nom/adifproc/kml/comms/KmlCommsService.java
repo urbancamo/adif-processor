@@ -2,6 +2,7 @@ package uk.m0nom.adifproc.kml.comms;
 
 import de.micromata.opengis.kml.v_2_2_0.*;
 import org.marsik.ham.adif.Adif3Record;
+import org.marsik.ham.adif.enums.Propagation;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.activity.ActivityDatabaseService;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
@@ -24,16 +25,15 @@ import static uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseUtils.
 
 @Service
 public class KmlCommsService {
+    public final static String INTERNET_LINE = "internet";
     public final static String S2S_LINE = "s2S";
     public final static String COMM_LINE = "comm";
     public final static String SHADOW_LINE = "shadow";
 
-    private final ActivityDatabaseService activityDatabaseService;
     private final CommsVisualizationService commsVisualizationService;
     private KmlBandLineStyles bandLineStyles;
 
-    public KmlCommsService(ActivityDatabaseService activities, CommsVisualizationService commsVisualizationService) {
-        this.activityDatabaseService = activities;
+    public KmlCommsService(CommsVisualizationService commsVisualizationService) {
         this.commsVisualizationService = commsVisualizationService;
     }
 
@@ -60,8 +60,8 @@ public class KmlCommsService {
     }
 
     public String createCommsLink(Document document, Folder folder, Map<String, String> commsStyleMap, Qso qso, TransformControl control, KmlStationUtils stationUtils) {
-        bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());
-        String commsLinkId = getCommsLinkId(qso);
+        boolean internet = qso.getRecord().getPropMode() == Propagation.INTERNET;
+        bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());String commsLinkId = getCommsLinkId(qso);
         String commsLinkName = getCommsLinkName(qso);
         String commsLinkShadowId = getCommsLinkShadowId(qso);
 
@@ -116,14 +116,18 @@ public class KmlCommsService {
         placemark.withDescription(description);
 
         // TODO not sure how we do absolute altitude contacts, so everything is relative to ground ATM
-        commsLine.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
+        if (internet) {
+            commsLine.setAltitudeMode(AltitudeMode.CLAMP_TO_GROUND);
+        } else {
+            commsLine.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
+        }
         commsLine.setExtrude(false);
 
         for (GlobalCoords3D coord : result.getPath()) {
             commsLine.addToCoordinates(coord.getLongitude(), coord.getLatitude(), coord.getAltitude());
         }
 
-        if (control.isKmlContactShadow() && !qso.isSatelliteContact()) {
+        if (control.isKmlContactShadow() && !qso.isSatelliteContact() && !internet) {
             placemark = folder.createAndAddPlacemark();
             // use the style for each line type
             placemark.withName("(shadow)")
@@ -134,7 +138,7 @@ public class KmlCommsService {
             shadowLine.setAltitudeMode(AltitudeMode.CLAMP_TO_GROUND);
             shadowLine.setExtrude(false);
 
-            for (GlobalCoords3D coord : result. getPath()) {
+            for (GlobalCoords3D coord : result.getPath()) {
                 shadowLine.addToCoordinates(coord.getLongitude(), coord.getLatitude());
             }
 
@@ -150,8 +154,9 @@ public class KmlCommsService {
     private String getStyleForQso(TransformControl control, Qso qso) {
         if (control.isKmlS2s() && qso.doingSameActivity()) {
             return S2S_LINE;
-        }
-        else if (control.isKmlContactColourByBand()) {
+        } else if (qso.getRecord().getPropMode() == Propagation.INTERNET) {
+            return INTERNET_LINE;
+        } else if (control.isKmlContactColourByBand()) {
             KmlLineStyle styling = bandLineStyles.getLineStyle(qso.getRecord().getBand());
             return styling.getStringSpecifier();
         }
@@ -161,11 +166,12 @@ public class KmlCommsService {
 
     /**
      * This method add styles to the map only if used. This ensures that we only create one style of each type
+     *
      * @param document Kml document
-     * @param qso QSO to add appropriate style
-     * @param control Controls the rendering of line styles
+     * @param qso      QSO to add appropriate style
+     * @param control  Controls the rendering of line styles
      */
-     private void addStyleIfUsed(Document document, TransformControl control, Qso qso, Map<String, String> commsStyleMap) {
+    private void addStyleIfUsed(Document document, TransformControl control, Qso qso, Map<String, String> commsStyleMap) {
         if (control.isKmlS2s() && qso.doingSameActivity()) {
             if (!commsStyleMap.containsKey(S2S_LINE)) {
                 KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlS2sContactLineStyle());
@@ -174,6 +180,15 @@ public class KmlCommsService {
                 assert styling != null;
                 style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
                 commsStyleMap.put(S2S_LINE, KmlUtils.getStyleUrl(S2S_LINE));
+            }
+        } else if (qso.getRecord().getPropMode() == Propagation.INTERNET) {
+            if (!commsStyleMap.containsKey(INTERNET_LINE)) {
+                KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlInternetContactLineStyle());
+                Style style = document.createAndAddStyle()
+                        .withId(KmlUtils.getStyleId(INTERNET_LINE));
+                assert styling != null;
+                style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
+                commsStyleMap.put(INTERNET_LINE, KmlUtils.getStyleUrl(INTERNET_LINE));
             }
         } else if (control.isKmlContactColourByBand()) {
             KmlLineStyle styling = bandLineStyles.getLineStyle(qso.getRecord().getBand());
@@ -184,7 +199,7 @@ public class KmlCommsService {
                 style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
                 commsStyleMap.put(styling.getStringSpecifier(), KmlUtils.getStyleUrl(styling.getStringSpecifier()));
             }
-        }  else  {
+        } else {
             if (!commsStyleMap.containsKey(COMM_LINE)) {
                 KmlLineStyle styling = KmlStyling.getKmlLineStyle(control.getKmlContactLineStyle());
                 Style style = document.createAndAddStyle()
@@ -195,13 +210,13 @@ public class KmlCommsService {
             }
         }
 
-         if (control.isKmlContactShadow()) {
-             if (!commsStyleMap.containsKey(SHADOW_LINE)) {
-                 Style style = document.createAndAddStyle()
-                         .withId(KmlUtils.getStyleId(SHADOW_LINE));
-                 style.createAndSetLineStyle().withColor("40000000").withWidth(3);
-                 commsStyleMap.put(SHADOW_LINE, KmlUtils.getStyleUrl(SHADOW_LINE));
-             }
-         }
+        if (control.isKmlContactShadow()) {
+            if (!commsStyleMap.containsKey(SHADOW_LINE)) {
+                Style style = document.createAndAddStyle()
+                        .withId(KmlUtils.getStyleId(SHADOW_LINE));
+                style.createAndSetLineStyle().withColor("40000000").withWidth(3);
+                commsStyleMap.put(SHADOW_LINE, KmlUtils.getStyleUrl(SHADOW_LINE));
+            }
+        }
     }
 }
