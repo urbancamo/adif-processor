@@ -5,9 +5,6 @@ import org.marsik.ham.adif.enums.Propagation;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.comms.ionosphere.IonosphereUtils;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
-import uk.m0nom.adifproc.geodesic.GeodesicUtils;
-
-import java.util.List;
 
 public class InternetPropagation implements CommsLinkGenerator {
     @Override
