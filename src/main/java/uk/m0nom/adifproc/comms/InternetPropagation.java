@@ -16,8 +16,9 @@ public class InternetPropagation implements CommsLinkGenerator {
                                                  Adif3Record rec) {
         CommsLinkResult result = IonosphereUtils.getShortestPath(control, start, end, rec);
 
+        result.setPropagation(Propagation.INTERNET);
         result.setSkyDistance(0);
-        result.setAltitude(5.0);
+        result.setAltitude(0.0);
         result.setBase(0);
         result.setBounces(0);
 
