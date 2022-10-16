@@ -18,7 +18,6 @@ import uk.m0nom.adifproc.qrz.CachingQrzXmlService;
 
 @Service
 public class ToLocationDeterminer extends BaseLocationDeterminer {
-    private final static String BAD_ACTIVITY_REPORT = "%s: (%s %s invalid)";
 
     public ToLocationDeterminer(CachingQrzXmlService qrzXmlService, ActivityDatabaseService activities) {
         super(qrzXmlService, activities);

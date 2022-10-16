@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityDatabaseService;
 import uk.m0nom.adifproc.activity.ActivityType;
+import uk.m0nom.adifproc.activity.wota.WotaSummitsDatabase;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
@@ -58,6 +59,19 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
             }
         }
         return locationSet;
+    }
+
+    public String setMyLocationFromSotaId(Qso qso, String sotaId) {
+        Activity sotaInfo = activities.getDatabase(ActivityType.SOTA).get(sotaId);
+        setMyLocationFromActivity(qso.getFrom(), qso.getRecord(), sotaInfo);
+        if (sotaInfo != null) {
+            // See if this is also a WOTA
+            WotaSummitsDatabase wotaSummitsDatabase = (WotaSummitsDatabase) activities.getDatabase(ActivityType.WOTA);
+            Activity wotaInfo = wotaSummitsDatabase.getFromSotaId(sotaId);
+        } else {
+            return String.format(BAD_ACTIVITY_REPORT, qso.getTo().getCallsign(), "SOTA", sotaId);
+        }
+        return null;
     }
 
     private boolean setMyLocationFromActivities(Qso qso) {

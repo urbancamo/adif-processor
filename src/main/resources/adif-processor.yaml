@@ -10,6 +10,8 @@ IOTA: Iota
 GRID: GridSquare
 PWR: RxPwr
 SOTA: SotaRef
+SOTA_REF: SotaRef
+MY_SOTA_REF: MySotaRef
 GMA: GmaRef
 SRX: SerialRx
 STX: SerialTx

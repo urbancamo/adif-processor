@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.activity.ActivityDatabaseService;
 import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.coords.LocationParsingService;
+import uk.m0nom.adifproc.location.FromLocationDeterminer;
 import uk.m0nom.adifproc.location.ToLocationDeterminer;
 import uk.m0nom.adifproc.satellite.ApSatelliteService;
 
@@ -15,6 +16,7 @@ public class CommentFieldParserFactory {
     private final Map<String, CommentFieldParser> parserMap;
 
     public CommentFieldParserFactory(ActivityDatabaseService activities,
+                                     FromLocationDeterminer fromLocationDeterminer,
                                      ToLocationDeterminer toLocationDeterminer,
                                      LocationParsingService locationParsingService,
                                      ApSatelliteService apSatelliteService) {
@@ -30,6 +32,7 @@ public class CommentFieldParserFactory {
         parserMap.put("RxPwr", new RxPwrFieldParser());
         parserMap.put("BandRx", new BandRxFieldParser());
         parserMap.put("SotaRef", new SotaRefFieldParser(toLocationDeterminer, activities));
+        parserMap.put("MySotaRef", new MySotaRefFieldParser(fromLocationDeterminer, activities));
         parserMap.put("WotaRef", new WotaFieldParser(toLocationDeterminer, activities));
         parserMap.put("WwffRef", new WwffFieldParser(toLocationDeterminer, activities));
         parserMap.put("Iota", new IotaFieldParser(toLocationDeterminer, activities, ActivityType.IOTA));
