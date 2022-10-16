@@ -3,6 +3,7 @@ package uk.m0nom.adifproc.kml.info;
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.AntPath;
+import org.marsik.ham.adif.enums.Propagation;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.TemplateSpec;
 import org.thymeleaf.context.Context;
@@ -81,10 +82,12 @@ public class KmlContactInfoPanel {
         }
         if (result.getAltitude() > 9999.99) {
             context.setVariable("avgAlt", String.format("%,.0f km", result.getAltitude() / 1000));
-        } else {
+        } else if (result.getPropagation() != Propagation.INTERNET) {
             context.setVariable("avgAlt", String.format("%,.0f metres", result.getAltitude()));
         }
-        context.setVariable("fromAntenna", qso.getFrom().getAntenna().getName());
+        if (result.getPropagation() != Propagation.INTERNET) {
+            context.setVariable("fromAntenna", qso.getFrom().getAntenna().getName());
+        }
         context.setVariable("angle", String.format("%,.0f°", result.getFromAngle()));
 
         String mode = (result.getPropagation() != null) ? result.getPropagation().adifCode() : "GND";

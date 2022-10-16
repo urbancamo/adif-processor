@@ -2,8 +2,10 @@ package uk.m0nom.adifproc.comms;
 
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.AntPath;
+import org.marsik.ham.adif.enums.Mode;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
+import uk.m0nom.adifproc.comms.ionosphere.IonosphereUtils;
 import uk.m0nom.adifproc.comms.ionosphere.LongPath;
 import uk.m0nom.adifproc.comms.ionosphere.ShortPath;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
@@ -27,6 +29,9 @@ public class CommsVisualizationService implements CommsLinkGenerator {
         if (rec.getPropMode() != null) {
             // We honour satellite mode here
             switch (rec.getPropMode()) {
+                case INTERNET:
+                    result = new InternetPropagation().getCommunicationsLink(control, startGc, endGc, rec);
+                    break;
                 case SATELLITE:
                     result = satellitePropagationService.getCommunicationsLink(control, startGc, endGc, rec);
                     break;

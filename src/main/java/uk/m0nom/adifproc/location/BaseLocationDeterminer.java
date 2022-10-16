@@ -4,6 +4,7 @@ import uk.m0nom.adifproc.activity.ActivityDatabaseService;
 import uk.m0nom.adifproc.qrz.QrzService;
 
 public class BaseLocationDeterminer {
+    protected final static String BAD_ACTIVITY_REPORT = "%s: (%s %s invalid)";
 
     protected final QrzService qrzService;
     protected final ActivityDatabaseService activities;

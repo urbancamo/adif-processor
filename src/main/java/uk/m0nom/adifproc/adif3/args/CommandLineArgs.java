@@ -108,6 +108,7 @@ public class CommandLineArgs {
 
             control.setKmlS2s(ns.getBoolean("kml_s2s"));
             control.setKmlS2sContactLineStyle(ns.getString("kml_s2s_line_style"));
+            control.setKmlInternetContactLineStyle(ns.getString("kml_internet_line_style"));
             control.setKmlSatelliteTrackLineStyle(ns.getString("kml_satellite_track_line_style"));
             control.setKmlContactLineStyle(ns.getString("kml_contact_line_style"));
             control.setKmlContactShadow(ns.getBoolean("kml_contact_shadow"));
