@@ -12,6 +12,9 @@ import uk.m0nom.adifproc.adif3.transform.MyCallsignCheck;
 import uk.m0nom.adifproc.adif3.transform.MyCallsignCheckResults;
 import uk.m0nom.adifproc.adif3.transform.TransformResults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Main entry into the Adif3 Transformer functionality.
  */
@@ -33,6 +36,9 @@ public class Adif3Transformer {
         int theirCallsignIssues = 0;
 
         MyCallsignCheckResults callsigns = MyCallsignCheck.checkForSingleMyCallsign(log);
+
+        // LOTW export can contain a single APP field that needs stripping as the record isn't valid for processing
+        log.setRecords(stripLotwEofRecordIfPresent(log.getRecords()));
 
         for (Adif3Record rec : log.getRecords()) {
             if (StringUtils.isBlank(rec.getOperator()) && callsigns.isOneOperator()) {
@@ -78,5 +84,15 @@ public class Adif3Transformer {
         log.setHeader(header);
 
         return qsos;
+    }
+
+    private List<Adif3Record> stripLotwEofRecordIfPresent(List<Adif3Record> records) {
+        List<Adif3Record> processedRecords = new ArrayList<>(records.size());
+        for (Adif3Record rec : records) {
+            if (rec.getApplicationDefinedField("APP_LOTW_EOF") == null) {
+                processedRecords.add(rec);
+            }
+        }
+        return processedRecords;
     }
 }

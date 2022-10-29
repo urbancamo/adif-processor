@@ -60,7 +60,7 @@ public class NoradSatelliteOrbitReader {
         }
     }
 
-    private void parseTleData(ApSatellites satellites, String tleDefinitions, LocalDate now) {
+    private void parseTleData(ApSatellites satellites, String tleDefinitions, LocalDate onDate) {
 
         // Each TLE definition consists of three lines of text, so we parse the TLE file 3 lines at a time
         String[] tleLines = tleDefinitions.split("\\n");
@@ -77,11 +77,11 @@ public class NoradSatelliteOrbitReader {
             Satellite satellite = SatelliteFactory.createSatellite(tle);
             NoradSatellite noradSatellite = (NoradSatellite) satellites.get(NoradSatellite.getIdentifier(satellite.getTLE().getName()));
             if (noradSatellite == null) {
-                noradSatellite = new NoradSatellite(now, satellite);
+                noradSatellite = new NoradSatellite(onDate, satellite);
             } else {
-                noradSatellite.addTleData(now, satellite);
+                noradSatellite.addTleData(onDate, satellite);
             }
-            satellites.addOrReplace(noradSatellite, now);
+            satellites.addOrReplace(noradSatellite, onDate);
             i++;
         }
         logger.info(String.format("Read %d satellite definitions", i));
