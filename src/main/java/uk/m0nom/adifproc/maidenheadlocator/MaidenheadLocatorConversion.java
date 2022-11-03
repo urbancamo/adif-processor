@@ -7,6 +7,7 @@ import uk.m0nom.adifproc.coords.LocationAccuracy;
 import uk.m0nom.adifproc.coords.LocationSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,21 +29,16 @@ public class MaidenheadLocatorConversion {
     public final static Pattern LOC_8CHAR = Pattern.compile("^|[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}$");
     public final static Pattern LOC_10CHAR = Pattern.compile("^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}[A-X]{2}$");
 
-    private final static String[] INVALID_GRIDSQUARES = new String[]{"AA00AA"};
+    private final static Collection<String> DUBIOUS_GRID_SQUARES = Arrays.asList("IO91VL", "JJ00AA", "AA00AA");
+
+    public static boolean isADubiousGridSquare(String grid) {
+        return grid != null && DUBIOUS_GRID_SQUARES.contains(grid.toUpperCase());
+    }
 
     public static boolean isEmptyOrInvalid(String gridSquare) {
-        return gridSquare == null || !MaidenheadLocatorConversion.isAValidGridSquare(gridSquare) ||
-                MaidenheadLocatorConversion.isADubiousGridSquare(gridSquare);
+        return gridSquare == null || MaidenheadLocatorConversion.isADubiousGridSquare(gridSquare);
     }
 
-    public static boolean isAValidGridSquare(String gridSquare) {
-        for (String invalidGridsquare : INVALID_GRIDSQUARES) {
-            if (StringUtils.equalsIgnoreCase(gridSquare, invalidGridsquare)) {
-                return false;
-            }
-        }
-        return gridSquare != null;
-    }
 
     public static GlobalCoords3D locatorToCoords(LocationSource source, String locStr) {
 
@@ -238,16 +234,13 @@ public class MaidenheadLocatorConversion {
         return Math.toDegrees(az);
     }
 
-    public static boolean
-    isADubiousGridSquare(String grid) {
-        return grid != null && DUBIOUS_GRIDSQUARES.contains(grid.toUpperCase());
-    }
+    public static boolean isAValidGridSquare(String locStr) {
+        String locatorTrimmed = locStr.trim().toUpperCase();
+        Matcher matcher4Char = LOC_4CHAR.matcher(locatorTrimmed);
+        Matcher matcher6Char = LOC_6CHAR.matcher(locatorTrimmed);
+        Matcher matcher8Char = LOC_8CHAR.matcher(locatorTrimmed);
+        Matcher matcher10Char = LOC_10CHAR.matcher(locatorTrimmed);
 
-    private final static Collection<String> DUBIOUS_GRIDSQUARES = new ArrayList<>();
-
-    static {
-        DUBIOUS_GRIDSQUARES.add("IO91VL");
-        DUBIOUS_GRIDSQUARES.add("JJ00AA");
-        DUBIOUS_GRIDSQUARES.add("AA00AA");
+        return matcher4Char.matches() || matcher6Char.matches() || matcher8Char.matches() || matcher10Char.matches();
     }
 }

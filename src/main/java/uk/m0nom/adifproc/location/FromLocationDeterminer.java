@@ -110,7 +110,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
 
     private boolean setMyLocationFromRecGridsquare(Qso qso) {
         Adif3Record rec = qso.getRecord();
-        if (rec.getMyGridSquare() != null && MaidenheadLocatorConversion.isAValidGridSquare(rec.getMyGridSquare())) {
+        if (rec.getMyGridSquare() != null && !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getMyGridSquare())) {
             // Less Accurate from a Gridsquare, but better than nothing
             GlobalCoordinates myLoc = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, rec.getMyGridSquare());
             rec.setMyCoordinates(myLoc);
@@ -134,7 +134,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
     private boolean setMyLocationFromQrzGrid(Qso qso, QrzCallsign callsignData) {
         Adif3Record rec = qso.getRecord();
         if (callsignData != null && callsignData.getGrid() != null) {
-            if (MaidenheadLocatorConversion.isAValidGridSquare(callsignData.getGrid())) {
+            if (!MaidenheadLocatorConversion.isADubiousGridSquare(callsignData.getGrid())) {
                 rec.setMyGridSquare(callsignData.getGrid());
                 setMyLocationFromGrid(qso, callsignData.getGrid());
                 return true;

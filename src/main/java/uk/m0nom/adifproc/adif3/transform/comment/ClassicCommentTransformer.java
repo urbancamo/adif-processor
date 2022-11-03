@@ -108,7 +108,7 @@ public class ClassicCommentTransformer implements CommentTransformer {
                         }
                         break;
                     case "GridSquare":
-                        if (MaidenheadLocatorConversion.isAValidGridSquare(value)) {
+                        if (!MaidenheadLocatorConversion.isADubiousGridSquare(value)) {
                             switch (value.length()) {
                                 case 4:
                                 case 6:

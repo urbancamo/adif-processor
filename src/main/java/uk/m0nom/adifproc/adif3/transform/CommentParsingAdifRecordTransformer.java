@@ -154,7 +154,6 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
     private boolean hasValidGridsquareNoCoords(Adif3Record rec) {
         return rec.getCoordinates() == null &&
-                MaidenheadLocatorConversion.isAValidGridSquare(rec.getGridsquare()) &&
                 !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare());
     }
 
@@ -175,9 +174,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     }
 
     private boolean hasNoValidGridsquareOrCoords(Adif3Record rec) {
-        return rec.getCoordinates() == null &&
-                (!MaidenheadLocatorConversion.isAValidGridSquare(rec.getGridsquare()) ||
-                        MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare()));
+        return rec.getCoordinates() == null || MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare());
     }
 
     private void setTheirLocationFromGeocodedAddress(Qso qso, QrzCallsign theirQrzData) {
