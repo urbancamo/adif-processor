@@ -153,7 +153,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     }
 
     private boolean hasValidGridsquareNoCoords(Adif3Record rec) {
-        return rec.getCoordinates() == null &&
+        return rec.getCoordinates() == null && rec.getGridsquare() != null &&
                 !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare());
     }
 

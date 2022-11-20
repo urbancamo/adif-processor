@@ -117,12 +117,12 @@ public class AdifQrzEnricher {
                 boolean gridBasedGeoLocation = StringUtils.equalsIgnoreCase("grid", callsignData.getGeoloc());
                 boolean userGeoLocation = StringUtils.equalsIgnoreCase("user", callsignData.getGeoloc());
 
-                String gridSquare = callsignData.getGrid();
-                boolean invalidGridBasedLoc = (gridSquare == null) || ((gridBasedGeoLocation || userGeoLocation) ||
-                        MaidenheadLocatorConversion.isADubiousGridSquare(gridSquare));
+                String qrzGridSquare = callsignData.getGrid();
+                boolean isAValidGridBasedLocation = (gridBasedGeoLocation || userGeoLocation) &&
+                        MaidenheadLocatorConversion.isValid(qrzGridSquare);
 
                 GlobalCoords3D coord = null;
-                if (callsignData.getLat() != null && callsignData.getLon() != null && !invalidGridBasedLoc) {
+                if (callsignData.getLat() != null && callsignData.getLon() != null && isAValidGridBasedLocation) {
                     coord = new GlobalCoords3D(callsignData.getLat(), callsignData.getLon(),
                             LocationSource.QRZ, LocationAccuracy.LAT_LONG);
                     if (geocodeBasedGeoLocation) {
@@ -130,10 +130,9 @@ public class AdifQrzEnricher {
                     } else if (gridBasedGeoLocation) {
                         coord.setLocationInfo(LocationSource.QRZ, LocationAccuracy.MHL6);
                     }
-
-                } else if (rec.getGridsquare() == null && !invalidGridBasedLoc) {
-                    // Fallback to gridsquare in callsign of lat/long not specified
-                    coord = MaidenheadLocatorConversion.locatorToCoords(LocationSource.QRZ, gridSquare);
+                } else if (rec.getGridsquare() == null && isAValidGridBasedLocation) {
+                    // Fallback to qrz grid square if qrz data doesn't contain lat/long
+                    coord = MaidenheadLocatorConversion.locatorToCoords(LocationSource.QRZ, qrzGridSquare);
                 }
 
                 if (coord != null) {
@@ -143,6 +142,4 @@ public class AdifQrzEnricher {
             }
         }
     }
-
-
 }

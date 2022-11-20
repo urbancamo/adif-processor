@@ -1,12 +1,10 @@
 package uk.m0nom.adifproc.maidenheadlocator;
 
-import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LocationAccuracy;
 import uk.m0nom.adifproc.coords.LocationSource;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Matcher;
@@ -39,6 +37,9 @@ public class MaidenheadLocatorConversion {
         return gridSquare == null || MaidenheadLocatorConversion.isADubiousGridSquare(gridSquare);
     }
 
+    public static boolean isValid(String gridSquare) {
+        return gridSquare != null && isAWellFormedGridsquare(gridSquare) && !isADubiousGridSquare(gridSquare);
+    }
 
     public static GlobalCoords3D locatorToCoords(LocationSource source, String locStr) {
 
@@ -234,7 +235,7 @@ public class MaidenheadLocatorConversion {
         return Math.toDegrees(az);
     }
 
-    public static boolean isAValidGridSquare(String locStr) {
+    public static boolean isAWellFormedGridsquare(String locStr) {
         String locatorTrimmed = locStr.trim().toUpperCase();
         Matcher matcher4Char = LOC_4CHAR.matcher(locatorTrimmed);
         Matcher matcher6Char = LOC_6CHAR.matcher(locatorTrimmed);
