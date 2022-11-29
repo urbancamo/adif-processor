@@ -3,6 +3,7 @@ package uk.m0nom.adifproc.adif3.contacts;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.marsik.ham.adif.Adif3Record;
+import uk.m0nom.adifproc.qrz.QrzCallsign;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,6 +33,23 @@ public class Qso {
 
     public boolean isSatelliteContact() {
         return (record != null) && (record.getSatName() != null);
+    }
+
+    public boolean isQslViaBureau() {
+        boolean viaBureau = false;
+        if (to.getQrzInfo() != null) {
+            QrzCallsign qrzInfo = to.getQrzInfo();
+            if (qrzInfo.getQslmgr() != null) {
+                String qslMgr = qrzInfo.getQslmgr().toUpperCase();
+                viaBureau |= qslMgr.contains("BUREAU") || qslMgr.contains("BURO");
+            }
+        }
+        if (record != null) {
+            if (record.getQslVia() != null) {
+                viaBureau |= record.getQslVia().toUpperCase().contains("BUREAU");
+            }
+        }
+        return viaBureau;
     }
 
     @Override

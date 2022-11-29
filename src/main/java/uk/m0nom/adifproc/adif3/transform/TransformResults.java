@@ -16,6 +16,7 @@ public class TransformResults {
     private String adiFile;
     private String kmlFile;
     private String formattedQsoFile;
+    private String qslLabelsFile;
     private String error = "";
     private Collection<String> contactsWithoutLocation;
     private Collection<String> contactsWithDubiousLocation;

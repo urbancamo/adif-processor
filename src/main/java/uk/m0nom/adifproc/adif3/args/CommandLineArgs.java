@@ -130,6 +130,7 @@ public class CommandLineArgs {
             control.setKmlContactColourByBand(ns.getBoolean("kml_contact_colour_band"));
 
             control.setFormattedOutput(ns.getBoolean("markdown"));
+            control.setQslLabels(ns.getBoolean("qsl_labels"));
 
             control.setOutputPath(ns.getString("output"));
             control.setPathname(ns.getString("path").substring(1, ns.getString("path").length()-1));

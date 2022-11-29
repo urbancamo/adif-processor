@@ -113,6 +113,7 @@ public class TransformControl {
     private Double kmlLocalActivationSitesRadius;
 
     private boolean formattedOutput;
+    private boolean qslLabels;
     private boolean contestResults;
 
     private Antenna antenna = new AntennaService().getAntenna("Vertical");
