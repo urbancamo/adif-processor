@@ -102,8 +102,9 @@ public class Adif3LabelFormatter {
 //     └───────────────────────────┘
 
     private void impressQso(Page page, Qso qso, int offsetX, int offsetY) {
-        page.writeString(String.format(qso.getRecord().getCall()), offsetX, offsetY);
-        if (Strings.isNotBlank(qso.getRecord().getQslVia())) {
+        var rec = qso.getRecord();
+        page.writeString(String.format(rec.getCall()), offsetX, offsetY);
+        if (Strings.isNotBlank(rec.getQslVia())) {
             page.writeString(String.format("via %s", StringUtils.abbreviate(qso.getRecord().getQslVia(), LABEL_WIDTH - 5)), offsetX, offsetY + 1);
         }
         page.writeString(String.format("Date     Time Band RST Mode"), offsetX, offsetY + 2);
@@ -113,9 +114,9 @@ public class Adif3LabelFormatter {
         DateTimeFormatter timeS = DateTimeFormatter.ofPattern("hhmm");
         String time = timeS.format(qso.getRecord().getTimeOn());
 
-        String band = StringUtils.rightPad(qso.getRecord().getBand().adifCode(), 4);
-        String rst = StringUtils.leftPad(qso.getRecord().getRstSent(), 3);
-        String mode = StringUtils.rightPad(qso.getRecord().getMode().adifCode(), 4);
+        String band = rec.getBand() == null ? "    " : StringUtils.rightPad(rec.getBand().adifCode(), 4);
+        String rst = StringUtils.isEmpty(rec.getRstSent()) ? "   " : StringUtils.leftPad(rec.getRstSent(), 3);
+        String mode = rec.getMode() == null ? "    " : StringUtils.rightPad(rec.getMode().adifCode(), 4);
 
         page.writeString(String.format("%s %s %s %s %s", date, time, band, rst, mode), offsetX, offsetY + 3);
         String activity = getMaybeMyActivityRef(qso);
