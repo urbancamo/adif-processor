@@ -28,6 +28,8 @@ public class CommandLineArgs {
                 .help("Username for the QRZ XML Service");
         parser.addArgument("-qp", "--qrz-password").required(false)
                 .help("Password for the QRZ XML Service");
+        parser.addArgument("-ql", "--qsl-labels").required(false).setDefault(Boolean.FALSE)
+                .help("Generate QSL Card Labels");
 
         parser.addArgument("-l", "--location").required(false)
                 .help("Specify override grid in 4/6/10 characters");
