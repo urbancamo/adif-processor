@@ -128,6 +128,8 @@ public class TransformControl {
 
     private Countries countries;
 
+    private String dontQslCallsigns;
+
     public String getActivityRef(ActivityType type) {
         return activityRefs.get(type);
     }

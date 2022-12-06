@@ -11,10 +11,7 @@ import uk.m0nom.adifproc.adif3.contacts.Qsos;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,10 +24,19 @@ public class Adif3LabelFormatter {
     private final static int[] Y_POS = {2, 11, 21, 30, 39, 49, 58, 67};
     private final static int[] X_POS = {0, 34, 69};
 
-    public StringBuilder format(Qsos qsos) {
+    public Adif3LabelFormatterResult format(Qsos qsos, String dontQslCallsigns) {
+        Adif3LabelFormatterResult result = new Adif3LabelFormatterResult();
         StringBuilder sb = new StringBuilder();
+        Collection<String> excludeCallsigns = processDontQslCallsignString(dontQslCallsigns);
 
-        List<Page> pages = formatQsos(qsos.getQsos().stream().filter(Qso::isQslViaBureau).collect(Collectors.toList()));
+        List<Qso> qsosToQsl = new ArrayList<>(qsos.getQsos().size());
+        for (Qso qso : qsos.getQsos()) {
+            String callsign = qso.getTo().getCallsign().toUpperCase();
+            if (qso.isQslViaBureau() && !excludeCallsigns.contains(callsign)) {
+                qsosToQsl.add(qso);
+            }
+        }
+        List<Page> pages = formatQsos(qsosToQsl);
         for (int i = 0; i < pages.size(); i++) {
             Collection<String> contents = pages.get(i).dumpPage();
             Iterator<String> iterator = contents.iterator();
@@ -38,7 +44,20 @@ public class Adif3LabelFormatter {
                 sb.append(iterator.next() + "\n");
             }
         }
-        return sb;
+        result.setCallsigns(qsosToQsl.stream().map(qso -> qso.getTo().getCallsign()).collect(Collectors.toList()));
+        result.setLabels(sb.toString());
+
+        return result;
+    }
+
+    private Collection<String> processDontQslCallsignString(String dontQslCallsigns) {
+        Collection<String> dontQslCallsignList = new ArrayList<>();
+        String strippedList = dontQslCallsigns.replaceAll(",", " ").replaceAll("\\s+", " ").toUpperCase();
+        if (!strippedList.isEmpty()) {
+            String[] splitList = strippedList.split(" ");
+            dontQslCallsignList = Arrays.asList(splitList);
+        }
+        return dontQslCallsignList;
     }
 
     public List<Page> formatQsos(List<Qso> qsos) {
@@ -85,30 +104,30 @@ public class Adif3LabelFormatter {
     private void impressQso(Page page, Qso qso, int offsetX, int offsetY) {
         page.writeString(String.format(qso.getRecord().getCall()), offsetX, offsetY);
         if (Strings.isNotBlank(qso.getRecord().getQslVia())) {
-            page.writeString(String.format("via %s", StringUtils.abbreviate(qso.getRecord().getQslVia(), LABEL_WIDTH-5)), offsetX, offsetY + 1);
+            page.writeString(String.format("via %s", StringUtils.abbreviate(qso.getRecord().getQslVia(), LABEL_WIDTH - 5)), offsetX, offsetY + 1);
         }
-        page.writeString(String.format("Date     Time Band RST Mode"), offsetX, offsetY+2);
+        page.writeString(String.format("Date     Time Band RST Mode"), offsetX, offsetY + 2);
 
         DateTimeFormatter dateS = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = dateS.format(qso.getRecord().getQsoDate());
         DateTimeFormatter timeS = DateTimeFormatter.ofPattern("hhmm");
         String time = timeS.format(qso.getRecord().getTimeOn());
 
-        String band = StringUtils.rightPad(qso.getRecord().getBand().adifCode(),4);
+        String band = StringUtils.rightPad(qso.getRecord().getBand().adifCode(), 4);
         String rst = StringUtils.leftPad(qso.getRecord().getRstSent(), 3);
         String mode = StringUtils.rightPad(qso.getRecord().getMode().adifCode(), 4);
 
-        page.writeString(String.format("%s %s %s %s %s", date, time, band, rst, mode), offsetX, offsetY+3);
+        page.writeString(String.format("%s %s %s %s %s", date, time, band, rst, mode), offsetX, offsetY + 3);
         String activity = getMaybeMyActivityRef(qso);
-        page.writeString(activity, offsetX, offsetY+4);
+        page.writeString(activity, offsetX, offsetY + 4);
         if (qso.getRecord().getQslMsg() != null) {
             String qslMsg = StringUtils.abbreviate(qso.getRecord().getQslMsg(), LABEL_WIDTH);
             page.writeString(qslMsg, offsetX, offsetY + 5);
         }
         if (qso.getRecord().getQslRDate() != null) {
-            page.writeString("THX QSL", offsetX+21, offsetY+6);
+            page.writeString("THX QSL", offsetX + 21, offsetY + 6);
         } else {
-            page.writeString("PSE QSL", offsetX+21, offsetY+6);
+            page.writeString("PSE QSL", offsetX + 21, offsetY + 6);
         }
     }
 

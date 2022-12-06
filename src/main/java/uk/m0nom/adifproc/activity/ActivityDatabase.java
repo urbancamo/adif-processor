@@ -66,7 +66,7 @@ public class ActivityDatabase {
                     .parallelStream()
                     .filter(Activity::hasCoords)
                     .filter(match -> match.isValid(onDate)) // only return valid activities
-                    .filter(match -> match.inRadius(centre, radius))
+                    .filter(match -> match.inRadius(centre, radius * 1000.0))
                     .collect(Collectors.toUnmodifiableList());
         }
         return new ArrayList<>();

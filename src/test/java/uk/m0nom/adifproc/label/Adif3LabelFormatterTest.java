@@ -6,14 +6,12 @@ import org.marsik.ham.adif.enums.Band;
 import org.marsik.ham.adif.enums.Mode;
 import org.marsik.ham.adif.types.Sota;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
-import uk.m0nom.adifproc.adif3.contacts.Qsos;
 import uk.m0nom.adifproc.adif3.label.Adif3LabelFormatter;
 import uk.m0nom.adifproc.adif3.label.Page;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
