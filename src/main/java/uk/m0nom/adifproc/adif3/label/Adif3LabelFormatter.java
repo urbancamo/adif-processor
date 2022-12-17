@@ -6,6 +6,7 @@ import org.marsik.ham.adif.enums.QslSent;
 import org.marsik.ham.adif.enums.QslVia;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.activity.Activity;
+import uk.m0nom.adifproc.adif3.contacts.AlphabeticQsoComparator;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.contacts.Qsos;
 
@@ -24,7 +25,7 @@ public class Adif3LabelFormatter {
     private final static int[] Y_POS = {2, 11, 21, 30, 39, 49, 58, 67};
     private final static int[] X_POS = {0, 34, 69};
 
-    public Adif3LabelFormatterResult format(Qsos qsos, String dontQslCallsigns) {
+    public Adif3LabelFormatterResult format(Qsos qsos, String dontQslCallsigns, Integer qslLabelStartPosition) {
         Adif3LabelFormatterResult result = new Adif3LabelFormatterResult();
         StringBuilder sb = new StringBuilder();
         Collection<String> excludeCallsigns = processDontQslCallsignString(dontQslCallsigns);
@@ -36,7 +37,8 @@ public class Adif3LabelFormatter {
                 qsosToQsl.add(qso);
             }
         }
-        List<Page> pages = formatQsos(qsosToQsl);
+        qsosToQsl.sort(new AlphabeticQsoComparator());
+        List<Page> pages = formatQsos(qsosToQsl, qslLabelStartPosition);
         for (int i = 0; i < pages.size(); i++) {
             Collection<String> contents = pages.get(i).dumpPage();
             Iterator<String> iterator = contents.iterator();
@@ -44,7 +46,7 @@ public class Adif3LabelFormatter {
                 sb.append(iterator.next() + "\n");
             }
         }
-        result.setCallsigns(qsosToQsl.stream().map(qso -> qso.getTo().getCallsign()).collect(Collectors.toList()));
+        result.setCallsigns(qsosToQsl.stream().map(qso -> qso.getTo().getCallsign()).distinct().sorted().collect(Collectors.toList()));
         result.setLabels(sb.toString());
 
         return result;
@@ -60,17 +62,23 @@ public class Adif3LabelFormatter {
         return dontQslCallsignList;
     }
 
-    public List<Page> formatQsos(List<Qso> qsos) {
+    public List<Page> formatQsos(List<Qso> qsos, Integer startPosition) {
         List<Page> pages = new ArrayList<>(1);
         int qsoIndex = 0;
         int qsoCount = qsos.size();
         int pageIndex = 1;
+        int initialX = 0;
+        int initialY = 0;
 
+        if (startPosition != null) {
+            initialX = (startPosition - 1) % 3;
+            initialY = (startPosition - 1) / 3;
+        }
         while (qsoIndex < qsoCount) {
             Page page = new Page(pageIndex, PAGE_WIDTH, PAGE_LENGTH);
             pages.add(page);
-            for (int y = 0; y < Y_POS.length; y++) {
-                for (int x = 0; x < X_POS.length; x++) {
+            for (int y = initialY; y < Y_POS.length; y++) {
+                for (int x = initialX; x < X_POS.length; x++) {
                     //System.out.println(String.format("Page: %d, y: %d, x: %d, qso: %d", pageIndex, Y_POS[y], X_POS[x], (qsoIndex+1)));
                     Qso qso = qsos.get(qsoIndex++);
                     impressQso(page, qso, X_POS[x], Y_POS[y]);
@@ -83,6 +91,8 @@ public class Adif3LabelFormatter {
                         return pages;
                     }
                 }
+                initialY = 0;
+                initialX = 0;
             }
             pageIndex++;
         }
@@ -140,7 +150,7 @@ public class Adif3LabelFormatter {
             activity = String.format("From WWFF: %s", qso.getRecord().getMyWwffRef().getValue());
         } else if (qso.getFrom().hasActivity()) {
             Activity act = qso.getFrom().getActivities().values().iterator().next();
-            activity = String.format("From %s: %s", act.getName(), act.getRef());
+            activity = String.format("From %s: %s", act.getType().getActivityName(), act.getRef());
         }
         return StringUtils.abbreviate(activity, LABEL_WIDTH);
     }
@@ -153,7 +163,7 @@ public class Adif3LabelFormatter {
             activity = String.format(" WWFF: %s", qso.getRecord().getWwffRef().getValue());
         } else if (qso.getTo().hasActivity()) {
             Activity act = qso.getTo().getActivities().values().iterator().next();
-            activity = String.format(" %s: %s", act.getName(), act.getRef());
+            activity = String.format(" %s: %s", act.getType().getActivityName(), act.getRef());
         }
         return StringUtils.abbreviate(activity, LABEL_WIDTH);
     }

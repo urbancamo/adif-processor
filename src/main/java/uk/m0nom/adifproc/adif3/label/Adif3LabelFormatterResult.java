@@ -2,11 +2,10 @@ package uk.m0nom.adifproc.adif3.label;
 
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 @Data
 public class Adif3LabelFormatterResult {
     private String labels = "";
-    private Collection<String> callsigns = new ArrayList<>(0);
+    private Collection<String> callsigns;
 }

@@ -38,7 +38,7 @@ public class Adif3LabelFormatterTest {
             qsoList.add(qso);
         }
 
-        List<Page> pages = f.formatQsos(qsoList);
+        List<Page> pages = f.formatQsos(qsoList, 1);
         assertThat(pages.size()).isEqualTo(2);
         System.out.println("%<--------%<--------%<--------%<--------%<--------%<--------%<--------%<--------%<--------");
         Page.dump(pages);

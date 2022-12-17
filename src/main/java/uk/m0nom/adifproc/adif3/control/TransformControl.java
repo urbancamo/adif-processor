@@ -114,6 +114,7 @@ public class TransformControl {
 
     private boolean formattedOutput;
     private boolean qslLabels;
+    private Integer qslLabelsInitialPosition;
     private boolean contestResults;
 
     private Antenna antenna = new AntennaService().getAntenna("Vertical");
