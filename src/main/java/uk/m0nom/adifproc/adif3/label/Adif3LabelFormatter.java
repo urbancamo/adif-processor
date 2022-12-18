@@ -39,11 +39,10 @@ public class Adif3LabelFormatter {
         }
         qsosToQsl.sort(new AlphabeticQsoComparator());
         List<Page> pages = formatQsos(qsosToQsl, qslLabelStartPosition);
-        for (int i = 0; i < pages.size(); i++) {
-            Collection<String> contents = pages.get(i).dumpPage();
-            Iterator<String> iterator = contents.iterator();
-            while (iterator.hasNext()) {
-                sb.append(iterator.next() + "\n");
+        for (Page page : pages) {
+            Collection<String> contents = page.dumpPage();
+            for (String content : contents) {
+                sb.append(content).append("\n");
             }
         }
         result.setCallsigns(qsosToQsl.stream().map(qso -> qso.getTo().getCallsign()).distinct().sorted().collect(Collectors.toList()));
@@ -117,7 +116,7 @@ public class Adif3LabelFormatter {
         if (Strings.isNotBlank(rec.getQslVia())) {
             page.writeString(String.format("via %s", StringUtils.abbreviate(qso.getRecord().getQslVia(), LABEL_WIDTH - 5)), offsetX, offsetY + 1);
         }
-        page.writeString(String.format("Date     Time Band RST Mode"), offsetX, offsetY + 2);
+        page.writeString("Date     Time Band RST Mode", offsetX, offsetY + 2);
 
         DateTimeFormatter dateS = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = dateS.format(qso.getRecord().getQsoDate());
@@ -149,22 +148,10 @@ public class Adif3LabelFormatter {
         } else if (qso.getRecord().getMyWwffRef() != null) {
             activity = String.format("From WWFF: %s", qso.getRecord().getMyWwffRef().getValue());
         } else if (qso.getFrom().hasActivity()) {
-            Activity act = qso.getFrom().getActivities().values().iterator().next();
+            Activity act = qso.getFrom().getActivities().iterator().next();
             activity = String.format("From %s: %s", act.getType().getActivityName(), act.getRef());
         }
         return StringUtils.abbreviate(activity, LABEL_WIDTH);
     }
 
-    private String getMaybeTheirActivityRef(Qso qso) {
-        String activity = "";
-        if (qso.getRecord().getSotaRef() != null) {
-            activity = String.format(" SOTA: %s", qso.getRecord().getSotaRef().getValue());
-        } else if (qso.getRecord().getWwffRef() != null) {
-            activity = String.format(" WWFF: %s", qso.getRecord().getWwffRef().getValue());
-        } else if (qso.getTo().hasActivity()) {
-            Activity act = qso.getTo().getActivities().values().iterator().next();
-            activity = String.format(" %s: %s", act.getType().getActivityName(), act.getRef());
-        }
-        return StringUtils.abbreviate(activity, LABEL_WIDTH);
-    }
 }

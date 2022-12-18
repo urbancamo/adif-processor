@@ -5,16 +5,14 @@ import org.junit.jupiter.api.Test;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.contacts.Station;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DoingSameActivityTest {
 
-    private static HashMap<ActivityType, Activity> stSundayCragMap;
-    private static HashMap<ActivityType, Activity> gummersHowMap;
-    private static HashMap<ActivityType, Activity> hemaMap;
+    private static Activity stSundayCrag, gummersHow, blackCrag;
 
     @BeforeAll
     static void setup() {
@@ -24,17 +22,9 @@ public class DoingSameActivityTest {
         var sotaSummits = summits.getDatabase(ActivityType.SOTA);
         var hemaSummits = summits.getDatabase(ActivityType.HEMA);
 
-        var stSundayCrag = sotaSummits.get("G/LD-010");
-        var gummersHow = sotaSummits.get("G/LD-050");
-        var blackCrag = hemaSummits.get("G/HLD-005");
-
-        stSundayCragMap = new HashMap<>();
-        stSundayCragMap.put(ActivityType.SOTA, stSundayCrag);
-        gummersHowMap = new HashMap<>();
-        gummersHowMap.put(ActivityType.SOTA, gummersHow);
-
-        hemaMap = new HashMap<>();
-        hemaMap.put(ActivityType.HEMA, blackCrag);
+        stSundayCrag = sotaSummits.get("G/LD-010");
+        gummersHow = sotaSummits.get("G/LD-050");
+        blackCrag = hemaSummits.get("G/HLD-005");
     }
 
     @Test
@@ -43,8 +33,8 @@ public class DoingSameActivityTest {
 
         Station from = new Station();
         Station to = new Station();
-        from.setActivities(stSundayCragMap);
-        to.setActivities(hemaMap);
+        from.addActivity(stSundayCrag);
+        to.addActivity(blackCrag);
 
         crossSotaHemaQso.setFrom(from);
         crossSotaHemaQso.setTo(to);
@@ -58,8 +48,8 @@ public class DoingSameActivityTest {
         Station from = new Station();
         Station to = new Station();
 
-        from.setActivities(stSundayCragMap);
-        to.setActivities(gummersHowMap);
+        from.addActivity(stSundayCrag);
+        to.addActivity(gummersHow);
 
         sotaQso.setFrom(from);
         sotaQso.setTo(to);
@@ -73,8 +63,8 @@ public class DoingSameActivityTest {
         Station from = new Station();
         Station to = new Station();
 
-        from.setActivities(new HashMap<>());
-        to.setActivities(new HashMap<>());
+        from.setActivities(new ArrayList<>());
+        to.setActivities(new ArrayList<>());
 
         portableQso.setFrom(from);
         portableQso.setTo(to);

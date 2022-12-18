@@ -2,6 +2,8 @@ package uk.m0nom.adifproc.adif3.transform;
 
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
+import org.marsik.ham.adif.types.Pota;
+import org.marsik.ham.adif.types.PotaList;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityDatabase;
@@ -79,7 +81,15 @@ public class ActivityProcessor {
      * @param ref the reference of the activity provided
      */
     protected void processActivity(ActivityType type, Station station, String ref) {
-        station.addActivity(activities.getDatabase(type).get(ref.toUpperCase()));
+        if (type == ActivityType.POTA) {
+            // POTA can be a list
+            PotaList potaList = PotaList.valueOf(ref);
+            for (Pota pota: potaList.getPotaList()) {
+                station.addActivity(activities.getDatabase(ActivityType.POTA).get(pota.getValue()));
+            }
+        } else {
+            station.addActivity(activities.getDatabase(type).get(ref.toUpperCase()));
+        }
         // Special handling where there can be multiple activities from the same location
         switch (type) {
             case WOTA:

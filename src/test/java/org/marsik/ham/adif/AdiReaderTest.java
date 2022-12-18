@@ -3,6 +3,8 @@ package org.marsik.ham.adif;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.marsik.ham.adif.enums.ArrlSection;
+import org.marsik.ham.adif.types.Pota;
+import org.marsik.ham.adif.types.PotaList;
 import org.marsik.ham.adif.types.Wwff;
 
 import java.io.BufferedReader;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -136,13 +139,13 @@ public class AdiReaderTest {
         AdiReader reader = new AdiReader();
         BufferedReader inputReader = resourceInput("adif/sample.adi");
         Optional<Adif3> adif = reader.read(inputReader);
-        assertThat(adif.get().header.version).isEqualTo("3.1.3");
+        assertThat(adif.get().header.version).isEqualTo("3.1.4");
         assertThat(adif.get().header.programId).isEqualTo("monolog");
         assertThat(adif.get().records)
                 .isNotNull()
-                .hasSize(3);
+                .hasSize(4);
 
-        assertThat(adif.get().records.get(0).getQsoDate()).isEqualTo(LocalDate.of(1990, 06, 20));
+        assertThat(adif.get().records.get(0).getQsoDate()).isEqualTo(LocalDate.of(1990, 6, 20));
         assertThat(adif.get().records.get(0).getTimeOn()).isEqualTo(LocalTime.of(15, 23));
         assertThat(adif.get().records.get(0).getCall()).isEqualTo("VK9NS");
         assertThat(adif.get().records.get(0).getBand()).isEqualTo(BAND_20m);
@@ -151,7 +154,7 @@ public class AdiReaderTest {
         assertThat(adif.get().records.get(0).getApplicationDefinedField("APP_APROC_ALT")).isEqualTo("9000");
 
         assertThat(adif.get().records.get(1).getQsoDate()).isEqualTo(LocalDate.of(2010, 10, 22));
-        assertThat(adif.get().records.get(1).getTimeOn()).isEqualTo(LocalTime.of(01, 11));
+        assertThat(adif.get().records.get(1).getTimeOn()).isEqualTo(LocalTime.of(1, 11));
         assertThat(adif.get().records.get(1).getCall()).isEqualTo("ON4UN");
         assertThat(adif.get().records.get(1).getBand()).isEqualTo(BAND_40m);
         assertThat(adif.get().records.get(1).getMode()).isEqualTo(PSK);
@@ -171,19 +174,39 @@ public class AdiReaderTest {
         assertThat(adif.get().records.get(1).getUserDefinedField("USER_ANT")).isEqualTo("Dipole");
 
         assertThat(adif.get().records.get(2).getQsoDate()).isEqualTo(LocalDate.of(2018, 10, 16));
-        assertThat(adif.get().records.get(2).getTimeOn()).isEqualTo(LocalTime.of(23, 12));
+        assertThat(adif.get().records.get(2).getTimeOn()).isEqualTo(LocalTime.of(23, 15));
         assertThat(adif.get().records.get(2).getCall()).isEqualTo("K0TET");
         assertThat(adif.get().records.get(2).getBand()).isEqualTo(BAND_70cm);
         assertThat(adif.get().records.get(2).getMode()).isEqualTo(JT9);
         assertThat(adif.get().records.get(2).getSubmode()).isEqualTo(JT9H_FAST.adifCode());
         assertThat(adif.get().records.get(2).getTxPwr()).isEqualTo(100.0);
-
-    
         assertThat(adif.get().records.get(2).getMyWwffRef()).isEqualTo(Wwff.valueOf("GFF-0350"));
         assertThat(adif.get().records.get(2).getWwffRef()).isEqualTo(Wwff.valueOf("S9FF-0001"));
         assertThat(adif.get().records.get(2).getArrlSect()).isEqualTo(ArrlSection.CT.adifCode());
         assertThat(adif.get().records.get(2).getMyArrlSect()).isEqualTo(ArrlSection.AZ.adifCode());
-}
+
+        Adif3Record rec3 = adif.get().records.get(3);
+        assertThat(rec3.getQsoDate()).isEqualTo(LocalDate.of(2018, 10, 16));
+        assertThat(rec3.getTimeOn()).isEqualTo(LocalTime.of(23, 18));
+        assertThat(rec3.getCall()).isEqualTo("K0ABC");
+        assertThat(rec3.getBand()).isEqualTo(BAND_20m);
+        assertThat(rec3.getAltitude()).isEqualTo(1234.0);
+        assertThat(rec3.getMyAltitude()).isEqualTo(123.0);
+        checkPotas(rec3.getMyPotaRef());
+        checkPotas(rec3.getPotaRef());
+    }
+
+    // K-0817,K-4566,K-4576,K-4573,K-4578@US-WY
+    private void checkPotas(PotaList potaList) {
+        List<Pota> potas = potaList.getPotaList();
+        assertThat(potas.size()).isEqualTo(5);
+        assertThat(potas.get(0).getValue()).isEqualTo("K-0817");
+        assertThat(potas.get(1).getValue()).isEqualTo("K-4566");
+        assertThat(potas.get(2).getValue()).isEqualTo("K-4576");
+        assertThat(potas.get(3).getValue()).isEqualTo("K-4573");
+        assertThat(potas.get(4).getValue()).isEqualTo("K-4578@US-WY");
+
+    }
 
     @Test
     public void testAdifSampleHandleUnsupportedCharacter() throws Exception {

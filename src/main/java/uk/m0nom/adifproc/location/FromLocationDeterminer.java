@@ -3,13 +3,14 @@ package uk.m0nom.adifproc.location;
 import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
+import org.marsik.ham.adif.types.Pota;
+import org.marsik.ham.adif.types.PotaList;
 import org.marsik.ham.adif.types.Sota;
 import org.marsik.ham.adif.types.Wwff;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityDatabaseService;
 import uk.m0nom.adifproc.activity.ActivityType;
-import uk.m0nom.adifproc.activity.wota.WotaSummitsDatabase;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
@@ -18,6 +19,7 @@ import uk.m0nom.adifproc.maidenheadlocator.MaidenheadLocatorConversion;
 import uk.m0nom.adifproc.qrz.CachingQrzXmlService;
 import uk.m0nom.adifproc.qrz.QrzCallsign;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @Service
@@ -31,8 +33,11 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
     private void setMyLocationFromGrid(Qso qso, String myGrid) {
         Adif3Record rec = qso.getRecord();
         qso.getRecord().setMyGridSquare(myGrid.substring(0, 6));
+        if (myGrid.length() > 6) {
+            qso.getRecord().setMyGridsquareExt(myGrid.substring(6));
+        }
         qso.getFrom().setGrid(myGrid);
-        GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.QRZ, myGrid);
+        GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.QRZ, myGrid, null);
         rec.setMyCoordinates(coords);
         qso.getFrom().setCoordinates(coords);
     }
@@ -64,19 +69,12 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
     public String setMyLocationFromSotaId(Qso qso, String sotaId) {
         Activity sotaInfo = activities.getDatabase(ActivityType.SOTA).get(sotaId);
         setMyLocationFromActivity(qso.getFrom(), qso.getRecord(), sotaInfo);
-        if (sotaInfo != null) {
-            // See if this is also a WOTA
-            WotaSummitsDatabase wotaSummitsDatabase = (WotaSummitsDatabase) activities.getDatabase(ActivityType.WOTA);
-            Activity wotaInfo = wotaSummitsDatabase.getFromSotaId(sotaId);
-        } else {
-            return String.format(BAD_ACTIVITY_REPORT, qso.getTo().getCallsign(), "SOTA", sotaId);
-        }
         return null;
     }
 
     private boolean setMyLocationFromActivities(Qso qso) {
         boolean locationSetFromActivity = false;
-        for (Activity activity : qso.getFrom().getActivities().values()) {
+        for (Activity activity : qso.getFrom().getActivities()) {
             setMyLocationFromActivity(qso.getFrom(), qso.getRecord(), activity);
             locationSetFromActivity = true;
         }
@@ -143,9 +141,8 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
         return false;
     }
 
-    public boolean setMyLocation(TransformControl control, Qso qso, QrzCallsign callsignData) {
+    public void setMyLocation(TransformControl control, Qso qso, QrzCallsign callsignData) {
         Adif3Record rec = qso.getRecord();
-        boolean locationSet = true;
 
         if (rec.getMyCoordinates() != null) {
             qso.getFrom().setCoordinates(new GlobalCoords3D(rec.getMyCoordinates(), LocationSource.FROM_ADIF, LocationAccuracy.LAT_LONG));
@@ -162,6 +159,14 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
                 String wwffRef = rec.getMyWwffRef().getValue().toUpperCase();
                 qso.getFrom().addActivity(activities.getDatabase(ActivityType.WWFF).get(wwffRef));
             }
+
+            if (rec.getMyPotaRef() != null) {
+                List<Pota> potaList = rec.getMyPotaRef().getPotaList();
+                for (Pota pota: potaList) {
+                    qso.getFrom().addActivity(activities.getDatabase(ActivityType.POTA).get(pota.getValue()));
+                }
+            }
+
             // Update my SIG/SIG_INFO if there is an activity defined
             updateMySigInfoFromActivity(qso);
 
@@ -169,27 +174,23 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
                 if (!setMyLocationFromActivities(qso)) {
                     if (!setMyLocationFromRecGridsquare(qso)) {
                         if (!setMyLocationFromQrzLatLong(qso, callsignData)) {
-                            if (!setMyLocationFromQrzGrid(qso, callsignData)) {
-                                locationSet = false;
-                            }
+                            setMyLocationFromQrzGrid(qso, callsignData);
                         }
                     }
                 }
             }
         }
-        return locationSet;
     }
 
     private void updateMySigInfoFromActivity(Qso qso) {
         if (qso.getFrom().getActivities() != null) {
             // We don't bother with SOTA here because it has its own ADIF record
-            for (Activity activity : qso.getFrom().getActivities().values()) {
-                if (qso.getRecord().getMySig() == null && activity.getType() != ActivityType.SOTA && activity.getType() != ActivityType.WWFF) {
+            for (Activity activity : qso.getFrom().getActivities()) {
+                if (qso.getRecord().getMySig() == null && !ActivityType.hasOwnAdifField(activity.getType())) {
                     // Can only process one, however. If required the transformer will have to be run multiple times with each SIG defined separately
                     qso.getRecord().setMySig(activity.getType().getActivityName());
                     qso.getRecord().setMySigInfo(activity.getRef());
                     //logger.info(String.format("Setting MYSIG to be: %s with MY_SIGINFO: %s", qso.getRecord().getMySig(), qso.getRecord().getMySigInfo()));
-                    return;
                 }
                 if (activity.getType() == ActivityType.SOTA && qso.getRecord().getMySotaRef() == null) {
                     Sota sota = Sota.valueOf(activity.getRef().toUpperCase());
@@ -199,6 +200,15 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
                 if (activity.getType() == ActivityType.WWFF && qso.getRecord().getMyWwffRef() == null) {
                     Wwff wwff = Wwff.valueOf(activity.getRef().toUpperCase());
                     qso.getRecord().setMyWwffRef(wwff);
+                }
+                /* Use ADIF Spec 3.1.4 MY_POTA_REF - can be a list */
+                if (activity.getType() == ActivityType.POTA) {
+                    // We keep the POTA list null until there is one
+                    if (qso.getRecord().getMyPotaRef() == null) {
+                        qso.getRecord().setMyPotaRef(new PotaList());
+                    }
+                    Pota pota = Pota.valueOf(activity.getRef().toUpperCase());
+                    qso.getRecord().getMyPotaRef().addPota(pota);
                 }
             }
         }

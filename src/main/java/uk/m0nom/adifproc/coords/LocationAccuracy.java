@@ -11,6 +11,7 @@ public enum LocationAccuracy {
     MHL6("6 Character Maidenhead"),
     MHL8("8 Character Maidenhead"),
     MHL10("10 Character Maidenhead"),
+    MHL12("12 Character Maidenhead"),
     LAT_LONG("Latitude Longitude"),
     WWFF("WWFF Reference"),
     OSGB36_3DIGIT("3 Digit UK Locator"),

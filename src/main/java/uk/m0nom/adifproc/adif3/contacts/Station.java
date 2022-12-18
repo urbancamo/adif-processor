@@ -9,10 +9,8 @@ import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.dxcc.DxccEntity;
 import uk.m0nom.adifproc.qrz.QrzCallsign;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * One end of a QSO this captures both station related information and the QSOs that the station has participated in
@@ -25,13 +23,15 @@ public class Station {
     private DxccEntity dxccEntity;
     private List<Qso> qsos;
 
-    private Map<ActivityType, Activity> activities;
+    private Set<ActivityType> doingActivity;
+    private Collection<Activity> activities;
     private String grid;
     private GlobalCoords3D coordinates;
     private Antenna antenna;
 
     public Station() {
-        activities = new HashMap<>();
+        doingActivity = new HashSet<>();
+        activities = new ArrayList<>();
         qsos = new ArrayList<>();
     }
 
@@ -47,22 +47,23 @@ public class Station {
 
     public void addActivity(Activity activity) {
         if (activity != null) {
-            activities.put(activity.getType(), activity);
+            activities.add(activity);
+            doingActivity.add(activity.getType());
         }
     }
 
     public boolean isDoing(ActivityType type) {
-        return activities.containsKey(type);
+        return doingActivity.contains(type);
     }
 
-    public Activity getActivity(ActivityType type) {
-        return activities.get(type);
+    public Collection<Activity> getActivity(ActivityType type) {
+        return activities.stream().filter(activity -> activity.getType() == type).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public boolean hasActivity() { return activities.size() > 0; }
 
     public boolean doingSameActivityAs(Station other) {
-        return activities.values().stream().anyMatch(a -> other.isDoing(a.getType()));
+        return activities.stream().anyMatch(a -> other.isDoing(a.getType()));
     }
 
     /**

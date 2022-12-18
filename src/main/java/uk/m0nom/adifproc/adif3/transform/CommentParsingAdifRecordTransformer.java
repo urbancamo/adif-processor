@@ -5,6 +5,8 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Band;
 import org.marsik.ham.adif.enums.Propagation;
+import org.marsik.ham.adif.types.Pota;
+import org.marsik.ham.adif.types.PotaList;
 import org.marsik.ham.adif.types.Sota;
 import org.marsik.ham.adif.types.Wwff;
 import org.springframework.stereotype.Service;
@@ -34,8 +36,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-
-import static uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseUtils.parseAlt;
 
 @Service
 public class CommentParsingAdifRecordTransformer implements Adif3RecordTransformer {
@@ -107,6 +107,32 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
     }
 
+    private void processPotaRefs(Qso qso, TransformResults results) {
+        boolean locationSet = false;
+        Adif3Record rec = qso.getRecord();
+
+        if (rec.getPotaRef() != null && StringUtils.isNotBlank(rec.getPotaRef().getValue())) {
+            PotaList potaIds = rec.getPotaRef();
+            for (Pota potaId : potaIds.getPotaList()) {
+                Activity activity = activities.getDatabase(ActivityType.POTA).get(potaId.getValue());
+                if (activity != null && !locationSet) {
+                    qso.getTo().addActivity(activity);
+                    String result = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.POTA, potaId.getValue());
+                    if (result != null) {
+                        results.addContactWithDubiousLocation(result);
+                    } else {
+                        locationSet = true;
+                    }
+                } else {
+                    results.addContactWithDubiousLocation(String.format("%s (POTA %s invalid)", qso.getTo().getCallsign(), potaId.getValue()));
+                }
+            }
+            if (potaIds.getPotaList().size() > 1) {
+                results.addContactWithDubiousLocation(String.format("Multiple POTA Ids: %s, using first ref as location", potaIds.getValue()));
+            }
+        }
+    }
+
     private void processRailwaysOnTheAirCallsign(Qso qso, TransformResults results) {
         Adif3Record rec = qso.getRecord();
         // Check the callsign for a Railways on the Air
@@ -162,7 +188,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         // Set Coordinates from GridSquare that has been supplied in the input file
         try {
             // Only set the gridsquare if it is a valid maidenhead locator
-            GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, rec.getGridsquare());
+            GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, rec.getGridsquare(), rec.getGridsquareExt());
             rec.setCoordinates(coords);
             qso.getTo().setCoordinates(coords);
             qso.getTo().setGrid(rec.getGridsquare());
@@ -226,6 +252,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         QrzCallsign theirQrzData = setTheirInfoFromQrz(qso);
         processSotaRef(qso, results);
         processWwffRef(qso, results);
+        processPotaRefs(qso, results);
         processRailwaysOnTheAirCallsign(qso, results);
         processSatelliteInfo(control, qso);
         commentTransformer.transformComment(qso, rec.getComment(), unmapped, results);
@@ -279,16 +306,16 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
 
         // Override your altitude if defined
-        if (rec.getApplicationDefinedField(ApplicationDefinedFields.MY_ALT) != null) {
-            double alt = parseAlt(rec.getApplicationDefinedField(ApplicationDefinedFields.MY_ALT));
+        if (rec.getMyAltitude() != null) {
+            double alt = rec.getMyAltitude();
             if (qso.getFrom().getCoordinates() != null) {
                 qso.getFrom().getCoordinates().setAltitude(alt);
             }
         }
 
         // Override their altitude if defined
-        if (rec.getApplicationDefinedField(ApplicationDefinedFields.ALT) != null) {
-            double alt = parseAlt(rec.getApplicationDefinedField(ApplicationDefinedFields.ALT));
+        if (rec.getAltitude() != null) {
+            double alt = rec.getAltitude();
             if (qso.getTo().getCoordinates() != null) {
                 qso.getTo().getCoordinates().setAltitude(alt);
             }

@@ -18,7 +18,6 @@ import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.location.ToLocationDeterminer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -58,7 +57,7 @@ public class WwffFieldParserTest {
         FieldParseResult fpr = wwffFieldParser.parseField("SVFF-0185", qso);
         assertThat(fpr.isAddToUnmapped()).isTrue();
         assertThat(rec.getWwffRef().equals(wwff)).isTrue();
-        WwffInfo wwffInfo = (WwffInfo) qso.getTo().getActivity(ActivityType.WWFF);
+        WwffInfo wwffInfo = (WwffInfo) qso.getTo().getActivity(ActivityType.WWFF).iterator().next();
         assertThat(wwffInfo).isNotNull();
         assertThat(wwffInfo.getType()).isEqualTo(ActivityType.WWFF);
         assertThat(wwffInfo.getRef()).isEqualTo("SVFF-0185");

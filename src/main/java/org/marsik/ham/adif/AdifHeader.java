@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 @Setter
 public class AdifHeader {
     String preamble = "";
-    String version = "3.1.3";
+    String version = "3.1.4";
     String programId;
     String programVersion;
     ZonedDateTime timestamp;

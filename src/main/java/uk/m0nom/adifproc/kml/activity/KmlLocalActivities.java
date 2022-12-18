@@ -20,7 +20,6 @@ public class KmlLocalActivities {
         LocalDate onDate = to.getQsos().get(0).getRecord().getQsoDate();
         // Determine activities within the pre-defined radius
         to.getActivities()
-                .values()
                 .forEach(activity -> activities.getDatabase(activity.getType())
                         .findActivitiesInRadius(activity, control.getKmlLocalActivationSitesRadius(), onDate)
                 .forEach(localActivity -> addActivityMarker(control, doc, folder, localActivity)));

@@ -1,12 +1,10 @@
 package uk.m0nom.adifproc.adif3.print;
 
 import org.apache.commons.lang3.StringUtils;
-import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.types.Sota;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.activity.Activity;
-import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.contacts.Qsos;
 import uk.m0nom.adifproc.geodesic.GeodesicUtils;
@@ -302,10 +300,7 @@ public class Adif3PrintFormatter {
                 break;
             case "GRIDSQUARE":
                 if (rec.getGridsquare() != null) {
-                    value = rec.getGridsquare().toUpperCase();
-                    if (MaidenheadLocatorConversion.isADubiousGridSquare(value)) {
-                        value = "";
-                    }
+                    value = getNonDubiousGridsquareOptExt(rec);
                 }
                 break;
             case "COUNTRY":
@@ -341,6 +336,8 @@ public class Adif3PrintFormatter {
                     value = "SOTA";
                 } else if (rec.getWwffRef() != null) {
                     value = "WWFF";
+                } else if (rec.getPotaRef() != null) {
+                    value = "POTA";
                 }
                 break;
             case "SIG_INFO" :
@@ -384,10 +381,21 @@ public class Adif3PrintFormatter {
         return value;
     }
 
-    private String getActivityInfo(Map<ActivityType, Activity> activities, boolean markdown) {
+    private String getNonDubiousGridsquareOptExt(Adif3Record rec) {
+        String value;
+        value = rec.getGridsquare().toUpperCase();
+        if (MaidenheadLocatorConversion.isADubiousGridSquare(value)) {
+            value = "";
+        } else if (rec.getGridsquareExt() != null) {
+            value += rec.getGridsquareExt().toUpperCase();
+        }
+        return value;
+    }
+
+    private String getActivityInfo(Collection<Activity> activities, boolean markdown) {
         String value = "";
         if (activities != null && !activities.isEmpty()) {
-            Activity activity = activities.values().iterator().next();
+            Activity activity = activities.iterator().next();
             if (markdown && StringUtils.isNotEmpty(activity.getUrl()))  {
                 value = String.format("[%s](%s)", activity.getRef(), activity.getUrl());
             } else {

@@ -4,10 +4,8 @@ import de.micromata.opengis.kml.v_2_2_0.*;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Propagation;
 import org.springframework.stereotype.Service;
-import uk.m0nom.adifproc.activity.ActivityDatabaseService;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
-import uk.m0nom.adifproc.adif3.transform.ApplicationDefinedFields;
 import uk.m0nom.adifproc.comms.CommsLinkResult;
 import uk.m0nom.adifproc.comms.CommsVisualizationService;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
@@ -20,8 +18,6 @@ import uk.m0nom.adifproc.kml.info.KmlContactInfoPanel;
 import uk.m0nom.adifproc.kml.station.KmlStationUtils;
 
 import java.util.Map;
-
-import static uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseUtils.parseAlt;
 
 @Service
 public class KmlCommsService {
@@ -87,14 +83,11 @@ public class KmlCommsService {
         double myAltitude = 0.0;
         double theirAltitude = 0.0;
 
-        String theirAlt = qso.getRecord().getApplicationDefinedField(ApplicationDefinedFields.ALT);
-        if (theirAlt != null) {
-            theirAltitude = parseAlt(theirAlt);
+        if (qso.getRecord().getAltitude() != null) {
+            theirAltitude = qso.getRecord().getAltitude();
         }
-
-        String myAlt = qso.getRecord().getApplicationDefinedField(ApplicationDefinedFields.MY_ALT);
-        if (myAlt != null) {
-            myAltitude = parseAlt(myAlt);
+        if (qso.getRecord().getMyAltitude() != null) {
+            myAltitude = qso.getRecord().getMyAltitude();
         }
 
         GlobalCoords3D myCoord = new GlobalCoords3D(rec.getMyCoordinates(), myAltitude);
@@ -115,9 +108,11 @@ public class KmlCommsService {
         String description = new KmlContactInfoPanel().getPanelContentForCommsLink(qso, result, control.getTemplateEngine());
         placemark.withDescription(description);
 
-        // TODO not sure how we do absolute altitude contacts, so everything is relative to ground ATM
+        // For specified altitudes they must be absolute and both ends must be specified
         if (internet) {
             commsLine.setAltitudeMode(AltitudeMode.CLAMP_TO_GROUND);
+        } else if (myAltitude != 0.0 && theirAltitude != 0.0) {
+            commsLine.setAltitudeMode(AltitudeMode.ABSOLUTE);
         } else {
             commsLine.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
         }
