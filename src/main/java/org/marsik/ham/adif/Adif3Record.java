@@ -889,7 +889,7 @@ public class Adif3Record {
      * <MY_POTA_REF:7>K-10000
      * <MY_POTA_REF:40>K-0817,K-4566,K-4576,K-4573,K-4578@US-WY
      */
-    private PotaList myPotaRef = new PotaList();
+    private PotaList myPotaRef;
 
     /**
      * Since ADIF 3.1.4

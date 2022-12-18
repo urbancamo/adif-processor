@@ -24,6 +24,7 @@ public class PotaList implements AdifType {
         }
         potaList.add(pota);
     }
+
     @Override
     public String getValue() {
         return potaList.stream().map(Pota::getValue).collect(Collectors.joining(","));
@@ -32,7 +33,7 @@ public class PotaList implements AdifType {
     public static PotaList valueOf(String s) {
         String[] potas = s.replaceAll("\\s", "").split(",");
         List<Pota> rtn = new ArrayList<>(potas.length);
-        for (String pota: potas) {
+        for (String pota : potas) {
             rtn.add(Pota.valueOf(pota));
         }
         return new PotaList(rtn);
