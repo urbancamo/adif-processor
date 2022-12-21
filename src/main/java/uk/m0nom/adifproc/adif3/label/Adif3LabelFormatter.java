@@ -131,7 +131,7 @@ public class Adif3LabelFormatter {
         String activity = getMaybeMyActivityRef(qso);
         page.writeString(activity, offsetX, offsetY + 4);
         if (qso.getRecord().getQslMsg() != null) {
-            String qslMsg = StringUtils.abbreviate(qso.getRecord().getQslMsg(), LABEL_WIDTH);
+            String qslMsg = StringUtils.left(qso.getRecord().getQslMsg(), LABEL_WIDTH);
             page.writeString(qslMsg, offsetX, offsetY + 5);
         }
         if (qso.getRecord().getQslRDate() != null) {
