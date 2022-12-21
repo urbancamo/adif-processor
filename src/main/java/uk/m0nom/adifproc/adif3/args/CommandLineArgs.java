@@ -28,6 +28,8 @@ public class CommandLineArgs {
                 .help("Username for the QRZ XML Service");
         parser.addArgument("-qp", "--qrz-password").required(false)
                 .help("Password for the QRZ XML Service");
+        parser.addArgument("-ql", "--qsl-labels").required(false).setDefault(Boolean.FALSE)
+                .help("Generate QSL Card Labels");
 
         parser.addArgument("-l", "--location").required(false)
                 .help("Specify override grid in 4/6/10 characters");
@@ -130,7 +132,8 @@ public class CommandLineArgs {
             control.setKmlContactColourByBand(ns.getBoolean("kml_contact_colour_band"));
 
             control.setFormattedOutput(ns.getBoolean("markdown"));
-
+            control.setQslLabels(ns.getBoolean("qsl_labels"));
+            control.setQslLabelsInitialPosition(ns.getInt("qsl_labels_initial_position"));
             control.setOutputPath(ns.getString("output"));
             control.setPathname(ns.getString("path").substring(1, ns.getString("path").length()-1));
 

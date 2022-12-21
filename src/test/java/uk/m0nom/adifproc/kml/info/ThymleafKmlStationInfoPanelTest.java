@@ -16,8 +16,7 @@ import uk.m0nom.adifproc.qrz.QrzCallsign;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -55,11 +54,9 @@ public class ThymleafKmlStationInfoPanelTest {
         castle.setRef("C-99999");
         castle.setGrid("IO84qi");
         when(station.isDoing(ActivityType.COTA)).thenReturn(true);
-        when(station.getActivity(ActivityType.COTA)).thenReturn(castle);
-
-        Map<ActivityType, Activity> activities = new HashMap<>();
-        activities.put(ActivityType.COTA, new CotaInfo());
-
+        ArrayList<Activity> activities = new ArrayList<>();
+        activities.add(castle);
+        when(station.getActivity(ActivityType.COTA)).thenReturn(activities);
         when(station.getActivities()).thenReturn(activities);
         String html = infoPanel.getPanelContentForStation(control, station);
         FileUtils.writeStringToFile(new File("target/station.html"), html, StandardCharsets.UTF_8);

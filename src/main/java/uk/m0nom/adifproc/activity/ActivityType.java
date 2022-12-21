@@ -25,4 +25,8 @@ public enum ActivityType {
         this.activityName = name;
         this.activityDescription = description;
     }
+
+    public static boolean hasOwnAdifField(ActivityType type) {
+        return type == ActivityType.SOTA || type == ActivityType.WWFF || type == ActivityType.POTA;
+    }
 }

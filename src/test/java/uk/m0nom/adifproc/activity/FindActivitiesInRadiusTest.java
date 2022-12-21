@@ -20,14 +20,14 @@ public class FindActivitiesInRadiusTest {
         Activity stSundayCrag = sotaSummits.get("G/LD-010");
         // Find summits within 5km
 
-        Collection<Activity> localSummits = sotaSummits.findActivitiesInRadius(stSundayCrag, 5000, LocalDate.now());
+        Collection<Activity> localSummits = sotaSummits.findActivitiesInRadius(stSundayCrag, 5, LocalDate.now());
         assertEquals(3, localSummits.size(), String.format("Number of local summits %s not as expected 3", localSummits.size()));
         assertTrue(localSummits.contains(sotaSummits.get("G/LD-007")), "Expected localSummits to contain Fairfield");
         assertTrue(localSummits.contains(sotaSummits.get("G/LD-022")), "Expected localSummits to contain Seat Sandal");
         assertTrue(localSummits.contains(sotaSummits.get("G/LD-003")), "Expected localSummits to contain Helvelly");
 
         Activity theCalf = sotaSummits.get("G/NP-013");
-        localSummits = sotaSummits.findActivitiesInRadius(theCalf, 9000, LocalDate.now());
+        localSummits = sotaSummits.findActivitiesInRadius(theCalf, 9, LocalDate.now());
         assertEquals(3, localSummits.size(), String.format("Number of local summits %s not as expected 3", localSummits.size()));
         assertTrue(localSummits.contains(sotaSummits.get("G/NP-019")), "Expected localSummits to contain Yarlside");
         assertTrue(localSummits.contains(sotaSummits.get("G/LD-038")), "Expected localSummits to contain Grayrigg Forest");

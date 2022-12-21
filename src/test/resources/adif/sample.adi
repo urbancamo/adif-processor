@@ -1,6 +1,6 @@
 Generated on 2011-11-22 at 02:15:23Z for WN4AZY
 
-<adif_ver:5>3.1.3
+<adif_ver:5>3.1.4
 <programid:7>monolog
 <USERDEF1:14:N>EPC
 <USERDEF2:19:E>SweaterSize,{S,M,L}
@@ -37,7 +37,7 @@ City, ST 12345
 <eor>
 
 <qso_date:8>20181016
-<time_on:4>2312
+<time_on:4>2315
 <call:5>K0TET
 <band:4>70cm
 <mode:3>JT9
@@ -48,4 +48,22 @@ City, ST 12345
 <my_wwff_ref:8>GFF-0350
 <arrl_sect:2>CT
 <my_arrl_sect:2>AZ
-eor>
+<eor>
+
+<qso_date:8>20181016
+<time_on:4>2318
+<call:5>K0ABC
+<operator:5>M0NOM
+<station_callsign:7>M0NOM/P
+<band:4>20m
+<altitude:4>1234
+<my_altitude:3>123
+<MY_POTA_REF:40>K-0817,K-4566,K-4576,K-4573,K-4578@US-WY
+<POTA_REF:40>K-0817,K-4566,K-4576,K-4573,K-4578@US-WY
+<GRIDSQUARE:8>FN01MH42 <GRIDSQUARE_EXT:2>BQ
+<MY_GRIDSQUARE:8>IO84NI18 <GRIDSQUARE_EXT:2>AB
+<HAMLOGEU_QSO_UPLOAD_DATE:8>20181016
+<HAMLOGEU_QSO_UPLOAD_STATUS:1>Y
+<HAMQTH_QSO_UPLOAD_DATE:8>20181016
+<HAMQTH_QSO_UPLOAD_STATUS:1>M
+<eor>

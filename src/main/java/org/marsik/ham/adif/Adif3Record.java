@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.enums.*;
-import org.marsik.ham.adif.types.Iota;
-import org.marsik.ham.adif.types.Sota;
-import org.marsik.ham.adif.types.Wwff;
+import org.marsik.ham.adif.types.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -65,11 +63,9 @@ public class Adif3Record {
 
     /**
      * the list of awards submitted to a sponsor.
-     *
      * note that this field might not be used in a QSO record.  It might be used to convey information about a user’s
      * “Award Account” between an award sponsor and the user.  For example, AA6YQ might submit a request for DXCC
      * awards by sending the following:
-     *
      * <CALL:5>AA6YQ
      * <AWARD_SUBMITTED:64>FISTS_CENTURY_BASIC,FISTS_CENTURY_SILVER,FISTS_SPECTRUM_100-160m
      * TODO enum
@@ -78,11 +74,9 @@ public class Adif3Record {
 
     /**
      * the list of awards granted by a sponsor.
-     *
      * note that this field might not be used in a QSO record.  It might be used to convey information about a user’s
      * “Award Account” between an award sponsor and the user.  For example, in response to a request “send me a list
      * of the DXCC awards granted to AA6YQ”, this might be received:
-     *
      * <CALL:5>AA6YQ
      * <AWARD_GRANTED:64>FISTS_CENTURY_BASIC,FISTS_CENTURY_SILVER,FISTS_SPECTRUM_100-160m
      * TODO enum
@@ -175,7 +169,6 @@ public class Adif3Record {
 
     /**
      * the list of credits sought for this QSO
-     *
      * Use of data type AwardList and enumeration Award are deprecated
      * todo enum Credit
      */
@@ -183,7 +176,6 @@ public class Adif3Record {
 
     /**
      * the list of credits granted to this QSO
-     *
      * Use of data type AwardList and enumeration Award are deprecated
      * todo enum credit
      */
@@ -229,17 +221,14 @@ public class Adif3Record {
 
     /**
      * eQSL.cc QSL received status
-     *
      * instead of V (deprecated) use
      * <CREDIT_GRANTED:39>DXCC:eqsl,DXCC_BAND:eqsl,DXCC_MODE:eqsl
-     *
      * Default Value: N
      */
     private QslRcvd eqslQslRcvd;
 
     /**
      * eQSL.cc QSL sent status
-     *
      * Default Value: N
      */
     private QslSent eqslQslSent;
@@ -332,17 +321,14 @@ public class Adif3Record {
 
     /**
      * ARRL Logbook of the World QSL received status
-     *
      *  instead of V (deprecated) use
      *  <CREDIT_GRANTED:39>DXCC:lotw,DXCC_BAND:lotw,DXCC_MODE:lotw
-     *
      *  Default Value: N
      */
     private QslRcvd lotwQslRcvd;
 
     /**
      * ARRL Logbook of the World QSL sent status
-     *
      * Default Value: N
      */
     private QslSent lotwQslSent;
@@ -482,7 +468,6 @@ public class Adif3Record {
     /**
      * two US counties in the case where the logging station is located on a border between two counties,
      * representing counties that the contacted station may claim for the CQ Magazine USA-CA award program.
-     *
      * E.g.
      * MA,Franklin:MA,Hampshire
      */
@@ -491,7 +476,6 @@ public class Adif3Record {
     /**
      * two or four adjacent Maidenhead grid locators, each four characters long, representing the logging
      * station's grid squares that the contacted station may claim for the ARRL VUCC award program.
-     *
      * E.g.
      * EN98,FM08,EM97,FM07
      * todo maidenhead
@@ -585,10 +569,8 @@ public class Adif3Record {
 
     /**
      * QSL received status
-     *
      * instead of V (deprecated) use
      * <CREDIT_GRANTED:39>DXCC:card,DXCC_BAND:card,DXCC_MODE:card
-     *
      * Default Value: N
      */
     private QslRcvd qslRcvd;
@@ -601,14 +583,12 @@ public class Adif3Record {
 
     /**
      * QSL sent status
-     *
      * Default Value: N
      */
     private QslSent qslSent;
 
     /**
      * means by which the QSL was sent by the logging station
-     *
      * use of M (manager) is deprecated
      */
     private QslVia qslSentVia;
@@ -752,7 +732,6 @@ public class Adif3Record {
 
     /**
      * QSO Submode
-     *
      * use enumeration values for interoperability
      */
     private String submode;
@@ -791,7 +770,6 @@ public class Adif3Record {
     /**
      * two US counties in the case where the contacted station is located on a border between two counties,
      * representing counties credited to the QSO for the CQ Magazine USA-CA award program.
-     *
      * E.g.
      * MA,Franklin:MA,Hampshire
      */
@@ -802,7 +780,6 @@ public class Adif3Record {
     /**
      * two or four adjacent Maidenhead grid locators, each four characters long, representing the contacted station's
      * grid squares credited to the QSO for the ARRL VUCC award program.
-     *
      * E.g.
      * EN98,FM08,EM97,FM07
      * todo maidenhead
@@ -859,4 +836,82 @@ public class Adif3Record {
      * 12-JUN-2022 MSW Encoded as enum
      */
     private String myArrlSect;
+
+    /**
+     * Since ADIF 3.1.4
+     * the height of the contacted station in meters relative to Mean Sea Level (MSL).
+     */
+    private Double altitude;
+
+    /**
+     * Since ADIF 3.1.4
+     * the height of the logging station in meters relative to Mean Sea Level (MSL).
+     */
+    private Double myAltitude;
+
+    /**
+     * Since ADIF 3.1.4
+     * for a contacted station's 10-character Maidenhead locator, supplements the GRIDSQUARE field by containing characters 9 and 10.  For a contacted station's 12-character Maidenhead locator, supplements the GRIDSQUARE field by containing characters 9, 10, 11 and 12.
+     *     Characters 9 and 10 are case-insensitive ASCII letters in the range A-X.  Characters 11 and 12 are Digits in the range 0 to 9.
+     *     On export, the field length must be 2 or 4.
+     *     On import, if the field length is greater than 4, the additional characters must be ignored.
+     * Example of exporting the 10-character locator FN01MH42BQ:
+     * <GRIDSQUARE:8>FN01MH42 <GRIDSQUARE_EXT:2>BQ
+     */
+    private String gridsquareExt;
+
+    /**
+     * Since ADIF 3.1.4
+     * for a logging station's 10-character Maidenhead locator, supplements the MY_GRIDSQUARE field by containing characters 9 and 10.  For a logging station's 12-character Maidenhead locator, supplements the MY_GRIDSQUARE field by containing characters 9, 10, 11 and 12.
+     * Characters 9 and 10 are case-insensitive ASCII letters in the range A-X.  Characters 11 and 12 are Digits in the range 0 to 9.
+     * On export, the field length must be 2 or 4.
+     * On import, if the field length is greater than 4, the additional characters must be ignored.
+     * Example of exporting the 10-character locator FN01MH42BQ:
+     * <MY_GRIDSQUARE:8>FN01MH42 <MY_GRIDSQUARE_EXT:2>BQ
+     */
+    private String myGridsquareExt;
+
+    /**
+     * Since ADIF 3.1.4
+     * a comma-delimited list of one or more of the contacted station's POTA (Parks on the Air) reference(s).
+     * Examples:
+     * <POTA_REF:6>K-5033
+     * <POTA_REF:13>VE-5082@CA-AB
+     * <POTA_REF:40>K-0817,K-4566,K-4576,K-4573,K-4578@US-WY
+     */
+    private PotaList potaRef;
+
+    /**
+     * Since ADIF 3.1.4
+     * a comma-delimited list of one or more of the logging station's POTA (Parks on the Air) reference(s).
+     * Examples:
+     * <MY_POTA_REF:6>K-0059
+     * <MY_POTA_REF:7>K-10000
+     * <MY_POTA_REF:40>K-0817,K-4566,K-4576,K-4573,K-4578@US-WY
+     */
+    private PotaList myPotaRef;
+
+    /**
+     * Since ADIF 3.1.4
+     * the date the QSO was last uploaded to the HAMLOG.EU online service
+     */
+    private ZonedDateTime hamlogEuQsoUploadDate;
+
+    /**
+     * Since ADIF 3.1.4
+     * the upload status of the QSO on the HAMLOG.EU online service
+     */
+    private QsoUploadStatus hamlogEuQsoUploadStatus;
+
+    /**
+     * Since ADIF 3.1.4
+     * the date the QSO was last uploaded to the HamQTH.COM online service
+     */
+    private ZonedDateTime hamqthQsoUploadDate;
+
+    /**
+     * Since ADIF 3.1.4
+     * the upload status of the QSO on the HamQTH.COM online service
+     */
+    private QsoUploadStatus hamqthQsoUploadStatus;
 }

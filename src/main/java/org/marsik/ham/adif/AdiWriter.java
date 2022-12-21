@@ -181,7 +181,7 @@ public class AdiWriter {
     }
 
     public void appendCustomFields(Map<String, String> customFields) {
-        for (String name: customFields.keySet()) {
+        for (String name : customFields.keySet()) {
             append(name, customFields.get(name));
         }
     }
@@ -338,6 +338,22 @@ public class AdiWriter {
         append("MY_WWFF_REF", rec.getMyWwffRef());
         append("WWFF_REF", rec.getWwffRef());
         append("MY_ARRL_SECT", rec.getMyArrlSect());
+
+        /* ADIF 3.1.4 */
+        append("ALTITUDE", rec.getAltitude());
+        append("MY_ALTITUDE", rec.getMyAltitude());
+        if (rec.getPotaRef() != null) {
+            append("POTA_REF", rec.getPotaRef().getValue());
+        }
+        if (rec.getMyPotaRef() != null) {
+            append("MY_POTA_REF", rec.getMyPotaRef().getValue());
+        }
+        append("GRIDSQUARE_EXT", rec.getGridsquareExt());
+        append("MY_GRIDSQUARE_EXT", rec.getMyGridsquareExt());
+        append("HAMLOGEU_QSO_UPLOAD_DATE", rec.getHamlogEuQsoUploadDate());
+        append("HAMLOGEU_QSO_UPLOAD_STATUS", rec.getHamlogEuQsoUploadStatus());
+        append("HAMQTH_QSO_UPLOAD_DATE", rec.getHamqthQsoUploadDate());
+        append("HAMQTH_QSO_UPLOAD_STATUS", rec.getHamqthQsoUploadStatus());
 
         appendEndOfRecord();
     }

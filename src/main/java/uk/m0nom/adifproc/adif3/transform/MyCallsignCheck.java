@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MyCallsignCheck {
-    /* Lots of logs have operator or station_callsign missing on some of the records. If there is a single callsign
+    /* Lots of logs have operator or station_callsign missing on some records. If there is a single callsign
      * it is returned here and can be used to fill in the blanks. If there is more than one then this returns an
      * empty Map
      */

@@ -113,6 +113,8 @@ public class TransformControl {
     private Double kmlLocalActivationSitesRadius;
 
     private boolean formattedOutput;
+    private boolean qslLabels;
+    private Integer qslLabelsInitialPosition;
     private boolean contestResults;
 
     private Antenna antenna = new AntennaService().getAntenna("Vertical");
@@ -126,6 +128,8 @@ public class TransformControl {
     private DxccEntities dxccEntities;
 
     private Countries countries;
+
+    private String dontQslCallsigns;
 
     public String getActivityRef(ActivityType type) {
         return activityRefs.get(type);

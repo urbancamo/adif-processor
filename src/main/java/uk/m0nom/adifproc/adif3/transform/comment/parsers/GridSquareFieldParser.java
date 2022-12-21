@@ -11,7 +11,7 @@ public class GridSquareFieldParser implements CommentFieldParser {
     public FieldParseResult parseField(String value, Qso qso) throws CommentFieldParserException {
         Adif3Record rec = qso.getRecord();
 
-        if (MaidenheadLocatorConversion.isAValidGridSquare(value)) {
+        if (MaidenheadLocatorConversion.isAWellFormedGridsquare(value)) {
             switch (value.length()) {
                 case 4:
                 case 6:

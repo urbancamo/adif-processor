@@ -14,13 +14,12 @@ import java.time.LocalDate;
 import java.util.Locale;
 
 public class KmlLocalActivities {
-    public final static String DEFAULT_RADIUS = "5000";
+    public final static String DEFAULT_RADIUS_IN_KM = "5";
 
     public void addLocalActivities(TransformControl control, Document doc, Folder folder, Station to, ActivityDatabaseService activities) {
         LocalDate onDate = to.getQsos().get(0).getRecord().getQsoDate();
         // Determine activities within the pre-defined radius
         to.getActivities()
-                .values()
                 .forEach(activity -> activities.getDatabase(activity.getType())
                         .findActivitiesInRadius(activity, control.getKmlLocalActivationSitesRadius(), onDate)
                 .forEach(localActivity -> addActivityMarker(control, doc, folder, localActivity)));

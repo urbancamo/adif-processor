@@ -1,12 +1,11 @@
 package uk.m0nom.adifproc.maidenheadlocator;
 
-import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LocationAccuracy;
 import uk.m0nom.adifproc.coords.LocationSource;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,11 +14,11 @@ import java.util.regex.Pattern;
 /**
  * Converted from C# source code by Mark Wickens M0NOM, credits and license below
  * <p>
- * Copyright (c) 2011, Yves Goergen, http://unclassified.software/source/maidenheadlocator
+ * Copyright (c) 2011, Yves Goergen, <a href="http://unclassified.software/source/maidenheadlocator">...</a>
  * Copying and distribution of this file, with or without modification, are permitted provided the
  * copyright notice and this notice are preserved. This file is offered as-is, without any warranty.
  * This class is based on a Perl module by Dirk Koopman, G1TLH, from 2002-11-07.
- * Source: http://www.koders.com/perl/fidDAB6FD208AC4F5C0306CA344485FD0899BD2F328.aspx
+ * Source: <a href="http://www.koders.com/perl/fidDAB6FD208AC4F5C0306CA344485FD0899BD2F328.aspx">...</a>
  */
 public class MaidenheadLocatorConversion {
 
@@ -27,37 +26,49 @@ public class MaidenheadLocatorConversion {
     public final static Pattern LOC_6CHAR = Pattern.compile("^[A-R]{2}[0-9]{2}[A-X]{2}$");
     public final static Pattern LOC_8CHAR = Pattern.compile("^|[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}$");
     public final static Pattern LOC_10CHAR = Pattern.compile("^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}[A-X]{2}$");
+    public final static Pattern LOC_12CHAR = Pattern.compile("^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}[A-X]{2}[0-9]{2}$");
 
-    private final static String[] INVALID_GRIDSQUARES = new String[]{"AA00AA"};
+    private final static Collection<String> DUBIOUS_GRID_SQUARES = Arrays.asList("IO91VL", "JJ00AA", "AA00AA", "JJ00AA00", "AA00AA00");
 
-    public static boolean isEmptyOrInvalid(String gridSquare) {
-        return gridSquare == null || !MaidenheadLocatorConversion.isAValidGridSquare(gridSquare) ||
-                MaidenheadLocatorConversion.isADubiousGridSquare(gridSquare);
+    public static boolean isADubiousGridSquare(String grid) {
+        return grid != null && DUBIOUS_GRID_SQUARES.contains(grid.toUpperCase());
     }
 
-    public static boolean isAValidGridSquare(String gridSquare) {
-        for (String invalidGridsquare : INVALID_GRIDSQUARES) {
-            if (StringUtils.equalsIgnoreCase(gridSquare, invalidGridsquare)) {
-                return false;
-            }
-        }
-        return gridSquare != null;
+    public static boolean isEmptyOrInvalid(String gridSquare) {
+        return gridSquare == null || MaidenheadLocatorConversion.isADubiousGridSquare(gridSquare);
+    }
+
+    public static boolean isValid(String gridSquare) {
+        return gridSquare != null && isAWellFormedGridsquare(gridSquare) && !isADubiousGridSquare(gridSquare);
     }
 
     public static GlobalCoords3D locatorToCoords(LocationSource source, String locStr) {
+        return locatorToCoords(source, locStr, null);
+    }
+
+    public static GlobalCoords3D locatorToCoords(LocationSource source, String locStr, String extStr) {
 
         String locatorTrimmed = locStr.trim().toUpperCase();
+        if (extStr != null) {
+            locatorTrimmed = locatorTrimmed + extStr.trim().toUpperCase();
+        }
         Matcher matcher4Char = LOC_4CHAR.matcher(locatorTrimmed);
         Matcher matcher6Char = LOC_6CHAR.matcher(locatorTrimmed);
         Matcher matcher8Char = LOC_8CHAR.matcher(locatorTrimmed);
         Matcher matcher10Char = LOC_10CHAR.matcher(locatorTrimmed);
+        Matcher matcher12Char = LOC_12CHAR.matcher(locatorTrimmed);
 
         char[] locator = locatorTrimmed.toCharArray();
 
         double longitude, latitude;
 
         try {
-            if (matcher10Char.matches()) {
+            if (matcher12Char.matches()) {
+                // TODO work out how to parse 12 character locator - currently using the 10 character code
+                longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.0) / 12 + (locator[6] - '0' + 0.0) / 120 + (locator[8] - 'A' + 0.5) / 120 / 24 - 180;
+                latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.0) / 24 + (locator[7] - '0' + 0.0) / 240 + (locator[9] - 'A' + 0.5) / 240 / 24 - 90;
+                return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.MHL12);
+            } else if (matcher10Char.matches()) {
                 longitude = (locator[0] - 'A') * 20 + (locator[2] - '0') * 2 + (locator[4] - 'A' + 0.0) / 12 + (locator[6] - '0' + 0.0) / 120 + (locator[8] - 'A' + 0.5) / 120 / 24 - 180;
                 latitude = (locator[1] - 'A') * 10 + (locator[3] - '0') + (locator[5] - 'A' + 0.0) / 24 + (locator[7] - '0' + 0.0) / 240 + (locator[9] - 'A' + 0.5) / 240 / 24 - 90;
                 return new GlobalCoords3D(latitude, longitude, source, LocationAccuracy.MHL10);
@@ -238,16 +249,13 @@ public class MaidenheadLocatorConversion {
         return Math.toDegrees(az);
     }
 
-    public static boolean
-    isADubiousGridSquare(String grid) {
-        return grid != null && DUBIOUS_GRIDSQUARES.contains(grid.toUpperCase());
-    }
+    public static boolean isAWellFormedGridsquare(String locStr) {
+        String locatorTrimmed = locStr.trim().toUpperCase();
+        Matcher matcher4Char = LOC_4CHAR.matcher(locatorTrimmed);
+        Matcher matcher6Char = LOC_6CHAR.matcher(locatorTrimmed);
+        Matcher matcher8Char = LOC_8CHAR.matcher(locatorTrimmed);
+        Matcher matcher10Char = LOC_10CHAR.matcher(locatorTrimmed);
 
-    private final static Collection<String> DUBIOUS_GRIDSQUARES = new ArrayList<>();
-
-    static {
-        DUBIOUS_GRIDSQUARES.add("IO91VL");
-        DUBIOUS_GRIDSQUARES.add("JJ00AA");
-        DUBIOUS_GRIDSQUARES.add("AA00AA");
+        return matcher4Char.matches() || matcher6Char.matches() || matcher8Char.matches() || matcher10Char.matches();
     }
 }

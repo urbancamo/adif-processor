@@ -1,0 +1,71 @@
+printJob:
+  name:         'A4 QSL Labels 24 63.5mm X 33.9mm'
+  inEncoding:   iso-8859-1
+  outEncoding:  utf-8
+  startCommand: ''
+  endCommand:   ''
+  filenameExtension:  'txt'
+
+page:
+  pageEnd:      ''
+  lineEnd:      'windows'
+  headerLine:   'COLUMN_NAMES'
+  headerSeparator: ''
+  pageHeight:   66
+  pageWidth:    132
+  topMargin:    1
+  headerMargin: 0
+  bottomMargin: 1
+  leftMargin:   0
+  rightMargin:  0
+  metaColumns:  3
+  metaRows:     8
+  columnSeparator: ' '
+columns:
+  - column:
+      adif: 'QSO_DATE'
+      header: 'DATE'
+      length: 10
+      format: 'YYYY.MM.dd'
+      align:  left
+  - column:
+      adif: 'TIME_ON'
+      header: 'TIME'
+      length: 5
+      format: 'HH:mm'
+      align: left
+  - column:
+      adif: 'CALL'
+      header: 'CALLSIGN'
+      length: 14
+      align: left
+  - column:
+      adif: 'FREQ'
+      header: 'FREQ'
+      length: 8
+      format: '%8.3f'
+      align: right
+  - column:
+      adif: 'MODE'
+      header: 'MODE'
+      length: 4
+      align: right
+  - column:
+      adif: 'RST_RCVD'
+      header: 'RSR'
+      length: 4
+      align: right
+  - column:
+      adif: 'RST_SENT'
+      header: 'RST'
+      length: 4
+      align: right
+  - column:
+      adif: 'MY_SOTA_REF'
+      header: 'SOTA-TX'
+      length: 11
+  - column:
+      adif: 'SOTA_REF'
+      header: 'SOTA-RX'
+      length: 11
+

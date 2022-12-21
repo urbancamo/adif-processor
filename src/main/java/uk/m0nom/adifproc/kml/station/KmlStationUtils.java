@@ -3,9 +3,9 @@ package uk.m0nom.adifproc.kml.station;
 import de.micromata.opengis.kml.v_2_2_0.*;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
+import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
-import uk.m0nom.adifproc.adif3.transform.ApplicationDefinedFields;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.icons.IconResource;
 import uk.m0nom.adifproc.kml.KmlUtils;
@@ -18,8 +18,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseUtils.parseAlt;
 
 public class KmlStationUtils {
     public final static double DEFAULT_RANGE_METRES = 500.0;
@@ -60,14 +58,15 @@ public class KmlStationUtils {
 
 
     public String createMyStationMarker(Document document, Folder folder, Qso qso) {
+        Adif3Record rec = qso.getRecord();
         // Create a folder for this information
-        GlobalCoordinates coords = qso.getRecord().getMyCoordinates();
+        GlobalCoordinates coords = rec.getMyCoordinates();
         if (qso.getFrom().getCoordinates() == null && coords == null) {
             return String.format("Cannot determine coordinates for station %s, please specify a location override", qso.getFrom().getCallsign());
         }
         double longitude = coords.getLongitude();
         double latitude = coords.getLatitude();
-        double altitude = parseAlt(qso.getRecord().getApplicationDefinedField(ApplicationDefinedFields.MY_ALT));
+        double altitude = rec.getMyAltitude() != null ? rec.getMyAltitude() : 0.0;
 
         String callsign = qso.getFrom().getCallsign();
         Folder myFolder = folder.createAndAddFolder().withName(callsign).withOpen(false);
@@ -151,7 +150,7 @@ public class KmlStationUtils {
         GlobalCoordinates coords = rec.getCoordinates();
         double longitude = coords.getLongitude();
         double latitude = coords.getLatitude();
-        double altitude = parseAlt(rec.getApplicationDefinedField(ApplicationDefinedFields.ALT));
+        double altitude = rec.getAltitude() != null ? rec.getAltitude() : 0.0;
 
         IconResource icon = IconResource.getIconFromStation(control, qso.getTo());
         if (!iconStyles.contains(icon.getName())) {
@@ -257,8 +256,8 @@ public class KmlStationUtils {
     }
 
     public static String getActivityLabel(Qso qso) {
-        return qso.getTo().getActivities().entrySet().stream()
-                .map(activityTypeActivityEntry -> activityTypeActivityEntry.getValue().getRef())
+        return qso.getTo().getActivities().stream()
+                .map(Activity::getRef)
                 .collect(Collectors.joining(", "));
     }
 

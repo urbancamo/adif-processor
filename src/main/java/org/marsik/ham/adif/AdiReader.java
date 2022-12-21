@@ -5,13 +5,13 @@ import lombok.Data;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.enums.*;
 import org.marsik.ham.adif.types.Iota;
+import org.marsik.ham.adif.types.PotaList;
 import org.marsik.ham.adif.types.Sota;
 import org.marsik.ham.adif.types.Wwff;
 import org.marsik.ham.grid.CoordinateWriter;
 import org.marsik.ham.util.MultiOptional;
 
 import java.io.BufferedReader;
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.UnmappableCharacterException;
@@ -65,9 +65,8 @@ public class AdiReader {
                 document.getRecords().add(parseRecord(recordFields));
                 recordCount++;
             } catch (UnmappableCharacterException e) {
-                System.err.println(
-                        String.format("Caught unmappable character exception reading record number : %d, field: %s",
-                                recordCount, current));
+                System.err.printf("Caught unmappable character exception reading record number : %d, field: %s%n",
+                        recordCount, current);
                 throw e;
             } catch (RuntimeException e) {
                 String msg = e.getMessage();
@@ -273,6 +272,27 @@ public class AdiReader {
         maybeGet(recordFields, "MY_WWFF_REF").map(Wwff::valueOf).ifPresent(record::setMyWwffRef);
         maybeGet(recordFields, "WWFF_REF").map(Wwff::valueOf).ifPresent(record::setWwffRef);
 
+        /* ADIF 3.1.4 fields */
+        maybeGet(recordFields, "ALTITUDE").map(Double::parseDouble).ifPresent(record::setAltitude);
+        maybeGet(recordFields, "MY_ALTITUDE").map(Double::parseDouble).ifPresent(record::setMyAltitude);
+        maybeGet(recordFields, "GRIDSQUARE_EXT").ifPresent(record::setGridsquareExt);
+        maybeGet(recordFields, "MY_GRIDSQUARE_EXT").ifPresent(record::setMyGridsquareExt);
+        maybeGet(recordFields, "MY_POTA_REF").map(PotaList::valueOf).ifPresent(record::setMyPotaRef);
+        maybeGet(recordFields, "POTA_REF").map(PotaList::valueOf).ifPresent(record::setPotaRef);
+
+        maybeGet(recordFields, "HAMLOGEU_QSO_UPLOAD_DATE")
+                .map(this::parseDate)
+                .ifPresent(record::setHamlogEuQsoUploadDate);
+        maybeGet(recordFields, "HAMLOGEU_QSO_UPLOAD_STATUS")
+                .map(QsoUploadStatus::findByCode)
+                .ifPresent(record::setHamlogEuQsoUploadStatus);
+        maybeGet(recordFields, "HAMQTH_QSO_UPLOAD_DATE")
+                .map(this::parseDate)
+                .ifPresent(record::setHamqthQsoUploadDate);
+        maybeGet(recordFields, "HAMQTH_QSO_UPLOAD_STATUS")
+                .map(QsoUploadStatus::findByCode)
+                .ifPresent(record::setHamqthQsoUploadStatus);
+
         return record;
     }
 
@@ -290,7 +310,7 @@ public class AdiReader {
         return res == null ? Optional.empty() : Optional.of(res);
     }
 
-    Map<String, String> readRecord(BufferedReader reader) throws IOException, EOFException {
+    Map<String, String> readRecord(BufferedReader reader) throws IOException {
         Map<String, String> fields = new HashMap<>();
         Field field = readField(reader);
         if (field == null) {
@@ -327,7 +347,7 @@ public class AdiReader {
                 pieces.length > 2 ? pieces[2] : null);
     }
 
-    Field readField(BufferedReader reader) throws EOFException, IOException {
+    Field readField(BufferedReader reader) throws IOException {
         readUntil(reader, '<', false);
         final String tag = readUntil(reader, '>', true);
         if (tag.isEmpty()) {

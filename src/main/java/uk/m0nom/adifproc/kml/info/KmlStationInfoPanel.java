@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.thymeleaf.TemplateSpec;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
+import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
@@ -11,7 +12,6 @@ import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LocationInfo;
 import uk.m0nom.adifproc.dxcc.Country;
 import uk.m0nom.adifproc.dxcc.DxccEntity;
-import uk.m0nom.adifproc.dxcc.JsonDxccEntity;
 import uk.m0nom.adifproc.qrz.QrzCallsign;
 
 import java.util.Collection;
@@ -26,7 +26,7 @@ public class KmlStationInfoPanel {
 
         QrzCallsign qrzInfo = station.getQrzInfo();
         if (qrzInfo != null) {
-            setVariable(context,"callForQrz", station.getQrzInfo().getCall());
+            setVariable(context, "callForQrz", station.getQrzInfo().getCall());
             if (qrzInfo.getImage() != null) {
                 context.setVariable("image", station.getQrzInfo().getImage());
             }
@@ -36,12 +36,15 @@ public class KmlStationInfoPanel {
 
         for (ActivityType activityType : ActivityType.values()) {
             if (station.isDoing(activityType)) {
-                context.setVariable(activityType.getActivityName().toLowerCase(), station.getActivity(activityType));
+                Collection<Activity> activitiesOfType = station.getActivity(activityType);
+                // TODO only displaying first activity
+                Activity activity = activitiesOfType.iterator().next();
+                context.setVariable(activityType.getActivityName().toLowerCase(), activity);
             }
         }
 
         if (qrzInfo != null) {
-            setVariable(context,"name", String.format("%s %s",
+            setVariable(context, "name", String.format("%s %s",
                     StringUtils.defaultIfBlank(qrzInfo.getFname(), ""),
                     StringUtils.defaultIfBlank(qrzInfo.getName(), "")));
         }
@@ -54,9 +57,12 @@ public class KmlStationInfoPanel {
                 name = country.getName();
             }
             setVariable(context, "country", name);
-            if ("United states".equalsIgnoreCase(name) && name.equalsIgnoreCase(qrzInfo.getCountry()))
+            if ("United states".equalsIgnoreCase(name) &&
+                    qrzInfo != null &&
+                    qrzInfo.getCountry() != null &&
+                    name.equalsIgnoreCase(qrzInfo.getCountry())) {
                 setVariable(context, "state", qrzInfo.getState());
-            
+            }
             setVariable(context, "dxcc", dxcc.getName());
             setVariable(context, "flag", dxcc.getFlag());
             setVariable(context, "ituZone", formatIntList(dxcc.getItu()));
@@ -64,7 +70,7 @@ public class KmlStationInfoPanel {
         }
 
         if (station.getCoordinates() != null && station.getCoordinates().getAltitude() > 0.0) {
-            setVariable(context,"altitude", String.format("%.0f m", station.getCoordinates().getAltitude()));
+            setVariable(context, "altitude", String.format("%.0f m", station.getCoordinates().getAltitude()));
         }
 
         String grid = station.getGrid();
