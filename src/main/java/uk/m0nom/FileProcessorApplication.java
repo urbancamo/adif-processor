@@ -20,6 +20,7 @@ import uk.m0nom.adifproc.adif3.transform.TransformResults;
 import uk.m0nom.adifproc.contest.ContestResultsCalculator;
 import uk.m0nom.adifproc.dxcc.*;
 import uk.m0nom.adifproc.kml.KmlWriter;
+import uk.m0nom.adifproc.progress.ProgressFeedbackHandlerCallback;
 import uk.m0nom.adifproc.qrz.CachingQrzXmlService;
 
 import java.io.BufferedWriter;
@@ -36,7 +37,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 @SpringBootApplication
-public class FileProcessorApplication implements CommandLineRunner {
+public class FileProcessorApplication implements CommandLineRunner, ProgressFeedbackHandlerCallback {
     private static final String MARKDOWN_CONTROL_FILE = "adif-printer-132-md.yaml";
 
     private static final Logger logger = Logger.getLogger(FileProcessorApplication.class.getName());
@@ -141,7 +142,7 @@ public class FileProcessorApplication implements CommandLineRunner {
 
             logger.info(String.format("Reading input file %s with encoding %s", inPath, control.getEncoding()));
             Adif3 log = reader.read(inPath, control.getEncoding(), false);
-            qsos = transformer.transform(log, control, results);
+            qsos = transformer.transform(log, control, results, this, null);
             logger.info(String.format("Writing output file %s with encoding %s", out, control.getEncoding()));
             if (control.getGenerateKml()) {
                 kmlWriter.write(control, kml, inBasename, summits, qsos, results);
@@ -189,5 +190,10 @@ public class FileProcessorApplication implements CommandLineRunner {
             logger.severe(String.format("Caught exception %s processing file: %s", e.getMessage(), inPath));
             logger.severe(ExceptionUtils.getStackTrace(e));
         }
+    }
+
+    @Override
+    public void sendProgressUpdate(String sessionId, String message) {
+        System.out.println(message);
     }
 }

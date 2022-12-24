@@ -11,6 +11,7 @@ import uk.m0nom.adifproc.adif3.transform.CommentParsingAdifRecordTransformer;
 import uk.m0nom.adifproc.adif3.transform.MyCallsignCheck;
 import uk.m0nom.adifproc.adif3.transform.MyCallsignCheckResults;
 import uk.m0nom.adifproc.adif3.transform.TransformResults;
+import uk.m0nom.adifproc.progress.ProgressFeedbackHandlerCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class Adif3Transformer {
         this.transformer = transformer;
     }
 
-    public Qsos transform(Adif3 log, TransformControl control, TransformResults results) throws UnsupportedHeaderException {
+    public Qsos transform(Adif3 log, TransformControl control, TransformResults results, ProgressFeedbackHandlerCallback progressFeedbackHandlerCallback, String sessionId) throws UnsupportedHeaderException {
         Qsos qsos = new Qsos(log);
 
         int firstError = 0;
@@ -41,6 +42,7 @@ public class Adif3Transformer {
         log.setRecords(stripLotwEofRecordIfPresent(log.getRecords()));
 
         for (Adif3Record rec : log.getRecords()) {
+            progressFeedbackHandlerCallback.sendProgressUpdate(sessionId, String.format("Processing contact %s", rec.getCall()));
             if (StringUtils.isBlank(rec.getOperator()) && callsigns.isOneOperator()) {
                 rec.setOperator(callsigns.getSingleOperator());
             }
