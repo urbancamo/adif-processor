@@ -21,12 +21,16 @@ import uk.m0nom.adifproc.kml.info.TemplateEngineConstructor;
 import uk.m0nom.adifproc.kml.station.KmlStationUtils;
 import uk.m0nom.adifproc.maidenheadlocator.MaidenheadLocatorConversion;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 @Service
 public class KmlWriter {
@@ -38,7 +42,9 @@ public class KmlWriter {
         this.kmlCommsService = kmlCommsService;
     }
 
-    public String write(TransformControl control, String pathname, String name, ActivityDatabaseService activities, Qsos qsos, TransformResults results) {
+    public String write(TransformControl control, String pathname,
+                        String name, ActivityDatabaseService activities, Qsos qsos,
+                        TransformResults results) {
         control.setTemplateEngine(TemplateEngineConstructor.create());
 
         KmlLocalActivities kmlLocalActivities = new KmlLocalActivities();
@@ -107,12 +113,11 @@ public class KmlWriter {
                 kmlSatelliteTrack.addSatelliteTracks(control, doc, results.getSatelliteActivity(), coordinatesWithSourceAccuracy);
             }
             try {
+                String tmpPathname = pathname + ".tmp";
                 logger.info(String.format("Writing KML to: %s", pathname));
-                File file = new File(pathname);
+                File file = new File(tmpPathname);
                 kml.marshal(file);
-                String kmlContent = FileUtils.readFileToString(file, "UTF-8");
-                kmlContent = kmlContent.replaceAll("ns2:", "").replace("<kml xmlns:ns2=\"http://www.opengis.net/kml/2.2\" xmlns:ns3=\"http://www.w3.org/2005/Atom\" xmlns:ns4=\"urn:oasis:names:tc:ciq:xsdschema:xAL:2.0\" xmlns:ns5=\"http://www.google.com/kml/ext/2.2\">", "<kml>");
-                FileUtils.write(file, kmlContent, "UTF-8");
+                replaceNameSpaces(tmpPathname, pathname, results);
                 //return ZipUtils.compress(pathname, "kmz");
                 return pathname;
             } catch (IOException e) {
@@ -121,5 +126,20 @@ public class KmlWriter {
             }
         }
         return "";
+    }
+
+    private void replaceNameSpaces(String inPath, String outPath, TransformResults results) {
+        try (
+                BufferedWriter writer = Files.newBufferedWriter(Path.of(outPath), Charset.forName("UTF-8"));
+                BufferedReader reader = Files.newBufferedReader(Path.of(inPath), Charset.forName("UTF-8"));) {
+            while (reader.ready()) {
+                String line = reader.readLine();
+                String newLine = line.replaceAll("ns2:", "").replace("<kml xmlns:ns2=\"http://www.opengis.net/kml/2.2\" xmlns:ns3=\"http://www.w3.org/2005/Atom\" xmlns:ns4=\"urn:oasis:names:tc:ciq:xsdschema:xAL:2.0\" xmlns:ns5=\"http://www.google.com/kml/ext/2.2\">", "<kml>");
+                writer.write(newLine);
+            }
+        } catch (IOException e) {
+            results.setError(e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
