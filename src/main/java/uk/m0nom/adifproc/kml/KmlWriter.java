@@ -23,6 +23,7 @@ import uk.m0nom.adifproc.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -130,8 +131,8 @@ public class KmlWriter {
 
     private void replaceNameSpaces(String inPath, String outPath, TransformResults results) {
         try (
-                BufferedWriter writer = Files.newBufferedWriter(Path.of(outPath), Charset.forName("UTF-8"));
-                BufferedReader reader = Files.newBufferedReader(Path.of(inPath), Charset.forName("UTF-8"));) {
+                BufferedWriter writer = Files.newBufferedWriter(Path.of(outPath), StandardCharsets.UTF_8);
+                BufferedReader reader = Files.newBufferedReader(Path.of(inPath), StandardCharsets.UTF_8);) {
             while (reader.ready()) {
                 String line = reader.readLine();
                 String newLine = line.replaceAll("ns2:", "").replace("<kml xmlns:ns2=\"http://www.opengis.net/kml/2.2\" xmlns:ns3=\"http://www.w3.org/2005/Atom\" xmlns:ns4=\"urn:oasis:names:tc:ciq:xsdschema:xAL:2.0\" xmlns:ns5=\"http://www.google.com/kml/ext/2.2\">", "<kml>");
