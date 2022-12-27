@@ -3,6 +3,7 @@ package uk.m0nom.adifproc.maidenheadlocator;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LocationAccuracy;
+import uk.m0nom.adifproc.coords.LocationParserResult;
 import uk.m0nom.adifproc.coords.LocationSource;
 
 import java.util.Arrays;
@@ -103,6 +104,19 @@ public class MaidenheadLocatorConversion {
         return coordsToLocator(coords, 6);
     }
 
+    public static String locationParserResultToLocator(LocationParserResult result) {
+        LocationAccuracy accuracy = result.getCoords().getLocationInfo().getAccuracy();
+        switch (accuracy) {
+            case MHL8:
+                return coordsToLocator(result.getCoords(), 8);
+            case MHL10:
+                return coordsToLocator(result.getCoords(), 10);
+            case MHL12:
+                return coordsToLocator(result.getCoords(), 12);
+            default:
+                return coordsToLocator(result.getCoords());
+        }
+    }
 
     /**
      * Convert latitude and longitude in degrees to a locator

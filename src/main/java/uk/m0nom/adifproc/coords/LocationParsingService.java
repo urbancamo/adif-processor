@@ -10,6 +10,11 @@ import java.util.List;
 public class LocationParsingService {
     private final List<LocationParser> parsers = new ArrayList<>();
 
+    public static boolean isAccurateParser(LocationParser parser) {
+        return !(parser.getClass() == Maidenhead4CharLocatorParser.class ||
+                parser.getClass() == Maidenhead6CharLocatorParser.class);
+    }
+
     /**
      * The order of these parsers is important, they should run from most to least accurate
      */

@@ -32,9 +32,9 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
 
     private void setMyLocationFromGrid(Qso qso, String myGrid) {
         Adif3Record rec = qso.getRecord();
-        qso.getRecord().setMyGridSquare(myGrid.substring(0, 6));
-        if (myGrid.length() > 6) {
-            qso.getRecord().setMyGridsquareExt(myGrid.substring(6));
+        qso.getRecord().setMyGridSquare(StringUtils.substring(myGrid, 0, 8));
+        if (myGrid.length() > 8) {
+            qso.getRecord().setMyGridsquareExt(myGrid.substring(8));
         }
         qso.getFrom().setGrid(myGrid);
         GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.QRZ, myGrid, null);
@@ -56,11 +56,15 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
                 LocationParserResult result = parsers.parseStringForCoordinates(LocationSource.OVERRIDE, control.getLocation());
                 if (result.getCoords() != null) {
                     setMyLocationFromCoordinates(qso, result.getCoords());
-                    String gridsquare = MaidenheadLocatorConversion.coordsToLocator(result.getCoords());
+                    String gridsquare = MaidenheadLocatorConversion.locationParserResultToLocator(result);
                     qso.getFrom().setGrid(gridsquare);
-                    qso.getRecord().setMyGridSquare(gridsquare);
+                    qso.getRecord().setMyGridSquare(StringUtils.substring(gridsquare, 0,8));
                     locationSet = true;
+                    if (gridsquare.length() > 8) {
+                        qso.getRecord().setMyGridsquareExt(gridsquare.substring(8));
+                    }
                 }
+
             }
         }
         return locationSet;
