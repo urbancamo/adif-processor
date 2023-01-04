@@ -32,8 +32,7 @@ public class WwffFieldParserTest {
 
     @BeforeEach
     void init(@Mock ToLocationDeterminer toLocationDeterminer,
-              @Mock ActivityDatabaseService activityDatabaseService,
-              @Mock ActivityDatabase wwffDatabase) {
+              @Mock ActivityDatabaseService activityDatabaseService) {
 
         rec = new Adif3Record();
         qso = new Qso();
