@@ -19,6 +19,7 @@ import uk.m0nom.adifproc.adif3.contacts.Qsos;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.adif3.transform.comment.CommentTransformer;
 import uk.m0nom.adifproc.adif3.transform.comment.FieldParserCommentTransformer;
+import uk.m0nom.adifproc.adif3.transform.comment.SchemaBasedCommentTransformer;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LocationSource;
 import uk.m0nom.adifproc.geocoding.GeocodingProvider;
@@ -48,13 +49,15 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private final ToLocationDeterminer toLocationDeterminer;
     private final ActivityProcessor activityProcessor;
     private final GeocodingProvider geocodingProvider;
-    private final CommentTransformer commentTransformer;
+    private final CommentTransformer fieldParserCommentTransformer;
+    private final CommentTransformer schemaBasedCommentTransformer;
     private final ApSatelliteService apSatelliteService;
 
 
     public CommentParsingAdifRecordTransformer(ActivityDatabaseService activities,
                                                CachingQrzXmlService qrzXmlService,
-                                               FieldParserCommentTransformer commentTransformer,
+                                               SchemaBasedCommentTransformer schemaBasedCommentTransformer,
+                                               FieldParserCommentTransformer fieldParserCommentTransformer,
                                                FromLocationDeterminer fromLocationDeterminer,
                                                ToLocationDeterminer toLocationDeterminer,
                                                ActivityProcessor activityProcessor,
@@ -68,7 +71,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         this.toLocationDeterminer = toLocationDeterminer;
         this.activityProcessor = activityProcessor;
         this.geocodingProvider = geocodingProvider;
-        this.commentTransformer = commentTransformer;
+        this.fieldParserCommentTransformer = fieldParserCommentTransformer;
+        this.schemaBasedCommentTransformer = schemaBasedCommentTransformer;
     }
 
     private void processSotaRef(Qso qso, TransformResults results) {
@@ -115,13 +119,15 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             PotaList potaIds = rec.getPotaRef();
             for (Pota potaId : potaIds.getPotaList()) {
                 Activity activity = activities.getDatabase(ActivityType.POTA).get(potaId.getValue());
-                if (activity != null && !locationSet) {
-                    qso.getTo().addActivity(activity);
-                    String result = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.POTA, potaId.getValue());
-                    if (result != null) {
-                        results.addContactWithDubiousLocation(result);
-                    } else {
-                        locationSet = true;
+                if (activity != null) {
+                    if (!locationSet) {
+                        qso.getTo().addActivity(activity);
+                        String result = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.POTA, potaId.getValue());
+                        if (result != null) {
+                            results.addContactWithDubiousLocation(result);
+                        } else {
+                            locationSet = true;
+                        }
                     }
                 } else {
                     results.addContactWithDubiousLocation(String.format("%s (POTA %s invalid)", qso.getTo().getCallsign(), potaId.getValue()));
@@ -178,12 +184,12 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
     }
 
-    private boolean hasValidGridsquareNoCoords(Adif3Record rec) {
+    private boolean hasValidGridSquareNoCoords(Adif3Record rec) {
         return rec.getCoordinates() == null && rec.getGridsquare() != null &&
                 !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare());
     }
 
-    private boolean setCoordinatesFromGridsquare(Qso qso) {
+    private boolean setCoordinatesFromGridSquare(Qso qso) {
         Adif3Record rec = qso.getRecord();
         // Set Coordinates from GridSquare that has been supplied in the input file
         try {
@@ -199,7 +205,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         return true;
     }
 
-    private boolean hasNoValidGridsquareOrCoords(Adif3Record rec) {
+    private boolean hasNoValidGridSquareOrCoords(Adif3Record rec) {
         return rec.getCoordinates() == null || MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare());
     }
 
@@ -250,26 +256,36 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         qso.getFrom().setAntenna(control.getAntenna());
         setMyInfoFromQrz(control, qso);
         QrzCallsign theirQrzData = setTheirInfoFromQrz(qso);
+
+        // We first use the schema based transformer...
+        schemaBasedCommentTransformer.transformComment(qso, rec.getComment(), unmapped, results);
+
+        // Any unmapped comments we form into a new comment list
+        String remainingComment = generateCommentFromUnmapped(unmapped);
+        // Then apply our previous transformer on the remaining comment list for compatibility
+        fieldParserCommentTransformer.transformComment(qso, remainingComment, unmapped, results);
+
+        // Now that we've potentially populated the ADIF fields from activities in the comments, check the references
+        // and process them.
         processSotaRef(qso, results);
         processWwffRef(qso, results);
         processPotaRefs(qso, results);
         processRailwaysOnTheAirCallsign(qso, results);
         processSatelliteInfo(control, qso);
-        commentTransformer.transformComment(qso, rec.getComment(), unmapped, results);
 
         if (rec.getCoordinates() == null && rec.getGridsquare() == null) {
             enricher.lookupLocationFromQrz(qso);
         }
 
         // IF qrz.com can't fill in the coordinates, and the gridsquare is set, fill in coordinates from that
-        if (hasValidGridsquareNoCoords(rec)) {
-            if (!setCoordinatesFromGridsquare(qso)) {
+        if (hasValidGridSquareNoCoords(rec)) {
+            if (!setCoordinatesFromGridSquare(qso)) {
                 results.addContactWithDubiousLocation(String.format("%s (Locator %s invalid)", qso.getTo().getCallsign(), rec.getGridsquare()));
             }
         }
 
         // Last resort, attempt to find location from qrz.com address data via geolocation provider
-        if (hasNoValidGridsquareOrCoords(rec) && theirQrzData != null) {
+        if (hasNoValidGridSquareOrCoords(rec) && theirQrzData != null) {
             setTheirLocationFromGeocodedAddress(qso, theirQrzData);
         }
 
@@ -341,27 +357,38 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
                     boolean sotaFieldEmpty = rec.getSotaRef() == null || StringUtils.isBlank(rec.getSotaRef().getValue());
                     boolean wwffFieldEmpty = rec.getWwffRef() == null || StringUtils.isBlank(rec.getWwffRef().getValue());
+                    boolean potaFieldEmpty = rec.getPotaRef() == null || StringUtils.isBlank(rec.getPotaRef().getValue());
 
-                    // Make sure if they have a SOTA or WWFF reference specified
+                    // Make sure if they have a SOTA, WWFF or POTA reference specified
                     // in their specific fields that they take precedence over any other reference
                     // hence why this code is only executed if these specific references are null
-                    if (sotaFieldEmpty && wwffFieldEmpty) {
+                    if (sotaFieldEmpty && wwffFieldEmpty && potaFieldEmpty) {
                         toLocationDeterminer.setTheirLocationFromActivity(qso, activity);
                     }
 
                     // If activity in SIG_INFO/SIG_REF is SOTA and SOTA specific field isn't set, set it now
                     if (sotaFieldEmpty && activity.getType() == ActivityType.SOTA) {
                         rec.setSotaRef(Sota.valueOf(activity.getRef()));
+                        clearSigAndSigInfo(rec);
                     }
                     // If activity in SIG_INFO/SIG_REF is WWFF and WWFF specific field isn't set, set it now
                     if (wwffFieldEmpty && activity.getType() == ActivityType.WWFF) {
                         rec.setWwffRef(Wwff.valueOf(activity.getRef()));
+                        clearSigAndSigInfo(rec);
                     }
-
-                    unmapped.put(activityType, activityLocation);
+                    // If activity in SIG_INFO/SIG_REF is POTA and POTA specific field isn't set, set it now
+                    if (potaFieldEmpty && activity.getType() == ActivityType.POTA) {
+                        rec.setPotaRef(PotaList.valueOf(activity.getRef()));
+                        clearSigAndSigInfo(rec);
+                    }
                 }
             }
         }
+    }
+
+    private void clearSigAndSigInfo(Adif3Record rec) {
+        rec.setSig(null);
+        rec.setSigInfo(null);
     }
 
     /**
@@ -387,5 +414,13 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             }
         }
         rec.setComment(sb.toString());
+    }
+
+    private String generateCommentFromUnmapped(Map<String, String> unmapped) {
+        StringBuilder sb = new StringBuilder();
+        for (String key : unmapped.keySet()) {
+            sb.append(String.format("%s: %s ", key, unmapped.get(key)));
+        }
+        return sb.toString();
     }
 }

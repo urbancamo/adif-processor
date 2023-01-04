@@ -55,7 +55,7 @@ public class WwffFieldParserTest {
     public void testWwffAdifFieldPopulatedCorrect() throws CommentFieldParserException {
         Wwff wwff = Wwff.valueOf("SVFF-0185");
         FieldParseResult fpr = wwffFieldParser.parseField("SVFF-0185", qso);
-        assertThat(fpr.isAddToUnmapped()).isTrue();
+        assertThat(fpr.isAddToUnmapped()).isFalse();
         assertThat(rec.getWwffRef().equals(wwff)).isTrue();
         WwffInfo wwffInfo = (WwffInfo) qso.getTo().getActivity(ActivityType.WWFF).iterator().next();
         assertThat(wwffInfo).isNotNull();

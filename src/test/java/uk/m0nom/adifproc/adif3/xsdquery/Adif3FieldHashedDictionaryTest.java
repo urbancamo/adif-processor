@@ -4,13 +4,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class Adif3ElementHashedDictionaryTest {
+public class Adif3FieldHashedDictionaryTest {
     @Test
     public void testDictionaryCreation() {
         Adif3ElementHashedDictionary dictionary = new Adif3ElementHashedDictionary();
-        Adif3Element opElement = dictionary.getElement("OP");
+        Adif3Field opElement = dictionary.getField("OP");
         assertThat(opElement.getName()).isEqualTo("OPERATOR");
 
-        dictionary.getDictionary().keySet().stream().sorted().forEach(a -> System.out.printf("|%s|%s|\n", a, dictionary.getElement(a).getName()));
+        dictionary.getDictionary().keySet().stream().sorted().forEach(a -> System.out.printf("|%s|%s|\n", a, dictionary.getField(a).getName()));
     }
 }

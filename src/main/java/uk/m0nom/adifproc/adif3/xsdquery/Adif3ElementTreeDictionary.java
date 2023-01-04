@@ -4,18 +4,18 @@ import java.io.InputStream;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class Adif3ElementTreeDictionary implements  Adif3ElementDictionary {
     private final DictionaryTreeNode root;
 
     public Adif3ElementTreeDictionary() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("adif/adx312generic.xsd");
-        Set<Adif3Element> elements = new Adif3SchemaLoader().loadAdif3Schema(inputStream);
-        Map<String, Adif3Element> dictionary = new HashMap<>();
+        Adif3Schema schema = new Adif3SchemaLoader().loadAdif3Schema(inputStream);
+        Map<String, Adif3Field> dictionary = new HashMap<>();
 
-        for (Adif3Element element : elements) {
-            dictionary.put(element.getName(), element);
+        assert schema != null;
+        for (Adif3Field field : schema.getFields().values()) {
+            dictionary.put(field.getName(), field);
         }
 
         // Start the tree
@@ -33,7 +33,7 @@ public class Adif3ElementTreeDictionary implements  Adif3ElementDictionary {
     }
 
     @Override
-    public Adif3Element getElement(String name) {
+    public Adif3Field getField(String name) {
         return null;
     }
 }

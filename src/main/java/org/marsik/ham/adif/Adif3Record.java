@@ -429,7 +429,7 @@ public class Adif3Record {
      * the logging station's postal code
      */
     private String myPostalCode;
-    private String getMyPostalCodeIntl;
+    private String myPostalCodeIntl;
 
     /**
      * description of the logging station's equipment

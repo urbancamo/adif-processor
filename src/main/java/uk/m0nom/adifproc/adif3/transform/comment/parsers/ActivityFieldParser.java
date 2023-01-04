@@ -22,6 +22,6 @@ public class ActivityFieldParser implements CommentFieldParser {
         String activityId = StringUtils.split(value, ' ')[0];
         String callsignWithInvalidActivity = toLocationDeterminer.setTheirLocationFromActivity(qso, activityType, activityId.toUpperCase());
         qso.getTo().addActivity(activities.getDatabase(activityType).get(activityId));
-        return new FieldParseResult(callsignWithInvalidActivity, true);
+        return new FieldParseResult(callsignWithInvalidActivity, false);
     }
 }
