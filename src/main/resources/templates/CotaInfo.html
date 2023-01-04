@@ -14,19 +14,21 @@
 </head>
 <body>
     <div th:fragment="info" class="info">
-        <table>
-            <thead></thead>
-            <tbody>
-                <tr>
-                    <td class="tdLabel">COTA:</td>
-                    <td><span th:text="${cota.ref}">G-00528</span></td>
-                </tr>
-                <tr>
-                    <td class="tdLabel">Name: </td>
-                    <td><span th:text="${cota.name}">Arnside Pele Tower,Cumbria</span></td>
-                </tr>
-            </tbody>
-        </table>
+        <div th:each="cota : ${cotas}">
+            <table>
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td class="tdLabel">COTA:</td>
+                        <td><span th:text="${cota.ref}">G-00528</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdLabel">Name: </td>
+                        <td><span th:text="${cota.name}">Arnside Pele Tower,Cumbria</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div th:fragment="blank" style="display: none;"></div>
 </body>

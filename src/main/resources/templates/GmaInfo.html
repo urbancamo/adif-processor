@@ -14,19 +14,21 @@
 </head>
 <body>
     <div th:fragment="info" class="info">
-        <table>
-            <thead></thead>
-            <tbody>
-                <tr>
-                    <td class="tdLabel">GMA:</td>
-                    <td>
-                        <a target="_blank" rel="noopener noreferrer" href="https://www.cqgma.org/zinfo.php?ref=OL/JM-107" th:href="${gma.url}" th:text="${gma.ref}">OL/JM-107</a>
-                    </td>
-                </tr>
-                <tr><td class="tdLabel">Name:</td><td><span th:text="${gma.name}">Hora</span></td></tr>
-                <tr><td class="tdLabel">Alt: </td><td><span th:text="${gma.altitudeInMetres}">383m</span></td></tr>
-            </tbody>
-        </table>
+        <div th:each="gma : ${gmas}">
+            <table>
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td class="tdLabel">GMA:</td>
+                        <td>
+                            <a target="_blank" rel="noopener noreferrer" href="https://www.cqgma.org/zinfo.php?ref=OL/JM-107" th:href="${gma.url}" th:text="${gma.ref}">OL/JM-107</a>
+                        </td>
+                    </tr>
+                    <tr><td class="tdLabel">Name:</td><td><span th:text="${gma.name}">Hora</span></td></tr>
+                    <tr><td class="tdLabel">Alt: </td><td><span th:text="${gma.altitudeInMetres}">383m</span></td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div th:fragment="blank" style="display: none;"></div>
 

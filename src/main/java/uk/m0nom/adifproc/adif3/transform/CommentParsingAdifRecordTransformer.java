@@ -120,8 +120,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             for (Pota potaId : potaIds.getPotaList()) {
                 Activity activity = activities.getDatabase(ActivityType.POTA).get(potaId.getValue());
                 if (activity != null) {
+                    qso.getTo().addActivity(activity);
                     if (!locationSet) {
-                        qso.getTo().addActivity(activity);
                         String result = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.POTA, potaId.getValue());
                         if (result != null) {
                             results.addContactWithDubiousLocation(result);

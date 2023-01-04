@@ -44,10 +44,12 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
                 rec.setSotaRef(Sota.valueOf(reference));
             } else if (activity == ActivityType.WWFF) {
                 rec.setWwffRef(Wwff.valueOf(reference));
-            } else if (StringUtils.isEmpty(rec.getSig())) {
-                // If the SIG isn't set, add it here
-                rec.setSig(activity.getActivityName());
-                rec.setSigInfo(reference);
+            } else if (activity != ActivityType.POTA) {
+                if (StringUtils.isEmpty(rec.getSig())) {
+                    // If the SIG isn't set, add it here now
+                    rec.setSig(activity.getActivityName());
+                    rec.setSigInfo(reference);
+                }
             }
         } else {
             return String.format(BAD_ACTIVITY_REPORT, qso.getTo().getCallsign(), activity.getActivityName(), reference);

@@ -29,7 +29,6 @@ public class WwffFieldParser implements CommentFieldParser {
             rec.setWwffRef(wwff);
             String invalidCallSign = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.WWFF, wwffRef);
             result = new FieldParseResult(invalidCallSign, false);
-            qso.getTo().addActivity(activities.getDatabase(ActivityType.WWFF).get(wwffRef));
         } catch (IllegalArgumentException iae) {
             throw new CommentFieldParserException(this.getClass().getName(), "notValidActivityRef", qso, iae, true, value, rec.getCall(), rec.getTimeOn().toString());
         }

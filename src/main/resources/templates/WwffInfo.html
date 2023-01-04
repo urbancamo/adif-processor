@@ -14,19 +14,21 @@
 </head>
 <body>
     <div th:fragment="info" class="info">
-        <table>
-            <thead></thead>
-            <tbody>
-                <tr>
-                    <td class="tdLabel">WWFF:</td>
-                    <td><a href="https://wwff.co/directory/?showRef=GFF-0143" th:href="@{|https://wwff.co/directory/?showRef=${wwff.ref}|}" th:text="${wwff.ref}" target="_blank">GFF-0143</a></td>
-                </tr>
-                <tr>
-                    <td class="tdLabel">Name:</td>
-                    <td><span th:text="${wwff.name}">Leighton Moss SPA (and RSPB)</span></td>
-                </tr>
-            </tbody>
-        </table>
+        <div th:each="wwff : ${wwffs}">
+            <table>
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td class="tdLabel">WWFF:</td>
+                        <td><a href="https://wwff.co/directory/?showRef=GFF-0143" th:href="@{|https://wwff.co/directory/?showRef=${wwff.ref}|}" th:text="${wwff.ref}" target="_blank">GFF-0143</a></td>
+                    </tr>
+                    <tr>
+                        <td class="tdLabel">Name:</td>
+                        <td><span th:text="${wwff.name}">Leighton Moss SPA (and RSPB)</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div th:fragment="blank" style="display: none;"></div>
 
