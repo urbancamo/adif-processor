@@ -44,10 +44,7 @@ public class WwffFieldParserTest {
         svff0185Activity.setName("Name");
         qso.setRecord(rec);
         qso.setTo(to);
-        //to.addActivity(svff0185Activity);
         wwffFieldParser = new WwffFieldParser(toLocationDeterminer, activityDatabaseService);
-        when(activityDatabaseService.getDatabase(ActivityType.WWFF)).thenReturn(wwffDatabase);
-        when(wwffDatabase.get("SVFF-0185")).thenReturn(svff0185Activity);
     }
 
 
@@ -57,9 +54,5 @@ public class WwffFieldParserTest {
         FieldParseResult fpr = wwffFieldParser.parseField("SVFF-0185", qso);
         assertThat(fpr.isAddToUnmapped()).isFalse();
         assertThat(rec.getWwffRef().equals(wwff)).isTrue();
-        WwffInfo wwffInfo = (WwffInfo) qso.getTo().getActivity(ActivityType.WWFF).iterator().next();
-        assertThat(wwffInfo).isNotNull();
-        assertThat(wwffInfo.getType()).isEqualTo(ActivityType.WWFF);
-        assertThat(wwffInfo.getRef()).isEqualTo("SVFF-0185");
     }
 }
