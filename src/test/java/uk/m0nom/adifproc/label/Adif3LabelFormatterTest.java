@@ -6,6 +6,7 @@ import org.marsik.ham.adif.enums.Band;
 import org.marsik.ham.adif.enums.Mode;
 import org.marsik.ham.adif.types.Sota;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
+import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.label.Adif3LabelFormatter;
 import uk.m0nom.adifproc.adif3.label.Page;
 
@@ -24,6 +25,11 @@ public class Adif3LabelFormatterTest {
         List<Qso> qsoList = new ArrayList<>(1);
         for (int i=0; i < 48; i++) {
             Qso qso = new Qso();
+            qso.setTo(new Station());
+            qso.getTo().setCallsign("EA2IF");
+            qso.setFrom(new Station());
+            qso.getFrom().setCallsign("M0NOM/P");
+
             Adif3Record rec = new Adif3Record();
             rec.setCall("EA2IF");
             rec.setQslVia("EA2 Bureau");
