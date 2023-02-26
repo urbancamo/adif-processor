@@ -97,7 +97,7 @@ public class KmlStationUtils {
         return null;
     }
 
-    public void createSatelliteContactMarker(TransformControl control, Document document, Folder folder, Qso qso, GlobalCoords3D position) {
+    public void createSatelliteContactMarker(TransformControl control, Document document, Folder folder, Qso qso, GlobalCoords3D position, String description) {
         String name = getSatelliteMarkerName(qso);
         String folderName = getSatelliteFolderName(qso);
 
@@ -114,7 +114,7 @@ public class KmlStationUtils {
         }
 
         Folder satFolder = folder.createAndAddFolder().withName(folderName).withOpen(false);
-        Placemark placemark = satFolder.createAndAddPlacemark();
+        Placemark placemark = satFolder.createAndAddPlacemark().withDescription(description);
 
         //
         // String htmlPanelContent = new KmlStationInfoPanel().getPanelContentForStation(control, qso.getFrom());

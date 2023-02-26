@@ -103,6 +103,10 @@
                             <td class="tdLabel">TxPwr: </td>
                             <td><span th:text="${txPwr}">5</span> watts</td>
                         </tr>
+                        <tr th:if="${rxPwr} != null and ${rxPwr} > 0.0">
+                            <td class="tdLabel">RxPwr: </td>
+                            <td><span th:text="${rxPwr}">5</span> watts</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
