@@ -9,10 +9,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 @Getter
 @Setter
 public class TransformResults {
+    private static final Logger logger = Logger.getLogger(TransformResults.class.getName());
     private String adiFile;
     private String kmlFile;
     private String formattedQsoFile;
@@ -63,5 +65,6 @@ public class TransformResults {
 
     public void addWarning(String warning) {
         warnings.add(warning);
+        logger.info(warning);
     }
 }

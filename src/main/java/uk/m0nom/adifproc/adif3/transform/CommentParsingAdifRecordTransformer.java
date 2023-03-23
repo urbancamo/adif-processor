@@ -20,6 +20,7 @@ import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.adif3.transform.comment.CommentTransformer;
 import uk.m0nom.adifproc.adif3.transform.comment.FieldParserCommentTransformer;
 import uk.m0nom.adifproc.adif3.transform.comment.SchemaBasedCommentTransformer;
+import uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseResult;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LocationSource;
 import uk.m0nom.adifproc.geocoding.GeocodingProvider;
@@ -37,6 +38,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+
+import static uk.m0nom.adifproc.adif3.transform.AdifQrzEnricher.getNameFromQrzData;
 
 @Service
 public class CommentParsingAdifRecordTransformer implements Adif3RecordTransformer {
@@ -162,15 +165,15 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         enricher.enrichAdifForMe(qso.getRecord(), myQrzData);
     }
 
-    private QrzCallsign setTheirInfoFromQrz(Qso qso) {
+    private QrzCallsign setTheirInfoFromQrz(TransformResults transformResults, Qso qso) {
         /* Load QRZ.COM info for the worked station as a fixed station, for information */
         QrzCallsign theirQrzData = qrzXmlService.getCallsignData(qso.getTo().getCallsign());
         qso.getTo().setQrzInfo(theirQrzData);
-        enricher.enrichAdifForThem(qso.getRecord(), theirQrzData);
+        enricher.enrichAdifForThem(transformResults, qso.getRecord(), theirQrzData);
         return theirQrzData;
     }
 
-    private void processSatelliteInfo(TransformControl control,  Qso qso) {
+    private void processSatelliteInfo(TransformControl control, Qso qso) {
         Adif3Record rec = qso.getRecord();
         if (StringUtils.isBlank(control.getSatelliteBand()) || rec.getBand() == Band.findByCode(control.getSatelliteBand().toLowerCase())) {
             if (StringUtils.isNotBlank(control.getSatelliteMode())) {
@@ -255,7 +258,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
         qso.getFrom().setAntenna(control.getAntenna());
         setMyInfoFromQrz(control, qso);
-        QrzCallsign theirQrzData = setTheirInfoFromQrz(qso);
+        QrzCallsign theirQrzData = setTheirInfoFromQrz(results, qso);
 
         // We first use the schema based transformer...
         schemaBasedCommentTransformer.transformComment(qso, rec.getComment(), unmapped, results);
@@ -340,6 +343,36 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         // Set DXCC Entities
         qso.getFrom().setDxccEntity(control.getDxccEntities().findDxccEntityFromCallsign(qso.getFrom().getCallsign(), qso.getRecord().getQsoDate()));
         qso.getTo().setDxccEntity(control.getDxccEntities().findDxccEntityFromCallsign(qso.getTo().getCallsign(), qso.getRecord().getQsoDate()));
+        checkForWarnings(results, qso);
+    }
+
+    private void checkForWarnings(TransformResults results, Qso qso) {
+        QrzCallsign qrzInfo = qso.getTo().getQrzInfo();
+        Adif3Record rec = qso.getRecord();
+
+        if (qrzInfo != null) {
+            if (rec.getName() != null) {
+                String displayQrzName = getNameFromQrzData(qrzInfo);
+                String fullQrzName = String.format("%s %s", qrzInfo.getFname(), qrzInfo.getName());
+
+                if (!StringUtils.equalsIgnoreCase(rec.getName(), displayQrzName)) {
+                    // Warn if other station's name isn't contained in qrz data
+                    if (!StringUtils.containsIgnoreCase(fullQrzName, rec.getName())) {
+                        results.addWarning(String.format("Check name for %s: provided is '%s', QRZ has '%s'",
+                                rec.getCall(), rec.getName(), fullQrzName));
+                    }
+                }
+            }
+            if (rec.getState() != null) {
+                // Warn if state specified explicitly doesn't match qrz data and they're not doing an activity
+                if (!qso.getTo().hasActivity()) {
+                    if (!StringUtils.equalsIgnoreCase(rec.getState(), qrzInfo.getState())) {
+                        results.addWarning(String.format("Check state for %s: provided is %s, QRZ has %s", rec.getCall(),
+                                rec.getState().toUpperCase(), qrzInfo.getState().toUpperCase()));
+                    }
+                }
+            }
+        }
     }
 
     private void processSig(Qso qso, Map<String, String> unmapped) {
