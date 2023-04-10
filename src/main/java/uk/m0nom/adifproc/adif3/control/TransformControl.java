@@ -4,7 +4,6 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.thymeleaf.TemplateEngine;
 import uk.m0nom.adifproc.activity.ActivityType;
-import uk.m0nom.adifproc.adif3.xsdquery.Adif3Field;
 import uk.m0nom.adifproc.adif3.xsdquery.Adif3Schema;
 import uk.m0nom.adifproc.antenna.Antenna;
 import uk.m0nom.adifproc.antenna.AntennaService;
@@ -13,7 +12,6 @@ import uk.m0nom.adifproc.dxcc.DxccEntities;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * This class captures the control information that is used to define the file to process and any other
