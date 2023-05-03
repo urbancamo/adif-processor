@@ -32,53 +32,57 @@ public class CallsignUtilsTest {
     @Test
     public void getUkCallsignVariantsforG() {
         List<Callsign> callsigns = getCallsignVariants("M0NOM");
-        Assertions.assertThat(callsigns).hasSize(7);
+        Assertions.assertThat(callsigns).hasSize(8);
         assertThat(callsigns.get(0).getCallsign()).isEqualTo("M0NOM");
         assertThat(callsigns.get(1).getCallsign()).isEqualTo("MQ0NOM");
-        assertThat(callsigns.get(2).getCallsign()).isEqualTo("MD0NOM");
-        assertThat(callsigns.get(3).getCallsign()).isEqualTo("MG0NOM");
-        assertThat(callsigns.get(4).getCallsign()).isEqualTo("MI0NOM");
-        assertThat(callsigns.get(5).getCallsign()).isEqualTo("MM0NOM");
-        assertThat(callsigns.get(6).getCallsign()).isEqualTo("MW0NOM");
+        assertThat(callsigns.get(2).getCallsign()).isEqualTo("MR0NOM");
+        assertThat(callsigns.get(3).getCallsign()).isEqualTo("MD0NOM");
+        assertThat(callsigns.get(4).getCallsign()).isEqualTo("MG0NOM");
+        assertThat(callsigns.get(5).getCallsign()).isEqualTo("MI0NOM");
+        assertThat(callsigns.get(6).getCallsign()).isEqualTo("MM0NOM");
+        assertThat(callsigns.get(7).getCallsign()).isEqualTo("MW0NOM");
     }
 
     @Test
     public void getUkCallsignVariantsfor2E() {
         List<Callsign> callsigns = getCallsignVariants("2E0KMN");
-        Assertions.assertThat(callsigns).hasSize(7);
+        Assertions.assertThat(callsigns).hasSize(8);
         assertThat(callsigns.get(0).getCallsign()).isEqualTo("2E0KMN");
         assertThat(callsigns.get(1).getCallsign()).isEqualTo("2Q0KMN");
-        assertThat(callsigns.get(2).getCallsign()).isEqualTo("2D0KMN");
-        assertThat(callsigns.get(3).getCallsign()).isEqualTo("2G0KMN");
-        assertThat(callsigns.get(4).getCallsign()).isEqualTo("2I0KMN");
-        assertThat(callsigns.get(5).getCallsign()).isEqualTo("2M0KMN");
-        assertThat(callsigns.get(6).getCallsign()).isEqualTo("2W0KMN");
+        assertThat(callsigns.get(2).getCallsign()).isEqualTo("2R0KMN");
+        assertThat(callsigns.get(3).getCallsign()).isEqualTo("2D0KMN");
+        assertThat(callsigns.get(4).getCallsign()).isEqualTo("2G0KMN");
+        assertThat(callsigns.get(5).getCallsign()).isEqualTo("2I0KMN");
+        assertThat(callsigns.get(6).getCallsign()).isEqualTo("2M0KMN");
+        assertThat(callsigns.get(7).getCallsign()).isEqualTo("2W0KMN");
     }
 
     @Test
     public void getUkCallsignVariantsfor2Q() {
         List<Callsign> callsigns = getCallsignVariants("2Q0KMN");
-        Assertions.assertThat(callsigns).hasSize(7);
+        Assertions.assertThat(callsigns).hasSize(8);
         assertThat(callsigns.get(0).getCallsign()).isEqualTo("2Q0KMN");
-        assertThat(callsigns.get(1).getCallsign()).isEqualTo("2E0KMN");
-        assertThat(callsigns.get(2).getCallsign()).isEqualTo("2D0KMN");
-        assertThat(callsigns.get(3).getCallsign()).isEqualTo("2G0KMN");
-        assertThat(callsigns.get(4).getCallsign()).isEqualTo("2I0KMN");
-        assertThat(callsigns.get(5).getCallsign()).isEqualTo("2M0KMN");
-        assertThat(callsigns.get(6).getCallsign()).isEqualTo("2W0KMN");
+        assertThat(callsigns.get(1).getCallsign()).isEqualTo("2R0KMN");
+        assertThat(callsigns.get(2).getCallsign()).isEqualTo("2E0KMN");
+        assertThat(callsigns.get(3).getCallsign()).isEqualTo("2D0KMN");
+        assertThat(callsigns.get(4).getCallsign()).isEqualTo("2G0KMN");
+        assertThat(callsigns.get(5).getCallsign()).isEqualTo("2I0KMN");
+        assertThat(callsigns.get(6).getCallsign()).isEqualTo("2M0KMN");
+        assertThat(callsigns.get(7).getCallsign()).isEqualTo("2W0KMN");
     }
 
     @Test
     public void getUkCallsignVariantsforGM() {
         List<Callsign> callsigns = getUkCallsignVariants("MM0NOM");
-        Assertions.assertThat(callsigns).hasSize(7);
+        Assertions.assertThat(callsigns).hasSize(8);
         assertThat(callsigns.get(0).getCallsign()).isEqualTo("MM0NOM");
         assertThat(callsigns.get(1).getCallsign()).isEqualTo("M0NOM");
         assertThat(callsigns.get(2).getCallsign()).isEqualTo("MQ0NOM");
-        assertThat(callsigns.get(3).getCallsign()).isEqualTo("MD0NOM");
-        assertThat(callsigns.get(4).getCallsign()).isEqualTo("MG0NOM");
-        assertThat(callsigns.get(5).getCallsign()).isEqualTo("MI0NOM");
-        assertThat(callsigns.get(6).getCallsign()).isEqualTo("MW0NOM");
+        assertThat(callsigns.get(3).getCallsign()).isEqualTo("MR0NOM");
+        assertThat(callsigns.get(4).getCallsign()).isEqualTo("MD0NOM");
+        assertThat(callsigns.get(5).getCallsign()).isEqualTo("MG0NOM");
+        assertThat(callsigns.get(6).getCallsign()).isEqualTo("MI0NOM");
+        assertThat(callsigns.get(7).getCallsign()).isEqualTo("MW0NOM");
     }
 
     @Test
