@@ -1,11 +1,14 @@
 package uk.m0nom.adifproc.qrz;
 
+import fr.dudie.nominatim.client.JsonNominatimClient;
+import fr.dudie.nominatim.model.Address;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.callsign.Callsign;
@@ -14,6 +17,7 @@ import uk.m0nom.adifproc.callsign.CallsignUtils;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -26,12 +30,14 @@ public class QrzXmlService implements QrzService {
     private static final Logger logger = Logger.getLogger(QrzXmlService.class.getName());
 
     private final static String QRZ_XML_SERVICE_BASE_URL = " https://xmldata.qrz.com/xml";
-    private final static String QRZ_XML_SERVICE_VERSION = "1.34";
+    private final static String QRZ_XML_SERVICE_VERSION = "current";
+    private final static long DELAY = 100L;
 
     private final OkHttpClient client;
     private String sessionKey;
     private String username;
     private String password;
+    private long lastTimestamp;
 
     public QrzXmlService() {
         client = new OkHttpClient();
@@ -49,7 +55,7 @@ public class QrzXmlService implements QrzService {
 
     public boolean refreshSessionKey()  {
         if (hasCredentials()) {
-            String url = String.format("%s/%s/?username=%s&password=%s", QRZ_XML_SERVICE_BASE_URL, QRZ_XML_SERVICE_VERSION, username, password);
+            String url = String.format("%s/%s/?username=%s&password=%s&agent=adifproc1.1", QRZ_XML_SERVICE_BASE_URL, QRZ_XML_SERVICE_VERSION, username, password);
             logger.info("Obtaining QRZ.COM session key");
             QrzDatabase database = runQuery(url);
             if (database != null) {
@@ -63,7 +69,20 @@ public class QrzXmlService implements QrzService {
     public QrzCallsign getCallsignData(String callsign) {
         List<Callsign> alternatives = CallsignUtils.getCallsignVariants(callsign);
         for (Callsign alternative : alternatives) {
+            long timeDiff = new Date().getTime() - lastTimestamp;
+            if (timeDiff < DELAY) {
+                long pause = DELAY - timeDiff;
+                // Ensure at least a second between calls to comply with fair usage policy
+                logger.info(String.format("Pausing for %d ms to throttle qrz.com usage", pause));
+                try {
+                    Thread.sleep(pause);
+                } catch (Exception e) {
+                    // discard
+                    ;
+                }
+            }
             QrzCallsign data = getCallsignDataInternal(alternative.getCallsign());
+            lastTimestamp = java.time.Instant.now().toEpochMilli();
             if (data != null) {
                 return data;
             }
