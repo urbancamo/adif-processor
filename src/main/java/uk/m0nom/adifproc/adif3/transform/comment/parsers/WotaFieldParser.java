@@ -18,6 +18,6 @@ public class WotaFieldParser extends ActivityFieldParser implements CommentField
         String wotaId = StringUtils.split(value, ' ')[0];
         String callsignWithInvalidActivity = toLocationDeterminer.setTheirLocationFromWotaId(qso, wotaId.toUpperCase());
         qso.getTo().addActivity(activities.getDatabase(ActivityType.WOTA).get(wotaId));
-        return new FieldParseResult(callsignWithInvalidActivity, true);
+        return new FieldParseResult(callsignWithInvalidActivity, false);
     }
 }

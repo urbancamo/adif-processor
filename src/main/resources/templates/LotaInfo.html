@@ -14,19 +14,21 @@
 </head>
 <body>
     <div th:fragment="info" class="info">
-        <table>
-            <thead></thead>
-            <tbody>
-                <tr>
-                    <td class="tdLabel">Lighthouse Ref:</td>
-                    <td><span th:text="${lota.ref}">ES0014</span></td>
-                </tr>
-                <tr>
-                    <td class="tdLabel">Name:</td>
-                    <td><span th:text="${lota.name}">Fuencaliente</span></td>
-                </tr>
-            </tbody>
-        </table>
+        <div th:each="lota : ${lotas}">
+            <table>
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td class="tdLabel">Lighthouse Ref:</td>
+                        <td><span th:text="${lota.ref}">ES0014</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdLabel">Name:</td>
+                        <td><span th:text="${lota.name}">Fuencaliente</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div th:fragment="blank" style="display: none;"></div>
 

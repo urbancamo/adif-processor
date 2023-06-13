@@ -9,6 +9,7 @@ import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.adif3.contacts.AlphabeticQsoComparator;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.contacts.Qsos;
+import uk.m0nom.adifproc.callsign.CallsignUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -101,7 +102,7 @@ public class Adif3LabelFormatter {
 //      000000000111111111122222222
 //      123456789012345678901234567
 //    0┌───────────────────────────┐
-//    1│EA8/M0NOM/P                │
+//    1│M0NOM as EA8/M0NOM/P       │
 //    2│via: Bureau                │
 //    3│Date     Time Band RST Mode│
 //    4│20220312 1134 160  599 CW  │
@@ -112,15 +113,23 @@ public class Adif3LabelFormatter {
 
     private void impressQso(Page page, Qso qso, int offsetX, int offsetY) {
         var rec = qso.getRecord();
-        page.writeString(String.format(rec.getCall()), offsetX, offsetY);
+        String call = qso.getTo().getCallsign() != null ? qso.getTo().getCallsign() : "";
+        String ownerCallsign = "";
+        if (qso.getTo().getQrzInfo() != null && qso.getTo().getQrzInfo().getCall() != null) {
+            ownerCallsign = CallsignUtils.stripSuffix(qso.getTo().getQrzInfo().getCall());
+        }
+        page.writeString(ownerCallsign, offsetX, offsetY);
+        if (!StringUtils.equalsIgnoreCase(call, ownerCallsign)) {
+            page.writeString(StringUtils.left("as " + call, LABEL_WIDTH - ownerCallsign.length() -5),offsetX + ownerCallsign.length()+1, offsetY);
+        }
         if (Strings.isNotBlank(rec.getQslVia())) {
-            page.writeString(String.format("via %s", StringUtils.abbreviate(qso.getRecord().getQslVia(), LABEL_WIDTH - 5)), offsetX, offsetY + 1);
+            page.writeString(String.format("via %s", StringUtils.abbreviate(rec.getQslVia(), LABEL_WIDTH - 5)), offsetX, offsetY + 1);
         }
         page.writeString("Date     Time Band RST Mode", offsetX, offsetY + 2);
 
         DateTimeFormatter dateS = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = dateS.format(qso.getRecord().getQsoDate());
-        DateTimeFormatter timeS = DateTimeFormatter.ofPattern("hhmm");
+        DateTimeFormatter timeS = DateTimeFormatter.ofPattern("HHmm");
         String time = timeS.format(qso.getRecord().getTimeOn());
 
         String band = rec.getBand() == null ? "    " : StringUtils.rightPad(rec.getBand().adifCode(), 4);
@@ -131,8 +140,11 @@ public class Adif3LabelFormatter {
         String activity = getMaybeMyActivityRef(qso);
         page.writeString(activity, offsetX, offsetY + 4);
         if (qso.getRecord().getQslMsg() != null) {
-            String qslMsg = StringUtils.left(qso.getRecord().getQslMsg(), LABEL_WIDTH);
-            page.writeString(qslMsg, offsetX, offsetY + 5);
+            String qslMsg = qso.getRecord().getQslMsg();
+            page.writeString(StringUtils.left(qslMsg, LABEL_WIDTH), offsetX, offsetY + 5);
+            if (qslMsg.length() > LABEL_WIDTH) {
+                page.writeString(StringUtils.left(qslMsg.substring(LABEL_WIDTH), 22), offsetX,offsetY + 6);
+            }
         }
         if (qso.getRecord().getQslRDate() != null) {
             page.writeString("THX QSL", offsetX + 21, offsetY + 6);
@@ -142,16 +154,14 @@ public class Adif3LabelFormatter {
     }
 
     private String getMaybeMyActivityRef(Qso qso) {
-        String activity = "";
-        if (qso.getRecord().getMySotaRef() != null) {
-            activity = String.format("From SOTA: %s", qso.getRecord().getMySotaRef().getValue());
-        } else if (qso.getRecord().getMyWwffRef() != null) {
-            activity = String.format("From WWFF: %s", qso.getRecord().getMyWwffRef().getValue());
-        } else if (qso.getFrom().hasActivity()) {
-            Activity act = qso.getFrom().getActivities().iterator().next();
-            activity = String.format("From %s: %s", act.getType().getActivityName(), act.getRef());
+        String activityList = qso.getFrom().getActivities()
+                .stream()
+                .map(Activity::getRef)
+                .collect(Collectors.joining (" "));
+        if (StringUtils.isNotEmpty(activityList)) {
+            return StringUtils.left("From " + activityList, LABEL_WIDTH);
         }
-        return StringUtils.abbreviate(activity, LABEL_WIDTH);
+        return "";
     }
 
 }

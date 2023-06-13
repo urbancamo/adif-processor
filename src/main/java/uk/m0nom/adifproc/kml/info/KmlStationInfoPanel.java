@@ -15,6 +15,7 @@ import uk.m0nom.adifproc.dxcc.DxccEntity;
 import uk.m0nom.adifproc.qrz.QrzCallsign;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class KmlStationInfoPanel {
@@ -37,9 +38,7 @@ public class KmlStationInfoPanel {
         for (ActivityType activityType : ActivityType.values()) {
             if (station.isDoing(activityType)) {
                 Collection<Activity> activitiesOfType = station.getActivity(activityType);
-                // TODO only displaying first activity
-                Activity activity = activitiesOfType.iterator().next();
-                context.setVariable(activityType.getActivityName().toLowerCase(), activity);
+                context.setVariable(activityType.getActivityName().toLowerCase() + "s", activitiesOfType);
             }
         }
 

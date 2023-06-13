@@ -14,23 +14,25 @@
 </head>
 <body>
     <div th:fragment="info" class="info">
-        <table>
-            <thead></thead>
-            <tbody>
-                <tr>
-                    <td class="tdLabel">POTA:</td>
-                    <td><a href="https://pota.app/#/park/EA-0215" th:href="${pota.url}" th:text="${pota.ref}" target="_blank" >EA-0215</a></td>
-                </tr>
-                <tr>
-                    <td class="tdLabel">Name:</td>
-                    <td><span th:text="${pota.name}">Los Volcanes Nature Park</span></td>
-                </tr>
-                <tr>
-                    <td class="tdLabel">Location(s):</td>
-                    <td><span th:text="${pota.locationDesc}">EA-CN</span></td>
-                </tr>
-            </tbody>
-        </table>
+        <div th:each="pota : ${potas}">
+            <table>
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td class="tdLabel">POTA:</td>
+                        <td><a href="https://pota.app/#/park/EA-0215" th:href="${pota.url}" th:text="${pota.ref}" target="_blank" >EA-0215</a></td>
+                    </tr>
+                    <tr>
+                        <td class="tdLabel">Name:</td>
+                        <td><span th:text="${pota.name}">Los Volcanes Nature Park</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdLabel">Location(s):</td>
+                        <td><span th:text="${pota.locationDesc}">EA-CN</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div th:fragment="blank" style="display: none;"></div>
 

@@ -14,21 +14,23 @@
 </head>
 <body>
     <div th:fragment="info" class="info">
-        <table>
-            <thead></thead>
-            <tbody>
-                <tr>
-                    <td class="tdLabel">SOTA:</td>
-                    <td>
-                        <a target="_blank" rel="noopener noreferrer" href="https://summits.sota.org.uk/summit/GM/SS-218" th:href="${sota.url}" th:text="${sota.ref}">GM/SS-218</a>
-                    </td>
-                </tr>
-                <tr><td class="tdLabel">Name:</td><td><span th:text="${sota.name}">Cruach Tairbeirt</span></td></tr>
-                <tr><td class="tdLabel">Alt: </td><td><span th:text="${sota.altitudeInMetres}">451m</span></td></tr>
-                <tr><td class="tdLabel">Points: </td><td><span th:text="${sota.points}">1</span></td></tr>
-                <tr><td class="tdLabel">Bonus Points:</td><td><span th:text="${sota.bonusPoints}">0</span></td></tr>
-            </tbody>
-        </table>
+        <div th:each="sota : ${sotas}">
+            <table>
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td class="tdLabel">SOTA:</td>
+                        <td>
+                            <a target="_blank" rel="noopener noreferrer" href="https://summits.sota.org.uk/summit/GM/SS-218" th:href="${sota.url}" th:text="${sota.ref}">GM/SS-218</a>
+                        </td>
+                    </tr>
+                    <tr><td class="tdLabel">Name:</td><td><span th:text="${sota.name}">Cruach Tairbeirt</span></td></tr>
+                    <tr><td class="tdLabel">Alt: </td><td><span th:text="${sota.altitudeInMetres}">451m</span></td></tr>
+                    <tr><td class="tdLabel">Points: </td><td><span th:text="${sota.points}">1</span></td></tr>
+                    <tr><td class="tdLabel">Bonus Points:</td><td><span th:text="${sota.bonusPoints}">0</span></td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div th:fragment="blank" style="display: none;"></div>
 

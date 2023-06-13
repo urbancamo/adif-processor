@@ -29,7 +29,7 @@ public class MySotaRefFieldParser implements CommentFieldParser {
             Sota sota = Sota.valueOf(sotaRef.toUpperCase());
             rec.setMySotaRef(sota);
             String invalidCallsign = fromLocationDeterminer.setMyLocationFromSotaId(qso, sotaRef);
-            result = new FieldParseResult(invalidCallsign, true);
+            result = new FieldParseResult(invalidCallsign, false);
             qso.getFrom().addActivity(activities.getDatabase(ActivityType.SOTA).get(sotaRef));
         } catch (IllegalArgumentException iae) {
             throw new CommentFieldParserException(this.getClass().getName(), "notValidActivityRef", qso, iae, true, value, rec.getCall(), rec.getTimeOn().toString());

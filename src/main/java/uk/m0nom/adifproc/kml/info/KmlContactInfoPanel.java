@@ -58,6 +58,9 @@ public class KmlContactInfoPanel {
         if (rec.getTxPwr() != null) {
             context.setVariable("txPwr", String.format("%,.1f", rec.getTxPwr()));
         }
+        if (rec.getRxPwr() != null) {
+            context.setVariable("rxPwr", String.format("%,.1f", rec.getRxPwr()));
+        }
         context.setVariable("gndDist", String.format("%,.0f", result.getDistanceInKm()));
         context.setVariable("azimuth", String.format("%03.03f", result.getAzimuth()));
 

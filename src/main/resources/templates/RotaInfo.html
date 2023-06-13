@@ -14,21 +14,23 @@
 </head>
 <body>
     <div th:fragment="info" class="info">
-        <table>
-            <thead></thead>
-            <tbody>
-            <tr>
-                <td class="tdLabel">Railway:</td>
-                <td><span th:text="${rota.name}">Lakeside & Haverthwaite Railway</span></td>
-            </tr>
-            <tr>
-                <td class="tdLabel">Club:</td>
-                <td><span th:text="${rota.club}">Furness Amateur Radio Society</span></td>
-            <tr>
-                <td class="tdLabel">WAB:</td>
-                <td><span th:text="${rota.wab}">SD38</span></td>
-            </tbody>
-        </table>
+        <div th:each="rota : ${rotas}">
+            <table>
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td class="tdLabel">Railway:</td>
+                    <td><span th:text="${rota.name}">Lakeside & Haverthwaite Railway</span></td>
+                </tr>
+                <tr>
+                    <td class="tdLabel">Club:</td>
+                    <td><span th:text="${rota.club}">Furness Amateur Radio Society</span></td>
+                <tr>
+                    <td class="tdLabel">WAB:</td>
+                    <td><span th:text="${rota.wab}">SD38</span></td>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div th:fragment="blank" style="display: none;"></div>
 

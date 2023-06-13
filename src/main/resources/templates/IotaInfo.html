@@ -14,21 +14,23 @@
 </head>
 <body>
     <div th:fragment="info" class="info">
-        <table>
-            <thead></thead>
-            <tbody>
-                <tr>
-                    <td class="tdLabel">IOTA:</td>
-                    <td>
-                        <a target="_blank" rel="noopener noreferrer" href="https://summits.sota.org.uk/summit/GM/SS-218" th:href="${iota.url}" th:text="${iota.ref}">EU-080</a>
-                    </td>
-                </tr>
-                 <tr>
-                    <td class="tdLabel">Island(s) Name: </td>
-                    <td><span th:text="${iota.name}"> Iceland</span></td>
-                </tr>
-            </tbody>
-        </table>
+        <div th:each="iota : ${iotas}">
+            <table>
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td class="tdLabel">IOTA:</td>
+                        <td>
+                            <a target="_blank" rel="noopener noreferrer" href="https://summits.sota.org.uk/summit/GM/SS-218" th:href="${iota.url}" th:text="${iota.ref}">EU-080</a>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td class="tdLabel">Island(s) Name: </td>
+                        <td><span th:text="${iota.name}"> Iceland</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div th:fragment="blank" style="display: none;"></div>
 

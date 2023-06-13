@@ -4,33 +4,37 @@ import java.io.InputStream;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class Adif3ElementHashedDictionary implements Adif3ElementDictionary {
-    private Map<String, Adif3Element> dictionary;
+    private Map<String, Adif3Field> dictionary;
 
     public Adif3ElementHashedDictionary() {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("adif/adx312generic.xsd");
-        Set<Adif3Element> elements = new Adif3SchemaLoader().loadAdif3Schema(inputStream);
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("adif/adx314.xsd");
+        Adif3Schema schema = Adif3SchemaLoader.loadAdif3Schema(inputStream);
 
         // Now need to find the shortest form for each element name that is unique
         dictionary = new HashMap<>();
 
         // To start with, map each AdifElement to full name
-        for (Adif3Element element : elements) {
+        assert schema != null;
+        for (Adif3Field element : schema.getFields().values()) {
             dictionary.put(element.getName(), element);
         }
 
-        Map<String, Adif3Element> minMap = new HashMap<>();
+        Map<String, Adif3Field> minMap = new HashMap<>();
 
         // directly add all elements with name length of 3 or less
-        dictionary.keySet().stream().filter(name -> name.length() <= 3).sorted(Comparator.comparingInt(String::length)).forEach(name -> {
-            minMap.put(name, dictionary.get(name));
-        });
+        dictionary.keySet().stream()
+                .filter(name -> name.length() <= 3)
+                .sorted(Comparator.comparingInt(String::length))
+                .forEach(name -> minMap.put(name, dictionary.get(name)));
 
         // Now incrementally strip each of the element names back, so they are as short as possible but still unique
         // We do this on a stream sorted by name length, the smallest first
-        dictionary.keySet().stream().filter(name -> name.length() > 2).sorted(Comparator.comparingInt(String::length)).forEach(name -> {
+        dictionary.keySet().stream()
+                .filter(name -> name.length() > 2)
+                .sorted(Comparator.comparingInt(String::length))
+                .forEach(name -> {
             int len = name.length();
             while (len >= 2) {
                 String nameLessLastChar = name.substring(0, len-1);
@@ -56,10 +60,10 @@ public class Adif3ElementHashedDictionary implements Adif3ElementDictionary {
         dictionary = minMap;
     }
 
-    public Adif3Element getElement(String name) {
+    public Adif3Field getField(String name) {
         int len = name.length();
         while (len > 1) {
-            Adif3Element element = dictionary.get(name.substring(0, len));
+            Adif3Field element = dictionary.get(name.substring(0, len));
             if (element != null) {
                 return element;
             }
@@ -68,5 +72,5 @@ public class Adif3ElementHashedDictionary implements Adif3ElementDictionary {
         return null;
     }
 
-    public Map<String, Adif3Element> getDictionary() { return dictionary; }
+    public Map<String, Adif3Field> getDictionary() { return dictionary; }
 }

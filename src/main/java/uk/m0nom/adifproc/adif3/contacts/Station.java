@@ -47,8 +47,10 @@ public class Station {
 
     public void addActivity(Activity activity) {
         if (activity != null) {
-            activities.add(activity);
-            doingActivity.add(activity.getType());
+            if (!activities.contains(activity)) {
+                activities.add(activity);
+                doingActivity.add(activity.getType());
+            }
         }
     }
 

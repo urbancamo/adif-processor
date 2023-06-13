@@ -1,0 +1,685 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema version="3.1.4.0" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:documentation>
+      ADX Schema
+
+      ADIF Version:   3.1.4
+      Schema Version: 3.1.4.0
+      Date:           2022/11/01
+
+      DESCRIPTION:
+        This schema represents ADIF/ADX 3.1.4 as closely as is practical within the features provided
+        by XML Schema 1.0 (see LIMITATIONS below).
+        
+        It is specific to ADX 3.1.4 and disallows deprecated features.
+        Expected use is when exporting ADIF as ADX 3.1.4
+        
+        (For when importing ADX and the ADIF version is not known in advance, the alternative generic schema
+         adx312generic.xsd schema can be used because it allows features deprecated in ADX versions 3.1.4
+         and earlier.)
+
+      LIMITATIONS:
+        MY_STATE and STATE element contents are not validated against the "Primary Administrative Subdivision"
+        enumeration due to the excessively long regular expression required.
+
+        User-defined field names (contents of the USERDEF element nested in the HEADER element) are not
+        validated against the pre-defined ADIF field names due to the excessively long regular expression
+        required.
+
+        USERDEF elements nested in the HEADER element can optionally have either a RANGE or ENUM attribute
+        but not both; this is not validated.
+
+        Values in FIELDNAME attributes belonging to USERDEF elements nested in a RECORD element are not
+        validated against the USERDEF elements in the HEADER element.
+
+        USERDEF elements nested in RECORD elements do not have their contents validated against the TYPE,
+        RANGE or ENUM (if any) attributes of the corresponding USERDEF element nested in the HEADER element.
+
+        APP element contents are not validated against the TYPE attribute (if any) given.
+
+        In a record or in the header, no field may appear in more than one Data Specifier; this is not validated.
+
+      CHECKS NOT REQUIRED:
+        CONTEST_ID element contents are not validated against the "Contest ID" enumeration because the ADIF
+        field type is "String" (i.e. the enumeration is advisory).
+
+        CNTY and MY_CNTY element contents are not validated against the "Secondary Administrative Subdivision"
+        enumeration because the enumeration values are controlled by external organizations and so are
+        subject to change without notice.
+
+        SUBMODE element contents are not validated against the "Submode" enumeration because the ADIF field
+        type is "String" (i.e. the enumeration is advisory).
+        
+      CHANGE HISTORY
+        2022/11/01  3.1.4.0: New version for ADIF 3.1.4.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:element name="ADX">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="HEADER" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <!--<xs:sequence>-->
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="ADIF_VER" nillable="false">
+                  <xs:simpleType>
+                    <xs:restriction base="String">
+                      <xs:pattern value="3\.[0-9]\.[0-9]" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="CREATED_TIMESTAMP" nillable="false">
+                  <xs:simpleType>
+                    <xs:restriction base="String">
+                      <xs:pattern value="(19[3-9][0-9]|[2-9][0-9]{3})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|[3][0-1]) ([0-1][0-9]|2[0-3])([0-5][0-9]){2}" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="PROGRAMID" type="String" nillable="false" />
+                <xs:element name="PROGRAMVERSION" type="String" nillable="false" />
+                <xs:element name="USERDEF" nillable="false">
+                  <xs:complexType>
+                    <xs:simpleContent>
+                      <xs:extension base="USERDEF_Name">
+                        <xs:attribute name="FIELDID" type="xs:unsignedInt" use="required" />
+                        <xs:attribute name="TYPE" type="DataTypeIndicator" use="required" />
+                        <xs:attribute name="ENUM" type="USERDEF_Enum" use="optional" />
+                        <xs:attribute name="RANGE" type="USERDEF_Range" use="optional" />
+                      </xs:extension>
+                    </xs:simpleContent>
+                  </xs:complexType>
+                </xs:element>
+              </xs:choice>
+            <!--</xs:sequence>-->
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="RECORDS" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="RECORD" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType mixed="true">
+                  <!--<xs:sequence>-->
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                      <xs:element name="USERDEF" nillable="false">
+                        <xs:complexType>
+                          <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                              <xs:attribute name="FIELDNAME" type="USERDEF_Name" use="required" />
+                            </xs:extension>
+                          </xs:simpleContent>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="APP" nillable="true">
+                        <xs:complexType>
+                          <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                              <xs:attribute name="PROGRAMID" type="String" use="required" />
+                              <xs:attribute name="FIELDNAME" type="String" use="required" />
+                              <xs:attribute name="TYPE" type="DataTypeIndicator" use="optional" />
+                            </xs:extension>
+                          </xs:simpleContent>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="ADDRESS" type="MultilineString" nillable="true" />
+                      <xs:element name="ADDRESS_INTL" type="IntlMultilineString" nillable="true" />
+                      <xs:element name="AGE"  nillable="false">
+                        <xs:simpleType>
+                          <xs:restriction base="NumberGE0">
+                            <xs:maxInclusive value="120" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="ALTITUDE" type="Number" nillable="false" />
+                      <xs:element name="A_INDEX" nillable="false">
+                        <xs:simpleType>
+                          <xs:restriction base="NumberGE0">
+                            <xs:maxInclusive value="400" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="ANT_AZ" nillable="false">
+                        <xs:simpleType>
+                          <xs:restriction base="Number">
+                            <xs:minInclusive value="0" />
+                            <xs:maxInclusive value="360" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="ANT_EL" nillable="false">
+                        <xs:simpleType>
+                          <xs:restriction base="Number">
+                            <xs:minInclusive value="-90" />
+                            <xs:maxInclusive value="90" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="ANT_PATH" type="Ant_Path_Enumeration" nillable="false" />
+                      <xs:element name="ARRL_SECT" type="ARRL_Section_Enumeration" nillable="false" />
+                      <xs:element name="AWARD_SUBMITTED" type="SponsoredAwardList" nillable="false" />
+                      <xs:element name="AWARD_GRANTED" type="SponsoredAwardList" nillable="false" />
+                      <xs:element name="BAND" type="Band_Enumeration" nillable="false" />
+                      <xs:element name="BAND_RX" type="Band_Enumeration" nillable="false" />
+                      <xs:element name="CALL" type="String" nillable="true" />
+                      <xs:element name="CHECK" type="String" nillable="true" />
+                      <xs:element name="CLASS" type="String" nillable="true" />
+                      <xs:element name="CLUBLOG_QSO_UPLOAD_DATE" type="Date" nillable="false" />
+                      <xs:element name="CLUBLOG_QSO_UPLOAD_STATUS" type="QSO_Upload_Status_Enumeration" nillable="false" />
+                      <xs:element name="CNTY" type="Secondary_Administrative_Subdivision_Enumeration" nillable="false" />
+                      <xs:element name="COMMENT" type="String" nillable="true" />
+                      <xs:element name="COMMENT_INTL" type="IntlString" nillable="true" />
+                      <xs:element name="CONT" type="Continent_Enumeration" nillable="false" />
+                      <xs:element name="CONTACTED_OP" type="String" nillable="true" />
+                      <xs:element name="CONTEST_ID" type="String" nillable="true" />
+                      <xs:element name="COUNTRY" type="String" nillable="true" />
+                      <xs:element name="COUNTRY_INTL" type="IntlString" nillable="true" />
+                      <xs:element name="CQZ" nillable="false">
+                        <xs:simpleType>
+                          <xs:restriction base="PositiveInteger">
+                            <xs:maxInclusive value="40" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="CREDIT_SUBMITTED" type="CreditList" nillable="false" />
+                      <xs:element name="CREDIT_GRANTED" type="CreditList" nillable="false" />
+                      <xs:element name="DARC_DOK" type="DARCDOK" nillable="false" />
+                      <xs:element name="DISTANCE" type="NumberGE0" nillable="false" />
+                      <xs:element name="DXCC" type="DXCC_Entity_Code_Enumeration" nillable="false" />
+                      <xs:element name="EMAIL" type="String" nillable="true" />
+                      <xs:element name="EQ_CALL" type="String" nillable="true" />
+                      <xs:element name="EQSL_QSLRDATE" type="Date" nillable="false" />
+                      <xs:element name="EQSL_QSLSDATE" type="Date" nillable="false" />
+                      <xs:element name="EQSL_QSL_RCVD" type="QSL_Rcvd_Enumeration" nillable="false" />
+                      <xs:element name="EQSL_QSL_SENT" type="QSL_Sent_Enumeration" nillable="false" />
+                      <xs:element name="FISTS" type="PositiveInteger" nillable="false" />
+                      <xs:element name="FISTS_CC" type="PositiveInteger" nillable="false" />
+                      <xs:element name="FORCE_INIT" type="Boolean" nillable="false" />
+                      <xs:element name="FREQ" type="Number" nillable="false" />
+                      <xs:element name="FREQ_RX" type="Number" nillable="false" />
+                      <xs:element name="GRIDSQUARE" type="GridSquare" nillable="false" />
+                      <xs:element name="GRIDSQUARE_EXT" type="GridSquareExt" nillable="false" />
+                      <!--<xs:element name="GUEST_OP" type="String" nillable="true" />-->
+                      <xs:element name="HAMLOGEU_QSO_UPLOAD_DATE" type="Date" nillable="false" />
+                      <xs:element name="HAMLOGEU_QSO_UPLOAD_STATUS" type="QSO_Upload_Status_Enumeration" nillable="false" />
+                      <xs:element name="HAMQTH_QSO_UPLOAD_DATE" type="Date" nillable="false" />
+                      <xs:element name="HAMQTH_QSO_UPLOAD_STATUS" type="QSO_Upload_Status_Enumeration" nillable="false" />
+                      <xs:element name="HRDLOG_QSO_UPLOAD_DATE" type="Date" nillable="false" />
+                      <xs:element name="HRDLOG_QSO_UPLOAD_STATUS" type="QSO_Upload_Status_Enumeration" nillable="false" />
+                      <xs:element name="IOTA" type="IOTARefNo" nillable="false" />
+                      <xs:element name="IOTA_ISLAND_ID" type="IOTAIslandId" nillable="true" />
+                      <xs:element name="ITUZ" nillable="false">
+                        <xs:simpleType>
+                          <xs:restriction base="PositiveInteger">
+                            <xs:maxInclusive value="90" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="K_INDEX" nillable="false">
+                        <xs:simpleType>
+                          <xs:restriction base="IntegerGE0">
+                            <xs:maxInclusive value="9" />                            
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="LAT" type="Location" nillable="false" />
+                      <xs:element name="LON" type="Location" nillable="false" />
+                      <xs:element name="LOTW_QSLRDATE" type="Date" nillable="false" />
+                      <xs:element name="LOTW_QSLSDATE" type="Date" nillable="false" />
+                      <xs:element name="LOTW_QSL_RCVD" type="QSL_Rcvd_Enumeration" nillable="false" />
+                      <xs:element name="LOTW_QSL_SENT" type="QSL_Sent_Enumeration" nillable="false" />
+                      <xs:element name="MAX_BURSTS" type="NumberGE0" nillable="false" />
+                      <xs:element name="MODE" type="Mode_Enumeration" nillable="false" />
+                      <xs:element name="MS_SHOWER" type="String" nillable="true" />
+                      <xs:element name="MY_ALTITUDE" type="Number" nillable="false" />                      
+                      <xs:element name="MY_ANTENNA" type="String" nillable="true" />
+                      <xs:element name="MY_ANTENNA_INTL" type="IntlString" nillable="true" />
+                      <xs:element name="MY_ARRL_SECT" type="ARRL_Section_Enumeration" nillable="false" />
+                      <xs:element name="MY_CITY" type="String" nillable="true" />
+                      <xs:element name="MY_CITY_INTL" type="IntlString" nillable="true" />
+                      <xs:element name="MY_CNTY" type="Secondary_Administrative_Subdivision_Enumeration" nillable="false" />
+                      <xs:element name="MY_COUNTRY" type="String" nillable="false" />
+                      <xs:element name="MY_COUNTRY_INTL" type="IntlString" nillable="false" />
+                      <xs:element name="MY_CQ_ZONE" nillable="false">
+                        <xs:simpleType>
+                          <xs:restriction base="PositiveInteger">
+                            <xs:maxInclusive value="40" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="MY_DXCC" type="DXCC_Entity_Code_Enumeration" nillable="false" />
+                      <xs:element name="MY_FISTS" type="PositiveInteger" nillable="false" />
+                      <xs:element name="MY_GRIDSQUARE" type="GridSquare" nillable="false" />
+                      <xs:element name="MY_GRIDSQUARE_EXT" type="GridSquareExt" nillable="false" />
+                      <xs:element name="MY_IOTA" type="IOTARefNo" nillable="false" />
+                      <xs:element name="MY_IOTA_ISLAND_ID" type="IOTAIslandId" nillable="true" />
+                      <xs:element name="MY_ITU_ZONE" nillable="false">
+                        <xs:simpleType>
+                          <xs:restriction base="PositiveInteger">
+                            <xs:maxInclusive value="90" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="MY_LAT" type="Location" nillable="false" />
+                      <xs:element name="MY_LON" type="Location" nillable="false" />
+                      <xs:element name="MY_NAME" type="String" nillable="true" />
+                      <xs:element name="MY_NAME_INTL" type="IntlString" nillable="true" />
+                      <xs:element name="MY_POSTAL_CODE" type="String" nillable="true" />
+                      <xs:element name="MY_POSTAL_CODE_INTL" type="IntlString" nillable="true" />
+                      <xs:element name="MY_POTA_REF" type="POTARefList" nillable="false" />
+                      <xs:element name="MY_RIG" type="String" nillable="true" />
+                      <xs:element name="MY_RIG_INTL" type="IntlString" nillable="true" />
+                      <xs:element name="MY_SIG" type="String" nillable="true" />
+                      <xs:element name="MY_SIG_INTL" type="IntlString" nillable="true" />
+                      <xs:element name="MY_SIG_INFO" type="String" nillable="true" />
+                      <xs:element name="MY_SIG_INFO_INTL" type="IntlString" nillable="true" />
+                      <xs:element name="MY_SOTA_REF" type="SOTARef" nillable="false" />
+                      <xs:element name="MY_STATE" type="Primary_Administrative_Subdivision_Enumeration" nillable="false" />
+                      <xs:element name="MY_STREET" type="String" nillable="true" />
+                      <xs:element name="MY_STREET_INTL" type="IntlString" nillable="true" />                      
+                      <xs:element name="MY_USACA_COUNTIES" type="SecondarySubdivisionListUS" nillable="true" />
+                      <xs:element name="MY_VUCC_GRIDS" type="GridSquareList4" nillable="false" />
+                      <xs:element name="MY_WWFF_REF" type="WWFFRef" nillable="false" />
+                      <xs:element name="NAME" type="String" nillable="true" />
+                      <xs:element name="NAME_INTL" type="IntlString" nillable="true" />
+                      <xs:element name="NOTES" type="MultilineString" nillable="true" />
+                      <xs:element name="NOTES_INTL" type="IntlMultilineString" nillable="true" />
+                      <xs:element name="NR_BURSTS" type="IntegerGE0" nillable="false" />
+                      <xs:element name="NR_PINGS" type="IntegerGE0" nillable="false" />
+                      <xs:element name="OPERATOR" type="String" nillable="true" />
+                      <xs:element name="OWNER_CALLSIGN" type="String" nillable="true" />
+                      <xs:element name="PFX" type="String" nillable="true" />
+                      <xs:element name="POTA_REF" type="POTARefList" nillable="false" />
+                      <xs:element name="PRECEDENCE" type="String" nillable="true" />
+                      <xs:element name="PROP_MODE" type="Propagation_Mode_Enumeration" nillable="false" />
+                      <xs:element name="PUBLIC_KEY" type="String" nillable="true" />
+                      <xs:element name="QRZCOM_QSO_UPLOAD_DATE" type="Date" nillable="false" />
+                      <xs:element name="QRZCOM_QSO_UPLOAD_STATUS" type="QSO_Upload_Status_Enumeration" nillable="false" />
+                      <xs:element name="QSLMSG" type="MultilineString" nillable="true" />
+                      <xs:element name="QSLMSG_INTL" type="IntlMultilineString" nillable="true" />
+                      <xs:element name="QSLRDATE" type="Date" nillable="false" />
+                      <xs:element name="QSLSDATE" type="Date" nillable="false" />
+                      <xs:element name="QSL_RCVD" type="QSL_Rcvd_Enumeration" nillable="false" />
+                      <xs:element name="QSL_RCVD_VIA" type="QSL_Via_Enumeration" nillable="false" />
+                      <xs:element name="QSL_SENT" type="QSL_Sent_Enumeration" nillable="false" />
+                      <xs:element name="QSL_SENT_VIA" type="QSL_Via_Enumeration" nillable="false" />
+                      <xs:element name="QSL_VIA" type="String" nillable="true" />
+                      <xs:element name="QSO_COMPLETE" nillable="false">
+                        <xs:simpleType>
+                          <xs:restriction base="xs:string">
+                            <xs:pattern value="[yY]|[nN]|[nN][iI][lL]|\?" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="QSO_DATE" type="Date" nillable="false" />
+                      <xs:element name="QSO_DATE_OFF" type="Date" nillable="false" />
+                      <xs:element name="QSO_RANDOM" type="Boolean" nillable="false" />
+                      <xs:element name="QTH" type="String" nillable="true" />
+                      <xs:element name="QTH_INTL" type="IntlString" nillable="true" />
+                      <xs:element name="REGION" type="Region" nillable="true" />
+                      <xs:element name="RIG" type="MultilineString" nillable="true" />
+                      <xs:element name="RIG_INTL" type="IntlMultilineString" nillable="true" />
+                      <xs:element name="RST_RCVD" type="String" nillable="true" />
+                      <xs:element name="RST_SENT" type="String" nillable="true" />
+                      <xs:element name="RX_PWR" type="NumberGE0"  nillable="false" />
+                      <xs:element name="SAT_MODE" type="String" nillable="true" />
+                      <xs:element name="SAT_NAME" type="String" nillable="true" />
+                      <xs:element name="SFI" nillable="false">
+                        <xs:simpleType>
+                          <xs:restriction base="IntegerGE0">
+                            <xs:maxInclusive value="300"/>
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="SIG" type="String" nillable="true" />
+                      <xs:element name="SIG_INTL" type="IntlString" nillable="true" />
+                      <xs:element name="SIG_INFO" type="String" nillable="true" />
+                      <xs:element name="SIG_INFO_INTL" type="IntlString" nillable="true" />
+                      <xs:element name="SILENT_KEY" type="Boolean"  nillable="true" />
+                      <xs:element name="SKCC" type="String" nillable="true" />
+                      <xs:element name="SOTA_REF" type="SOTARef" nillable="false" />
+                      <xs:element name="SRX" type="IntegerGE0" nillable="false" />
+                      <xs:element name="SRX_STRING" type="String" nillable="true" />
+                      <xs:element name="STATE" type="Primary_Administrative_Subdivision_Enumeration" nillable="false" />
+                      <xs:element name="STATION_CALLSIGN" type="String" nillable="true" />
+                      <xs:element name="STX" type="IntegerGE0" nillable="true" />
+                      <xs:element name="STX_STRING" type="String" nillable="true" />
+                      <xs:element name="SUBMODE" type="Submode_Enumeration" nillable="true" />
+                      <xs:element name="SWL" type="Boolean" nillable="false" />
+                      <xs:element name="TEN_TEN" type="PositiveInteger" nillable="true" />
+                      <xs:element name="TIME_OFF" type="Time" nillable="false" />
+                      <xs:element name="TIME_ON" type="Time" nillable="false" />
+                      <xs:element name="TX_PWR" type="NumberGE0" nillable="false" />
+                      <xs:element name="UKSMG" type="PositiveInteger" nillable="false" />
+                      <xs:element name="USACA_COUNTIES" type="SecondarySubdivisionListUS" nillable="true" />
+                      <!--<xs:element name="VE_PROV" type="String" nillable="true" />-->
+                      <xs:element name="VUCC_GRIDS" type="GridSquareList4" nillable="false" />
+                      <xs:element name="WEB" type="String" nillable="true" />
+                      <xs:element name="WWFF_REF" type="WWFFRef" nillable="false" />
+                    </xs:choice>
+                  <!--</xs:sequence>-->
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="CreditList">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(([cC][qQ][dD][xX](_[bB][aA][nN][dD]|_[mM][oO][dD][eE]|_[mM][oO][bB][iI][lL][eE]|_[qQ][rR][pP]|_[sS][aA][tT][eE][lL][lL][iI][tT][eE]|[fF][iI][eE][lL][dD]|[fF][iI][eE][lL][dD]_[bB][aA][nN][dD]|[fF][iI][eE][lL][dD]_[mM][oO][dD][eE]|[fF][iI][eE][lL][dD]_[mM][oO][bB][iI][lL][eE]|[fF][iI][eE][lL][dD]_[qQ][rR][pP]|[fF][iI][eE][lL][dD]_[sS][aA][tT][eE][lL][lL][iI][tT][eE])?|[cC][qQ][wW][aA][zZ]_[mM][iI][xX][eE][dD]|[cC][qQ][wW][aA][zZ]_[bB][aA][nN][dD]|[cC][qQ][wW][aA][zZ]_[mM][oO][dD][eE]|[cC][qQ][wW][aA][zZ]_[sS][aA][tT][eE][lL][lL][iI][tT][eE]|[cC][qQ][wW][aA][zZ]_[eE][mM][eE]|[cC][qQ][wW][aA][zZ]_[mM][oO][bB][iI][lL][eE]|[cC][qQ][wW][aA][zZ]_[qQ][rR][pP]|[cC][qQ][wW][pP][xX](_[bB][aA][nN][dD]|_[mM][oO][dD][eE])?|[dD][xX][cC][cC](_[bB][aA][nN][dD]|_[mM][oO][dD][eE]|_[sS][aA][tT][eE][lL][lL][iI][tT][eE])?|[eE][aA][uU][sS][tT][rR][aA][lL][iI][aA]|[eE][cC][aA][nN][aA][dD][aA]|[eE][cC][oO][uU][nN][tT][yY]_[sS][tT][aA][tT][eE]|[eE][dD][xX](100|100_[bB][aA][nN][dD]|100_[mM][oO][dD][eE])?|[eE][eE][cC][hH][oO][lL][iI][nN][kK]50|[eE][gG][rR][iI][dD]_[bB][aA][nN][dD]|[eE][gG][rR][iI][dD]_[sS][aA][tT][eE][lL][lL][iI][tT][eE]|[eE][pP][fF][xX]300(_[mM][oO][dD][eE])?|[eE][wW][aA][sS](_[bB][aA][nN][dD]|_[mM][oO][dD][eE]|_[sS][aA][tT][eE][lL][lL][iI][tT][eE])?|[eE][zZ]40(_[mM][oO][dD][eE])?|[fF][fF][mM][aA]|[iI][oO][tT][aA](_[bB][aA][sS][iI][cC]|_[cC][oO][nN][tT]|_[gG][rR][oO][uU][pP])?|[rR][dD][aA]|[uU][sS][aA][cC][aA]|[vV][uU][cC][cC]_[bB][aA][nN][dD]|[vV][uU][cC][cC]_[sS][aA][tT][eE][lL][lL][iI][tT][eE]|[wW][aA][bB]|[wW][aA][cC](_[bB][aA][nN][dD])?|[wW][aA][eE](_[bB][aA][nN][dD]|_[mM][oO][dD][eE])?|[wW][aA][iI][pP](_[bB][aA][nN][dD]|_[mM][oO][dD][eE])?|[wW][aA][sS](_[bB][aA][nN][dD]|_[eE][mM][eE]|_[mM][oO][dD][eE]|_[nN][oO][vV][iI][cC][eE]|_[qQ][rR][pP]|_[sS][aA][tT][eE][lL][lL][iI][tT][eE])?|[wW][iI][tT][uU][zZ](_[bB][aA][nN][dD])?)(:([cC][aA][rR][dD]|[eE][qQ][sS][lL]|[lL][oO][tT][wW])(&amp;([cC][aA][rR][dD]|[eE][qQ][sS][lL]|[lL][oO][tT][wW]))*)?)(,(([cC][qQ][dD][xX](_[bB][aA][nN][dD]|_[mM][oO][dD][eE]|_[mM][oO][bB][iI][lL][eE]|_[qQ][rR][pP]|_[sS][aA][tT][eE][lL][lL][iI][tT][eE]|[fF][iI][eE][lL][dD]|[fF][iI][eE][lL][dD]_[bB][aA][nN][dD]|[fF][iI][eE][lL][dD]_[mM][oO][dD][eE]|[fF][iI][eE][lL][dD]_[mM][oO][bB][iI][lL][eE]|[fF][iI][eE][lL][dD]_[qQ][rR][pP]|[fF][iI][eE][lL][dD]_[sS][aA][tT][eE][lL][lL][iI][tT][eE])?|[cC][qQ][wW][aA][zZ]_[mM][iI][xX][eE][dD]|[cC][qQ][wW][aA][zZ]_[bB][aA][nN][dD]|[cC][qQ][wW][aA][zZ]_[mM][oO][dD][eE]|[cC][qQ][wW][aA][zZ]_[sS][aA][tT][eE][lL][lL][iI][tT][eE]|[cC][qQ][wW][aA][zZ]_[eE][mM][eE]|[cC][qQ][wW][aA][zZ]_[mM][oO][bB][iI][lL][eE]|[cC][qQ][wW][aA][zZ]_[qQ][rR][pP]|[cC][qQ][wW][pP][xX](_[bB][aA][nN][dD]|_[mM][oO][dD][eE])?|[dD][xX][cC][cC](_[bB][aA][nN][dD]|_[mM][oO][dD][eE]|_[sS][aA][tT][eE][lL][lL][iI][tT][eE])?|[eE][aA][uU][sS][tT][rR][aA][lL][iI][aA]|[eE][cC][aA][nN][aA][dD][aA]|[eE][cC][oO][uU][nN][tT][yY]_[sS][tT][aA][tT][eE]|[eE][dD][xX](100|100_[bB][aA][nN][dD]|100_[mM][oO][dD][eE])?|[eE][eE][cC][hH][oO][lL][iI][nN][kK]50|[eE][gG][rR][iI][dD]_[bB][aA][nN][dD]|[eE][gG][rR][iI][dD]_[sS][aA][tT][eE][lL][lL][iI][tT][eE]|[eE][pP][fF][xX]300(_[mM][oO][dD][eE])?|[eE][wW][aA][sS](_[bB][aA][nN][dD]|_[mM][oO][dD][eE]|_[sS][aA][tT][eE][lL][lL][iI][tT][eE])?|[eE][zZ]40(_[mM][oO][dD][eE])?|[fF][fF][mM][aA]|[iI][oO][tT][aA](_[bB][aA][sS][iI][cC]|_[cC][oO][nN][tT]|_[gG][rR][oO][uU][pP])?|[rR][dD][aA]|[uU][sS][aA][cC][aA]|[vV][uU][cC][cC]_[bB][aA][nN][dD]|[vV][uU][cC][cC]_[sS][aA][tT][eE][lL][lL][iI][tT][eE]|[wW][aA][bB]|[wW][aA][cC](_[bB][aA][nN][dD])?|[wW][aA][eE](_[bB][aA][nN][dD]|_[mM][oO][dD][eE])?|[wW][aA][iI][pP](_[bB][aA][nN][dD]|_[mM][oO][dD][eE])?|[wW][aA][sS](_[bB][aA][nN][dD]|_[eE][mM][eE]|_[mM][oO][dD][eE]|_[nN][oO][vV][iI][cC][eE]|_[qQ][rR][pP]|_[sS][aA][tT][eE][lL][lL][iI][tT][eE])?|[wW][iI][tT][uU][zZ](_[bB][aA][nN][dD])?)(:([cC][aA][rR][dD]|[eE][qQ][sS][lL]|[lL][oO][tT][wW])(&amp;([cC][aA][rR][dD]|[eE][qQ][sS][lL]|[lL][oO][tT][wW]))*)?))*" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="SponsoredAwardList">
+    <xs:restriction base="String">
+      <xs:pattern value="([aA][dD][iI][fF]_([^ ,_])+_([^ ,])+|[aA][rR][iI]_([^ ,_])+_([^ ,])+|[aA][rR][rR][lL]_([^ ,_])+_([^ ,])+|[cC][qQ]_([^ ,_])+_([^ ,])+|[dD][aA][rR][cC]_([^ ,_])+_([^ ,])+|[eE][qQ][sS][lL]_([^ ,_])+_([^ ,])+|[iI][aA][rR][uU]_([^ ,_])+_([^ ,])+|[jJ][aA][rR][lL]_([^ ,_])+_([^ ,])+|[rR][sS][gG][bB]_([^ ,_])+_([^ ,])+|[tT][aA][gG]_([^ ,_])+_([^ ,])+|[wW][aA][bB][aA][gG]_([^ ,_])+_([^ ,])+)(,([aA][dD][iI][fF]_([^ ,_])+_([^ ,])+|[aA][rR][iI]_([^ ,_])+_([^ ,])+|[aA][rR][rR][lL]_([^ ,_])+_([^ ,])+|[cC][qQ]_([^ ,_])+_([^ ,])+|[dD][aA][rR][cC]_([^ ,_])+_([^ ,])+|[eE][qQ][sS][lL]_([^ ,_])+_([^ ,])+|[iI][aA][rR][uU]_([^ ,_])+_([^ ,])+|[jJ][aA][rR][lL]_([^ ,_])+_([^ ,])+|[rR][sS][gG][bB]_([^ ,_])+_([^ ,])+|[tT][aA][gG]_([^ ,_])+_([^ ,])+|[wW][aA][bB][aA][gG]_([^ ,_])+_([^ ,])+))*" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Boolean">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[yYnN]" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Integer">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="[0-9\-]+" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PositiveInteger">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="[0-9]+" />
+      <xs:minInclusive value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Date">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(19[3-9][0-9]|[2-9][0-9]{3})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|[3][0-1])" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="Time">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="([0-1][0-9]|2[0-3])([0-5][0-9]){1,2}" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="GridSquare">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-rA-R][a-rA-R]([0-9][0-9]([a-xA-X][a-xA-X]([0-9][0-9])?)?)?" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="GridSquareExt">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-xA-X][a-xA-X]([0-9][0-9])?" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="GridSquareList4">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="([a-rA-R][a-rA-R][0-9][0-9])(,([a-rA-R][a-rA-R][0-9][0-9]))*" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="IOTARefNo">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="([nN][aA]|[sS][aA]|[eE][uU]|[aA][fF]|[oO][cC]|[aA][sS]|[aA][nN])\-([0-9][0-9][1-9]|[0-9][1-9][0-9]|[1-9][0-9][0-9])" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Location">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[eEwWnNsS](0[0-9][0-9]|1[0-7][0-9]|180) [0-5][0-9]\.[0-9]{3}" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- This is not used in the schema.
+  <xs:simpleType name="POTARef">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9]{1,4}\-[0-9]{4,5}(@[a-zA-Z]{2}\-[a-zA-Z0-9]{1,3})?" />
+    </xs:restriction>
+  </xs:simpleType> -->
+
+  <xs:simpleType name="POTARefList">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9]{1,4}\-[0-9]{4,5}(@[a-zA-Z]{2}\-[a-zA-Z0-9]{1,3})?(,[a-zA-Z0-9]{1,4}\-[0-9]{4,5}(@[a-zA-Z]{2}\-[a-zA-Z0-9]{1,3})?)*" />
+    </xs:restriction>
+  </xs:simpleType>  
+  
+  <xs:simpleType name="SecondarySubdivisionListUS">
+    <xs:restriction base="String">
+      <xs:pattern value="(([aA][lL]|[aA][kK]|[aA][zZ]|[aA][rR]|[cC][aA]|[cC][oO]|[cC][tT]|[dD][eE]|[fF][lL]|[gG][aA]|[hH][iI]|[iI][dD]|[iI][lL]|[iI][nN]|[iI][aA]|[kK][sS]|[kK][yY]|[lL][aA]|[mM][eE]|[mM][dD]|[mM][aA]|[mM][iI]|[mM][nN]|[mM][sS]|[mM][oO]|[mM][tT]|[nN][eE]|[nN][vV]|[nN][hH]|[nN][jJ]|[nN][mM]|[nN][yY]|[nN][cC]|[nN][dD]|[oO][hH]|[oO][kK]|[oO][rR]|[pP][aA]|[rR][iI]|[sS][cC]|[sS][dD]|[tT][nN]|[tT][xX]|[uU][tT]|[vV][tT]|[vV][aA]|[wW][aA]|[wW][vV]|[wW][iI]|[wW][yY]),[a-zA-z][ \.\-'a-zA-Z]*[a-zA-Z])(:(([aA][lL]|[aA][kK]|[aA][zZ]|[aA][rR]|[cC][aA]|[cC][oO]|[cC][tT]|[dD][eE]|[fF][lL]|[gG][aA]|[hH][iI]|[iI][dD]|[iI][lL]|[iI][nN]|[iI][aA]|[kK][sS]|[kK][yY]|[lL][aA]|[mM][eE]|[mM][dD]|[mM][aA]|[mM][iI]|[mM][nN]|[mM][sS]|[mM][oO]|[mM][tT]|[nN][eE]|[nN][vV]|[nN][hH]|[nN][jJ]|[nN][mM]|[nN][yY]|[nN][cC]|[nN][dD]|[oO][hH]|[oO][kK]|[oO][rR]|[pP][aA]|[rR][iI]|[sS][cC]|[sS][dD]|[tT][nN]|[tT][xX]|[uU][tT]|[vV][tT]|[vV][aA]|[wW][aA]|[wW][vV]|[wW][iI]|[wW][yY]),[a-zA-z][ \.\-'a-zA-Z]*[a-zA-Z]))*" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="SOTARef">
+    <xs:restriction base="String">
+      <xs:pattern value="[a-zA-Z0-9]{1,8}/[a-zA-Z]{2}\-([0-9][0-9][1-9]|[0-9][1-9][0-9]|[1-9][0-9][0-9])" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="WWFFRef">
+    <xs:restriction base="String">
+      <xs:pattern value="[a-zA-Z0-9]{1,4}[fF]{2}\-[0-9]{4}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Start: These are used in the schema but are not named in the specification itself. -->
+
+  <xs:simpleType name="DARCDOK">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9a-zA-Z]+" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="IntegerGE0">
+    <xs:restriction base="Integer">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="IOTAIslandId">
+    <xs:restriction base="PositiveInteger">
+      <xs:maxInclusive value="99999999" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NumberGE0">
+    <xs:restriction base="Number">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Region">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[nN][oO][nN][eE]|[iI][vV]|[aA][iI]|[sS][yY]|[bB][iI]|[sS][iI]|[kK][oO]|[eE][tT]" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- End: These are used in the schema but are not named in the specification itself. -->
+
+  <xs:simpleType name="DataTypeIndicator">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[bBnNsSiIdDtTiImMgGeElL]" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="String">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[ -~]*" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="MultilineString">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="([\r\n -~])*" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="Number">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="[0-9\.\-]+" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="IntlString">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[^\r\n]*" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="IntlMultilineString">
+    <xs:restriction base="xs:string">
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="USERDEF_Range">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\{\-?([0-9]+\.[0-9]*|\.?[0-9]+):\-?([0-9]+\.[0-9]*|\.?[0-9]+)\}" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="USERDEF_Enum">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\{[ -~]*\}" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="USERDEF_Name">
+    <xs:restriction base="String">
+      <xs:pattern value="[^&lt;&gt;,:\{\}a-z ][^&lt;&gt;,:\{\}a-z]*[^&lt;&gt;,:\{\}a-z ]" />
+      <xs:whiteSpace value="preserve" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[ -~]+" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="Ant_Path_Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[gGoOsSlL]" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ARRL_Section_Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[aA][lL]|[aA][kK]|[aA][bB]|[aA][rR]|[aA][zZ]|[bB][cC]|[cC][oO]|[cC][tT]|[dD][eE]|[eE][bB]|[eE][mM][aA]|[eE][nN][yY]|[eE][pP][aA]|[eE][wW][aA]|[gG][aA]|[gG][tT][aA]|[iI][dD]|[iI][lL]|[iI][nN]|[iI][aA]|[kK][sS]|[kK][yY]|[lL][aA][xX]|[lL][aA]|[mM][eE]|[mM][bB]|[mM][aA][rR]|[mM][dD][cC]|[mM][iI]|[mM][nN]|[mM][sS]|[mM][oO]|[mM][tT]|[nN][eE]|[nN][vV]|[nN][hH]|[nN][mM]|[nN][lL][iI]|[nN][lL]|[nN][cC]|[nN][dD]|[nN][tT][xX]|[nN][fF][lL]|[nN][nN][jJ]|[nN][nN][yY]|[nN][tT]|[oO][hH]|[oO][kK]|[oO][nN]|[oO][nN][eE]|[oO][nN][nN]|[oO][nN][sS]|[oO][rR][gG]|[oO][rR]|[pP][aA][cC]|[pP][rR]|[qQ][cC]|[rR][iI]|[sS][vV]|[sS][dD][gG]|[sS][fF]|[sS][jJ][vV]|[sS][bB]|[sS][cC][vV]|[sS][kK]|[sS][cC]|[sS][dD]|[sS][tT][xX]|[sS][fF][lL]|[sS][nN][jJ]|[tT][nN]|[vV][iI]|[uU][tT]|[vV][tT]|[vV][aA]|[wW][cC][fF]|[wW][tT][xX]|[wW][vV]|[wW][mM][aA]|[wW][nN][yY]|[wW][pP][aA]|[wW][wW][aA]|[wW][iI]|[wW][yY]|[pP][eE]" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:annotation>
+    <xs:documentation>
+      Award_Enumeration is not defined as it is included as part of the AwardList data type.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:simpleType name="Band_Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="2190[mM]|630[mM]|560[mM]|160[mM]|80[mM]|60[mM]|40[mM]|30[mM]|20[mM]|17[mM]|15[mM]|12[mM]|10[mM]|8[mM]|6[mM]|5[mM]|4[mM]|2[mM]|1\.25[mM]|70[cC][mM]|33[cC][mM]|23[cC][mM]|13[cC][mM]|9[cC][mM]|6[cC][mM]|3[cC][mM]|1\.25[cC][mM]|6[mM][mM]|4[mM][mM]|2\.5[mM][mM]|2[mM][mM]|1[mM][mM]|[sS][uU][Bb][Mm][Mm]" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:annotation>
+    <xs:documentation>
+      Contest_ID_Enumeration is not referenced because CONTEST_ID is of type String
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:simpleType name="Continent_Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[nN][aA]|[sS][aA]|[eE][uU]|[aA][fF]|[oO][cC]|[aA][sS]|[aA][nN]" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Mode_Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[aA][mM]|[aA][rR][dD][oO][pP]|[aA][tT][vV]|[cC][hH][iI][pP]|[cC][lL][oO]|[cC][oO][nN][tT][eE][sS][tT][iI]|[cC][wW]|[dD][iI][gG][iI][tT][aA][lL][vV][oO][iI][cC][eE]|[dD][oO][mM][iI][nN][oO]|[fF][aA][xX]|[fF][mM]|[fF][sS][kK]441|[fF][tT]8|[hH][eE][lL][lL]|[iI][sS][cC][aA][tT]|[jJ][tT]4|[jJ][tT]6[mM]|[jJ][tT]9|[jJ][tT]44|[jJ][tT]65|[mM][fF][sS][kK]|[mM][sS][kK]144|[mM][tT]63|[oO][lL][iI][vV][iI][aA]|[oO][pP][eE][rR][aA]|[pP][aA][cC]|[pP][aA][xX]|[pP][kK][tT]|[pP][sS][kK]|[pP][sS][kK]2[kK]|[qQ]15|[qQ][rR][aA]64|[rR][oO][sS]|[rR][tT][tT][yY]|[rR][tT][tT][yY][mM]|[sS][sS][bB]|[sS][sS][tT][vV]|[tT]10|[tT][hH][oO][rR]|[tT][hH][rR][bB]|[tT][oO][rR]|[vV]4|[vV][oO][iI]|[wW][iI][nN][mM][oO][rR]|[wW][sS][pP][rR]|[dD][yY][nN][aA][mM][iI][cC]" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Mode_Enumeration_Deprecated">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[aA][mM][tT][oO][rR][fF][eE][cC]|[aA][sS][cC][iI]|[cC][hH][iI][pP]64|[cC][hH][iI][pP]128|[dD][oO][mM][iI][nN][oO][fF]|[fF][mM][hH][eE][lL][lL]|[fF][sS][kK]31|[gG][tT][oO][rR]|[hH][eE][lL][lL]80|[hH][fF][sS][kK]|[jJ][tT]4[aA]|[jJ][tT]4[bB]|[jJ][tT]4[cC]|[jJ][tT]4[dD]|[jJ][tT]4[eE]|[jJ][tT]4[fF]|[jJ][tT]4[gG]|[jJ][tT]65[aA]|[jJ][tT]65[bB]|[jJ][tT]65[cC]|[mM][fF][sS][kK]8|[mM][fF][sS][kK]16|[pP][aA][cC]2|[pP][aA][cC]3|[pP][aA][xX]2|[pP][cC][wW]|[pP][sS][kK]10|[pP][sS][kK]31|[pP][sS][kK]63|[pP][sS][kK]63[fF]|[pP][sS][kK]125|[pP][sS][kK][aA][mM]10|[pP][sS][kK][aA][mM]31|[pP][sS][kK][aA][mM]50|[pP][sS][kK][fF][eE][cC]31|[pP][sS][kK][hH][eE][lL][lL]|[qQ][pP][sS][kK]31|[qQ][pP][sS][kK]63|[qQ][pP][sS][kK]125|[tT][hH][rR][bB][xX]|[cC]4[fF][mM]|[dD][sS][tT][aA][rR]" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Submode_Enumeration">
+    <xs:restriction base="String">
+      <xs:pattern value="[^ ].+[^ ]" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Propagation_Mode_Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[aA][sS]|[aA][uU][eE]|[aA][uU][rR]|[bB][sS]|[eE][cC][hH]|[eE][mM][eE]|[eE][sS]|[fF]2|[fF][aA][iI]|[iI][nN][tT][eE][rR][nN][eE][tT]|[iI][oO][nN]|[iI][rR][lL]|[mM][sS]|[rR][pP][tT]|[rR][sS]|[sS][aA][tT]|[tT][eE][pP]|[tT][rR]|[gG][wW][aA][vV][eE]|[lL][oO][sS]" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Primary_Administrative_Subdivision_Enumeration">
+    <xs:restriction base="Enumeration" />
+  </xs:simpleType>
+
+  <xs:simpleType name="Secondary_Administrative_Subdivision_Enumeration">
+    <xs:restriction base="Enumeration" />
+  </xs:simpleType>
+
+  <xs:simpleType name="QSL_Rcvd_Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[yY]|[nN]|[rR]|[iI]" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="QSL_Sent_Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[yY]|[nN]|[rR]|[qQ]|[iI]" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="QSL_Via_Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[bB]|[dD]|[eE]" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="QSO_Upload_Status_Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[yY]|[nN]|[mM]" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="DXCC_Entity_Code_Enumeration">
+    <xs:restriction base="xs:unsignedInt">
+      <xs:minInclusive value="0" />
+      <xs:maxInclusive value="522" />
+      <xs:pattern value="0|[1-9][0-9]*" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

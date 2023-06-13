@@ -140,7 +140,7 @@ public class KmlCommsService {
         }
 
         if (qso.isSatelliteContact() && result.isValid()) {
-            stationUtils.createSatelliteContactMarker(control, document, folder, qso, result.getSatellitePosition());
+            stationUtils.createSatelliteContactMarker(control, document, folder, qso, result.getSatellitePosition(), description);
         }
         return null;
 

@@ -9,10 +9,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 @Getter
 @Setter
 public class TransformResults {
+    private static final Logger logger = Logger.getLogger(TransformResults.class.getName());
     private String adiFile;
     private String kmlFile;
     private String formattedQsoFile;
@@ -24,6 +26,7 @@ public class TransformResults {
     private Set<String> unknownSatellites;
     private Set<String> unknownSatellitePasses;
     private SatelliteActivity satelliteActivity;
+    private Collection<String> warnings;
 
     public TransformResults() {
         contactsWithoutLocation = new ArrayList<>();
@@ -31,11 +34,14 @@ public class TransformResults {
         unknownSatellites = new HashSet<>();
         unknownSatellitePasses = new HashSet<>();
         satelliteActivity = new SatelliteActivity();
+        warnings = new ArrayList<>();
     }
 
     public TransformResults(String errorMessage) {
         this.error = errorMessage;
     }
+
+    public boolean hasWarnings() { return !warnings.isEmpty(); }
 
     public boolean hasErrors() {
         return StringUtils.isNotBlank(error);
@@ -49,7 +55,16 @@ public class TransformResults {
         contactsWithDubiousLocation.add(callsign);
     }
 
-    public void addUnknownSatellite(String satellite) { unknownSatellites.add(satellite); }
+    public void addUnknownSatellite(String satellite) {
+        unknownSatellites.add(satellite);
+    }
 
-    public void addUnknownSatellitePass(String satellitePass) { unknownSatellitePasses.add(satellitePass); }
+    public void addUnknownSatellitePass(String satellitePass) {
+        unknownSatellitePasses.add(satellitePass);
+    }
+
+    public void addWarning(String warning) {
+        warnings.add(warning);
+        logger.info(warning);
+    }
 }

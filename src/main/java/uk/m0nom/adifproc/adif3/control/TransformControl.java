@@ -4,7 +4,7 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.thymeleaf.TemplateEngine;
 import uk.m0nom.adifproc.activity.ActivityType;
-import uk.m0nom.adifproc.adif3.xsdquery.Adif3Element;
+import uk.m0nom.adifproc.adif3.xsdquery.Adif3Schema;
 import uk.m0nom.adifproc.antenna.Antenna;
 import uk.m0nom.adifproc.antenna.AntennaService;
 import uk.m0nom.adifproc.dxcc.Countries;
@@ -12,7 +12,6 @@ import uk.m0nom.adifproc.dxcc.DxccEntities;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * This class captures the control information that is used to define the file to process and any other
@@ -34,7 +33,7 @@ public class TransformControl {
     private String qrzUsername;
     private String qrzPassword;
 
-    private boolean stripComment;
+    private boolean stripComment = true;
 
     private String printConfigFile;
 
@@ -121,7 +120,7 @@ public class TransformControl {
 
     private Map<String, String> icons = new HashMap<>();
 
-    private Set<Adif3Element> adif3ElementSet;
+    private Adif3Schema adif3Schema;
 
     private TemplateEngine templateEngine;
 

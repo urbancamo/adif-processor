@@ -32,8 +32,7 @@ public class WwffFieldParserTest {
 
     @BeforeEach
     void init(@Mock ToLocationDeterminer toLocationDeterminer,
-              @Mock ActivityDatabaseService activityDatabaseService,
-              @Mock ActivityDatabase wwffDatabase) {
+              @Mock ActivityDatabaseService activityDatabaseService) {
 
         rec = new Adif3Record();
         qso = new Qso();
@@ -44,10 +43,7 @@ public class WwffFieldParserTest {
         svff0185Activity.setName("Name");
         qso.setRecord(rec);
         qso.setTo(to);
-        //to.addActivity(svff0185Activity);
         wwffFieldParser = new WwffFieldParser(toLocationDeterminer, activityDatabaseService);
-        when(activityDatabaseService.getDatabase(ActivityType.WWFF)).thenReturn(wwffDatabase);
-        when(wwffDatabase.get("SVFF-0185")).thenReturn(svff0185Activity);
     }
 
 
@@ -55,11 +51,7 @@ public class WwffFieldParserTest {
     public void testWwffAdifFieldPopulatedCorrect() throws CommentFieldParserException {
         Wwff wwff = Wwff.valueOf("SVFF-0185");
         FieldParseResult fpr = wwffFieldParser.parseField("SVFF-0185", qso);
-        assertThat(fpr.isAddToUnmapped()).isTrue();
+        assertThat(fpr.isAddToUnmapped()).isFalse();
         assertThat(rec.getWwffRef().equals(wwff)).isTrue();
-        WwffInfo wwffInfo = (WwffInfo) qso.getTo().getActivity(ActivityType.WWFF).iterator().next();
-        assertThat(wwffInfo).isNotNull();
-        assertThat(wwffInfo.getType()).isEqualTo(ActivityType.WWFF);
-        assertThat(wwffInfo.getRef()).isEqualTo("SVFF-0185");
     }
 }

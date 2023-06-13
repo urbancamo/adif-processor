@@ -24,6 +24,20 @@ public class AdifQrzEnricher {
         this.qrzService = qrzService;
     }
 
+    public static String getNameFromQrzData(QrzCallsign qrzData) {
+        String name = "";
+        if (StringUtils.isNotEmpty(qrzData.getFname())) {
+            name = qrzData.getFname();
+        }
+        if (StringUtils.isNotEmpty(qrzData.getName())) {
+            if (StringUtils.isNotEmpty(name)) {
+                name = name + " ";
+            }
+            name = name + qrzData.getName();
+        }
+        return name;
+    }
+
     public void enrichAdifForMe(Adif3Record rec, QrzCallsign qrzData) {
         if (qrzData == null) {
             return;
@@ -37,7 +51,7 @@ public class AdifQrzEnricher {
         }
     }
 
-    public void enrichAdifForThem(Adif3Record rec, QrzCallsign qrzData) {
+    public void enrichAdifForThem(TransformResults results, Adif3Record rec, QrzCallsign qrzData) {
         if (qrzData == null) {
             return;
         }
@@ -47,8 +61,9 @@ public class AdifQrzEnricher {
         //    rec.setCountry(qrzData.getCountry());
         //}
 
+        String qrzName = getNameFromQrzData(qrzData);
         if (rec.getName() == null) {
-            rec.setName(getNameFromQrzData(qrzData));
+            rec.setName(qrzName);
         }
 
         if (rec.getQth() == null) {
@@ -62,20 +77,10 @@ public class AdifQrzEnricher {
             }
             rec.setQth(addr.toString());
         }
-    }
 
-    private String getNameFromQrzData(QrzCallsign qrzData) {
-        String name = "";
-        if (StringUtils.isNotEmpty(qrzData.getFname())) {
-            name = qrzData.getFname();
+        if (rec.getState() == null) {
+            rec.setState(qrzData.getState());
         }
-        if (StringUtils.isNotEmpty(qrzData.getName())) {
-            if (StringUtils.isNotEmpty(name)) {
-                name = name + " ";
-            }
-            name = name + qrzData.getName();
-        }
-        return name;
     }
 
     public void lookupLocationFromQrz(Qso qso) {

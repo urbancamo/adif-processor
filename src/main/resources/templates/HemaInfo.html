@@ -14,19 +14,21 @@
 </head>
 <body>
     <div th:fragment="info" class="info">
-        <table>
-            <thead></thead>
-            <tbody>
-                <tr>
-                    <td class="tdLabel">HEMA: </td>
-                    <td><a href="http://hema.org.uk/fullSummit.jsp?summitKey=2371" th:href="@{|http://hema.org.uk/fullSummit.jsp?summitKey=${hema.key}|}" th:text="${hema.ref}" target="_blank" >G/HLD-013</a></td>
-                </tr>
-                <tr>
-                    <td class="tdLabel">Name: </td>
-                    <td><span th:text="${hema.name}">Crinkle Crags - Long Top [Second Crinkle]</span></td>
-                </tr>
-            </tbody>
-        </table>
+        <div th:each="hema : ${hemas}">
+            <table>
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td class="tdLabel">HEMA: </td>
+                        <td><a href="http://hema.org.uk/fullSummit.jsp?summitKey=2371" th:href="@{|http://hema.org.uk/fullSummit.jsp?summitKey=${hema.key}|}" th:text="${hema.ref}" target="_blank" >G/HLD-013</a></td>
+                    </tr>
+                    <tr>
+                        <td class="tdLabel">Name: </td>
+                        <td><span th:text="${hema.name}">Crinkle Crags - Long Top [Second Crinkle]</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div th:fragment="blank" style="display: none;"></div>
 </body>

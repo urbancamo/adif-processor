@@ -15,7 +15,8 @@ public enum CallsignVariant {
     GM_ALT("M"),
     GG_ALT("G"),
     GW_ALT("W"),
-    GD_ALT("D");
+    GD_ALT("D"),
+    GR_ALT("R");
 
     private final String modifier;
 
