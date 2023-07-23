@@ -351,19 +351,17 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         Adif3Record rec = qso.getRecord();
 
         if (qrzInfo != null) {
-            if (rec.getName() != null) {
+            if (rec.getName() != null && qrzInfo.getName() != null) {
                 String displayQrzName = getNameFromQrzData(qrzInfo);
-                String fullQrzName = String.format("%s %s", qrzInfo.getFname(), qrzInfo.getName());
-
                 if (!StringUtils.equalsIgnoreCase(rec.getName(), displayQrzName)) {
                     // Warn if other station's name isn't contained in qrz data
-                    if (!StringUtils.containsIgnoreCase(fullQrzName, rec.getName())) {
+                    if (!StringUtils.containsIgnoreCase(displayQrzName, rec.getName())) {
                         results.addWarning(String.format("Check name for %s: provided is '%s', QRZ has '%s'",
-                                rec.getCall(), rec.getName(), fullQrzName));
+                                rec.getCall(), rec.getName(), displayQrzName));
                     }
                 }
             }
-            if (rec.getState() != null) {
+            if (rec.getState() != null && qrzInfo.getState() != null) {
                 // Warn if state specified explicitly doesn't match qrz data and they're not doing an activity
                 if (!qso.getTo().hasActivity()) {
                     if (!StringUtils.equalsIgnoreCase(rec.getState(), qrzInfo.getState())) {
