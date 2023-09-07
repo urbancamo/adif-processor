@@ -10,6 +10,7 @@ import org.gavaghan.geodesy.GeodeticCurve;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 /**
  * An activity is any amateur radio activity programme or awards programme that you can participate in.
@@ -64,7 +65,7 @@ public abstract class Activity implements Comparable<Activity> {
         return ref.compareTo(otherRef);
     }
 
-    public boolean isValid(LocalDate onDate) {
+    public boolean isValid(ZonedDateTime onDate) {
         return true;
     }
     

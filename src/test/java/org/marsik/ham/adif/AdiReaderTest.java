@@ -10,10 +10,7 @@ import org.marsik.ham.adif.types.Wwff;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -134,6 +131,9 @@ public class AdiReaderTest {
         reader.read(inputReader);
     }
 
+    private final static ZonedDateTime firstExpectedDate = LocalDate.of(1990, 6, 20).atStartOfDay(ZoneOffset.UTC);
+    private final static ZonedDateTime secondExpectedDate = LocalDate.of(2010, 10, 22).atStartOfDay(ZoneOffset.UTC);
+    private final static ZonedDateTime thirdExpectedDate = LocalDate.of(2018, 10, 16).atStartOfDay(ZoneOffset.UTC);
     @Test
     public void testAdifSample() throws Exception {
         AdiReader reader = new AdiReader();
@@ -145,7 +145,7 @@ public class AdiReaderTest {
                 .isNotNull()
                 .hasSize(4);
 
-        assertThat(adif.get().records.get(0).getQsoDate()).isEqualTo(LocalDate.of(1990, 6, 20));
+        assertThat(adif.get().records.get(0).getQsoDate()).isEqualTo(firstExpectedDate);
         assertThat(adif.get().records.get(0).getTimeOn()).isEqualTo(LocalTime.of(15, 23));
         assertThat(adif.get().records.get(0).getCall()).isEqualTo("VK9NS");
         assertThat(adif.get().records.get(0).getBand()).isEqualTo(BAND_20m);
@@ -153,7 +153,7 @@ public class AdiReaderTest {
         assertThat(adif.get().records.get(0).getTxPwr()).isEqualTo(10.0);
         assertThat(adif.get().records.get(0).getApplicationDefinedField("APP_APROC_ALT")).isEqualTo("9000");
 
-        assertThat(adif.get().records.get(1).getQsoDate()).isEqualTo(LocalDate.of(2010, 10, 22));
+        assertThat(adif.get().records.get(1).getQsoDate()).isEqualTo(secondExpectedDate);
         assertThat(adif.get().records.get(1).getTimeOn()).isEqualTo(LocalTime.of(1, 11));
         assertThat(adif.get().records.get(1).getCall()).isEqualTo("ON4UN");
         assertThat(adif.get().records.get(1).getBand()).isEqualTo(BAND_40m);
@@ -173,7 +173,7 @@ public class AdiReaderTest {
         assertThat(adif.get().records.get(1).getTxPwr()).isEqualTo(2.0);
         assertThat(adif.get().records.get(1).getUserDefinedField("USER_ANT")).isEqualTo("Dipole");
 
-        assertThat(adif.get().records.get(2).getQsoDate()).isEqualTo(LocalDate.of(2018, 10, 16));
+        assertThat(adif.get().records.get(2).getQsoDate()).isEqualTo(thirdExpectedDate);
         assertThat(adif.get().records.get(2).getTimeOn()).isEqualTo(LocalTime.of(23, 15));
         assertThat(adif.get().records.get(2).getCall()).isEqualTo("K0TET");
         assertThat(adif.get().records.get(2).getBand()).isEqualTo(BAND_70cm);
@@ -186,7 +186,7 @@ public class AdiReaderTest {
         assertThat(adif.get().records.get(2).getMyArrlSect()).isEqualTo(ArrlSection.AZ.adifCode());
 
         Adif3Record rec3 = adif.get().records.get(3);
-        assertThat(rec3.getQsoDate()).isEqualTo(LocalDate.of(2018, 10, 16));
+        assertThat(rec3.getQsoDate()).isEqualTo(thirdExpectedDate);
         assertThat(rec3.getTimeOn()).isEqualTo(LocalTime.of(23, 18));
         assertThat(rec3.getCall()).isEqualTo("K0ABC");
         assertThat(rec3.getBand()).isEqualTo(BAND_20m);

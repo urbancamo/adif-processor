@@ -11,13 +11,14 @@ import uk.m0nom.adifproc.kml.info.KmlActivityInfoPanel;
 import uk.m0nom.adifproc.kml.station.KmlStationUtils;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 
 public class KmlLocalActivities {
     public final static String DEFAULT_RADIUS_IN_KM = "5";
 
     public void addLocalActivities(TransformControl control, Document doc, Folder folder, Station to, ActivityDatabaseService activities) {
-        LocalDate onDate = to.getQsos().get(0).getRecord().getQsoDate();
+        ZonedDateTime onDate = to.getQsos().get(0).getRecord().getQsoDate();
         // Determine activities within the pre-defined radius
         to.getActivities()
                 .forEach(activity -> activities.getDatabase(activity.getType())

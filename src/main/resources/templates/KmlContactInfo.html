@@ -68,8 +68,12 @@
                             <td><span th:text="${qsoDate}">20/12/2021</span></td>
                         </tr>
                         <tr>
+                            <td class="tdLabel">Time On (UTC):</td>
+                            <td><span th:text="${timeOn}">12:02</span></td>
+                        </tr>
+                        <tr th:if="${timeOff} != null">
                             <td class="tdLabel">Time (UTC):</td>
-                            <td><span th:text="${qsoTime}">12:02</span></td>
+                            <td><span th:text="${timeOff}">12:04</span></td>
                         </tr>
                         <tr th:if="${band} != null">
                             <td class="tdLabel">Band: </td>

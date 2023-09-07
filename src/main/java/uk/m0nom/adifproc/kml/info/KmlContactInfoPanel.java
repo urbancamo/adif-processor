@@ -10,6 +10,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.comms.CommsLinkResult;
+import uk.m0nom.adifproc.kml.station.KmlStationUtils;
 
 import static uk.m0nom.adifproc.util.FrequencyFormatter.formatFrequency;
 
@@ -21,8 +22,11 @@ public class KmlContactInfoPanel {
         Adif3Record rec = qso.getRecord();
 
         final Context context = new Context();
-        context.setVariable("qsoDate", rec.getQsoDate().toString());
-        context.setVariable("qsoTime", rec.getTimeOn().toString());
+        context.setVariable("qsoDate", KmlStationUtils.getQsoDateAsDisplayString(qso));
+        context.setVariable("timeOn", KmlStationUtils.getQsoTimeOnAsString(qso));
+        if (qso.getRecord().getTimeOff() != null) {
+            context.setVariable("timeOff", KmlStationUtils.getQsoTimeOffAsString(qso));
+        }
         context.setVariable("call", rec.getCall());
         context.setVariable("stationCallsign", rec.getStationCallsign());
 

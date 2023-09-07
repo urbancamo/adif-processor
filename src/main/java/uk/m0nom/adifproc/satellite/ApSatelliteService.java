@@ -7,6 +7,9 @@ import uk.m0nom.adifproc.satellite.satellites.QO100;
 import uk.m0nom.adifproc.satellite.satellites.SatelliteNameAliases;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 
 /**
@@ -22,7 +25,7 @@ public class ApSatelliteService {
 
     private final ApSatellites satellites;
 
-    private final LocalDate earliestDataAvailable = LocalDate.of(2022, 02, 23);
+    private final ZonedDateTime earliestDataAvailable = ZonedDateTime.of(LocalDateTime.of(2022, 2, 23, 0, 0), ZoneId.of("UTC"));
 
     public ApSatelliteService(NoradSatelliteOrbitReader noradSatelliteOrbitReader, SatelliteNameAliases satelliteNameAliases) {
         satellites = new ApSatellites();
@@ -33,15 +36,15 @@ public class ApSatelliteService {
     }
 
     private void loadCurrentNoradSatelliteTleDataIfRequired() {
-        if (!satellites.hasDataFor(LocalDate.now())) {
+        if (!satellites.hasDataFor(ZonedDateTime.now())) {
             noradSatelliteOrbitReader.loadCurrentSatelliteTleDataFromCelestrak(satellites);
         }
     }
 
-    public ApSatellite getSatellite(String id, LocalDate date) {
+    public ApSatellite getSatellite(String id, ZonedDateTime date) {
         ApSatellite satellite = getSatellite(id);
         if (satellite == null || satellite instanceof NoradSatellite) {
-            if (LocalDate.now().isEqual(date)) {
+            if (ZonedDateTime.now().isEqual(date)) {
                 loadCurrentNoradSatelliteTleDataIfRequired();
             } else if (!satellites.hasDataFor(date)) {
                 noradSatelliteOrbitReader.loadTleDataFromArchive(satellites, date);
@@ -78,5 +81,5 @@ public class ApSatelliteService {
         return satellites.getSatelliteCount();
     }
 
-    public LocalDate getEarliestDataAvailable() { return earliestDataAvailable; }
+    public ZonedDateTime getEarliestDataAvailable() { return earliestDataAvailable; }
 }

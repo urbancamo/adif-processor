@@ -7,6 +7,7 @@ import uk.m0nom.adifproc.adif3.contacts.Qso;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 /**
@@ -17,8 +18,8 @@ import java.util.*;
 @Setter
 public class SatellitePass {
     private SatellitePassId id;
-    private LocalDateTime firstContact;
-    private LocalDateTime lastContact;
+    private ZonedDateTime firstContact;
+    private ZonedDateTime lastContact;
     private Collection<Qso> contacts;
 
     public SatellitePass(SatellitePassId id) {
@@ -27,10 +28,7 @@ public class SatellitePass {
     }
 
     public void addContact(Qso qso) {
-        LocalDate date = qso.getRecord().getQsoDate();
-        LocalTime time = qso.getRecord().getTimeOn();
-
-        LocalDateTime contact = LocalDateTime.of(date, time);
+        ZonedDateTime contact = qso.getRecord().getQsoDate().with(qso.getRecord().getTimeOn());
 
         contacts.add(qso);
 

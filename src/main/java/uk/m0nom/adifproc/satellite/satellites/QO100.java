@@ -10,6 +10,7 @@ import uk.m0nom.adifproc.satellite.ApSatellite;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 
 public class QO100 implements ApSatellite {
     private final static GlobalCoordinates ESHAIL2_LOCATION = new GlobalCoordinates(0, 25.9);
@@ -38,7 +39,7 @@ public class QO100 implements ApSatellite {
     }
 
     @Override
-    public GlobalCoords3D getPosition(GlobalCoords3D loc, LocalDate date, LocalTime time) {
+    public GlobalCoords3D getPosition(GlobalCoords3D loc, ZonedDateTime dateTime) {
         return ESHAIL2_POSITION;
     }
 

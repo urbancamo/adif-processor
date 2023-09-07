@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
@@ -40,7 +41,7 @@ public class NoradSatelliteOrbitReader {
         this.internalFileService = internalFileService;
     }
 
-    public boolean loadTleDataFromArchive(ApSatellites satellites, LocalDate date) {
+    public boolean loadTleDataFromArchive(ApSatellites satellites, ZonedDateTime date) {
         String filename = String.format("%s-amateur.txt", dateFormatter.format(date));
         String tleDefinitions = internalFileService.readFile(NORAD_S3_FOLDER, filename);
         if (tleDefinitions != null) {
@@ -54,13 +55,13 @@ public class NoradSatelliteOrbitReader {
         logger.info(String.format("Reading NORAD Satellite Definition File: %s", NORAD_TLE_FILE_LOCATION));
         try {
             String tleDefinitions = readTleDataFromCelestrak();
-            parseTleData(satellites, tleDefinitions, LocalDate.now());
+            parseTleData(satellites, tleDefinitions, ZonedDateTime.now());
         } catch (IOException e) {
             logger.severe(String.format("Unable to read TLE definition file: %s", NORAD_TLE_FILE_LOCATION));
         }
     }
 
-    private void parseTleData(ApSatellites satellites, String tleDefinitions, LocalDate onDate) {
+    private void parseTleData(ApSatellites satellites, String tleDefinitions, ZonedDateTime onDate) {
 
         // Each TLE definition consists of three lines of text, so we parse the TLE file 3 lines at a time
         String[] tleLines = tleDefinitions.split("\\n");

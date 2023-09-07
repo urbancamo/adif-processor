@@ -20,6 +20,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -187,13 +189,18 @@ public class SotaCsvFileReader implements QsoFileReader {
         return rtn;
     }
 
-    private LocalDate parseSotaDate(String sotaDate) throws ParseException {
-        LocalDate date;
+    private ZonedDateTime parseSotaDate(String sotaDate) throws ParseException {
+        ZonedDateTime date;
         try {
-            date = new java.sql.Date(internationalDateFormat1.parse(sotaDate).getTime()).toLocalDate();
+            date = parseDateStringUsingFormat(sotaDate, internationalDateFormat1);
         } catch (ParseException e) {
-            date = new java.sql.Date(internationalDateFormat2.parse(sotaDate).getTime()).toLocalDate();
+            date = parseDateStringUsingFormat(sotaDate, internationalDateFormat2);
         }
         return date;
+    }
+
+    private ZonedDateTime parseDateStringUsingFormat(String dateString, DateFormat df) throws ParseException {
+        LocalDate localDate = new java.sql.Date(df.parse(dateString).getTime()).toLocalDate();
+        return ZonedDateTime.of(localDate, LocalTime.of(0,0), ZoneId.of("UTC"));
     }
 }

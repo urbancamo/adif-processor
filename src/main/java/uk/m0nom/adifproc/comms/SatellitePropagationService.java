@@ -13,6 +13,7 @@ import uk.m0nom.adifproc.satellite.ApSatellite;
 import uk.m0nom.adifproc.satellite.ApSatelliteService;
 import uk.m0nom.adifproc.satellite.norad.NoradSatellite;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -42,7 +43,8 @@ public class SatellitePropagationService implements CommsLinkGenerator {
                 }
             }
             apSatellite.updateAdifRec(control, rec);
-            GlobalCoords3D satelliteLocation = apSatellite.getPosition(start, rec.getQsoDate(), rec.getTimeOn());
+            ZonedDateTime utcDateTime = rec.getQsoDate().with(rec.getTimeOn());
+            GlobalCoords3D satelliteLocation = apSatellite.getPosition(start, utcDateTime);
             result.setSatellitePosition(satelliteLocation);
 
             GeodeticCalculator calculator = new GeodeticCalculator();
