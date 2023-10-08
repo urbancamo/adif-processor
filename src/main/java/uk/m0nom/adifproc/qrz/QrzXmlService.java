@@ -73,7 +73,7 @@ public class QrzXmlService implements QrzService {
             if (timeDiff < DELAY) {
                 long pause = DELAY - timeDiff;
                 // Ensure at least a second between calls to comply with fair usage policy
-                logger.info(String.format("Pausing for %d ms to throttle qrz.com usage", pause));
+                //logger.info(String.format("Pausing for %d ms to throttle qrz.com usage", pause));
                 try {
                     Thread.sleep(pause);
                 } catch (Exception e) {

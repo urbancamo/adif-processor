@@ -90,8 +90,9 @@ public class KmlCommsService {
             myAltitude = qso.getRecord().getMyAltitude();
         }
 
-        GlobalCoords3D myCoord = new GlobalCoords3D(rec.getMyCoordinates(), myAltitude);
-        GlobalCoords3D theirCoord = new GlobalCoords3D(rec.getCoordinates(), theirAltitude);
+        // TODO the location accuracy info is being overriden before the coordinates are retrieved here
+        GlobalCoords3D myCoord = new GlobalCoords3D(qso.getFrom().getCoordinates(), myAltitude);
+        GlobalCoords3D theirCoord = new GlobalCoords3D(qso.getTo().getCoordinates(), theirAltitude);
 
         // Sanity check - if their coords and our coords are the same then the geodesic calculations are going to stall
         if (GeodesicUtils.areCoordsEqual(myCoord, theirCoord)) {

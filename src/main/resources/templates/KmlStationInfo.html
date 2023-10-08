@@ -9,7 +9,11 @@
         .image_box {
         }
         .content {
-            padding: 2px;
+            padding: 0;
+        }
+        h1 {
+            font-size: 14pt;
+            font-weight: bold;
         }
         h3 {
             color: midnightblue;
@@ -23,12 +27,13 @@
         }
         .profile {
             max-height:380px;
-            max-width:440px;
+            max-width:325px;
             height:auto;
             width:auto;
             display: block;
             margin-left: auto;
             margin-right: auto;
+            float: left;
         }
         #earth-balloon-content{
             display:flex;
@@ -38,15 +43,16 @@
             width: 450px;
             height: 700px;
         }
-        card-template{
+        .card-template{
             height:640px;
         }
     </style>
+    <title></title>
 </head>
 <body>
 <div class="panel">
     <div class="content">
-        <h1>Station&nbsp;Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+        <h1>Station&nbsp;Info</h1>
     </div>
     <div class="image_box" th:if="${image} != null">
         <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${callForQrz}|}" target="_blank">
@@ -55,8 +61,8 @@
     </div>
     <div class="content">
         <table>
-            <thead/>
-            <tbody>
+            <thead></thead>
+            <tbody style='font-size: 10pt;'>
             <tr>
                 <td class="tdLabel">Callsign:</td>
                 <td><a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${callForQrz}|}" th:text="${call}" target="_blank" >M0NOM/P</a></td>
