@@ -55,7 +55,7 @@ public class KmlCommsService {
         return id.replaceAll(" ", "_");
     }
 
-    public String createCommsLink(Document document, Folder folder, Map<String, String> commsStyleMap, Qso qso, TransformControl control, KmlStationUtils stationUtils) {
+    public CommsLinkResult createCommsLink(Document document, Folder folder, Map<String, String> commsStyleMap, Qso qso, TransformControl control, KmlStationUtils stationUtils) {
         boolean internet = qso.getRecord().getPropMode() == Propagation.INTERNET;
         bandLineStyles = new KmlBandLineStyles(control.getKmlContactWidth(), control.getKmlContactTransparency());String commsLinkId = getCommsLinkId(qso);
         String commsLinkName = getCommsLinkName(qso);
@@ -64,7 +64,9 @@ public class KmlCommsService {
         Adif3Record rec = qso.getRecord();
 
         if (qso.getFrom().getCoordinates() == null && rec.getMyCoordinates() == null) {
-            return String.format("Cannot determine coordinates for station %s, please specify a location override", qso.getFrom().getCallsign());
+            return new CommsLinkResult(
+                    String.format("Cannot determine coordinates for station %s, please specify a location override",
+                            qso.getFrom().getCallsign()));
         }
 
         addStyleIfUsed(document, control, qso, commsStyleMap);
@@ -96,12 +98,14 @@ public class KmlCommsService {
 
         // Sanity check - if their coords and our coords are the same then the geodesic calculations are going to stall
         if (GeodesicUtils.areCoordsEqual(myCoord, theirCoord)) {
-            return String.format("Your location and the location of station %s at %.3f, %.3f are equal - check the log!", qso.getTo().getCallsign(), theirCoord.getLatitude(), theirCoord.getLongitude());
+            return new CommsLinkResult(
+                String.format("Your location and the location of station %s at %.3f, %.3f are equal - check the log!",
+                        qso.getTo().getCallsign(), theirCoord.getLatitude(), theirCoord.getLongitude()));
         }
 
         CommsLinkResult result = commsVisualizationService.getCommunicationsLink(control, myCoord, theirCoord, rec);
         if (!result.isValid()) {
-            return result.getError();
+            return result;
         }
 
         // Set the contact distance in the ADIF output file
@@ -143,9 +147,9 @@ public class KmlCommsService {
         if (qso.isSatelliteContact() && result.isValid()) {
             stationUtils.createSatelliteContactMarker(control, document, folder, qso, result.getSatellitePosition(), description);
         }
-        return null;
-
+        return result;
     }
+
 
     private String getStyleForQso(TransformControl control, Qso qso) {
         if (control.isKmlS2s() && qso.doingSameActivity()) {

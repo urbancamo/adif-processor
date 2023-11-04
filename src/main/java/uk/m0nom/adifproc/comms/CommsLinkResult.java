@@ -27,9 +27,15 @@ public class CommsLinkResult {
     private String error = null;
     private String unknownSatellite = null;
     private boolean unknownSatellitePass = false;
+    private boolean unsupportedPropagationMode = false;
+    private Propagation unsupportedPropagation;
 
     public CommsLinkResult() {
         path = new ArrayList<>();
+    }
+
+    public CommsLinkResult(String error) {
+        this.error = error;
     }
 
     public CommsLinkResult(GlobalCoords3D start, GlobalCoords3D end) {
