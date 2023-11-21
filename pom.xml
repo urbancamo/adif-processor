@@ -24,7 +24,7 @@
   <artifactId>adif-processor</artifactId>
   <version>1.1.30-SNAPSHOT</version>
 
-  <name>adif-processor</name>
+  <name>ADIF Processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
 
   <properties>
