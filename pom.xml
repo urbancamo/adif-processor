@@ -22,7 +22,7 @@
 
   <groupId>uk.m0nom</groupId>
   <artifactId>adif-processor</artifactId>
-  <version>1.1.30-SNAPSHOT</version>
+  <version>1.1.30</version>
 
   <name>ADIF Processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
@@ -108,11 +108,11 @@
       <version>2.0</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/de.micromata.jak/JavaAPIforKml -->
+    <!-- https://mvnrepository.com/artifact/de.micromata.jak/javaapiforkml -->
     <dependency>
       <groupId>uk.m0nom</groupId>
-      <artifactId>JavaAPIforKml</artifactId>
-      <version>3.0.2</version>
+      <artifactId>javaapiforkml</artifactId>
+      <version>3.0.5</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/net.sourceforge.argparse4j/argparse4j -->
