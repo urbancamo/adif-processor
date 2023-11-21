@@ -400,10 +400,10 @@ public class Adif3RecordPopulator {
                 rec.setQsoComplete(QsoComplete.valueOf(value));
                 break;
             case "QSO_DATE":
-                rec.setQsoDate(toLocalDate(value));
+                rec.setQsoDate(toZonedDateTime(value));
                 break;
             case "QSO_DATE_OFF":
-                rec.setQsoDateOff(toLocalDate(value));
+                rec.setQsoDateOff(toZonedDateTime(value));
                 break;
             case "QSO_RANDOM":
                 rec.setQsoRandom(toBoolean(value));

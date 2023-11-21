@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
-import java.time.LocalDate;
+import java.time.*;
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,16 +12,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DxccEntitiesTest {
 
-    private static JsonDxccEntities jsonEntities;
     private static DxccEntities entities;
-    private static LocalDate qsoDate;
+    private static ZonedDateTime qsoDate;
 
     @BeforeAll
     public static void setup() throws ParseException {
-        jsonEntities = new DxccJsonReader().read();
+        JsonDxccEntities jsonEntities = new DxccJsonReader().read();
         entities = new DxccEntities();
         entities.setup(jsonEntities);
-        qsoDate = LocalDate.of(2022,01,01);
+        qsoDate = ZonedDateTime.of(LocalDateTime.of(2022,1,1, 0, 0), ZoneOffset.UTC);
     }
 
     @Test

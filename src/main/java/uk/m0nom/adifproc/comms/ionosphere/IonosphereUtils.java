@@ -42,7 +42,8 @@ public class IonosphereUtils {
         if (rec.getFreq() != null) {
             frequencyInKhz = rec.getFreq() * 1000;
         } else if (rec.getBand() != null) {
-            frequencyInKhz = (rec.getBand().getLowerFrequency() + ((rec.getBand().getUpperFrequency() - rec.getBand().getLowerFrequency()) / 2.0)) * 1000.0;
+            frequencyInKhz = (rec.getBand().getLowerFrequency() +
+                    ((rec.getBand().getUpperFrequency() - rec.getBand().getLowerFrequency()) / 2.0)) * 1000.0;
         }
         return frequencyInKhz;
     }
@@ -62,7 +63,12 @@ public class IonosphereUtils {
         double avgAltitude = 0.0;
         double avgAngle = 0.0;
         Propagation mode = rec.getPropMode();
-        List<PropagationApex> apexes = new Ionosphere().getBounces(mode, frequencyInKhz, result.getDistanceInKm(), time, start.getAltitude(), end.getAltitude(), control.getAntenna().getTakeOffAngle());
+        if (mode == null) {
+            mode = Propagation.F2_REFLECTION;
+        }
+        List<PropagationApex> apexes = new Ionosphere().getBounces(
+                mode, frequencyInKhz, result.getDistanceInKm(), time, start.getAltitude(), end.getAltitude(),
+                control.getAntenna().getTakeOffAngle());
 
         double skyDistance = GeodesicUtils.calculatePath(result.getPath(), apexes, start, end, azimuth);
         result.setSkyDistance(skyDistance);

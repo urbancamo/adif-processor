@@ -117,6 +117,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
             GlobalCoordinates myLoc = MaidenheadLocatorConversion.locatorToCoords(LocationSource.OVERRIDE, rec.getMyGridSquare());
             rec.setMyCoordinates(myLoc);
             qso.getFrom().setGrid(rec.getMyGridSquare());
+            qso.getFrom().setCoordinates(new GlobalCoords3D(myLoc, rec.getMyAltitude() != null ? rec.getMyAltitude() : 0.0));
             return true;
         }
         return false;

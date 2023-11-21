@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 /**
  * Satellite pass is identified by the satellite name and date.
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 public class SatellitePassId {
     private String satelliteName;
-    private LocalDate date;
+    private ZonedDateTime date;
 
     public String toString() {
         return String.format("%s %s", satelliteName, date.toString());

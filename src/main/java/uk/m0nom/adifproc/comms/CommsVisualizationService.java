@@ -3,6 +3,7 @@ package uk.m0nom.adifproc.comms;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.AntPath;
 import org.marsik.ham.adif.enums.Mode;
+import org.marsik.ham.adif.enums.Propagation;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.comms.ionosphere.IonosphereUtils;
@@ -24,6 +25,9 @@ public class CommsVisualizationService implements CommsLinkGenerator {
     public CommsLinkResult getCommunicationsLink(TransformControl control, GlobalCoords3D startGc, GlobalCoords3D endGc,
                                                  Adif3Record rec) {
         CommsLinkResult result = null;
+        boolean unsupportedPropagationMode = false;
+        Propagation overridenPropagationMode = rec.getPropMode();
+        Propagation propagationModeOverride = Propagation.F2_REFLECTION;
 
         // See if the propagation mode used is defined in the record
         if (rec.getPropMode() != null) {
@@ -36,16 +40,30 @@ public class CommsVisualizationService implements CommsLinkGenerator {
                     result = satellitePropagationService.getCommunicationsLink(control, startGc, endGc, rec);
                     break;
                 case TROPOSPHERIC_DUCTING:
-                        result = new TroposphericDuctingPropagation().getCommunicationsLink(control, startGc, endGc, rec);
-                        break;
+                    result = new TroposphericDuctingPropagation().getCommunicationsLink(control, startGc, endGc, rec);
+                    break;
                 default:
+                    unsupportedPropagationMode = true;
+                    overridenPropagationMode = rec.getPropMode();
+                    break;
             }
-        } else {
+        }
+
+        if (unsupportedPropagationMode) {
+            rec.setPropMode(propagationModeOverride);
+        }
+
+        if (result == null) {
             if (rec.getAntPath() == AntPath.LONG) {
                 result = new LongPath().getCommunicationsLink(control, startGc, endGc, rec);
             } else {
                 result = new ShortPath().getCommunicationsLink(control, startGc, endGc, rec);
             }
+        }
+
+        if (unsupportedPropagationMode) {
+            result.setUnsupportedPropagationMode(true);
+            result.setUnsupportedPropagation(overridenPropagationMode);
         }
         return result;
     }

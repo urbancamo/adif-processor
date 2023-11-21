@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.UnmappableCharacterException;
+import java.text.DateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -217,8 +218,8 @@ public class AdiReader {
         maybeGet(recordFields, "QSL_SENT_VIA").map(QslVia::findByCode).ifPresent(record::setQslSentVia);
         maybeGet(recordFields, "QSL_VIA").ifPresent(record::setQslVia);
         maybeGet(recordFields, "QSO_COMPLETE").map(QsoComplete::findByCode).ifPresent(record::setQsoComplete);
-        maybeGet(recordFields, "QSO_DATE").map(s -> LocalDate.parse(s, dateFormatter)).ifPresent(record::setQsoDate);
-        maybeGet(recordFields, "QSO_DATE_OFF").map(s -> LocalDate.parse(s, dateFormatter)).ifPresent(record::setQsoDateOff);
+        maybeGet(recordFields, "QSO_DATE").map(s -> parseDate(s, dateFormatter)).ifPresent(record::setQsoDate);
+        maybeGet(recordFields, "QSO_DATE_OFF").map(s -> parseDate(s, dateFormatter)).ifPresent(record::setQsoDateOff);
         maybeGet(recordFields, "QSO_RANDOM").map(this::parseBool).ifPresent(record::setQsoRandom);
         maybeGet(recordFields, "QTH").ifPresent(record::setQth);
         maybeGet(recordFields, "REGION").ifPresent(record::setRegion);
@@ -428,7 +429,11 @@ public class AdiReader {
     }
 
     private ZonedDateTime parseDate(String s) {
-        return LocalDate.parse(s, dateFormatter).atStartOfDay(ZoneId.of("UTC"));
+        return LocalDate.parse(s, dateFormatter).atStartOfDay(ZoneOffset.UTC);
+    }
+
+    private ZonedDateTime parseDate(String s, DateTimeFormatter dateFormatter) {
+        return LocalDate.parse(s, dateFormatter).atStartOfDay(ZoneOffset.UTC);
     }
 
     private LocalDate parseLocalDate(String s) {

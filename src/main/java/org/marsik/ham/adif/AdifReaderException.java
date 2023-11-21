@@ -1,7 +1,9 @@
 package org.marsik.ham.adif;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class AdifReaderException extends RuntimeException {
     private int record;

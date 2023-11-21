@@ -16,7 +16,10 @@ public class NoradSatelliteOrbitReaderTest {
     @Autowired
     private ApSatelliteService apSatelliteService;
 
-    @Test
+    // @Test
+    // TODO norad blocks access to the TLE file if downloaded excessively, need a way to download
+    // once per day and store in target or somewhere so that tests run from that file for the rest
+    // of the day.
     public void readTest() {
         assertThat(apSatelliteService.getSatelliteCount()).isGreaterThan(89);
     }

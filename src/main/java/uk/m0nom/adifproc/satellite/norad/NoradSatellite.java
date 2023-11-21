@@ -26,7 +26,7 @@ import java.util.Map;
 @Getter
 @Setter
 public class NoradSatellite implements ApSatellite {
-    private Map<LocalDate, Satellite> satelliteTleDataForDate;
+    private Map<ZonedDateTime, Satellite> satelliteTleDataForDate;
     private String name;
     private String designator;
 
@@ -38,7 +38,7 @@ public class NoradSatellite implements ApSatellite {
         return identifier;
     }
 
-    public NoradSatellite(LocalDate date, Satellite satelliteTleData) {
+    public NoradSatellite(ZonedDateTime date, Satellite satelliteTleData) {
         satelliteTleDataForDate = new HashMap<>();
         String identifier = satelliteTleData.getTLE().getName();
         // Name is either just a name, or a name and designator in brackets
@@ -53,7 +53,7 @@ public class NoradSatellite implements ApSatellite {
         satelliteTleDataForDate.put(date, satelliteTleData);
     }
 
-    public void addTleData(LocalDate date, Satellite satellite) {
+    public void addTleData(ZonedDateTime date, Satellite satellite) {
         satelliteTleDataForDate.put(date, satellite);
     }
 
@@ -65,22 +65,20 @@ public class NoradSatellite implements ApSatellite {
         return getName();
     }
 
-    public Satellite getSatelliteTleDataForDate(LocalDate date) {
+    public Satellite getSatelliteTleDataForDate(ZonedDateTime date) {
         Satellite satellite = satelliteTleDataForDate.get(date);
         if (satellite == null) {
-            satellite = satelliteTleDataForDate.get(LocalDate.now());
+            satellite = satelliteTleDataForDate.get(ZonedDateTime.now());
         }
         return satellite;
     }
 
     @Override
-    public GlobalCoords3D getPosition(GlobalCoords3D coords, LocalDate date, LocalTime time) {
-        Satellite satellite = getSatelliteTleDataForDate(date);
+    public GlobalCoords3D getPosition(GlobalCoords3D coords, ZonedDateTime dateTime) {
+        Satellite satellite = getSatelliteTleDataForDate(dateTime);
 
         GroundStationPosition groundStationPosition = new GroundStationPosition(coords.getLatitude(), coords.getLongitude(), coords.getAltitude());
-        LocalDateTime dateTime = LocalDateTime.of(date, time);
-        ZonedDateTime utcDateTime = dateTime.atZone(ZoneId.of("UTC"));
-        Date utcDate = new Date(utcDateTime.toInstant().toEpochMilli());
+        Date utcDate = new Date(dateTime.toInstant().toEpochMilli());
         SatPos satPos = satellite.getPosition(groundStationPosition, utcDate);
 
         double latitude = satPos.getLatitude() / (Math.PI * 2.0) * 360;

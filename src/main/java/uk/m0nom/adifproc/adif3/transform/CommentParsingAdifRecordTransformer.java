@@ -20,7 +20,6 @@ import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.adif3.transform.comment.CommentTransformer;
 import uk.m0nom.adifproc.adif3.transform.comment.FieldParserCommentTransformer;
 import uk.m0nom.adifproc.adif3.transform.comment.SchemaBasedCommentTransformer;
-import uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseResult;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LocationSource;
 import uk.m0nom.adifproc.geocoding.GeocodingProvider;
@@ -292,6 +291,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             setTheirLocationFromGeocodedAddress(qso, theirQrzData);
         }
 
+        improveAccuracyOfMyLocationIfRequired(qso);
+
         // Look to see if there is anything in the SIG/SIGINFO fields
         if (StringUtils.isNotBlank(rec.getSig())) {
             processSig(qso, unmapped);
@@ -367,6 +368,32 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                     if (!StringUtils.equalsIgnoreCase(rec.getState(), qrzInfo.getState())) {
                         results.addWarning(String.format("Check state for %s: provided is %s, QRZ has %s", rec.getCall(),
                                 rec.getState().toUpperCase(), qrzInfo.getState().toUpperCase()));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * This came about for FT8 contacts where the operators gridsquare is low accuracy but defines
+     * where they are, so if they have a contact with another station in that gridsquare you get the
+     * sharing location warning.
+     *
+     * @param qso qso to examine and update
+     */
+    private void improveAccuracyOfMyLocationIfRequired(Qso qso) {
+        // See if we have QRZ.com info for me
+        if (qso.getFrom().getQrzInfo() != null) {
+            QrzCallsign myQrzInfo = qso.getFrom().getQrzInfo();
+            if (myQrzInfo.getGrid() != null) {
+                String myQrzGrid = myQrzInfo.getGrid();
+                // If the qrz grid info is more accurate replace with that info
+                String myQsoGrid = qso.getFrom().getGrid();
+                if (myQrzGrid != null && myQsoGrid != null && myQrzGrid.length() > myQsoGrid.length()) {
+                    if (myQrzGrid.startsWith(myQsoGrid)) {
+                        GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.QRZ, myQrzGrid, null);
+                        qso.getFrom().setCoordinates(coords);
+                        qso.getRecord().setMyCoordinates(coords);
                     }
                 }
             }

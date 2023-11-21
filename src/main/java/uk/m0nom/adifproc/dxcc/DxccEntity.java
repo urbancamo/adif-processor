@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 
@@ -15,8 +18,8 @@ public class DxccEntity  {
 
     private Collection<String> prefixes;
 
-    private LocalDate validStartDate;
-    private LocalDate validEndDate;
+    private ZonedDateTime validStartDate;
+    private ZonedDateTime validEndDate;
 
     public DxccEntity(JsonDxccEntity jsonEntity) throws ParseException {
         this.jsonEntity = jsonEntity;
@@ -25,10 +28,10 @@ public class DxccEntity  {
 
     }
 
-    private LocalDate parseDxccDateString(String dateString) throws ParseException {
-        LocalDate date = null;
+    private ZonedDateTime parseDxccDateString(String dateString) throws ParseException {
+        ZonedDateTime date = null;
         if (!"".equals(dateString)) {
-            date = LocalDate.parse(dateString, dxccDateFormatter);
+            date = ZonedDateTime.of(LocalDate.parse(dateString, dxccDateFormatter), LocalTime.of(0,0), ZoneOffset.UTC);
         }
         return date;
     }
@@ -46,7 +49,7 @@ public class DxccEntity  {
     public boolean hasValidStart() { return validStartDate != null; }
     public boolean hasValidEnd() { return validEndDate != null; }
 
-    public boolean isValidForDate(LocalDate date) {
+    public boolean isValidForDate(ZonedDateTime date) {
         boolean valid = false;
 
         valid = !hasValidStart() || date.isAfter(getValidStartDate());

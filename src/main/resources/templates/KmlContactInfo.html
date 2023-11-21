@@ -8,8 +8,9 @@
             }
             .image_box {
             }
-            .content {
-                padding: 5px;
+            h1 {
+                font-size: 14pt;
+                font-weight: bold;
             }
             h3 {
                 color: midnightblue;
@@ -17,33 +18,38 @@
             }
             .contact {
                 font-family: "Bitstream Vera Sans",sans-serif;
-                font-size: 14pt;
+                font-size: 10pt;
             }
             .tdLabel {
                 width: 200px;
             }
             div.info {
                 padding-top: 1em;
+                font-size: 10pt;
             }
             .profile {
                 max-height:380px;
-                max-width:440px;
+                max-width:325px;
                 height:auto;
                 width:auto;
                 display: block;
                 margin-left: auto;
                 margin-right: auto;
+                float: left;
             }
             #earth-balloon-content{
                 display:flex;
             }
             #balloon-content{
                 display:inline-block;
-                width: 450px;
+                width: 356px;
                 height: 700px;
             }
-            card-template{
-                height:640px;
+            .card-template {
+                height: 640px;
+            }
+            .content {
+                font-size: 10pt;
             }
         </style>
         <title></title>
@@ -68,8 +74,12 @@
                             <td><span th:text="${qsoDate}">20/12/2021</span></td>
                         </tr>
                         <tr>
+                            <td class="tdLabel">Time On (UTC):</td>
+                            <td><span th:text="${timeOn}">12:02</span></td>
+                        </tr>
+                        <tr th:if="${timeOff} != null">
                             <td class="tdLabel">Time (UTC):</td>
-                            <td><span th:text="${qsoTime}">12:02</span></td>
+                            <td><span th:text="${timeOff}">12:04</span></td>
                         </tr>
                         <tr th:if="${band} != null">
                             <td class="tdLabel">Band: </td>

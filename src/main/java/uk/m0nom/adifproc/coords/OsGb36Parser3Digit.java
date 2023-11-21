@@ -37,7 +37,7 @@ public class OsGb36Parser3Digit implements LocationParser, LocationFormatter{
         OsGb36ConverterResult result = converter.convertCoordsToOsGb36(coords);
         if (result.isSuccess()) {
             String loc = result.getOsGb36();
-            return String.format("%s %s %s", loc.substring(0, 2), loc.substring(2, 5), loc.substring(6, 9));
+            return String.format("%s %s %s", loc.substring(0, 2), loc.substring(2, 5), loc.substring(7, 10));
         }
         return "OSGB36: undefined";
     }

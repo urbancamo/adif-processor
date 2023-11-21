@@ -6,6 +6,7 @@ import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adifproc.qrz.QrzCallsign;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -54,7 +55,7 @@ public class Qso {
 
     @Override
     public String toString() {
-        LocalDateTime contactDateTime = LocalDateTime.of(record.getQsoDate(), record.getTimeOn());
+        ZonedDateTime contactDateTime = record.getQsoDate().with(record.getTimeOn());
         return String.format("%s %s %s", dateTimeFormatter.format(contactDateTime), record.getStationCallsign(), record.getCall());
     }
 }

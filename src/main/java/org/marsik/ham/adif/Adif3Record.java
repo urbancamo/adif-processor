@@ -9,6 +9,7 @@ import org.marsik.ham.adif.types.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -606,12 +607,12 @@ public class Adif3Record {
     /**
      * date on which the QSO started in UTC
      */
-    private LocalDate qsoDate;
+    private ZonedDateTime qsoDate;
 
     /**
      * date on which the QSO ended in UTC
      */
-    private LocalDate qsoDateOff;
+    private ZonedDateTime qsoDateOff;
 
     /**
      * indicates whether the QSO was random or scheduled

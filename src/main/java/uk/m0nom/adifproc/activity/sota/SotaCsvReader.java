@@ -6,6 +6,8 @@ import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.activity.CsvActivityReader;
 
 import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -19,7 +21,7 @@ import java.time.format.DateTimeFormatter;
  * BonusPoints
  */
 public class SotaCsvReader extends CsvActivityReader {
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
 
     public SotaCsvReader(String sourceFile) {
         super(ActivityType.SOTA, sourceFile);
@@ -38,10 +40,14 @@ public class SotaCsvReader extends CsvActivityReader {
         info.setBonusPoints(Integer.parseInt(record.get("BonusPoints")));
 
         String validFrom = record.get("ValidFrom");
-        info.setValidFrom(LocalDate.parse(validFrom, formatter));
+        info.setValidFrom(parseDate(validFrom, formatter));
         String validTo = record.get("ValidTo");
-        info.setValidTo(LocalDate.parse(validTo, formatter));
+        info.setValidTo(parseDate(validTo, formatter));
 
         return info;
+    }
+
+    private ZonedDateTime parseDate(String s, DateTimeFormatter dateFormatter) {
+        return LocalDate.parse(s, dateFormatter).atStartOfDay(ZoneOffset.UTC);
     }
 }

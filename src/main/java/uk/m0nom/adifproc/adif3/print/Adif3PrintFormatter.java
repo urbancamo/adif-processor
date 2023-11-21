@@ -1,5 +1,6 @@
 package uk.m0nom.adifproc.adif3.print;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.types.Sota;
@@ -10,8 +11,8 @@ import uk.m0nom.adifproc.adif3.contacts.Qsos;
 import uk.m0nom.adifproc.geodesic.GeodesicUtils;
 import uk.m0nom.adifproc.maidenheadlocator.MaidenheadLocatorConversion;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Logger;
@@ -38,11 +39,10 @@ public class Adif3PrintFormatter {
         printJobConfig = new PrintJobConfig();
     }
 
+    @Getter
     private final PrintJobConfig printJobConfig;
 
     private PrintState state;
-
-    public PrintJobConfig getPrintJobConfig() { return printJobConfig; }
 
 
     public StringBuilder format(Qsos qsos) {
@@ -97,7 +97,7 @@ public class Adif3PrintFormatter {
     }
 
     private void printHeader() {
-        if (printJobConfig.pageConfig.getHeaderLine().length() > 0) {
+        if (!printJobConfig.pageConfig.getHeaderLine().isEmpty()) {
             if ("COLUMN_NAMES".equals(printJobConfig.pageConfig.getHeaderLine())) {
                 printColumnHeaders();
             } else {
@@ -216,7 +216,7 @@ public class Adif3PrintFormatter {
 
         switch (column.getAdif()) {
             case "QSO_DATE":
-                LocalDate date = rec.getQsoDate();
+                ZonedDateTime date = rec.getQsoDate();
                 if (date != null) {
                     dateFormat = DateTimeFormatter.ofPattern(column.getFormat());
                     value = date.format(dateFormat);

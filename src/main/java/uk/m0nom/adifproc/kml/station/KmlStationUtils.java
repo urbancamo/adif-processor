@@ -11,9 +11,8 @@ import uk.m0nom.adifproc.icons.IconResource;
 import uk.m0nom.adifproc.kml.KmlUtils;
 import uk.m0nom.adifproc.kml.info.KmlStationInfoPanel;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +20,8 @@ import java.util.stream.Collectors;
 
 public class KmlStationUtils {
     public final static double DEFAULT_RANGE_METRES = 500.0;
-    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter serialDateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter displayDateFormatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm");
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     private static final DateTimeFormatter timeWithSecondsFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -39,20 +39,30 @@ public class KmlStationUtils {
     }
 
     public static String getQsoDateTimeAsString(Qso qso) {
-        LocalDate date = qso.getRecord().getQsoDate();
+        ZonedDateTime date = qso.getRecord().getQsoDate();
         LocalTime time = qso.getRecord().getTimeOn();
 
-        LocalDateTime contactDateTime = LocalDateTime.of(date, time);
-        return dateTimeFormatter.format(contactDateTime);
+        ZonedDateTime utcDateTime = date.with(time);
+        return dateTimeFormatter.format(utcDateTime);
     }
 
-    public static String getQsoDateAsString(Qso qso) {
-        LocalDate date = qso.getRecord().getQsoDate();
-        return dateFormatter.format(date);
+    public static String getQsoDateAsSerialString(Qso qso) {
+        ZonedDateTime date = qso.getRecord().getQsoDate();
+        return serialDateFormatter.format(date);
     }
 
-    public static String getQsoTimeAsString(Qso qso) {
+    public static String getQsoDateAsDisplayString(Qso qso) {
+        ZonedDateTime date = qso.getRecord().getQsoDate();
+        return displayDateFormatter.format(date);
+    }
+
+    public static String getQsoTimeOnAsString(Qso qso) {
         LocalTime time = qso.getRecord().getTimeOn();
+        return timeFormatter.format(time);
+    }
+
+    public static String getQsoTimeOffAsString(Qso qso) {
+        LocalTime time = qso.getRecord().getTimeOff();
         return timeFormatter.format(time);
     }
 
@@ -274,14 +284,14 @@ public class KmlStationUtils {
     }
 
     public static String getSatelliteMarkerId(Qso qso) {
-        String time = getQsoTimeAsString(qso);
+        String time = getQsoTimeOnAsString(qso);
         String satelliteName = qso.getRecord().getSatName();
         String id = String.format("%s %s", time, satelliteName);
         return id.replaceAll(" ", "_");
     }
 
     public static String getSatelliteFolderName(Qso qso) {
-        String date = getQsoDateAsString(qso);
+        String date = getQsoDateAsSerialString(qso);
         String satelliteName = qso.getRecord().getSatName();
         return String.format("%s %s", date, satelliteName);
     }

@@ -1,13 +1,14 @@
 package uk.m0nom.adifproc.satellite;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 public class ApSatellites {
     private final Map<String, ApSatellite> satelliteMap;
     private final Map<String, String> satelliteDesignatorToNameMap;
 
-    private final Set<LocalDate> datesLoaded;
+    private final Set<ZonedDateTime> datesLoaded;
 
     public ApSatellites() {
         satelliteMap = new HashMap<>();
@@ -15,7 +16,7 @@ public class ApSatellites {
         datesLoaded = new TreeSet<>();
     }
 
-    public void addOrReplace(ApSatellite satellite, LocalDate date) {
+    public void addOrReplace(ApSatellite satellite, ZonedDateTime date) {
         String name = satellite.getName();
 
         if (satelliteMap.get(name) != null) {
@@ -29,7 +30,7 @@ public class ApSatellites {
         }
     }
 
-    public boolean hasDataFor(LocalDate date) {
+    public boolean hasDataFor(ZonedDateTime date) {
         return date == null || datesLoaded.contains(date);
     }
 

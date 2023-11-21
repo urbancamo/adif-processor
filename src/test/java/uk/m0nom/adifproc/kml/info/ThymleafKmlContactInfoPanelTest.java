@@ -15,8 +15,7 @@ import uk.m0nom.adifproc.qrz.QrzCallsign;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.*;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -39,7 +38,7 @@ public class ThymleafKmlContactInfoPanelTest {
         QrzCallsign fromInfo = mock(QrzCallsign.class);
         QrzCallsign toInfo = mock(QrzCallsign.class);
 
-        LocalDate qsoDate = LocalDate.of(2021,11,10);
+        ZonedDateTime qsoDate = ZonedDateTime.of(LocalDateTime.of(2021,11,10, 0, 0), ZoneId.of("UTC"));
         LocalTime qsoTime = LocalTime.of(21,24);
 
         when(fromInfo.getCall()).thenReturn("M0NOM/P");

@@ -13,8 +13,7 @@ import uk.m0nom.adifproc.satellite.SatelliteActivity;
 import uk.m0nom.adifproc.satellite.SatellitePass;
 import uk.m0nom.adifproc.satellite.SatellitePassId;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 /**
  * Draws an arc representing the track of a worked satellite for one pass through the sky based
@@ -53,7 +52,7 @@ public class KmlSatelliteTrack {
                                      GlobalCoords3D groundStation, String styleUrl, boolean shadow) {
         for (SatellitePass pass : activity.getPasses()) {
             SatellitePassId id = pass.getId();
-            LocalDate passDate = id.getDate();
+            ZonedDateTime passDate = id.getDate();
             String satName = id.getSatelliteName();
             ApSatellite satellite = activity.getSatellites().getSatellite(satName, passDate);
 
@@ -63,11 +62,11 @@ public class KmlSatelliteTrack {
                 folderId = folderId + "_shadow";
             }
             Folder passFolder = folder.createAndAddFolder().withName(folderId).withOpen(false);
-            LocalDateTime currentContact = pass.getFirstContact().minusMinutes(TRACK_LEAD_LAG_TIME_MINS-1);
+            ZonedDateTime currentContact = pass.getFirstContact().minusMinutes(TRACK_LEAD_LAG_TIME_MINS-1);
             GlobalCoords3D lastPosition = null;
             while (currentContact.isBefore(pass.getLastContact().plusMinutes(TRACK_LEAD_LAG_TIME_MINS))) {
                 // Calculate position of satellite at the time
-                GlobalCoords3D currentPosition = satellite.getPosition(groundStation, currentContact.toLocalDate(), currentContact.toLocalTime());
+                GlobalCoords3D currentPosition = satellite.getPosition(groundStation, currentContact);
                 if (lastPosition == null) {
                     addSatelliteMarker(control, passFolder, satName, passDate, currentPosition, shadow);
                 } else {
@@ -79,7 +78,7 @@ public class KmlSatelliteTrack {
         }
     }
 
-    private void addSatelliteMarker(TransformControl control,  Folder folder, String satName, LocalDate passDate, GlobalCoords3D position, boolean shadow) {
+    private void addSatelliteMarker(TransformControl control,  Folder folder, String satName, ZonedDateTime passDate, GlobalCoords3D position, boolean shadow) {
         Placemark placemark = folder.createAndAddPlacemark();
         String date = passDate.toString();
         String id = String.format("%s %s%s", satName, date, shadow ? "_shadow" : "");
@@ -107,7 +106,7 @@ public class KmlSatelliteTrack {
         }
     }
 
-    private void drawSatelliteTrack(Folder folder, LocalDateTime currentTime, GlobalCoords3D lastPosition,
+    private void drawSatelliteTrack(Folder folder, ZonedDateTime currentTime, GlobalCoords3D lastPosition,
                                     GlobalCoords3D currentPosition,
                                     String styleUrl, boolean shadow) {
         Placemark placemark = folder.createAndAddPlacemark();

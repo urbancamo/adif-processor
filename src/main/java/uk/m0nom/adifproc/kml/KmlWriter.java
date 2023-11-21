@@ -12,6 +12,7 @@ import uk.m0nom.adifproc.adif3.contacts.Qsos;
 import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.adif3.transform.TransformResults;
+import uk.m0nom.adifproc.comms.CommsLinkResult;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LatLongUtils;
 import uk.m0nom.adifproc.kml.activity.KmlLocalActivities;
@@ -94,9 +95,17 @@ public class KmlWriter {
                     Folder localActivityFolder = contactFolder.createAndAddFolder().withName("Local Activity").withOpen(false);
                     kmlLocalActivities.addLocalActivities(control, doc, localActivityFolder, qso.getTo(), activities);
                 }
-                error = kmlCommsService.createCommsLink(doc, contactFolder, commsStyleMap, qso, control, kmlStationUtils);
-                if (error != null) {
+                CommsLinkResult result = kmlCommsService.createCommsLink(doc, contactFolder, commsStyleMap, qso, control, kmlStationUtils);
+                if (result.getError() != null) {
                     results.setError(error);
+                }
+                if (result.isUnsupportedPropagationMode()) {
+                    results.addWarning(
+                            String.format("Contact with %s uses an unsupported propagation mode %s, using %s instead",
+                                    qso.getTo().getCallsign(),
+                                    result.getUnsupportedPropagation().name(),
+                                    result.getPropagation().name()
+                            ));
                 }
                 if (MaidenheadLocatorConversion.isADubiousGridSquare(qso.getRecord().getGridsquare())) {
                     results.addContactWithDubiousLocation(qso.getTo().getCallsign());

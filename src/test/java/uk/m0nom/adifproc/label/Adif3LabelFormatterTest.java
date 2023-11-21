@@ -10,8 +10,7 @@ import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.label.Adif3LabelFormatter;
 import uk.m0nom.adifproc.adif3.label.Page;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class Adif3LabelFormatterTest {
             Adif3Record rec = new Adif3Record();
             rec.setCall("EA2IF");
             rec.setQslVia("EA2 Bureau");
-            rec.setQsoDate(LocalDate.of(2021, 9, 11));
+            rec.setQsoDate(ZonedDateTime.of(LocalDateTime.of(2021, 9, 11, 0, 0), ZoneId.of("UTC")));
             rec.setTimeOn(LocalTime.of(11, 12));
             rec.setBand(Band.BAND_20m);
             rec.setMySotaRef(Sota.valueOf("G/LD-050"));

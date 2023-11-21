@@ -6,7 +6,7 @@ import lombok.Setter;
 import uk.m0nom.adifproc.callsign.CallsignUtils;
 
 import java.text.ParseException;
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class DxccEntities {
         return dxccEntityMap.get(entityCode);
     }
 
-    public Collection<DxccEntity> findEntitiesFromPrefix(String prefix, LocalDate qsoDate) {
+    public Collection<DxccEntity> findEntitiesFromPrefix(String prefix, ZonedDateTime qsoDate) {
         return dxccEntities
                 .stream()
                 .filter(entity -> entity.isValidForDate(qsoDate))
@@ -44,7 +44,7 @@ public class DxccEntities {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    private DxccEntity tryFindEntitiesForSuffix(String callsign, LocalDate qsoDate) {
+    private DxccEntity tryFindEntitiesForSuffix(String callsign, ZonedDateTime qsoDate) {
         String swappedCallsign = CallsignUtils.swapSuffixToPrefix(callsign);
         Collection<DxccEntity> matches = findEntitiesFromPrefix(swappedCallsign, qsoDate);
         switch (matches.size()) {
@@ -56,7 +56,7 @@ public class DxccEntities {
         return null;
     }
 
-    public DxccEntity findDxccEntityFromCallsign(String callsign, LocalDate qsoDate) {
+    public DxccEntity findDxccEntityFromCallsign(String callsign, ZonedDateTime qsoDate) {
         Collection<DxccEntity> matches;
         if (CallsignUtils.doesCallsignHaveNonStandardSuffix(callsign)) {
             return tryFindEntitiesForSuffix(callsign, qsoDate);
@@ -137,7 +137,7 @@ public class DxccEntities {
 
     private Collection<String> getSpecialRangEndingIn0(String inPrefixLeft) {
         Collection<String> prefixes = new ArrayList<>();
-        int left = Integer.valueOf(inPrefixLeft);
+        int left = Integer.parseInt(inPrefixLeft);
         while (left < 10) {
             prefixes.add(Integer.toString(left++));
         }
@@ -146,12 +146,8 @@ public class DxccEntities {
     }
 
     private Collection<String> getRangeOfPrefixes(String[] rangePrefixes) {
-        Collection<String> prefixes = new ArrayList<>();
         Collection<String> range = new ArrayList<>(DxccPermutations.generate(rangePrefixes[0], rangePrefixes[1]));
-        for (String rangePrefix : range) {
-            prefixes.add(rangePrefix);
-        }
-        return prefixes;
+        return new ArrayList<>(range);
     }
 
     private DxccEntity checkForLongestMatchingPrefix(String callsign, Map<String, DxccEntity> prefixesToCheck) {

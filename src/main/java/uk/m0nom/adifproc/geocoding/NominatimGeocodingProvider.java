@@ -95,14 +95,14 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
         if (timeDiff < DELAY) {
             long pause = DELAY - timeDiff;
             // Ensure at least a second between calls to comply with fair usage policy
-            logger.info(String.format("Pausing for a %d ms to comply with NominatimGeocodingProvider fair usage policy", pause));
+            //logger.info(String.format("Pausing for a %d ms to comply with NominatimGeocodingProvider fair usage policy", pause));
             Thread.sleep(pause);
         }
         logger.info(String.format("Searching for a location for %s based on address search string: %s", callsign, searchString));
         List<Address> addressMatches = new JsonNominatimClient(HttpClientBuilder.create().build(), "mark@wickensonline.co.uk").search(StringUtils.trim(searchString));
         lastTimestamp = java.time.Instant.now().toEpochMilli();
 
-        if (addressMatches.size() > 0) {
+        if (!addressMatches.isEmpty()) {
             Address match = addressMatches.get(0);
             LocationAccuracy locationAccuracy = getLocationAccuracy(accuracy);
             return new GlobalCoords3D(match.getLatitude(), match.getLongitude(), LocationSource.GEOCODING, locationAccuracy);
