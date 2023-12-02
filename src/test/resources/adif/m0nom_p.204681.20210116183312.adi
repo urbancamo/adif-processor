@@ -1405,7 +1405,7 @@ QRZLogbook download for m0nom
 <lat:11>S000 00.000
 <lon:11>W000 00.000
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -1571,7 +1571,7 @@ QRZLogbook download for m0nom
 <lat:11>N053 49.879
 <lon:11>W002 35.890
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -1863,7 +1863,7 @@ QRZLogbook download for m0nom
 <lat:11>N054 03.700
 <lon:11>W002 47.600
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -3935,7 +3935,7 @@ QRZLogbook download for m0nom
 <lat:11>S000 00.000
 <lon:11>W000 00.000
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -4120,7 +4120,7 @@ QRZLogbook download for m0nom
 <lat:11>N054 03.700
 <lon:11>W002 47.600
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -4193,7 +4193,7 @@ QRZLogbook download for m0nom
 <lat:11>S000 00.000
 <lon:11>W000 00.000
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -4648,7 +4648,7 @@ QRZLogbook download for m0nom
 <lat:11>N053 49.879
 <lon:11>W002 35.890
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -4835,7 +4835,7 @@ QRZLogbook download for m0nom
 <lat:11>N054 03.700
 <lon:11>W002 47.600
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -6130,7 +6130,7 @@ QRZLogbook download for m0nom
 <lat:11>N051 56.848
 <lon:11>W000 32.209
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -7380,7 +7380,7 @@ QRZLogbook download for m0nom
 <lat:11>S000 00.000
 <lon:11>W000 00.000
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -7451,7 +7451,7 @@ QRZLogbook download for m0nom
 <lat:11>N054 03.700
 <lon:11>W002 47.600
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -10215,7 +10215,7 @@ QRZLogbook download for m0nom
 <lat:11>N053 49.879
 <lon:11>W002 35.890
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -10406,7 +10406,7 @@ QRZLogbook download for m0nom
 <lat:11>N054 03.700
 <lon:11>W002 47.600
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -11271,7 +11271,7 @@ QRZLogbook download for m0nom
 <lat:11>N053 49.879
 <lon:11>W002 35.890
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -11421,7 +11421,7 @@ QRZLogbook download for m0nom
 <lat:11>S000 00.000
 <lon:11>W000 00.000
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -12316,7 +12316,7 @@ QRZLogbook download for m0nom
 <lat:11>S000 00.000
 <lon:11>W000 00.000
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -12428,7 +12428,7 @@ QRZLogbook download for m0nom
 <lat:11>N054 03.700
 <lon:11>W002 47.600
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -13206,7 +13206,7 @@ QRZLogbook download for m0nom
 <lat:11>S000 00.000
 <lon:11>W000 00.000
 <lotw_qsl_sent:1>Y
-<mode:4>DATA
+<mode:12>DIGITALVOICE <submode:4>C4FM
 <my_city:10>Windermere
 <my_country:7>England
 <my_cq_zone:2>14
@@ -115107,7 +115107,7 @@ QRZLogbook download for m0nom
 <qrzcom_qso_upload_status:1>Y
 <qsl_rcvd:1>N
 <qsl_sent:1>N
-<qsl_via:33>VIA USKA QSL- BüRO, DIRECT, E-QSL
+<qsl_via:33>VIA USKA QSL- Bï¿½RO, DIRECT, E-QSL
 <qslmsg:38>Thx for QSO from Gummer's How G/LD-050
 <qso_date:8>20191012
 <qso_date_off:8>20191012
@@ -125125,7 +125125,7 @@ QRZLogbook download for m0nom
 <qslmsg:49>Thx for QSO from Lambrigg Fell, G/LD-046. KX3 10w
 <qso_date:8>20200528
 <qso_date_off:8>20200528
-<qth:5>RANÓN
+<qth:5>RANï¿½N
 <rst_rcvd:2>55
 <rst_sent:2>59
 <station_callsign:7>M0NOM/P
