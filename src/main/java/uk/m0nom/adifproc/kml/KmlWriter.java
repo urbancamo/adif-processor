@@ -123,11 +123,9 @@ public class KmlWriter {
                 kmlSatelliteTrack.addSatelliteTracks(control, doc, results.getSatelliteActivity(), coordinatesWithSourceAccuracy);
             }
             try {
-                String tmpPathname = pathname + ".tmp";
                 logger.info(String.format("Writing KML to: %s", pathname));
-                File file = new File(tmpPathname);
+                File file = new File(pathname);
                 kml.marshal(file);
-                replaceNameSpaces(tmpPathname, pathname, results);
                 //return ZipUtils.compress(pathname, "kmz");
                 return pathname;
             } catch (IOException e) {
@@ -138,18 +136,4 @@ public class KmlWriter {
         return "";
     }
 
-    private void replaceNameSpaces(String inPath, String outPath, TransformResults results) {
-        try (
-                BufferedWriter writer = Files.newBufferedWriter(Path.of(outPath), StandardCharsets.UTF_8);
-                BufferedReader reader = Files.newBufferedReader(Path.of(inPath), StandardCharsets.UTF_8);) {
-            while (reader.ready()) {
-                String line = reader.readLine();
-                String newLine = line.replaceAll("ns2:", "").replace("<kml xmlns:ns2=\"http://www.opengis.net/kml/2.2\" xmlns:ns3=\"http://www.w3.org/2005/Atom\" xmlns:ns4=\"urn:oasis:names:tc:ciq:xsdschema:xAL:2.0\" xmlns:ns5=\"http://www.google.com/kml/ext/2.2\">", "<kml>");
-                writer.write(newLine);
-            }
-        } catch (IOException e) {
-            results.setError(e.getMessage());
-            e.printStackTrace();
-        }
-    }
 }

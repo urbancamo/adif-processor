@@ -6,7 +6,7 @@ import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.activity.CsvActivityReader;
 
 /**
- * Railways on the Air CSV reader. I created the CSV file from the https://rota.barac.org.uk/stations stations
+ * Railways on the Air CSV reader. I created the CSV file from the <a href="https://rota.barac.org.uk/stations">...</a> stations
  * list for 2021. It had a couple of additional entries following the 2021 contest based on the stations we contacted
  * as GB4LHR.
  */

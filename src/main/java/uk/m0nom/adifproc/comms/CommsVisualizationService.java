@@ -42,9 +42,10 @@ public class CommsVisualizationService implements CommsLinkGenerator {
                 case TROPOSPHERIC_DUCTING:
                     result = new TroposphericDuctingPropagation().getCommunicationsLink(control, startGc, endGc, rec);
                     break;
+                case F2_REFLECTION:
+                    break;
                 default:
                     unsupportedPropagationMode = true;
-                    overridenPropagationMode = rec.getPropMode();
                     break;
             }
         }

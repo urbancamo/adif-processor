@@ -10,7 +10,6 @@ public class AdifLatLongParser  implements LocationParser, LocationFormatter{
     private final Pattern pattern;
     private final String adifFieldPrefix;
 
-    private final String formatString = "<%sLAT:11>%s%03.0f %06.3f<%sLON:11>%s%03.0f %06.3f";
     public AdifLatLongParser(String prefix) {
         String adifFieldPrefix1;
         adifFieldPrefix1 = "";
@@ -51,6 +50,7 @@ public class AdifLatLongParser  implements LocationParser, LocationFormatter{
 
     @Override
     public String format(GlobalCoordinates coords) {
+        String formatString = "<%sLAT:11>%s%03.0f %06.3f<%sLON:11>%s%03.0f %06.3f";
         return String.format(formatString,
                 adifFieldPrefix,
                 LatLongUtils.getNorthSouth(coords),

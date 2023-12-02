@@ -10,11 +10,9 @@ import uk.m0nom.adifproc.location.ToLocationDeterminer;
 
 public class WwffFieldParser implements CommentFieldParser {
     private final ToLocationDeterminer toLocationDeterminer;
-    private final ActivityDatabaseService activities;
 
     public WwffFieldParser(ToLocationDeterminer toLocationDeterminer, ActivityDatabaseService activities) {
         this.toLocationDeterminer = toLocationDeterminer;
-        this.activities = activities;
     }
 
     @Override

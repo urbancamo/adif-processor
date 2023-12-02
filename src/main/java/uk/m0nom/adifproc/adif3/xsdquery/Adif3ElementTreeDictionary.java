@@ -10,7 +10,7 @@ public class Adif3ElementTreeDictionary implements  Adif3ElementDictionary {
 
     public Adif3ElementTreeDictionary() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("adif/adx312generic.xsd");
-        Adif3Schema schema = new Adif3SchemaLoader().loadAdif3Schema(inputStream);
+        Adif3Schema schema = Adif3SchemaLoader.loadAdif3Schema(inputStream);
         Map<String, Adif3Field> dictionary = new HashMap<>();
 
         assert schema != null;

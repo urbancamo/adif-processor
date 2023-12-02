@@ -1,26 +1,53 @@
 package org.marsik.ham.adif.enums;
 
-import org.marsik.ham.adif.enums.AdifEnumCode;
-import org.marsik.ham.adif.enums.Mode;
+import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
 public enum Submode implements AdifEnumCode {
+    EIGHT_PSK125("8PSK125", Mode.PSK),
+    EIGHT_PSK125F("8PSK125F", Mode.PSK),
+    EIGHT_PSK125FL("8PSK125FL", Mode.PSK),
+    EIGHT_PSK250("8PSK250", Mode.PSK),
+    EIGHT_PSK250F("8PSK250F", Mode.PSK),
+    EIGHT_PSK250FL("8PSK250FL", Mode.PSK),
+    EIGHT_PSK500("8PSK500", Mode.PSK),
+    EIGHT_PSK500F("8PSK500F", Mode.PSK),
+    EIGHT_PSK1000("8PSK1000", Mode.PSK),
+    EIGHT_PSK1000F("8PSK1000F", Mode.PSK),
+    EIGHT_PSK1200F("8PSK1200F", Mode.PSK),
     AMTORFEC("AMTORFEC", Mode.TOR),
     ASCI("ASCI", Mode.RTTY),
+    C4FM("C4FM", Mode.DIGITALVOICE),
     CHIP64("CHIP64", Mode.CHIP),
     CHIP128("CHIP128", Mode.CHIP),
+    DMR("DMR", Mode.DIGITALVOICE),
+    DOM_M("DOM-M", Mode.DOMINO),
+    DOM4("DOM4", Mode.DOMINO),
+    DOM5("DOM5", Mode.DOMINO),
+    DOM8("DOM8", Mode.DOMINO),
+    DOM11("DOM11", Mode.DOMINO),
+    DOM16("DOM16", Mode.DOMINO),
+    DOM22("DOM22", Mode.DOMINO),
+    DOM44("DOM44", Mode.DOMINO),
+    DOM88("DOM88", Mode.DOMINO),
     DOMINOEX("DOMINOEX", Mode.DOMINO),
     DOMINOF("DOMINOF", Mode.DOMINO),
+    DSTAR("DSTAR", Mode.DIGITALVOICE),
     FMHELL("FMHELL", Mode.HELL),
+    FREEDV("FREEDV", Mode.DIGITALVOICE),
     FSK31("FSK31", Mode.PSK),
     FSKHELL("FSKHELL", Mode.HELL),
     FSQCALL("FSQCALL", Mode.MFSK),
+    FST4("FST4", Mode.MFSK),
+    FST4W("FST4W", Mode.MFSK),
     FT4("FT4", Mode.MFSK),
     GTOR("GTOR", Mode.TOR),
     HELL80("HELL80", Mode.HELL),
+    HELLX5("HELLX5", Mode.HELL),
+    HELLX9("HELLX9", Mode.HELL),
     HFSK("HFSK", Mode.HELL),
     ISCAT_A("ISCAT-A", Mode.ISCAT),
     ISCAT_B("ISCAT-B", Mode.ISCAT),
@@ -54,7 +81,9 @@ public enum Submode implements AdifEnumCode {
     JT65B2("JT65B2", Mode.JT65),
     JT65C("JT65C", Mode.JT65),
     JT65C2("JT65C2", Mode.JT65),
+    JTMS("JTMS", Mode.MFSK),
     LSB("LSB", Mode.SSB),
+    M17("M17", Mode.DIGITALVOICE),
     MFSK4("MFSK4", Mode.MFSK),
     MFSK8("MFSK8", Mode.MFSK),
     MFSK11("MFSK11", Mode.MFSK),
@@ -63,7 +92,10 @@ public enum Submode implements AdifEnumCode {
     MFSK31("MFSK31", Mode.MFSK),
     MFSK32("MFSK32", Mode.MFSK),
     MFSK64("MFSK64", Mode.MFSK),
+    MFSK64L("MFSK64L", Mode.MFSK),
     MFSK128("MFSK128", Mode.MFSK),
+    MFSK128L("MFSK128L", Mode.MFSK),
+    NAVTEX("NAVTEX", Mode.TOR),
     OLIVIA_4_125("OLIVIA 4/125", Mode.OLIVIA),
     OLIVIA_4_250("OLIVIA 4/250", Mode.OLIVIA),
     OLIVIA_8_250("OLIVIA 8/250", Mode.OLIVIA),
@@ -82,27 +114,78 @@ public enum Submode implements AdifEnumCode {
     PSK31("PSK31", Mode.PSK),
     PSK63("PSK63", Mode.PSK),
     PSK63F("PSK63F", Mode.PSK),
+    PSK63RC10("PSK63RC10", Mode.PSK),
+    PSK63RC20("PSK63RC20", Mode.PSK),
+    PSK63RC32("PSK63RC32", Mode.PSK),
+    PSK63RC4("PSK63RC4", Mode.PSK),
+    PSK63RC5("PSK63RC5", Mode.PSK),
     PSK125("PSK125", Mode.PSK),
+    PSK125RC10("PSK125RC10", Mode.PSK),
+    PSK125RC12("PSK125RC12", Mode.PSK),
+    PSK125RC16("PSK125RC16", Mode.PSK),
+    PSK125RC4("PSK125RC4", Mode.PSK),
+    PSK125RC5("PSK125RC5", Mode.PSK),
     PSK250("PSK250", Mode.PSK),
+    PSK250RC2("PSK250RC2", Mode.PSK),
+    PSK250RC3("PSK250RC3", Mode.PSK),
+    PSK250RC5("PSK250RC5", Mode.PSK),
+    PSK250RC6("PSK250RC6", Mode.PSK),
+    PSK250RC7("PSK250RC7", Mode.PSK),
     PSK500("PSK500", Mode.PSK),
+    PSK500RC2("PSK500RC2", Mode.PSK),
+    PSK500RC3("PSK500RC3", Mode.PSK),
+    PSK500RC4("PSK500RC4", Mode.PSK),
+    PSK800RC2("PSK800RC2", Mode.PSK),
     PSK1000("PSK1000", Mode.PSK),
+    PSK1000RC2("PSK1000RC2", Mode.PSK),
     PSKAM10("PSKAM10", Mode.PSK),
     PSKAM31("PSKAM31", Mode.PSK),
     PSKAM50("PSKAM50", Mode.PSK),
     PSKFEC31("PSKFEC31", Mode.PSK),
     PSKHELL("PSKHELL", Mode.HELL),
     QPSK31("QPSK31", Mode.PSK),
+    Q65("Q65", Mode.MFSK),
     QPSK63("QPSK63", Mode.PSK),
     QPSK125("QPSK125", Mode.PSK),
     QPSK250("QPSK250", Mode.PSK),
     QPSK500("QPSK500", Mode.PSK),
+    QRA64A("QRA64A", Mode.QRA64),
+    QRA64B("QRA64B", Mode.QRA64),
+    QRA64C("QRA64C", Mode.QRA64),
+    QRA64D("QRA64D", Mode.QRA64),
+    QRA64E("QRA64E", Mode.QRA64),
     ROS_EME("ROS-EME", Mode.ROS),
     ROS_HF("ROS-HF", Mode.ROS),
     ROS_MF("ROS-MF", Mode.ROS),
+    SIM31("SIM31", Mode.PSK),
+    SITORB("SITORB", Mode.TOR),
+    SLOWHELL("SLOWHELL", Mode.HELL),
+    THOR_M("THOR-M", Mode.THOR),
+    THOR4("THOR4", Mode.THOR),
+    THOR5("THOR5", Mode.THOR),
+    THOR8("THOR8", Mode.THOR),
+    THOR11("THOR11", Mode.THOR),
+    THOR16("THOR16", Mode.THOR),
+    THOR22("THOR22", Mode.THOR),
+    THOR25X4("THOR25X4", Mode.THOR),
+    THOR50X1("THOR50X1", Mode.THOR),
+    THOR50X2("THOR50X2", Mode.THOR),
+    THOR100("THOR100", Mode.THOR),
     THRBX("THRBX", Mode.THRB),
-    USB("USB", Mode.SSB);
+    THRBX1("THRBX1", Mode.THRB),
+    THRBX2("THRBX2", Mode.THRB),
+    THRBX4("THRBX4", Mode.THRB),
+    THROB1("THROB1", Mode.THRB),
+    THROB2("THROB2", Mode.THRB),
+    THROB4("THROB4", Mode.THRB),
+    USB("USB", Mode.SSB),
+    VARA_HF("VARA HF", Mode.DYNAMIC),
+    VARA_SATELLITE("VARA SATELLITE", Mode.DYNAMIC),
+    VARA_FM_1200("VARA FM 1200", Mode.DYNAMIC),
+    VARA_FM_9600("VARA FM 9600", Mode.DYNAMIC);
 
     private final String code;
+    @Getter
     private final Mode mode;
 
     Submode(String code, Mode mode) {
@@ -113,10 +196,6 @@ public enum Submode implements AdifEnumCode {
     @Override
     public String adifCode() {
         return code;
-    }
-
-    public Mode getMode() {
-        return mode;
     }
 
     private final static Map<String, Submode> reverse = new HashMap<>();

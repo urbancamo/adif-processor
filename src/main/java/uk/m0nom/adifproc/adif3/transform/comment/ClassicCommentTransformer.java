@@ -67,7 +67,7 @@ public class ClassicCommentTransformer implements CommentTransformer {
         Map<String, String> tokens = tokenizer.tokenize(comment);
 
         // If this is a 'regular comment' then don't tokenize
-        if (StringUtils.isNotEmpty(comment) && tokens.size() == 0) {
+        if (StringUtils.isNotEmpty(comment) && tokens.isEmpty()) {
             unmapped.put(comment, "");
             return;
         }

@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 /**
  * The original Castles on the Air data was a spreadsheet split per country. Each country used a different
- * standard for defining a castle location and sometimes they even varied per sheet. This code was the
+ * standard for defining a castle location, and sometimes they even varied per sheet. This code was the
  * original user of the coords package to handle the multitude of location formats used. In the end the
  * coords code was reused in the Coordinate Converter.
  */

@@ -12,7 +12,7 @@ import java.util.List;
  * Models tropospheric ducting which usual occur when there is a temperature inversion.
  * The signal gets 'trapped' in a 'duct' and travels in the duct for an extended distance
  * before being picked up by the contacted station.
- *
+ * <p>
  * Duct heights and base altitudes vary in reality but it is difficult to predict the exact
  * ducting effect so this is an approximation.
  */

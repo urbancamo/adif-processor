@@ -25,7 +25,7 @@ public class ColonTokenizer implements CommentTokenizer {
         while (tokenizer.hasMoreTokens()) {
             String key;
             String token = tokenizer.nextToken().trim();
-            if ("".equals(previousToken)) {
+            if (previousToken.isEmpty()) {
                 key = token;
                 if (tokenizer.hasMoreTokens()) {
                     token = tokenizer.nextToken().trim();

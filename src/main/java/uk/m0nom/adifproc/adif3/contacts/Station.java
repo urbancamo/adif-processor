@@ -62,7 +62,7 @@ public class Station {
         return activities.stream().filter(activity -> activity.getType() == type).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public boolean hasActivity() { return activities.size() > 0; }
+    public boolean hasActivity() { return !activities.isEmpty(); }
 
     public boolean doingSameActivityAs(Station other) {
         return activities.stream().anyMatch(a -> other.isDoing(a.getType()));

@@ -58,15 +58,19 @@ public class Ionosphere {
             mode = PropagationModePredictor.predictPropagationMode(frequencyInKhz, distanceInKm);
         }
         if (mode != null) {
+            Map<String, IonosphericLayer> layers;
+            IonosphericLayer bounceLayer;
+            double altInKm = 0L;
+
             switch (mode) {
                 case F2_REFLECTION:
-                    Map<String, IonosphericLayer> layers = getLayerForTimeOfDay(timeOfDay);
-                    IonosphericLayer bounceLayer = layers.get("F2");
+                    layers = getLayerForTimeOfDay(timeOfDay);
+                    bounceLayer = layers.get("F2");
 
                     // Here we take into account that higher frequency signals tend to bounce at a lower height in the
                     // atmosphere than higher frequency signals
                     double altInMetres = calculateBounceHeight(frequencyInKhz, bounceLayer);
-                    double altInKm = altInMetres / 1000.0;
+                    altInKm = altInMetres / 1000.0;
 
                     // We initially calculate the distance across the earth of propagation based on the takeoff angle
                     // this is then used to determine the number of hops required
@@ -98,7 +102,7 @@ public class Ionosphere {
             }
         }
 
-        if (mode == null || bounces.size() == 0) {
+        if (mode == null || bounces.isEmpty()) {
             // Single hop with nominal altitude that increases as the distance increases
             // this provides a very rough approximation of the way signals curve to follow the earth
             double adjustAlt = Math.max(myAltitude, theirAltitude);

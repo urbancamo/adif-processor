@@ -55,7 +55,7 @@ public class JackOfAllTradesResultCalculator implements ContestResultCalculator 
         modePointsMap.put(Mode.CLO, 1);
         modePointsMap.put(Mode.CONTESTI, 1);
         modePointsMap.put(Mode.CW, 1);
-        modePointsMap.put(Mode.DATA, 3);
+        //modePointsMap.put(Mode.DATA, 3);
         modePointsMap.put(Mode.DIGITALVOICE, 6);
         modePointsMap.put(Mode.DOMINO, 1);
         modePointsMap.put(Mode.DSTAR, 6);

@@ -53,13 +53,10 @@ public class Page {
 
     public static void dump(Collection<Page> pages) {
        List<Collection<String>> strs = pages.stream().map(Page::dumpPage).collect(Collectors.toList());
-       Iterator<Collection<String>> i = strs.iterator();
-       while (i.hasNext()) {
-           Collection<String> stringCollection = i.next();
-           Iterator<String> i2 = stringCollection.iterator();
-           while (i2.hasNext()) {
-               System.out.println(i2.next());
-           }
-       }
+        for (Collection<String> stringCollection : strs) {
+            for (String s : stringCollection) {
+                System.out.println(s);
+            }
+        }
     }
 }

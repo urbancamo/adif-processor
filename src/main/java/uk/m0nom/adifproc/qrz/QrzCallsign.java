@@ -2,9 +2,11 @@ package uk.m0nom.adifproc.qrz;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Getter;
 
 @XmlRootElement(name = "Callsign", namespace = QrzNamespace.URI)
 public class QrzCallsign {
+    @Getter
     private String call; // callsign
     private String xref; // Cross reference: the query callsign that returned this record
     private String aliases; // Other callsigns that resolve to this record
@@ -57,10 +59,6 @@ public class QrzCallsign {
     private String attn; // Attention address line, this line should be prepended to the address
     private String nickname; // A different or shortened name used on the air
     private String name_fmt; // Combined full name and nickname in the format used by QRZ. This format is subject to change.
-
-    public String getCall() {
-        return call;
-    }
 
     @XmlElement(name="call", namespace = QrzNamespace.URI)
     public void setCall(String call) {

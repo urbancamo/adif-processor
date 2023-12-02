@@ -1,5 +1,6 @@
 package uk.m0nom.adifproc.satellite;
 
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.satellite.norad.NoradSatellite;
 import uk.m0nom.adifproc.satellite.norad.NoradSatelliteOrbitReader;
@@ -25,6 +26,7 @@ public class ApSatelliteService {
 
     private final ApSatellites satellites;
 
+    @Getter
     private final ZonedDateTime earliestDataAvailable = ZonedDateTime.of(LocalDateTime.of(2022, 2, 23, 0, 0), ZoneId.of("UTC"));
 
     public ApSatelliteService(NoradSatelliteOrbitReader noradSatelliteOrbitReader, SatelliteNameAliases satelliteNameAliases) {
@@ -81,5 +83,4 @@ public class ApSatelliteService {
         return satellites.getSatelliteCount();
     }
 
-    public ZonedDateTime getEarliestDataAvailable() { return earliestDataAvailable; }
 }
