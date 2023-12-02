@@ -28,7 +28,7 @@ public class Adif3Type implements Comparable<Adif3Type> {
         }
 
         if (minInclusive != null || maxInclusive != null) {
-            Integer intVal = Integer.parseInt(value);
+            int intVal = Integer.parseInt(value);
             if (minInclusive != null) {
                 result.setWithinMin(intVal >= minInclusive);
             }

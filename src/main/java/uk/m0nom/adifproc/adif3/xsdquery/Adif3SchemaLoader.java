@@ -70,7 +70,7 @@ public class Adif3SchemaLoader {
         setFieldsFromNodeList(schema, nodeList);
     }
 
-    private static List<String> UNSUPPORTED_FIELDS = Arrays.asList("APP", "USERDEF");
+    private static final List<String> UNSUPPORTED_FIELDS = Arrays.asList("APP", "USERDEF");
 
     private static void setFieldsFromNodeList(Adif3Schema schema, NodeList nodes) {
         Set<Adif3Field> elements = new HashSet<>();
@@ -148,10 +148,8 @@ public class Adif3SchemaLoader {
 
         for (int i = 0; i < nodes.getLength(); i++) {
             Node child = nodes.item(i);
-            switch (child.getNodeName()) {
-                case "xs:restriction":
-                    parseTypeNodeRestriction(type, child);
-                    break;
+            if (child.getNodeName().equals("xs:restriction")) {
+                parseTypeNodeRestriction(type, child);
             }
         }
         return type;
@@ -162,7 +160,7 @@ public class Adif3SchemaLoader {
         Node baseType = attributes.getNamedItem("base");
         if (baseType != null) {
             type.setBaseType(baseType.getNodeValue());
-            if (node.getChildNodes() != null && node.getChildNodes().getLength() > 0) {
+            if (node.getChildNodes().getLength() > 0) {
                 parseTypeNodeRestrictionOptions(type, node.getChildNodes());
             }
         }

@@ -17,11 +17,11 @@ import java.util.logging.Logger;
 
 /**
  * Long Path HF Propagation Visualization.
- *
+ * <p>
  * We do a short path computation, take the 180-degree angle and then fire off the signal in that direction, with
  * a short-ish hop distance until we get converge on the target station.
  * Then we add a hop to cover the difference and recalculate.
- *
+ * <p>
  * This is the longest path long path and doesn't take into account any antenna directionality as it stands
  */
 public class LongPath implements CommsLinkGenerator {

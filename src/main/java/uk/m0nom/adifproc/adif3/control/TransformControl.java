@@ -24,6 +24,7 @@ import java.util.Map;
 public class TransformControl {
 
     private long runTimestamp;
+    private String callsign;
     private String location;
 
     private String pathname;

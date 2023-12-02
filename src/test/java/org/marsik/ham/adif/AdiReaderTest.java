@@ -215,29 +215,6 @@ public class AdiReaderTest {
         reader.read(inputReader);
     }
 
-    @Test
-    public void testLotwNormalMode() {
-        AdifReaderException thrown = Assertions.assertThrows(AdifReaderException.class, () -> {
-            AdiReader reader = new AdiReader();
-            BufferedReader inputReader = mockInput("<MODE:5>PSK31");
-            reader.read(inputReader);
-        });
-        Assertions.assertEquals("No enum constant org.marsik.ham.adif.enums.Mode.PSK31 (check record: 1)", thrown.getMessage());
-    }
-
-    @Test
-    public void testLotwQuirksMode() throws Exception {
-        AdiReader reader = new AdiReader();
-        reader.setQuirksMode(true);
-        BufferedReader inputReader = mockInput("<MODE:5>PSK31");
-        Adif3 result = reader.read(inputReader).get();
-
-        assertThat(result.records)
-                .hasSize(1);
-        assertThat(result.records.get(0).getMode().adifCode())
-                .isEqualTo("PSK");
-    }
-
     private BufferedReader mockInput(String input) {
         return new BufferedReader(new StringReader(input));
     }

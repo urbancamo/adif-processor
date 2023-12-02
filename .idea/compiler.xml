@@ -10,9 +10,6 @@
         <module name="adif-processor" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="adif-processor" target="11" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
