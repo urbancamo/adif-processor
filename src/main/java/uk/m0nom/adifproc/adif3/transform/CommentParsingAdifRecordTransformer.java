@@ -21,6 +21,7 @@ import uk.m0nom.adifproc.adif3.transform.comment.CommentTransformer;
 import uk.m0nom.adifproc.adif3.transform.comment.FieldParserCommentTransformer;
 import uk.m0nom.adifproc.adif3.transform.comment.SchemaBasedCommentTransformer;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
+import uk.m0nom.adifproc.coords.LocationAccuracy;
 import uk.m0nom.adifproc.coords.LocationSource;
 import uk.m0nom.adifproc.geocoding.GeocodingProvider;
 import uk.m0nom.adifproc.geocoding.GeocodingResult;
@@ -211,6 +212,17 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         return rec.getCoordinates() == null || MaidenheadLocatorConversion.isADubiousGridSquare(rec.getGridsquare());
     }
 
+    private boolean hasValidCoords(Adif3Record rec) {
+        return rec.getCoordinates() != null;
+    }
+
+    private void setTheirLocationFromSuppliedCoords(Qso qso, Adif3Record rec) {
+        qso.getTo().setCoordinates(new GlobalCoords3D(rec.getCoordinates(), LocationSource.FROM_ADIF, LocationAccuracy.LAT_LONG));
+        if (MaidenheadLocatorConversion.isEmptyOrInvalid(rec.getGridsquare())) {
+            rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(rec.getCoordinates()));
+        }
+    }
+
     private void setTheirLocationFromGeocodedAddress(Qso qso, QrzCallsign theirQrzData) {
         Adif3Record rec = qso.getRecord();
         try {
@@ -291,11 +303,14 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             setTheirLocationFromGeocodedAddress(qso, theirQrzData);
         }
 
+        if (qso.getTo().getCoordinates() == null && hasValidCoords(rec)) {
+            setTheirLocationFromSuppliedCoords(qso, rec);
+        }
         improveAccuracyOfMyLocationIfRequired(qso);
 
         // Look to see if there is anything in the SIG/SIGINFO fields
         if (StringUtils.isNotBlank(rec.getSig())) {
-            processSig(qso, unmapped);
+            processSig(qso);
         }
 
         if (control.isStripComment()) {
@@ -400,7 +415,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
     }
 
-    private void processSig(Qso qso, Map<String, String> unmapped) {
+    private void processSig(Qso qso) {
         Adif3Record rec = qso.getRecord();
         String activityType = rec.getSig().toUpperCase();
         String activityLocation = rec.getSigInfo().toUpperCase();
