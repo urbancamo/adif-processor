@@ -49,6 +49,11 @@ public class SchemaBasedCommentTransformer implements CommentTransformer {
             // Look up key which is the ADIF field name
             Adif3Field field = schema.getField(fieldName);
             if (field != null) {
+                // Clean up the value if it contains commas to make sure there are no spaces after the commas
+                // this is important for POTA_REFs
+                if (field.getName().equals("POTA_REF")) {
+                    fieldValue = fieldValue.replace(", ", ",");
+                }
                 // Name matches an ADIF field, check the value is valid
                 Adif3FieldValidationResult validationResult = field.isValid(fieldValue);
                 if (validationResult.isValid()){
