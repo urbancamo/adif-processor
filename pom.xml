@@ -22,7 +22,7 @@
 
   <groupId>uk.m0nom</groupId>
   <artifactId>adif-processor</artifactId>
-  <version>1.1.34-SNAPSHOT</version>
+  <version>1.1.35</version>
 
   <name>ADIF Processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
@@ -352,6 +352,14 @@
                 <goals>
                   <goal>sign</goal>
                 </goals>
+                <configuration>
+                  <!-- Prevent gpg from using pinentry programs. Fixes: gpg: signing
+                      failed: Inappropriate ioctl for device -->
+                  <gpgArguments>
+                    <arg>--pinentry-mode</arg>
+                    <arg>loopback</arg>
+                  </gpgArguments>
+                </configuration>
               </execution>
             </executions>
           </plugin>
