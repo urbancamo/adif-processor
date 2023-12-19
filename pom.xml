@@ -22,7 +22,7 @@
 
   <groupId>uk.m0nom</groupId>
   <artifactId>adif-processor</artifactId>
-  <version>1.1.39-SNAPSHOT</version>
+  <version>1.1.39</version>
 
   <name>ADIF Processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
@@ -64,6 +64,20 @@
   </distributionManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.4.8</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>1.4.8</version>
+      <scope>compile</scope>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
     <dependency>
       <groupId>org.yaml</groupId>
@@ -214,7 +228,7 @@
     <dependency>
       <groupId>org.thymeleaf</groupId>
       <artifactId>thymeleaf</artifactId>
-      <version>3.1.1.RELEASE</version>
+      <version>3.1.2.RELEASE</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-gpg-plugin -->
