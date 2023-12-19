@@ -22,7 +22,7 @@
 
   <groupId>uk.m0nom</groupId>
   <artifactId>adif-processor</artifactId>
-  <version>1.1.37</version>
+  <version>1.1.38</version>
 
   <name>ADIF Processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
@@ -126,20 +126,20 @@
     <dependency>
       <groupId>jakarta.xml.bind</groupId>
       <artifactId>jakarta.xml.bind-api</artifactId>
-      <version>4.0.0</version>
+      <version>4.0.1</version>
     </dependency>
 
     <!-- JAXB v3.0.2 reference implementation (curiously with com.sun coordinates) -->
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
-      <version>4.0.4</version>
+      <version>4.0.1</version>
     </dependency>
 
     <dependency>
       <groupId>org.glassfish.jaxb</groupId>
       <artifactId>jaxb-runtime</artifactId>
-      <version>4.0.3</version>
+      <version>4.0.1</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
