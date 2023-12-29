@@ -39,6 +39,7 @@ public class IconResource {
     public final static String LOTA_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/marina.png";
     public final static String ROTA_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/rail.png";
     public final static String IOTA_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/info.png";
+    public final static String BOTA_DEFAULT_ICON_URL = "http://maps.google.com/mapfiles/kml/shapes/caution.png";
     public static final String CW_DEFAULT_ICON_URL = "";
 
     private final String name;
