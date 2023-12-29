@@ -87,12 +87,12 @@ public class Adif3Transformer {
         if (theirCallsignIssues > 0) {
             results.setError(String.format("CALL not defined for %d record(s), first error on %s", theirCallsignIssues, additionalInfo));
         } else if (myCallsignIssues > 0) {
-            results.setError(String.format("STATION_CALLSIGN or OPERATOR not defined, enter it on the form above as 'Your Callsign'"));
+            results.setError("STATION_CALLSIGN or OPERATOR not defined, enter it on the form above as 'Your Callsign'");
         }
 
         AdifHeader header = new AdifHeader();
         header.setProgramId("M0NOM ADIF Processor");
-        header.setProgramVersion("1.0");
+        header.setProgramVersion("1.2");
         log.setHeader(header);
 
         return qsos;

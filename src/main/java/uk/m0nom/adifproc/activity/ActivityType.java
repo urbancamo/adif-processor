@@ -16,7 +16,8 @@ public enum ActivityType {
     LOTA("LOTA", "Lighthouses on the Air"),
     ROTA("ROTA", "Railways on the Air"),
     IOTA("IOTA", "Islands on the Air"),
-    GMA("GMA", "Global Mountain Activity");
+    GMA("GMA", "Global Mountain Activity"),
+    BOTA("BOTA", "Bunkers on the Air");
 
     private final String activityName;
     private final String activityDescription;

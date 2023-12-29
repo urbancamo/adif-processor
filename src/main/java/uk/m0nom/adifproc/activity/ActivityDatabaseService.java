@@ -1,6 +1,7 @@
 package uk.m0nom.adifproc.activity;
 
 import org.springframework.stereotype.Service;
+import uk.m0nom.adifproc.activity.bota.BotaCsvReader;
 import uk.m0nom.adifproc.activity.cota.CotaCsvReader;
 import uk.m0nom.adifproc.activity.gma.GmaCsvReader;
 import uk.m0nom.adifproc.activity.hema.HemaCsvReader;
@@ -46,6 +47,7 @@ public class ActivityDatabaseService {
         readers.put(ActivityType.LOTA, new LotaCsvReader("lota/lighthouses.csv"));
         readers.put(ActivityType.ROTA, new RotaCsvReader("rota/2022-rota.csv"));
         readers.put(ActivityType.IOTA, new IotaJsonReader("iota/iota-full-list.json"));
+        readers.put(ActivityType.BOTA, new BotaCsvReader("bota/UKBOTA-Bunker-Reference-List.csv"));
     }
 
     /**

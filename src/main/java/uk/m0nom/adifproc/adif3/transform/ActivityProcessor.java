@@ -105,7 +105,7 @@ public class ActivityProcessor {
     }
 
     /**
-     * Record activity for a station where the input ADIF file contains a SIG_INFO/SIG_REF record
+     * Record activity for a station where the input ADIF file contains a SIG/SIG_INFO record
      * @param type activity type to check
      * @param station station to record activity against
      * @param rec input ADIF record

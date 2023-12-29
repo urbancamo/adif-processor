@@ -3,8 +3,11 @@ package uk.m0nom.adifproc.kml.station;
 import de.micromata.opengis.kml.v_2_2_0.*;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
+import org.marsik.ham.adif.enums.Band;
+import org.marsik.ham.adif.enums.Mode;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
+import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.icons.IconResource;
@@ -68,6 +71,7 @@ public class KmlStationUtils {
 
 
     public String createMyStationMarker(Document document, Folder folder, Qso qso) {
+        String id = getStationMarkerId(qso, qso.getFrom());
         Adif3Record rec = qso.getRecord();
         // Create a folder for this information
         GlobalCoordinates coords = rec.getMyCoordinates();
@@ -103,7 +107,11 @@ public class KmlStationUtils {
                 .createAndSetLookAt().withLongitude(longitude).withLatitude(latitude).withAltitude(altitude).withRange(DEFAULT_RANGE_METRES);
 
         placemark.createAndSetPoint().addToCoordinates(longitude, latitude); // set coordinates
-
+        if (control.isKmlShowActivitySubLabel()) {
+            addActivitySubLabel(qso.getFrom(), document, folder, longitude, latitude, altitude, id);
+        } else if (control.isKmlShowStationSubLabel()) {
+            addStationSubLabel(qso.getRecord().getBand(), qso.getRecord().getMode(), document, folder, longitude, latitude, altitude, id);
+        }
         return null;
     }
 
@@ -147,7 +155,7 @@ public class KmlStationUtils {
 
 
     public String createStationMarker(TransformControl control, Document document, Folder folder, Qso qso) {
-        String id = getStationMarkerId(qso);
+        String id = getStationMarkerId(qso, qso.getTo());
         String name = getStationMarkerName(qso);
         Adif3Record rec = qso.getRecord();
         if (qso.getTo().getCoordinates() == null && rec.getCoordinates() == null) {
@@ -198,17 +206,17 @@ public class KmlStationUtils {
         }
         // Doesn't work having two sub-labels, so prefer the activity sub label if set
         if (control.isKmlShowActivitySubLabel()) {
-            addActivitySubLabel(qso, document, folder, longitude, latitude, altitude, id);
+            addActivitySubLabel(qso.getTo(), document, folder, longitude, latitude, altitude, id);
         } else if (control.isKmlShowStationSubLabel()) {
-            addStationSubLabel(qso, document, folder, longitude, latitude, altitude, id);
+            addStationSubLabel(qso.getRecord().getBand(), qso.getRecord().getMode(), document, folder, longitude, latitude, altitude, id);
         }
 
         return null;
     }
 
-    private void addStationSubLabel(Qso qso, Document document, Folder folder, double longitude, double latitude, double altitude, String id) {
-        IconResource icon = IconResource.getIconFromMode(control, qso.getRecord().getMode());
-        String modeId = qso.getRecord().getMode().name();
+    private void addStationSubLabel(Band band, Mode mode, Document document, Folder folder, double longitude, double latitude, double altitude, String id) {
+        IconResource icon = IconResource.getIconFromMode(control, mode);
+        String modeId = mode.name();
         if (icon != null) {
             if (!iconStyles.contains(modeId)) {
                 Icon modeIcon = new Icon().withHref(icon.getUrl());
@@ -223,7 +231,7 @@ public class KmlStationUtils {
             }
             Placemark modePlaceMark = folder.createAndAddPlacemark();
             modePlaceMark.withId(KmlUtils.getModeId(id))
-                    .withName(getModeLabel(qso))
+                    .withName(getModeLabel(band, mode))
                     .withStyleUrl(KmlUtils.getModeStyleUrl(modeId));
             if (altitude > 0.0) {
                 modePlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude).setAltitudeMode(AltitudeMode.ABSOLUTE); // set coordinates
@@ -233,7 +241,7 @@ public class KmlStationUtils {
         }
     }
 
-    private void addActivitySubLabel(Qso qso, Document document, Folder folder, double longitude, double latitude, double altitude, String id) {
+    private void addActivitySubLabel(Station station, Document document, Folder folder, double longitude, double latitude, double altitude, String id) {
         IconResource icon = IconResource.getActivityIcon();
         if (!iconStyles.contains(icon.getName())) {
             Icon modeIcon = new Icon().withHref(icon.getUrl());
@@ -248,7 +256,7 @@ public class KmlStationUtils {
         }
         Placemark activityPlaceMark = folder.createAndAddPlacemark();
         activityPlaceMark.withId(KmlUtils.getModeId(id))
-                .withName(getActivityLabel(qso))
+                .withName(getActivityLabel(station))
                 .withStyleUrl(KmlUtils.getStyleUrl(icon.getName()));
         if (altitude > 0.0) {
             activityPlaceMark.createAndSetPoint().addToCoordinates(longitude, latitude, altitude).setAltitudeMode(AltitudeMode.ABSOLUTE); // set coordinates
@@ -257,23 +265,23 @@ public class KmlStationUtils {
         }
     }
 
-    public static String getModeLabel(Qso qso) {
-        if (qso.getRecord().getBand() != null && qso.getRecord().getMode() != null) {
-            return String.format("%s %s", qso.getRecord().getBand().adifCode(), qso.getRecord().getMode().adifCode());
+    public static String getModeLabel(Band band, Mode mode) {
+        if (band != null && mode != null) {
+            return String.format("%s %s", band.adifCode(), mode.adifCode());
         } else {
             return "";
         }
     }
 
-    public static String getActivityLabel(Qso qso) {
-        return qso.getTo().getActivities().stream()
+    public static String getActivityLabel(Station station) {
+        return station.getActivities().stream()
                 .map(Activity::getRef)
                 .collect(Collectors.joining(", "));
     }
 
     /* In order to be unique the station marker name must contain the date and time of the contact **/
-    public static String getStationMarkerId(Qso qso) {
-        String stationName = qso.getTo().getCallsign();
+    public static String getStationMarkerId(Qso qso, Station station) {
+        String stationName = station.getCallsign();
         String dateTime = getQsoDateTimeAsString(qso);
         String id = String.format("%s %s", dateTime, stationName);
         return id.replaceAll(" ", "_");

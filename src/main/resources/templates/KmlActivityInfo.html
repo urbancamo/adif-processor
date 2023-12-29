@@ -50,7 +50,6 @@
         <h1>Activity&nbsp;Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
     </div>
     <div class="content">
-
         <div th:replace="CotaInfo :: ${cota} ? 'info' : 'blank' "></div>
         <div th:replace="HemaInfo :: ${hema} ? 'info' : 'blank' "></div>
         <div th:replace="IotaInfo :: ${iota} ? 'info' : 'blank' "></div>
@@ -58,10 +57,10 @@
         <div th:replace="PotaInfo :: ${pota} ? 'info' : 'blank' "></div>
         <div th:replace="RotaInfo :: ${rota} ? 'info' : 'blank' "></div>
         <div th:replace="SotaInfo :: ${sota} ? 'info' : 'blank' "></div>
-        <div th:replace="GmaInfo :: ${gma} ? 'info' : 'blank' "></div>
+        <div th:replace="GmaInfo  :: ${gma}  ? 'info' : 'blank' "></div>
         <div th:replace="WotaInfo :: ${wota} ? 'info' : 'blank' "></div>
         <div th:replace="WwffInfo :: ${wwff} ? 'info' : 'blank' "></div>
-
+        <div th:replace="BotaInfo :: ${bota} ? 'info' : 'blank' "></div>
     </div>
 </div>
 </body>

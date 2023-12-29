@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BOTA Fragment</title>
+    <style>
+        .tdLabel {
+            width: 200px;
+        }
+        div.info {
+            padding-top: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div th:fragment="info" class="info">
+        <div th:each="bota : ${botas}">
+            <table>
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td class="tdLabel">BOTA:</td>
+                        <td><span th:text="${bota.ref}">B/G-0001</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdLabel">Name:</td>
+                        <td><span th:text="${bota.name}">ROC Post Pavenham</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdLabel">Bunker Type:</td>
+                        <td><span th:text="${bota.bunkerType}">ROC Bunker</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdLabel">Area:</td>
+                        <td><span th:text="${bota.area}">Bedfordshire</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdLabel">OSGR:</td>
+                        <td><span th:text="${bota.osgr}">SP 9714 5557</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdLabel">WAB:</td>
+                        <td><span th:text="${bota.wab}">SP95</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdLabel">Nearest Postcode:</td>
+                        <td><span th:text="${bota.nearestPostcode}">MK43 7NB</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdLabel">Maidenhead:</td>
+                        <td><span th:text="${bota.grid}">IO92RE</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div th:fragment="blank" style="display: none;"></div>
+
+</body>
+</html>
