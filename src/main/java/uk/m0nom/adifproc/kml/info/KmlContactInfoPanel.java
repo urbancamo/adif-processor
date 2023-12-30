@@ -23,7 +23,9 @@ public class KmlContactInfoPanel {
 
         final Context context = new Context();
         context.setVariable("qsoDate", KmlStationUtils.getQsoDateAsDisplayString(qso));
-        context.setVariable("timeOn", KmlStationUtils.getQsoTimeOnAsString(qso));
+        if (qso.getRecord().getTimeOn() != null) {
+            context.setVariable("timeOn", KmlStationUtils.getQsoTimeOnAsString(qso));
+        }
         if (qso.getRecord().getTimeOff() != null) {
             context.setVariable("timeOff", KmlStationUtils.getQsoTimeOffAsString(qso));
         }

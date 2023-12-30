@@ -219,6 +219,12 @@ public class ClassicCommentTransformer implements CommentTransformer {
                         callsignWithInvalidActivity = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.WWFF, wwffId.toUpperCase());
                         qso.getTo().addActivity(activities.getDatabase(ActivityType.WWFF).get(wwffId));
                         break;
+                    case "BotaRef":
+                        // Strip off any S2s reference
+                        String botaId = StringUtils.split(value, ' ')[0];
+                        callsignWithInvalidActivity = toLocationDeterminer.setTheirLocationFromActivity(qso, ActivityType.BOTA, botaId.toUpperCase());
+                        qso.getTo().addActivity(activities.getDatabase(ActivityType.BOTA).get(botaId));
+                        break;
                     case "SerialTx":
                         // Determine if this is a serial number of string based contest exchange
                         try {

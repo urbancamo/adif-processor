@@ -29,3 +29,4 @@ BAND_RX: BandRx
 FREQ_RX: FrequencyRx
 TXPWR: TxPwr
 COORD: Coordinates
+BOTA: BotaRef

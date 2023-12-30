@@ -130,7 +130,10 @@ public class Adif3LabelFormatter {
         DateTimeFormatter dateS = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = dateS.format(qso.getRecord().getQsoDate());
         DateTimeFormatter timeS = DateTimeFormatter.ofPattern("HHmm");
-        String time = timeS.format(qso.getRecord().getTimeOn());
+        String time = "";
+        if (qso.getRecord().getTimeOn() != null) {
+            time = timeS.format(qso.getRecord().getTimeOn());
+        }
 
         String band = rec.getBand() == null ? "    " : StringUtils.rightPad(rec.getBand().adifCode(), 4);
         String rst = StringUtils.isEmpty(rec.getRstSent()) ? "   " : StringUtils.leftPad(rec.getRstSent(), 3);
