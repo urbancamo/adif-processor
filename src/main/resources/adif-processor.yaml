@@ -36,3 +36,4 @@ FREQ_RX: FrequencyRx
 TXPWR: TxPwr
 COORD: Coordinates
 WEB: Web
+BOTA: BotaRef

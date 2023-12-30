@@ -44,8 +44,10 @@ public class KmlStationUtils {
     public static String getQsoDateTimeAsString(Qso qso) {
         ZonedDateTime date = qso.getRecord().getQsoDate();
         LocalTime time = qso.getRecord().getTimeOn();
-
-        ZonedDateTime utcDateTime = date.with(time);
+        ZonedDateTime utcDateTime = date;
+        if (time != null) {
+            utcDateTime = date.with(time);
+        }
         return dateTimeFormatter.format(utcDateTime);
     }
 
@@ -61,7 +63,11 @@ public class KmlStationUtils {
 
     public static String getQsoTimeOnAsString(Qso qso) {
         LocalTime time = qso.getRecord().getTimeOn();
-        return timeFormatter.format(time);
+        if (time != null) {
+            return timeFormatter.format(time);
+        } else {
+            return null;
+        }
     }
 
     public static String getQsoTimeOffAsString(Qso qso) {
