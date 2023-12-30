@@ -15,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.UnmappableCharacterException;
-import java.text.DateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -82,36 +81,36 @@ public class AdiReader {
         org.marsik.ham.adif.Adif3Record record = new Adif3Record();
 
         maybeGet(recordFields, "ADDRESS").ifPresent(record::setAddress);
-        maybeGet(recordFields, "AGE").map(Integer::parseInt).ifPresent(record::setAge);
-        maybeGet(recordFields, "A_INDEX").map(Double::parseDouble).ifPresent(record::setAIndex);
-        maybeGet(recordFields, "ANT_AZ").map(Double::parseDouble).ifPresent(record::setAntAz);
-        maybeGet(recordFields, "ANT_EL").map(Double::parseDouble).ifPresent(record::setAntEl);
-        maybeGet(recordFields, "ANT_PATH").map(AntPath::findByCode).ifPresent(record::setAntPath);
-        maybeGet(recordFields, "ARRL_SECT").ifPresent(record::setArrlSect);
+        maybeGet(recordFields, "AGE").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setAge);
+        maybeGet(recordFields, "A_INDEX").filter(AdiReader::isNotEmpty).map(Double::parseDouble).ifPresent(record::setAIndex);
+        maybeGet(recordFields, "ANT_AZ").filter(AdiReader::isNotEmpty).map(Double::parseDouble).ifPresent(record::setAntAz);
+        maybeGet(recordFields, "ANT_EL").filter(AdiReader::isNotEmpty).map(Double::parseDouble).ifPresent(record::setAntEl);
+        maybeGet(recordFields, "ANT_PATH").filter(AdiReader::isNotEmpty).map(AntPath::findByCode).ifPresent(record::setAntPath);
+        maybeGet(recordFields, "ARRL_SECT").filter(AdiReader::isNotEmpty).ifPresent(record::setArrlSect);
         maybeGet(recordFields, "AWARD_SUBMITTED")
                 .map(s -> parseCommaArray(s, String::valueOf))
                 .ifPresent(record::setAwardSubmitted);
         maybeGet(recordFields, "AWARD_GRANTED")
                 .map(s -> parseCommaArray(s, String::valueOf))
                 .ifPresent(record::setAwardGranted);
-        maybeGet(recordFields, "BAND").map(Band::findByCode).ifPresent(record::setBand);
-        maybeGet(recordFields, "BAND_RX").map(Band::findByCode).ifPresent(record::setBandRx);
+        maybeGet(recordFields, "BAND").filter(AdiReader::isNotEmpty).map(Band::findByCode).ifPresent(record::setBand);
+        maybeGet(recordFields, "BAND_RX").filter(AdiReader::isNotEmpty).map(Band::findByCode).ifPresent(record::setBandRx);
         maybeGet(recordFields, "CALL").ifPresent(record::setCall);
         maybeGet(recordFields, "CHECK").ifPresent(record::setCheck);
         maybeGet(recordFields, "CLASS").ifPresent(record::setContestClass);
         maybeGet(recordFields, "CLUBLOG_QSO_UPLOAD_DATE")
-                .map(this::parseDate)
+                .filter(AdiReader::isNotEmpty).map(this::parseDate)
                 .ifPresent(record::setClublogQsoUploadDate);
         maybeGet(recordFields, "CLUBLOG_QSO_UPLOAD_STATUS")
-                .map(QsoUploadStatus::findByCode)
+                .filter(AdiReader::isNotEmpty).map(QsoUploadStatus::findByCode)
                 .ifPresent(record::setClublogQsoUploadStatus);
         maybeGet(recordFields, "CNTY").ifPresent(record::setCnty);
         maybeGet(recordFields, "COMMENT").ifPresent(record::setComment);
-        maybeGet(recordFields, "CONT").map(Continent::findByCode).ifPresent(record::setCont);
+        maybeGet(recordFields, "CONT").filter(AdiReader::isNotEmpty).map(Continent::findByCode).ifPresent(record::setCont);
         maybeGet(recordFields, "CONTACTED_OP").ifPresent(record::setContactedOp);
         maybeGet(recordFields, "CONTEST_ID").ifPresent(record::setContestId);
         maybeGet(recordFields, "COUNTRY").ifPresent(record::setCountry);
-        maybeGet(recordFields, "CQZ").map(Integer::parseInt).ifPresent(record::setCqz);
+        maybeGet(recordFields, "CQZ").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setCqz);
         maybeGet(recordFields, "CREDIT_SUBMITTED")
                 .map(s -> parseCommaArray(s, String::valueOf))
                 .ifPresent(record::setCreditSubmitted);
@@ -119,40 +118,40 @@ public class AdiReader {
                 .map(s -> parseCommaArray(s, String::valueOf))
                 .ifPresent(record::setCreditGranted);
         maybeGet(recordFields, "DARC_DOK").ifPresent(record::setDarcDok);
-        maybeGet(recordFields, "DISTANCE").map(Double::parseDouble).ifPresent(record::setDistance);
-        maybeGet(recordFields, "DXCC").map(Integer::parseInt).ifPresent(record::setDxcc);
+        maybeGet(recordFields, "DISTANCE").filter(AdiReader::isNotEmpty).map(Double::parseDouble).ifPresent(record::setDistance);
+        maybeGet(recordFields, "DXCC").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setDxcc);
         maybeGet(recordFields, "EMAIL").ifPresent(record::setEmail);
         maybeGet(recordFields, "EQ_CALL").ifPresent(record::setEqCall);
-        maybeGet(recordFields, "EQSL_QSLRDATE").map(this::parseDate).ifPresent(record::setEqslQslRDate);
-        maybeGet(recordFields, "EQSL_QSLSDATE").map(this::parseDate).ifPresent(record::setEqslQslSDate);
-        maybeGet(recordFields, "EQSL_QSL_RCVD").map(QslRcvd::findByCode).ifPresent(record::setEqslQslRcvd);
-        maybeGet(recordFields, "EQSL_QSL_SENT").map(QslSent::findByCode).ifPresent(record::setEqslQslSent);
+        maybeGet(recordFields, "EQSL_QSLRDATE").filter(AdiReader::isNotEmpty).map(this::parseDate).ifPresent(record::setEqslQslRDate);
+        maybeGet(recordFields, "EQSL_QSLSDATE").filter(AdiReader::isNotEmpty).map(this::parseDate).ifPresent(record::setEqslQslSDate);
+        maybeGet(recordFields, "EQSL_QSL_RCVD").filter(AdiReader::isNotEmpty).map(QslRcvd::findByCode).ifPresent(record::setEqslQslRcvd);
+        maybeGet(recordFields, "EQSL_QSL_SENT").filter(AdiReader::isNotEmpty).map(QslSent::findByCode).ifPresent(record::setEqslQslSent);
         maybeGet(recordFields, "FISTS").ifPresent(record::setFists);
         maybeGet(recordFields, "FISTS_CC").ifPresent(record::setFistsCc);
-        maybeGet(recordFields, "FORCE_INT").map(this::parseBool).ifPresent(record::setForceInt);
+        maybeGet(recordFields, "FORCE_INT").filter(AdiReader::isNotEmpty).map(this::parseBool).ifPresent(record::setForceInt);
         maybeGet(recordFields, "FREQ").filter(AdiReader::isNotEmpty).map(Double::parseDouble).ifPresent(record::setFreq);
         maybeGet(recordFields, "FREQ_RX").filter(AdiReader::isNotEmpty).map(Double::parseDouble).ifPresent(record::setFreqRx);
         maybeGet(recordFields, "GRIDSQUARE").ifPresent(record::setGridsquare);
         maybeGet(recordFields, "HRDLOG_QSO_UPLOAD_DATE")
-                .map(this::parseDate)
+                .filter(AdiReader::isNotEmpty).map(this::parseDate)
                 .ifPresent(record::setHrdlogQsoUploadDate);
         maybeGet(recordFields, "HRDLOG_QSO_UPLOAD_STATUS")
-                .map(QsoUploadStatus::findByCode)
+                .filter(AdiReader::isNotEmpty).map(QsoUploadStatus::findByCode)
                 .ifPresent(record::setHrdlogQsoUploadStatus);
-        maybeGet(recordFields, "IOTA").map(Iota::findByCode).ifPresent(record::setIota);
+        maybeGet(recordFields, "IOTA").filter(AdiReader::isNotEmpty).map(Iota::findByCode).ifPresent(record::setIota);
         maybeGet(recordFields, "IOTA_ISLAND_ID").ifPresent(record::setIotaIslandId);
-        maybeGet(recordFields, "ITUZ").map(Integer::parseInt).ifPresent(record::setItuz);
-        maybeGet(recordFields, "K_INDEX").map(Double::parseDouble).ifPresent(record::setKIndex);
+        maybeGet(recordFields, "ITUZ").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setItuz);
+        maybeGet(recordFields, "K_INDEX").filter(AdiReader::isNotEmpty).map(Double::parseDouble).ifPresent(record::setKIndex);
 
         Optional<Double> lat = maybeGet(recordFields, "LAT").map(CoordinateWriter::dmToLat);
         Optional<Double> lon = maybeGet(recordFields, "LON").map(CoordinateWriter::dmToLon);
         MultiOptional.two(lat, lon, GlobalCoordinates::new).ifPresent(record::setCoordinates);
 
-        maybeGet(recordFields, "LOTW_QSLRDATE").map(this::parseDate).ifPresent(record::setLotwQslRDate);
-        maybeGet(recordFields, "LOTW_QSLSDATE").map(this::parseDate).ifPresent(record::setLotwQslSDate);
-        maybeGet(recordFields, "LOTW_QSL_RCVD").map(QslRcvd::findByCode).ifPresent(record::setLotwQslRcvd);
-        maybeGet(recordFields, "LOTW_QSL_SENT").map(QslSent::findByCode).ifPresent(record::setLotwQslSent);
-        maybeGet(recordFields, "MAX_BURSTS").map(Integer::parseInt).ifPresent(record::setMaxBursts);
+        maybeGet(recordFields, "LOTW_QSLRDATE").filter(AdiReader::isNotEmpty).map(this::parseDate).ifPresent(record::setLotwQslRDate);
+        maybeGet(recordFields, "LOTW_QSLSDATE").filter(AdiReader::isNotEmpty).map(this::parseDate).ifPresent(record::setLotwQslSDate);
+        maybeGet(recordFields, "LOTW_QSL_RCVD").filter(AdiReader::isNotEmpty).map(QslRcvd::findByCode).ifPresent(record::setLotwQslRcvd);
+        maybeGet(recordFields, "LOTW_QSL_SENT").filter(AdiReader::isNotEmpty).map(QslSent::findByCode).ifPresent(record::setLotwQslSent);
+        maybeGet(recordFields, "MAX_BURSTS").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setMaxBursts);
         try {
             maybeGet(recordFields, "MODE").map(Mode::findByCode).ifPresent(record::setMode);
         } catch (IllegalArgumentException e) {
@@ -167,13 +166,13 @@ public class AdiReader {
         maybeGet(recordFields, "MY_CITY").ifPresent(record::setMyCity);
         maybeGet(recordFields, "MY_CNTY").ifPresent(record::setMyCnty);
         maybeGet(recordFields, "MY_COUNTRY").ifPresent(record::setMyCountry);
-        maybeGet(recordFields, "MY_CQ_ZONE").map(Integer::parseInt).ifPresent(record::setMyCqZone);
-        maybeGet(recordFields, "MY_DXCC").map(Integer::parseInt).ifPresent(record::setMyDxcc);
+        maybeGet(recordFields, "MY_CQ_ZONE").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setMyCqZone);
+        maybeGet(recordFields, "MY_DXCC").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setMyDxcc);
         maybeGet(recordFields, "MY_FISTS").ifPresent(record::setMyFists);
         maybeGet(recordFields, "MY_GRIDSQUARE").ifPresent(record::setMyGridSquare);
-        maybeGet(recordFields, "MY_IOTA").map(Iota::findByCode).ifPresent(record::setMyIota);
+        maybeGet(recordFields, "MY_IOTA").filter(AdiReader::isNotEmpty).map(Iota::findByCode).ifPresent(record::setMyIota);
         maybeGet(recordFields, "MY_IOTA_ISLAND_ID").ifPresent(record::setMyIotaIslandId);
-        maybeGet(recordFields, "MY_ITU_ZONE").map(Integer::parseInt).ifPresent(record::setMyItuZone);
+        maybeGet(recordFields, "MY_ITU_ZONE").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setMyItuZone);
 
         Optional<Double> myLat = maybeGet(recordFields, "MY_LAT").map(CoordinateWriter::dmToLat);
         Optional<Double> myLon = maybeGet(recordFields, "MY_LON").map(CoordinateWriter::dmToLon);
@@ -184,7 +183,7 @@ public class AdiReader {
         maybeGet(recordFields, "MY_RIG").ifPresent(record::setMyRig);
         maybeGet(recordFields, "MY_SIG").ifPresent(record::setMySig);
         maybeGet(recordFields, "MY_SIG_INFO").ifPresent(record::setMySigInfo);
-        maybeGet(recordFields, "MY_SOTA_REF").map(Sota::valueOf).ifPresent(record::setMySotaRef);
+        maybeGet(recordFields, "MY_SOTA_REF").filter(AdiReader::isNotEmpty).map(Sota::valueOf).ifPresent(record::setMySotaRef);
         maybeGet(recordFields, "MY_STATE").ifPresent(record::setMyState);
         maybeGet(recordFields, "MY_STREET").ifPresent(record::setMyStreet);
         maybeGet(recordFields, "MY_USACA_COUNTIES")
@@ -195,13 +194,13 @@ public class AdiReader {
                 .ifPresent(record::setMyVuccGrids);
         maybeGet(recordFields, "NAME").ifPresent(record::setName);
         maybeGet(recordFields, "NOTES").ifPresent(record::setNotes);
-        maybeGet(recordFields, "NR_BURSTS").map(Integer::parseInt).ifPresent(record::setNrBursts);
-        maybeGet(recordFields, "NR_PINGS").map(Integer::parseInt).ifPresent(record::setNrPings);
+        maybeGet(recordFields, "NR_BURSTS").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setNrBursts);
+        maybeGet(recordFields, "NR_PINGS").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setNrPings);
         maybeGet(recordFields, "OPERATOR").ifPresent(record::setOperator);
         maybeGet(recordFields, "OWNER_CALLSIGN").ifPresent(record::setOwnerCallsign);
         maybeGet(recordFields, "PFX").ifPresent(record::setPfx);
         maybeGet(recordFields, "PRECEDENCE").ifPresent(record::setPrecedence);
-        maybeGet(recordFields, "PROP_MODE").map(Propagation::findByCode).ifPresent(record::setPropMode);
+        maybeGet(recordFields, "PROP_MODE").filter(AdiReader::isNotEmpty).map(Propagation::findByCode).ifPresent(record::setPropMode);
         maybeGet(recordFields, "PUBLIC_KEY").ifPresent(record::setPublicKey);
         maybeGet(recordFields, "QRZCOM_QSO_UPLOAD_DATE")
                 .map(this::parseDate)
@@ -210,17 +209,17 @@ public class AdiReader {
                 .map(QsoUploadStatus::findByCode)
                 .ifPresent(record::setQrzcomQsoUploadStatus);
         maybeGet(recordFields, "QSLMSG").ifPresent(record::setQslMsg);
-        maybeGet(recordFields, "QSLRDATE").map(this::parseLocalDate).ifPresent(record::setQslRDate);
-        maybeGet(recordFields, "QSLSDATE").map(this::parseLocalDate).ifPresent(record::setQslSDate);
-        maybeGet(recordFields, "QSL_RCVD").map(QslRcvd::findByCode).ifPresent(record::setQslRcvd);
-        maybeGet(recordFields, "QSL_RCVD_VIA").map(QslVia::findByCode).ifPresent(record::setQslRcvdVia);
-        maybeGet(recordFields, "QSL_SENT").map(QslSent::findByCode).ifPresent(record::setQslSent);
-        maybeGet(recordFields, "QSL_SENT_VIA").map(QslVia::findByCode).ifPresent(record::setQslSentVia);
+        maybeGet(recordFields, "QSLRDATE").filter(AdiReader::isNotEmpty).map(this::parseLocalDate).ifPresent(record::setQslRDate);
+        maybeGet(recordFields, "QSLSDATE").filter(AdiReader::isNotEmpty).map(this::parseLocalDate).ifPresent(record::setQslSDate);
+        maybeGet(recordFields, "QSL_RCVD").filter(AdiReader::isNotEmpty).map(QslRcvd::findByCode).ifPresent(record::setQslRcvd);
+        maybeGet(recordFields, "QSL_RCVD_VIA").filter(AdiReader::isNotEmpty).map(QslVia::findByCode).ifPresent(record::setQslRcvdVia);
+        maybeGet(recordFields, "QSL_SENT").filter(AdiReader::isNotEmpty).map(QslSent::findByCode).ifPresent(record::setQslSent);
+        maybeGet(recordFields, "QSL_SENT_VIA").filter(AdiReader::isNotEmpty).map(QslVia::findByCode).ifPresent(record::setQslSentVia);
         maybeGet(recordFields, "QSL_VIA").ifPresent(record::setQslVia);
-        maybeGet(recordFields, "QSO_COMPLETE").map(QsoComplete::findByCode).ifPresent(record::setQsoComplete);
-        maybeGet(recordFields, "QSO_DATE").map(s -> parseDate(s, dateFormatter)).ifPresent(record::setQsoDate);
-        maybeGet(recordFields, "QSO_DATE_OFF").map(s -> parseDate(s, dateFormatter)).ifPresent(record::setQsoDateOff);
-        maybeGet(recordFields, "QSO_RANDOM").map(this::parseBool).ifPresent(record::setQsoRandom);
+        maybeGet(recordFields, "QSO_COMPLETE").filter(AdiReader::isNotEmpty).map(QsoComplete::findByCode).ifPresent(record::setQsoComplete);
+        maybeGet(recordFields, "QSO_DATE").filter(AdiReader::isNotEmpty).map(s -> parseDate(s, dateFormatter)).ifPresent(record::setQsoDate);
+        maybeGet(recordFields, "QSO_DATE_OFF").filter(AdiReader::isNotEmpty).map(s -> parseDate(s, dateFormatter)).ifPresent(record::setQsoDateOff);
+        maybeGet(recordFields, "QSO_RANDOM").filter(AdiReader::isNotEmpty).map(this::parseBool).ifPresent(record::setQsoRandom);
         maybeGet(recordFields, "QTH").ifPresent(record::setQth);
         maybeGet(recordFields, "REGION").ifPresent(record::setRegion);
         maybeGet(recordFields, "RIG").ifPresent(record::setRig);
@@ -233,65 +232,66 @@ public class AdiReader {
                 .ifPresent(record::setRxPwr);
         maybeGet(recordFields, "SAT_MODE").ifPresent(record::setSatMode);
         maybeGet(recordFields, "SAT_NAME").ifPresent(record::setSatName);
-        maybeGet(recordFields, "SFI").map(Double::parseDouble).ifPresent(record::setSfi);
+        maybeGet(recordFields, "SFI").filter(AdiReader::isNotEmpty).map(Double::parseDouble).ifPresent(record::setSfi);
         maybeGet(recordFields, "SIG").ifPresent(record::setSig);
         maybeGet(recordFields, "SIG_INFO").ifPresent(record::setSigInfo);
-        maybeGet(recordFields, "SILENT_KEY").map(this::parseBool).ifPresent(record::setSilentKey);
+        maybeGet(recordFields, "SILENT_KEY").filter(AdiReader::isNotEmpty).map(this::parseBool).ifPresent(record::setSilentKey);
         maybeGet(recordFields, "SKCC").ifPresent(record::setSkcc);
-        maybeGet(recordFields, "SOTA_REF").map(Sota::valueOf).ifPresent(record::setSotaRef);
-        maybeGet(recordFields, "SRX").map(Integer::parseInt).ifPresent(record::setSrx);
+        maybeGet(recordFields, "SOTA_REF").filter(AdiReader::isNotEmpty).map(Sota::valueOf).ifPresent(record::setSotaRef);
+        maybeGet(recordFields, "SRX").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setSrx);
         maybeGet(recordFields, "SRX_STRING").ifPresent(record::setSrxString);
         maybeGet(recordFields, "STATE").ifPresent(record::setState);
         maybeGet(recordFields, "STATION_CALLSIGN").ifPresent(record::setStationCallsign);
-        maybeGet(recordFields, "STX").map(Integer::parseInt).ifPresent(record::setStx);
+        maybeGet(recordFields, "STX").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setStx);
         maybeGet(recordFields, "STX_STRING").ifPresent(record::setStxString);
         maybeGet(recordFields, "SUBMODE").ifPresent(record::setSubmode);
-        maybeGet(recordFields, "SWL").map(this::parseBool).ifPresent(record::setSwl);
-        maybeGet(recordFields, "TEN_TEN").map(Integer::parseInt).ifPresent(record::setTenTen);
-        maybeGet(recordFields, "TIME_OFF").map(this::parseTime).ifPresent(record::setTimeOff);
-        maybeGet(recordFields, "TIME_ON").map(this::parseTime).ifPresent(record::setTimeOn);
+        maybeGet(recordFields, "SWL").filter(AdiReader::isNotEmpty).map(this::parseBool).ifPresent(record::setSwl);
+        maybeGet(recordFields, "TEN_TEN").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setTenTen);
+        maybeGet(recordFields, "TIME_OFF").filter(AdiReader::isNotEmpty).map(this::parseTime).ifPresent(record::setTimeOff);
+        maybeGet(recordFields, "TIME_ON").filter(AdiReader::isNotEmpty).map(this::parseTime).ifPresent(record::setTimeOn);
         maybeGet(recordFields, "TX_PWR")
+                .filter(AdiReader::isNotEmpty)
                 .map(s -> s.replaceAll("[wW]$", ""))
                 .filter(AdiReader::isNumeric)
                 .map(Double::parseDouble)
                 .ifPresent(record::setTxPwr);
-        maybeGet(recordFields, "UKSMG").map(Integer::parseInt).ifPresent(record::setUksmg);
+        maybeGet(recordFields, "UKSMG").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setUksmg);
         maybeGet(recordFields, "USACA_COUNTIES")
-                .map(s -> parseColonArray(s, String::valueOf))
+                .filter(AdiReader::isNotEmpty).map(s -> parseColonArray(s, String::valueOf))
                 .ifPresent(record::setUsaCaCounties);
         maybeGet(recordFields, "VUCC_GRIDS")
-                .map(s -> parseCommaArray(s, String::valueOf))
+                .filter(AdiReader::isNotEmpty).map(s -> parseCommaArray(s, String::valueOf))
                 .ifPresent(record::setVuccGrids);
         maybeGet(recordFields, "WEB").ifPresent(record::setWeb);
 
         maybeGetCustomDefinedFields("APP_", recordFields, record.getApplicationDefinedFields());
         maybeGetCustomDefinedFields("USER_", recordFields, record.getUserDefinedFields());
-        
+
         /* ADIF 3.1.3 fields */
         maybeGet(recordFields, "MY_ARRL_SECT").ifPresent(record::setMyArrlSect);
 
-        maybeGet(recordFields, "MY_WWFF_REF").map(Wwff::valueOf).ifPresent(record::setMyWwffRef);
-        maybeGet(recordFields, "WWFF_REF").map(Wwff::valueOf).ifPresent(record::setWwffRef);
+        maybeGet(recordFields, "MY_WWFF_REF").filter(AdiReader::isNotEmpty).map(Wwff::valueOf).ifPresent(record::setMyWwffRef);
+        maybeGet(recordFields, "WWFF_REF").filter(AdiReader::isNotEmpty).map(Wwff::valueOf).ifPresent(record::setWwffRef);
 
         /* ADIF 3.1.4 fields */
-        maybeGet(recordFields, "ALTITUDE").map(Double::parseDouble).ifPresent(record::setAltitude);
-        maybeGet(recordFields, "MY_ALTITUDE").map(Double::parseDouble).ifPresent(record::setMyAltitude);
+        maybeGet(recordFields, "ALTITUDE").filter(AdiReader::isNotEmpty).map(Double::parseDouble).ifPresent(record::setAltitude);
+        maybeGet(recordFields, "MY_ALTITUDE").filter(AdiReader::isNotEmpty).map(Double::parseDouble).ifPresent(record::setMyAltitude);
         maybeGet(recordFields, "GRIDSQUARE_EXT").ifPresent(record::setGridsquareExt);
         maybeGet(recordFields, "MY_GRIDSQUARE_EXT").ifPresent(record::setMyGridsquareExt);
-        maybeGet(recordFields, "MY_POTA_REF").map(PotaList::valueOf).ifPresent(record::setMyPotaRef);
-        maybeGet(recordFields, "POTA_REF").map(PotaList::valueOf).ifPresent(record::setPotaRef);
+        maybeGet(recordFields, "MY_POTA_REF").filter(AdiReader::isNotEmpty).map(PotaList::valueOf).ifPresent(record::setMyPotaRef);
+        maybeGet(recordFields, "POTA_REF").filter(AdiReader::isNotEmpty).map(PotaList::valueOf).ifPresent(record::setPotaRef);
 
         maybeGet(recordFields, "HAMLOGEU_QSO_UPLOAD_DATE")
-                .map(this::parseDate)
+                .filter(AdiReader::isNotEmpty).map(this::parseDate)
                 .ifPresent(record::setHamlogEuQsoUploadDate);
         maybeGet(recordFields, "HAMLOGEU_QSO_UPLOAD_STATUS")
-                .map(QsoUploadStatus::findByCode)
+                .filter(AdiReader::isNotEmpty).map(QsoUploadStatus::findByCode)
                 .ifPresent(record::setHamlogEuQsoUploadStatus);
         maybeGet(recordFields, "HAMQTH_QSO_UPLOAD_DATE")
-                .map(this::parseDate)
+                .filter(AdiReader::isNotEmpty).map(this::parseDate)
                 .ifPresent(record::setHamqthQsoUploadDate);
         maybeGet(recordFields, "HAMQTH_QSO_UPLOAD_STATUS")
-                .map(QsoUploadStatus::findByCode)
+                .filter(AdiReader::isNotEmpty).map(QsoUploadStatus::findByCode)
                 .ifPresent(record::setHamqthQsoUploadStatus);
 
         return record;
@@ -455,13 +455,11 @@ public class AdiReader {
                 .collect(Collectors.toList());
     }
 
-    private static boolean isNumeric(String s)
-    {
+    private static boolean isNumeric(String s) {
         return NUMERIC_RE.matcher(s).matches();
     }
 
-    private static boolean isNotEmpty(String s)
-    {
+    private static boolean isNotEmpty(String s) {
         return s != null && s.length() > 0;
     }
 
