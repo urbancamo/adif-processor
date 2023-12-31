@@ -137,7 +137,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 }
             }
             if (potaIds.getPotaList().size() > 1) {
-                results.addContactWithDubiousLocation(String.format("Multiple POTA Ids: %s, using first ref as location", potaIds.getValue()));
+                results.addContactWithDubiousLocation(String.format("Multiple POTA Ids: %s, using last ref as location", potaIds.getValue()));
             }
         }
     }

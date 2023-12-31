@@ -2,6 +2,8 @@ package uk.m0nom.adifproc.location;
 
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
+import org.marsik.ham.adif.types.Pota;
+import org.marsik.ham.adif.types.PotaList;
 import org.marsik.ham.adif.types.Sota;
 import org.marsik.ham.adif.types.Wwff;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,16 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
     }
 
     public String setTheirLocationFromActivity(Qso qso, ActivityType activity, String reference) {
-        Activity info = activities.getDatabase(activity).get(reference);
+        String referenceToUse = reference;
+        // If activity is POTA there could be multiple park references - use the last reference
+        // which is likely to be the most specific in terms of location
+        if (activity == ActivityType.POTA) {
+            PotaList potaList = PotaList.valueOf(reference);
+            for (Pota pota: potaList.getPotaList()) {
+                referenceToUse = pota.getValue();
+            }
+        }
+        Activity info = activities.getDatabase(activity).get(referenceToUse);
         Adif3Record rec = qso.getRecord();
         if (info != null) {
             if (info.hasCoords()) {
@@ -44,7 +55,9 @@ public class ToLocationDeterminer extends BaseLocationDeterminer {
                 rec.setSotaRef(Sota.valueOf(reference));
             } else if (activity == ActivityType.WWFF) {
                 rec.setWwffRef(Wwff.valueOf(reference));
-            } else if (activity != ActivityType.POTA) {
+            } else if (activity == ActivityType.POTA) {
+                rec.setPotaRef(PotaList.valueOf(reference));
+            } else {
                 if (StringUtils.isEmpty(rec.getSig())) {
                     // If the SIG isn't set, add it here now
                     rec.setSig(activity.getActivityName());
