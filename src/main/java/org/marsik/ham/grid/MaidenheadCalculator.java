@@ -5,7 +5,6 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 public class MaidenheadCalculator {
     public static double[] MAIDENHEAD_LON_PRECISION = {20.0, 2.0, 0.0833333333, 0.00833333333};
     public static double[] MAIDENHEAD_LAT_PRECISION = {10.0, 1.0, 0.0416666665, 0.00416666665};
-    public static int MAIDENHEAD_MAX_PRECISION = 4;
     public static int[] MAIDENHEAD_CHARS = {'A', '0', 'a', '0'};
 
     /**
@@ -24,7 +23,7 @@ public class MaidenheadCalculator {
         double locatorLatitude = coordinates.getLatitude() + 90;
         double locatorLongitude = coordinates.getLongitude() + 180;
 
-        for (int i = 0; i<precision; i++) {
+        for (int i = 0; i < precision; i++) {
             int squareLatitude = (int)(locatorLatitude / MAIDENHEAD_LAT_PRECISION[i]);
             int squareLongitude = (int)(locatorLongitude / MAIDENHEAD_LON_PRECISION[i]);
 
@@ -37,11 +36,6 @@ public class MaidenheadCalculator {
 
 
         return locator.toString();
-    }
-
-    public static String toMaidenhead(GlobalCoordinates coordinates)
-    {
-        return toMaidenhead(coordinates, 3);
     }
 
     static public GlobalCoordinates fromMaidenhead(final String locator)

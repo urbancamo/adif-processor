@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Expects a SOTA Summits Database Export file, reformatted as UTF-8 CSV with the following columns retained:
- *
+ * <p>
  * SummitCode
  * AltM
  * Longitude

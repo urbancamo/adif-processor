@@ -6,7 +6,7 @@ import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.activity.CsvActivityReader;
 
 /**
- * Expects a Global Mountain Activity Database Export file
+ * Expects a Bunkers on the Air CSV file - generated using the CSV export functionality
  */
 public class BotaCsvReader extends CsvActivityReader {
 
