@@ -63,9 +63,7 @@ public class IonosphereUtils {
         double avgAltitude = 0.0;
         double avgAngle = 0.0;
         Propagation mode = rec.getPropMode();
-        if (mode == null) {
-            mode = Propagation.F2_REFLECTION;
-        }
+
         List<PropagationApex> apexes = new Ionosphere().getBounces(
                 mode, frequencyInKhz, result.getDistanceInKm(), time, start.getAltitude(), end.getAltitude(),
                 control.getAntenna().getTakeOffAngle());
