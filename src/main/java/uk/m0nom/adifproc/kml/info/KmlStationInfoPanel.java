@@ -8,6 +8,7 @@ import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
+import uk.m0nom.adifproc.comms.CommsLinkResult;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LocationInfo;
 import uk.m0nom.adifproc.dxcc.Country;
@@ -18,9 +19,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class KmlStationInfoPanel {
-    public String getPanelContentForStation(TransformControl control, Station station) {
+public class KmlStationInfoPanel extends KmlBaseInfoPanel {
+    public String getPanelContentForStation(TransformControl control, Station station, CommsLinkResult result) {
         final Context context = new Context();
+
+        setBaseInfo(station.getQsos().get(0).getRecord(), context, result);
 
         String callSign = station.getCallsign();
         context.setVariable("call", callSign);
@@ -92,7 +95,11 @@ public class KmlStationInfoPanel {
             context.setVariable("locationAccuracy", info.getAccuracy().getDescription());
         }
 
-        String html = control.getTemplateEngine().process(new TemplateSpec("KmlStationInfo", TemplateMode.XML), context);
+        String template = "KmlStationInfo";
+        if (control.isCompactQsoTemplate()) {
+            template = "KmlCompactStationInfo";
+        }
+        String html = control.getTemplateEngine().process(new TemplateSpec(template, TemplateMode.XML), context);
         return html.replace("\n", "");
     }
 

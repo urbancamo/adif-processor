@@ -9,6 +9,7 @@ import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
+import uk.m0nom.adifproc.comms.CommsLinkResult;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.icons.IconResource;
 import uk.m0nom.adifproc.kml.KmlUtils;
@@ -103,7 +104,7 @@ public class KmlStationUtils {
         }
 
         Placemark placemark = myFolder.createAndAddPlacemark();
-        String htmlPanelContent = new KmlStationInfoPanel().getPanelContentForStation(control, qso.getFrom());
+        String htmlPanelContent = new KmlStationInfoPanel().getPanelContentForStation(control, qso.getFrom(), null);
         // use the style for each continent
         placemark.withName(callsign)
                 .withStyleUrl(KmlUtils.getStyleUrl(icon.getName()))
@@ -160,7 +161,7 @@ public class KmlStationUtils {
     }
 
 
-    public String createStationMarker(TransformControl control, Document document, Folder folder, Qso qso) {
+    public String createStationMarker(TransformControl control, Document document, Folder folder, Qso qso, CommsLinkResult result) {
         String id = getStationMarkerId(qso, qso.getTo());
         String name = getStationMarkerName(qso);
         Adif3Record rec = qso.getRecord();
@@ -193,7 +194,7 @@ public class KmlStationUtils {
         }
 
         Placemark placemark = folder.createAndAddPlacemark();
-        String htmlPanelContent = new KmlStationInfoPanel().getPanelContentForStation(control, qso.getTo());
+        String htmlPanelContent = new KmlStationInfoPanel().getPanelContentForStation(control, qso.getTo(), result);
         // use the style for each continent
         placemark.withName(name)
                 .withId(id)
