@@ -58,7 +58,7 @@ public class KmlBaseInfoPanel {
         double wattsPerKm = txPwr / distanceInKm;
         if (wattsPerKm < 0.001) {
             return String.format("%,.0f uw/km", wattsPerKm * 1000000.0);
-        } else if (wattsPerKm < 0.1) {
+        } else if (wattsPerKm < 1) {
             return String.format("%,.0f mw/km", wattsPerKm * 1000.0);
         } else {
             return String.format("%,.1f w/km", wattsPerKm);
@@ -70,7 +70,7 @@ public class KmlBaseInfoPanel {
         if (txPwr == null) {
             return null;
         }
-        double wattsPerMile = txPwr / (distanceInKm * MILES_PER_KM);
+        double wattsPerMile = txPwr / distanceInKm / MILES_PER_KM;
         if (wattsPerMile < 0.001) {
             return String.format("%,.0f uw/mile", wattsPerMile * 1000000.0);
         } else if (wattsPerMile < 0.1) {
