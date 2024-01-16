@@ -14,14 +14,13 @@ import uk.m0nom.adifproc.kml.station.KmlStationUtils;
 
 import static uk.m0nom.adifproc.util.FrequencyFormatter.formatFrequency;
 
-public class KmlContactInfoPanel {
-    /** One Hz in MHz */
-    private static final double ONE_HZ = 1.0/1000000.0;
+public class KmlContactInfoPanel extends KmlBaseInfoPanel {
 
     public String getPanelContentForCommsLink(Qso qso, CommsLinkResult result, TemplateEngine templateEngine) {
         Adif3Record rec = qso.getRecord();
 
         final Context context = new Context();
+        setBaseInfo(rec, context, result);
         context.setVariable("qsoDate", KmlStationUtils.getQsoDateAsDisplayString(qso));
         if (qso.getRecord().getTimeOn() != null) {
             context.setVariable("timeOn", KmlStationUtils.getQsoTimeOnAsString(qso));
@@ -42,32 +41,6 @@ public class KmlContactInfoPanel {
         } else {
             context.setVariable("stationCallsignForQrz", rec.getStationCallsign());
         }
-
-        if (rec.getBand() != null) {
-            if (rec.getBandRx() != null) {
-                context.setVariable("uplinkBand", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase());
-                context.setVariable("downlinkBand", StringUtils.replace(rec.getBandRx().name(), "BAND_", "").toLowerCase());
-            } else {
-                context.setVariable("band", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase());
-            }
-        }
-        if (rec.getMode() != null) {
-            context.setVariable("mode", rec.getMode().toString());
-        }
-        if (rec.getFreq() != null) {
-            context.setVariable("freq", formatFrequency(rec.getFreq()));
-            /* Only display uplink/downlink frequencies separately if they differ by more than 1 Hz*/
-            if (rec.getFreqRx() != null && Math.abs(rec.getFreq() - (rec.getFreqRx())) >= ONE_HZ) {
-                context.setVariable("downlinkFreq", formatFrequency(rec.getFreqRx()));
-            }
-        }
-        if (rec.getTxPwr() != null) {
-            context.setVariable("txPwr", String.format("%,.1f", rec.getTxPwr()));
-        }
-        if (rec.getRxPwr() != null) {
-            context.setVariable("rxPwr", String.format("%,.1f", rec.getRxPwr()));
-        }
-        context.setVariable("gndDist", String.format("%,.0f", result.getDistanceInKm()));
         context.setVariable("azimuth", String.format("%03.03f", result.getAzimuth()));
 
         if (result.getPropagation() != null) {

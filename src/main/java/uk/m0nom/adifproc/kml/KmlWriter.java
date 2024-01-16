@@ -86,7 +86,8 @@ public class KmlWriter {
             GlobalCoordinates myCoords = qso.getRecord().getMyCoordinates();
             GlobalCoordinates theirCoords = qso.getRecord().getCoordinates();
             if (LatLongUtils.isCoordinateValid(myCoords) && LatLongUtils.isCoordinateValid(theirCoords)) {
-                String error = kmlStationUtils.createStationMarker(control, doc, contactFolder, qso);
+                CommsLinkResult result = kmlCommsService.createCommsLink(doc, contactFolder, commsStyleMap, qso, control, kmlStationUtils);
+                String error = kmlStationUtils.createStationMarker(control, doc, contactFolder, qso, result);
                 if (error != null) {
                     results.setError(error);
                 }
@@ -95,7 +96,6 @@ public class KmlWriter {
                     Folder localActivityFolder = contactFolder.createAndAddFolder().withName("Local Activity").withOpen(false);
                     kmlLocalActivities.addLocalActivities(control, doc, localActivityFolder, qso.getTo(), activities);
                 }
-                CommsLinkResult result = kmlCommsService.createCommsLink(doc, contactFolder, commsStyleMap, qso, control, kmlStationUtils);
                 if (result.getError() != null) {
                     results.setError(error);
                 }

@@ -131,6 +131,8 @@ public class TransformControl {
 
     private String dontQslCallsigns;
 
+    private boolean compactQsoTemplate;
+
     public String getActivityRef(ActivityType type) {
         return activityRefs.get(type);
     }
