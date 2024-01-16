@@ -2,12 +2,15 @@ package uk.m0nom.adifproc.kml.info;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
+import org.marsik.ham.adif.Adif3Record;
 import org.thymeleaf.TemplateEngine;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.activity.cota.CotaInfo;
+import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
+import uk.m0nom.adifproc.comms.CommsLinkResult;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LocationAccuracy;
 import uk.m0nom.adifproc.coords.LocationSource;
@@ -39,10 +42,19 @@ public class ThymleafKmlStationInfoPanelTest {
 
         when(station.getGrid()).thenReturn("IO84qi");
 
-        GlobalCoords3D coords =
-                new GlobalCoords3D(54.344710, -2.663091, LocationSource.QRZ, LocationAccuracy.LAT_LONG);
+        Qso qso = mock(Qso.class);
+        Adif3Record record = mock(Adif3Record.class);
+        when(qso.getRecord()).thenReturn(record);
+        ArrayList qsos = new ArrayList<Qso>();
+        qsos.add(qso);
+        when(station.getQsos()).thenReturn(qsos);
 
-        when(station.getCoordinates()).thenReturn(coords);
+        GlobalCoords3D nigelsCoords =
+                new GlobalCoords3D(54.344710, -2.663091, LocationSource.QRZ, LocationAccuracy.LAT_LONG);
+        GlobalCoords3D myCoords =
+                new GlobalCoords3D(54.370994952430856, -2.909922781024205, LocationSource.QRZ, LocationAccuracy.LAT_LONG);
+
+        when(station.getCoordinates()).thenReturn(nigelsCoords);
         when(qrzInfo.getCall()).thenReturn("M5TUE");
         when(qrzInfo.getImage()).thenReturn("https://cdn-bio.qrz.com/e/m5tue/photo0014.jpg");
 
@@ -58,7 +70,8 @@ public class ThymleafKmlStationInfoPanelTest {
         activities.add(castle);
         when(station.getActivity(ActivityType.COTA)).thenReturn(activities);
         when(station.getActivities()).thenReturn(activities);
-        String html = infoPanel.getPanelContentForStation(control, station);
+        CommsLinkResult commsLinkResult = new CommsLinkResult(myCoords, nigelsCoords);
+        String html = infoPanel.getPanelContentForStation(control, station, commsLinkResult);
         FileUtils.writeStringToFile(new File("target/station.html"), html, StandardCharsets.UTF_8);
     }
 }
