@@ -177,7 +177,9 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
 
             if (!setMyLocationFromControl(qso, control)) {
                 if (!setMyLocationFromActivities(qso)) {
-                    if (!setMyLocationFromRecGridsquare(qso)) {
+                    if (!isFromRecGridSquareSameAsQrzLatLongGrid(qso, callsignData)) {
+                        setMyLocationFromRecGridsquare(qso);
+                    } else {
                         if (!setMyLocationFromQrzLatLong(qso, callsignData)) {
                             setMyLocationFromQrzGrid(qso, callsignData);
                         }
@@ -185,6 +187,19 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
                 }
             }
         }
+    }
+
+    private boolean isFromRecGridSquareSameAsQrzLatLongGrid(Qso qso, QrzCallsign callsignData) {
+        String recGridSquare = qso.getRecord().getMyGridSquare();
+        if (qso.getRecord().getMyGridsquareExt() != null) {
+            recGridSquare = recGridSquare + qso.getRecord().getMyGridsquareExt();
+        }
+        // Calculate grid square from qrz lat long
+        if (callsignData != null && callsignData.getLat() != null && callsignData.getLon() != null) {
+            String qrzGridSquare = MaidenheadLocatorConversion.coordsToLocator(new GlobalCoordinates((callsignData.getLat()), callsignData.getLon()));
+            return recGridSquare.toUpperCase().contains(qrzGridSquare.toUpperCase());
+        }
+        return false;
     }
 
     private void updateMySigInfoFromActivity(Qso qso) {

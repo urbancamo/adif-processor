@@ -1,0 +1,97 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        .panel {
+            font-family: "Bitstream Vera Sans Mono",monospace;
+            color: black;
+        }
+        .image_box {
+        }
+        .content {
+            padding: 0;
+        }
+        h1 {
+            font-size: 14pt;
+            font-weight: bold;
+        }
+        h3 {
+            color: midnightblue;
+            font-family: "Bitstream Vera Sans",sans-serif;
+        }
+        .tdLabel {
+            width: 200px;
+        }
+        div.info {
+            padding-top: 1em;
+            font-size: 10pt;
+        }
+        .profile {
+            max-height:280px;
+            max-width:325px;
+            height:auto;
+            width:auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            float: left;
+        }
+        #earth-balloon-content{
+            display:flex;
+        }
+        #balloon-content{
+            display:inline-block;
+            width: 450px;
+            height: 280px;
+        }
+        .card-template{
+            height:280px;
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+<div class="panel">
+    <div class="content">
+        <table>
+            <thead></thead>
+            <tbody style='font-size: 10pt;'>
+                <tr>
+                    <td>
+                        <span th:if="${mode} != null" th:text="${mode}">FM</span>
+                        <span th:if="${band} != null" th:text="${band}">20 m</span>
+                        <span th:if="${txPwr} != null"><span th:text="${txPwr}">5</span> W</span>
+                    </td>
+                </tr>
+                <tr th:if="${gndDist != null}">
+                    <td>
+                        Distance:
+                        <span th:text="${gndDist}">1,250</span> km,
+                        <span th:text="${gndDistMiles}">1,000</span> miles
+                    </td>
+                </tr>
+                <tr th:if="${txPwrDistKmRatio} != null">
+                    <td>
+                        TX Pwr/Dist:
+                        <span th:text="|${txPwrDistKmRatio},|">500 mw/km</span>
+                        <span th:text="${txPwrDistMileRatio}">500 mw/mile</span>
+                    </td>
+                </tr>
+                <tr th:if="${rxPwrDistKmRatio} != null">
+                    <td>
+                        RX Pwr/Dist:
+                        <span th:text="|${rxPwrDistKmRatio},|">500 mw/km</span>
+                        <span th:text="${rxPwrDistMileRatio}">500 mw/mile</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="image_box" th:if="${image} != null">
+        <a href="https://qrz.com/db/M0NOM/P" th:href="@{|https://qrz.com/db/${callForQrz}|}" target="_blank">
+            <img class="profile" src="https://cdn-bio.qrz.com/p/m0nom_p/IMG_20180211_131628.jpg" th:src="${image}" alt=""/>
+        </a>
+    </div>
+</div>
+</body>
+</html>

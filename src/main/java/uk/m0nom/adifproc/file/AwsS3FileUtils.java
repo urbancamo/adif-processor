@@ -32,6 +32,10 @@ public class AwsS3FileUtils {
     private static final Logger logger = Logger.getLogger(AwsS3FileUtils.class.getName());
 
     public AwsS3FileUtils(Environment env) {
+        // These keys should be defined in the application environment as variables.
+        // They should be those provided for the user 'adif_processor' in AWS IAM.
+        // see AWS IAM User -> Access Keys.
+        // the 'adif_processor' user has permissions AmazonS3FullAccess originating from 'adif-s3-group'
         String accessKey = env.getProperty("AWS_ACCESS_KEY");
         String secretKey = env.getProperty("AWS_SECRET_KEY");
 

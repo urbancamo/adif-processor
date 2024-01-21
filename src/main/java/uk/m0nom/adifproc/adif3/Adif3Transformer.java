@@ -100,12 +100,12 @@ public class Adif3Transformer {
 
     @Data
     @AllArgsConstructor
-    private class ModeSubmode {
+    private static class ModeSubmode {
         Mode mode;
         Submode submode;
     }
 
-    private Map<Mode, ModeSubmode> modeImportOnlyMap = new HashMap<>() {
+    private final Map<Mode, ModeSubmode> modeImportOnlyMap = new HashMap<>() {
         {
             put(Mode.AMTORFEC, new ModeSubmode(Mode.TOR, Submode.AMTORFEC));
             put(Mode.ASCI, new ModeSubmode(Mode.RTTY, Submode.ASCI));
@@ -149,6 +149,8 @@ public class Adif3Transformer {
             put(Mode.QPSK63, new ModeSubmode(Mode.PSK, Submode.QPSK63));
             put(Mode.QPSK125, new ModeSubmode(Mode.PSK, Submode.QPSK125));
             put(Mode.THRBX, new ModeSubmode(Mode.THRB, Submode.THRBX));
+            put(Mode.LSB, new ModeSubmode(Mode.SSB, Submode.LSB));
+            put(Mode.USB, new ModeSubmode(Mode.SSB, Submode.USB));
         }
     };
 
