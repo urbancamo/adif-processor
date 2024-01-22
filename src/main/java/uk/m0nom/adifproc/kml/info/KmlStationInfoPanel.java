@@ -16,7 +16,6 @@ import uk.m0nom.adifproc.dxcc.DxccEntity;
 import uk.m0nom.adifproc.qrz.QrzCallsign;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class KmlStationInfoPanel extends KmlBaseInfoPanel {

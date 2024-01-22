@@ -191,13 +191,15 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
 
     private boolean isFromRecGridSquareSameAsQrzLatLongGrid(Qso qso, QrzCallsign callsignData) {
         String recGridSquare = qso.getRecord().getMyGridSquare();
-        if (qso.getRecord().getMyGridsquareExt() != null) {
-            recGridSquare = recGridSquare + qso.getRecord().getMyGridsquareExt();
-        }
-        // Calculate grid square from qrz lat long
-        if (callsignData != null && callsignData.getLat() != null && callsignData.getLon() != null) {
-            String qrzGridSquare = MaidenheadLocatorConversion.coordsToLocator(new GlobalCoordinates((callsignData.getLat()), callsignData.getLon()));
-            return recGridSquare.toUpperCase().contains(qrzGridSquare.toUpperCase());
+        if (recGridSquare != null) {
+            if (qso.getRecord().getMyGridsquareExt() != null) {
+                recGridSquare = recGridSquare + qso.getRecord().getMyGridsquareExt();
+            }
+            // Calculate grid square from qrz lat long
+            if (callsignData != null && callsignData.getLat() != null && callsignData.getLon() != null) {
+                String qrzGridSquare = MaidenheadLocatorConversion.coordsToLocator(new GlobalCoordinates((callsignData.getLat()), callsignData.getLon()));
+                return recGridSquare.toUpperCase().contains(qrzGridSquare.toUpperCase());
+            }
         }
         return false;
     }
