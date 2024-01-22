@@ -25,8 +25,8 @@ public class DxccEntitiesTest {
 
     @Test
     public void haveEntities() {
-        assertThat(entities != null);
-        assertThat(entities.getDxccEntities().size() == 402);
+        assert entities != null;
+        assert entities.getDxccEntities().size() == 402;
     }
 
     @Test

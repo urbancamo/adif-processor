@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DegreesMinutesDecimalSecondsLatLongFormatterTest {
-    private final String DMS_STRING_1 = "43° 53' 37.700\"N 22° 17' 9.700\"E";
-    private final String DMS_STRING_2 = "54° 27' 15.336\"N 3° 12' 42.048\"W";
 
     @Test
     public void test() {
+        String DMS_STRING_2 = "54° 27' 15.336\"N 3° 12' 42.048\"W";
         check(DMS_STRING_2, 54.454260, -3.211680);
+        String DMS_STRING_1 = "43° 53' 37.700\"N 22° 17' 9.700\"E";
         check(DMS_STRING_1, 43.893806, 22.286028);
     }
 

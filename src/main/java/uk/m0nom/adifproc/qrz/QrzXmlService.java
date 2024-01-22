@@ -23,7 +23,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
- * https://www.qrz.com/XML/current_spec.html
+ * <a href="https://www.qrz.com/XML/current_spec.html">QRZ XML Spec</a>
  */
 @Service
 public class QrzXmlService implements QrzService {

@@ -22,8 +22,8 @@ public class CountriesTest {
 
     @Test
     public void haveCountries() {
-        assertThat(countries != null);
-        assertThat(countries.getCountries().size() == 244);
+        assert countries != null;
+        assert countries.getCountries().size() == 244;
     }
 
     @Test
