@@ -23,7 +23,7 @@ public class CountriesTest {
     @Test
     public void haveCountries() {
         assert countries != null;
-        assert countries.getCountries().size() == 244;
+        assert countries.getCountries().size() == 245;
     }
 
     @Test
