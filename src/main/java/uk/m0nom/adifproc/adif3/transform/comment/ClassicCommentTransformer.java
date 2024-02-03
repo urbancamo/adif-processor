@@ -25,6 +25,7 @@ import uk.m0nom.adifproc.satellite.ApSatelliteService;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import static uk.m0nom.adifproc.adif3.transform.comment.parsers.FieldParseUtils.parsePwr;
 
@@ -328,17 +329,22 @@ public class ClassicCommentTransformer implements CommentTransformer {
             if (callsignWithInvalidActivity != null) {
                 results.addContactWithDubiousLocation(callsignWithInvalidActivity);
             }
-            issueWarnings(rec);
         }
         if (coords != null || (latitude != null && longitude != null)) {
             if (coords == null) {
                 coords = new GlobalCoords3D(latitude, longitude, LocationSource.OVERRIDE, LocationAccuracy.LAT_LONG);
             }
+            removeWarningsAboutLatLongFromSchemaResults(results);
             qso.getTo().setCoordinates(coords);
             rec.setCoordinates(coords);
             rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(coords));
             logger.info(String.format("Override location of %s: %s", rec.getCall(), rec.getCoordinates().toString()));
         }
+        issueWarnings(rec);
+    }
+
+    private void removeWarningsAboutLatLongFromSchemaResults(TransformResults results) {
+        results.setWarnings(results.getWarnings().stream().filter(warning -> !warning.contains("Validation of comment field 'LAT")).collect(Collectors.toList()));
     }
 
     private void issueWarnings(Adif3Record rec) {

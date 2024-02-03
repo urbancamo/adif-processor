@@ -1,5 +1,6 @@
 package uk.m0nom.adifproc.adif3;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +42,14 @@ public class BadGridTest
 
     @Test
     public void testApp() {
-        String cli = "-k --encoding windows-1251 -md -o ../ ./target/test-classes/adif/2021-08-23-ADIF-with-bad-gridsquare.adi";
-        String[] args = cli.split(" ");
+        try {
+            String cli = "-k --encoding windows-1251 -md -o ../ ./target/test-classes/adif/2021-08-23-ADIF-with-bad-gridsquare.adi";
+            String[] args = cli.split(" ");
 
-        FileProcessorApplication app = new FileProcessorApplication(transformer, reader, writer, summits, formatter, kmlWriter, qrzXmlService);
-        app.run(args);
+            FileProcessorApplication app = new FileProcessorApplication(transformer, reader, writer, summits, formatter, kmlWriter, qrzXmlService);
+            app.run(args);
+        } catch (Exception e) {
+            Assertions.fail("testData() threw exception while setting up the test. ", e);
+        }
     }
 }
