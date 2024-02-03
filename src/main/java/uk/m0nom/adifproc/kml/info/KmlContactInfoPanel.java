@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.AntPath;
 import org.marsik.ham.adif.enums.Propagation;
+import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.TemplateSpec;
 import org.thymeleaf.context.Context;
@@ -69,6 +70,9 @@ public class KmlContactInfoPanel extends KmlBaseInfoPanel {
         }
         if (result.getPropagation() != Propagation.INTERNET) {
             context.setVariable("fromAntenna", qso.getFrom().getAntenna().getName());
+        }
+        if (result.getPropagation() == Propagation.F2_REFLECTION) {
+            context.setVariable("fromAntennaMaxPowerAngle", String.format("%.0f°", qso.getFrom().getAntenna().getTakeOffAngle()));
         }
         context.setVariable("angle", String.format("%,.0f°", result.getFromAngle()));
 

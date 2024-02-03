@@ -11,7 +11,7 @@ import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.antenna.AntennaService;
 import uk.m0nom.adifproc.icons.IconResource;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Sets up a TransformControl instance based on command line arguments for the standalone processor
@@ -47,7 +47,7 @@ public class CommandLineArgs {
         parser.addArgument("-e", "--encoding").required(false).setDefault("windows-1251")
                 .help("Specify encoding of input ADIF file");
 
-        Set<String> antennaNames = new AntennaService().getAntennaNames();
+        List<String> antennaNames = new AntennaService().getAntennaNames();
         parser.addArgument("-a", "--antenna")
                 .required(false)
                 .setDefault("Vertical")
