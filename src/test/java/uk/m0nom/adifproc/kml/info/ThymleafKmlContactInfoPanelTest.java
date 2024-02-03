@@ -47,6 +47,7 @@ public class ThymleafKmlContactInfoPanelTest {
         when(qso.getTo()).thenReturn(toStation);
 
         when(fromAntenna.getName()).thenReturn("Vertical");
+        when(fromAntenna.getTakeOffAngle()).thenReturn(15.0);
         when(fromStation.getAntenna()).thenReturn(fromAntenna);
         when(qso.getRecord()).thenReturn(rec);
         when(qso.getFrom()).thenReturn(fromStation);

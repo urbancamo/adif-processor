@@ -3,8 +3,9 @@ package uk.m0nom.adifproc.antenna;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AntennaService {
@@ -39,7 +40,12 @@ public class AntennaService {
         return antennaMap.get(name);
     }
 
-    public Set<String> getAntennaNames() {
-        return antennaMap.keySet();
+    public List<Antenna> getAntennas() {
+        return antennaMap.values().stream().sorted().collect(Collectors.toList());
     }
+
+    public List<String> getAntennaNames() {
+        return antennaMap.values().stream().sorted().map(Antenna::getName).collect(Collectors.toList());
+    }
+
 }

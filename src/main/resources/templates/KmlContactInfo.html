@@ -145,6 +145,10 @@
                         <td class="tdLabel">Antenna Model:</td>
                         <td><span th:text="${fromAntenna}">Vertical</span></td>
                     </tr>
+                    <tr th:if="${fromAntenna} != null && ${propagationMode} == 'F2'">
+                        <td class="tdLabel">HF Max Power Angle:</td>
+                        <td><span th:text="${fromAntennaMaxPowerAngle}">15°</span></td>
+                    </tr>
                     <tr th:if="${propagationMode} == 'GND'">
                         <td class="tdLabel">Max Height:</td>
                         <td><span th:text="${avgAlt}">6 km</span></td>
