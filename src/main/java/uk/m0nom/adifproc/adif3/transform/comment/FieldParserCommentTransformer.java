@@ -22,6 +22,7 @@ import uk.m0nom.adifproc.maidenheadlocator.MaidenheadLocatorConversion;
 
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 public class FieldParserCommentTransformer implements CommentTransformer {
@@ -79,9 +80,11 @@ public class FieldParserCommentTransformer implements CommentTransformer {
                             }
                             if (result.getLatitude() != null) {
                                 latitude = result.getLatitude();
+                                unmapped.remove(key);
                             }
                             if (result.getLongitude() != null) {
                                 longitude = result.getLongitude();
+                                unmapped.remove(key);
                             }
                             if (result.getCoords() != null) {
                                 coords = result.getCoords();
@@ -106,10 +109,15 @@ public class FieldParserCommentTransformer implements CommentTransformer {
             if (coords == null) {
                 coords = new GlobalCoords3D(latitude, longitude, LocationSource.OVERRIDE, LocationAccuracy.LAT_LONG);
             }
+            removeWarningsAboutLatLongFromSchemaResults(results);
             qso.getTo().setCoordinates(coords);
             rec.setCoordinates(coords);
             rec.setGridsquare(MaidenheadLocatorConversion.coordsToLocator(coords));
             logger.info(String.format("Override location of %s: %s", rec.getCall(), rec.getCoordinates().toString()));
         }
+    }
+
+    private void removeWarningsAboutLatLongFromSchemaResults(TransformResults results) {
+        results.setWarnings(results.getWarnings().stream().filter(warning -> !warning.contains("Validation of comment field 'LAT")).collect(Collectors.toList()));
     }
 }
