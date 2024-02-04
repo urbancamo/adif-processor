@@ -8,6 +8,7 @@ public class Adif3TypeValidationResult implements Adif3ValidationResult {
     private boolean isMatchingPattern = true;
     private boolean isWithinMin = true;
     private boolean isWithinMax = true;
+    private boolean isValid = true;
 
     @Override
     public boolean isValid() {
