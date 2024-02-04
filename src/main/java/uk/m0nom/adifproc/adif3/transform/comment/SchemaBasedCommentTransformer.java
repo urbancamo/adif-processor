@@ -89,7 +89,7 @@ public class SchemaBasedCommentTransformer implements CommentTransformer {
        if (!typeValidationResult.isMatchingPattern()) {
            sb.append(" value is invalid, ");
        }
-       if (!typeValidationResult.isValid()) {
+       if (!typeValidationResult.isParsable()) {
            sb.append(" value is unparsable, ");
        }
        String warning = sb.toString();

@@ -9,10 +9,11 @@ public class Adif3TypeValidationResult implements Adif3ValidationResult {
     private boolean isWithinMin = true;
     private boolean isWithinMax = true;
     private boolean isValid = true;
+    private boolean isParsable = true;
 
     @Override
     public boolean isValid() {
-        return isBaseType && isMatchingPattern && isWithinMin && isWithinMax;
+        return isBaseType && isMatchingPattern && isWithinMin && isWithinMax && isParsable;
     }
 }
 
