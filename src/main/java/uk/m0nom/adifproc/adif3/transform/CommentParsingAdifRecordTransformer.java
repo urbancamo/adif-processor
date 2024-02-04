@@ -404,12 +404,16 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
                 String myQrzGrid = myQrzInfo.getGrid();
                 // If the qrz grid info is more accurate replace with that info
                 String myQsoGrid = qso.getFrom().getGrid();
-                if (myQrzGrid != null && myQsoGrid != null && myQrzGrid.length() > myQsoGrid.length()) {
+                if ((myQrzGrid != null && myQsoGrid != null && myQrzGrid.length() > myQsoGrid.length())) {
                     if (myQrzGrid.startsWith(myQsoGrid)) {
                         GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.QRZ, myQrzGrid, null);
                         qso.getFrom().setCoordinates(coords);
                         qso.getRecord().setMyCoordinates(coords);
                     }
+                } else if (myQrzGrid != null && myQsoGrid == null) {
+                    GlobalCoords3D coords = MaidenheadLocatorConversion.locatorToCoords(LocationSource.QRZ, myQrzGrid, null);
+                    qso.getFrom().setCoordinates(coords);
+                    qso.getRecord().setMyCoordinates(coords);
                 }
             }
         }
