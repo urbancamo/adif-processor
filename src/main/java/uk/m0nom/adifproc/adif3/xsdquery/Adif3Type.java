@@ -27,20 +27,25 @@ public class Adif3Type implements Comparable<Adif3Type> {
             result.setMatchingPattern(regex.matcher(value).matches());
         }
 
-        if (minInclusive != null || maxInclusive != null) {
-            int intVal = Integer.parseInt(value);
-            if (minInclusive != null) {
-                result.setWithinMin(intVal >= minInclusive);
+        try {
+            if (minInclusive != null || maxInclusive != null) {
+                int intVal = Integer.parseInt(value);
+                if (minInclusive != null) {
+                    result.setWithinMin(intVal >= minInclusive);
+                }
+                if (maxInclusive != null) {
+                    result.setWithinMax(intVal <= maxInclusive);
+                }
             }
-            if (maxInclusive != null) {
-                result.setWithinMax(intVal <= maxInclusive);
-            }
+        } catch (NumberFormatException nfe) {
+            result.setBaseType(false);
         }
 
         return result;
     }
 
     private List<String> POSITIVE_BASE_TYPES = Arrays.asList("PositiveInteger", "IntegerGE0", "UnsignedInt", "NumberGE0");
+
     private boolean checkBaseType(String value) {
         boolean valid = true;
 

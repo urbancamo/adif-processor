@@ -89,10 +89,14 @@ public class SchemaBasedCommentTransformer implements CommentTransformer {
        if (!typeValidationResult.isMatchingPattern()) {
            sb.append(" value is invalid, ");
        }
+       if (!typeValidationResult.isParsable()) {
+           sb.append(" value is unparsable, ");
+       }
        String warning = sb.toString();
        if (warning.endsWith(", ")) {
            results.addWarning(StringUtils.left(sb.toString(), warning.length()-2));
+       } else {
+           results.addWarning(warning);
        }
-       results.addWarning(warning);
     }
 }
