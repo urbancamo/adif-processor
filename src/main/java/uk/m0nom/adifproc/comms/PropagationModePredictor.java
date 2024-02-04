@@ -5,10 +5,10 @@ import uk.m0nom.adifproc.comms.ionosphere.Ionosphere;
 
 public class PropagationModePredictor {
     public static Propagation predictPropagationMode(double frequencyInKhz, double distanceInKm) {
-        if (frequencyInKhz > Ionosphere.MAXIMUM_USABLE_FREQUENCY &&
+        if (frequencyInKhz >= Ionosphere.MAXIMUM_USABLE_FREQUENCY &&
                 distanceInKm < Ionosphere.MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM) {
             return null;
-        } else if (frequencyInKhz > Ionosphere.MAXIMUM_USABLE_FREQUENCY &&
+        } else if (frequencyInKhz >= Ionosphere.MAXIMUM_USABLE_FREQUENCY &&
                 distanceInKm >= Ionosphere.MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM) {
             return Propagation.SPORADIC_E;
         } else if (frequencyInKhz < Ionosphere.MAXIMUM_USABLE_FREQUENCY &&
