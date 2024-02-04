@@ -25,7 +25,7 @@ public class Ionosphere {
     public final static double MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM = 500.0;
     public final static double MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM = 50.0;
 
-    public final static double MAX_FREQUENCY = 22000.0;
+    public final static double MAXIMUM_USABLE_FREQUENCY = 22000.0;
 
     public Ionosphere() {
         dayTimeLayers = new HashMap<>();
@@ -128,9 +128,9 @@ public class Ionosphere {
 
     private double calculateBounceHeight(double frequencyInKhz, IonosphericLayer bounceLayer) {
         double bounceHeight = bounceLayer.getLower();
-        if (frequencyInKhz < Ionosphere.MAX_FREQUENCY && frequencyInKhz > (double) 1800) {
+        if (frequencyInKhz < Ionosphere.MAXIMUM_USABLE_FREQUENCY && frequencyInKhz > (double) 1800) {
             // Normalize frequencies between 14Mhz and 1.8mhz to within 0.0 to 1.0
-            double delta = (frequencyInKhz - (double) 1800) / (Ionosphere.MAX_FREQUENCY - (double) 1800);
+            double delta = (frequencyInKhz - (double) 1800) / (Ionosphere.MAXIMUM_USABLE_FREQUENCY - (double) 1800);
             double layerWidth = bounceLayer.getUpper() - bounceLayer.getLower();
             bounceHeight = bounceLayer.getLower() + (delta * layerWidth);
         } else if (frequencyInKhz < (double) 1800) {
