@@ -28,16 +28,7 @@ import static org.marsik.ham.adif.AdiWriter.*;
 public class AdiReader {
     private static final Pattern NUMERIC_RE = Pattern.compile("-?\\d+(\\.\\d+)?");
 
-    private boolean quirksMode = false;
     private String current;
-
-    public boolean isQuirksMode() {
-        return quirksMode;
-    }
-
-    public void setQuirksMode(boolean quirksMode) {
-        this.quirksMode = quirksMode;
-    }
 
     public Optional<org.marsik.ham.adif.Adif3> read(BufferedReader reader) throws IOException {
         org.marsik.ham.adif.Adif3 document = new Adif3();
@@ -95,7 +86,7 @@ public class AdiReader {
                 .ifPresent(record::setAwardGranted);
         maybeGet(recordFields, "BAND").filter(AdiReader::isNotEmpty).map(Band::findByCode).ifPresent(record::setBand);
         maybeGet(recordFields, "BAND_RX").filter(AdiReader::isNotEmpty).map(Band::findByCode).ifPresent(record::setBandRx);
-        maybeGet(recordFields, "CALL").ifPresent(record::setCall);
+        maybeGet(recordFields, "CALL").ifPresent(record::setCallToUpper);
         maybeGet(recordFields, "CHECK").ifPresent(record::setCheck);
         maybeGet(recordFields, "CLASS").ifPresent(record::setContestClass);
         maybeGet(recordFields, "CLUBLOG_QSO_UPLOAD_DATE")
@@ -152,15 +143,7 @@ public class AdiReader {
         maybeGet(recordFields, "LOTW_QSL_RCVD").filter(AdiReader::isNotEmpty).map(QslRcvd::findByCode).ifPresent(record::setLotwQslRcvd);
         maybeGet(recordFields, "LOTW_QSL_SENT").filter(AdiReader::isNotEmpty).map(QslSent::findByCode).ifPresent(record::setLotwQslSent);
         maybeGet(recordFields, "MAX_BURSTS").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setMaxBursts);
-        try {
-            maybeGet(recordFields, "MODE").map(Mode::findByCode).ifPresent(record::setMode);
-        } catch (IllegalArgumentException e) {
-            if (quirksMode) {
-                maybeGet(recordFields, "MODE").map(Submode::findByCode).ifPresent((sm) -> record.setMode(sm.getMode()));
-            } else {
-                throw e;
-            }
-        }
+        maybeGet(recordFields, "MODE").map(Mode::findByCode).ifPresent(record::setMode);
         maybeGet(recordFields, "MS_SHOWER").ifPresent(record::setMsShower);
         maybeGet(recordFields, "MY_ANTENNA").ifPresent(record::setMyAntenna);
         maybeGet(recordFields, "MY_CITY").ifPresent(record::setMyCity);
@@ -241,7 +224,7 @@ public class AdiReader {
         maybeGet(recordFields, "SRX").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setSrx);
         maybeGet(recordFields, "SRX_STRING").ifPresent(record::setSrxString);
         maybeGet(recordFields, "STATE").ifPresent(record::setState);
-        maybeGet(recordFields, "STATION_CALLSIGN").ifPresent(record::setStationCallsign);
+        maybeGet(recordFields, "STATION_CALLSIGN").ifPresent(record::setStationCallsignToUpper);
         maybeGet(recordFields, "STX").filter(AdiReader::isNotEmpty).map(Integer::parseInt).ifPresent(record::setStx);
         maybeGet(recordFields, "STX_STRING").ifPresent(record::setStxString);
         maybeGet(recordFields, "SUBMODE").ifPresent(record::setSubmode);
@@ -460,7 +443,7 @@ public class AdiReader {
     }
 
     private static boolean isNotEmpty(String s) {
-        return s != null && s.length() > 0;
+        return s != null && !s.isEmpty();
     }
 
     private <T> List<T> parseColonArray(String s, Function<String, T> fieldConverter) {

@@ -34,6 +34,7 @@ import uk.m0nom.adifproc.qrz.QrzCallsign;
 import uk.m0nom.adifproc.satellite.ApSatellite;
 import uk.m0nom.adifproc.satellite.ApSatelliteService;
 
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -357,8 +358,13 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         }
 
         // Set DXCC Entities
-        qso.getFrom().setDxccEntity(control.getDxccEntities().findDxccEntityFromCallsign(qso.getFrom().getCallsign(), qso.getRecord().getQsoDate()));
-        qso.getTo().setDxccEntity(control.getDxccEntities().findDxccEntityFromCallsign(qso.getTo().getCallsign(), qso.getRecord().getQsoDate()));
+        ZonedDateTime date = qso.getRecord().getQsoDate();
+        if (date != null) {
+            qso.getFrom().setDxccEntity(control.getDxccEntities().findDxccEntityFromCallsign(qso.getFrom().getCallsign(), qso.getRecord().getQsoDate()));
+            qso.getTo().setDxccEntity(control.getDxccEntities().findDxccEntityFromCallsign(qso.getTo().getCallsign(), qso.getRecord().getQsoDate()));
+        } else {
+            results.addWarning(String.format("Record %d with station %s has no date", index, qso.getTo().getCallsign()));
+        }
         checkForWarnings(results, qso);
     }
 

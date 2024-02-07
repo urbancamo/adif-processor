@@ -1,7 +1,5 @@
 package org.marsik.ham.adif.enums;
 
-import org.marsik.ham.adif.enums.AdifEnumCode;
-
 public enum Mode implements AdifEnumCode {
     AM,
     ARDOP,
@@ -92,7 +90,10 @@ public enum Mode implements AdifEnumCode {
     QPSK31, // Import Only
     QPSK63, // Import Only
     QPSK125, // Import Only
-    THRBX; // Import Only
+    THRBX, // Import Only
+    FT4, // Import Only
+    VARA_HF, //Import Only
+    JS8; // Import Only
 
     @Override
     public String adifCode() {

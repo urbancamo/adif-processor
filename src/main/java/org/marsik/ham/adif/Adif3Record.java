@@ -9,7 +9,6 @@ import org.marsik.ham.adif.types.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -99,6 +98,9 @@ public class Adif3Record {
      */
     private String call;
 
+    public void setCallToUpper(String call) {
+        setCall(call.toUpperCase());
+    }
     /**
      * contest check (e.g. for ARRL Sweepstakes)
      */
@@ -717,6 +719,10 @@ public class Adif3Record {
      * and the logging operator's callsign
      */
     private String stationCallsign;
+
+    public void setStationCallsignToUpper(String call) {
+        setStationCallsign(call.toUpperCase());
+    }
 
     /**
      * contest QSO transmitted serial number

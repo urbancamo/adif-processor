@@ -128,7 +128,10 @@ public class Adif3LabelFormatter {
         page.writeString("Date     Time Band RST Mode", offsetX, offsetY + 2);
 
         DateTimeFormatter dateS = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String date = dateS.format(qso.getRecord().getQsoDate());
+        String date = "";
+        if (qso.getRecord().getQsoDate() != null) {
+            date = dateS.format(qso.getRecord().getQsoDate());
+        }
         DateTimeFormatter timeS = DateTimeFormatter.ofPattern("HHmm");
         String time = "";
         if (qso.getRecord().getTimeOn() != null) {
