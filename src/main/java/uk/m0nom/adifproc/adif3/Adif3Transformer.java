@@ -116,6 +116,7 @@ public class Adif3Transformer {
             put(Mode.DOMINOF, new ModeSubmode(Mode.DOMINO, Submode.DOMINOF));
             put(Mode.FMHELL, new ModeSubmode(Mode.HELL, Submode.FMHELL));
             put(Mode.FSK31, new ModeSubmode(Mode.PSK, Submode.FSK31));
+            put(Mode.FT4, new ModeSubmode(Mode.MFSK, Submode.FT4));
             put(Mode.GTOR, new ModeSubmode(Mode.TOR, Submode.GTOR));
             put(Mode.HELL80, new ModeSubmode(Mode.HELL, Submode.HELL80));
             put(Mode.HFSK, new ModeSubmode(Mode.HELL, Submode.HFSK));
@@ -151,6 +152,8 @@ public class Adif3Transformer {
             put(Mode.THRBX, new ModeSubmode(Mode.THRB, Submode.THRBX));
             put(Mode.LSB, new ModeSubmode(Mode.SSB, Submode.LSB));
             put(Mode.USB, new ModeSubmode(Mode.SSB, Submode.USB));
+            put(Mode.VARA_HF, new ModeSubmode(Mode.DYNAMIC, Submode.VARA_HF));
+            put(Mode.JS8, new ModeSubmode(Mode.MFSK, Submode.JS8));
         }
     };
 

@@ -25,7 +25,7 @@ public class Ionosphere {
     public final static double MAXIMUM_GROUND_WAVE_DISTANCE_HIGH_BANDS_KM = 500.0;
     public final static double MAXIMUM_GROUND_WAVE_DISTANCE_LOW_BANDS_KM = 50.0;
 
-    public final static double MAXIMUM_USABLE_FREQUENCY = 22000.0;
+    public final static double MAXIMUM_USABLE_FREQUENCY = 70000.0;
 
     public Ionosphere() {
         dayTimeLayers = new HashMap<>();

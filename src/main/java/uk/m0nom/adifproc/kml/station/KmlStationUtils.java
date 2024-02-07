@@ -29,6 +29,7 @@ public class KmlStationUtils {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm");
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     private static final DateTimeFormatter timeWithSecondsFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private static final String UNKNOWN_DATE_TIME = "unknown";
 
     private final Set<String> iconStyles = new HashSet<>();
 
@@ -44,22 +45,33 @@ public class KmlStationUtils {
 
     public static String getQsoDateTimeAsString(Qso qso) {
         ZonedDateTime date = qso.getRecord().getQsoDate();
-        LocalTime time = qso.getRecord().getTimeOn();
-        ZonedDateTime utcDateTime = date;
-        if (time != null) {
-            utcDateTime = date.with(time);
+        if (date != null) {
+            LocalTime time = qso.getRecord().getTimeOn();
+            ZonedDateTime utcDateTime = date;
+            if (time != null) {
+                utcDateTime = date.with(time);
+            }
+            return dateTimeFormatter.format(utcDateTime);
+        } else {
+            System.out.printf("ERROR: QSO with %s has no date%n", qso.getTo().getCallsign());
         }
-        return dateTimeFormatter.format(utcDateTime);
+        return UNKNOWN_DATE_TIME;
     }
 
     public static String getQsoDateAsSerialString(Qso qso) {
         ZonedDateTime date = qso.getRecord().getQsoDate();
-        return serialDateFormatter.format(date);
+        if (date != null) {
+            return serialDateFormatter.format(date);
+        }
+        return UNKNOWN_DATE_TIME;
     }
 
     public static String getQsoDateAsDisplayString(Qso qso) {
         ZonedDateTime date = qso.getRecord().getQsoDate();
-        return displayDateFormatter.format(date);
+        if (date != null) {
+            return displayDateFormatter.format(date);
+        }
+        return UNKNOWN_DATE_TIME;
     }
 
     public static String getQsoTimeOnAsString(Qso qso) {
@@ -73,9 +85,11 @@ public class KmlStationUtils {
 
     public static String getQsoTimeOffAsString(Qso qso) {
         LocalTime time = qso.getRecord().getTimeOff();
-        return timeFormatter.format(time);
+        if (time != null) {
+            return timeFormatter.format(time);
+        }
+        return UNKNOWN_DATE_TIME;
     }
-
 
     public String createMyStationMarker(Document document, Folder folder, Qso qso) {
         String id = getStationMarkerId(qso, qso.getFrom());
@@ -296,13 +310,6 @@ public class KmlStationUtils {
 
     public static String getStationMarkerName(Qso qso) {
         return qso.getTo().getCallsign();
-    }
-
-    public static String getSatelliteMarkerId(Qso qso) {
-        String time = getQsoTimeOnAsString(qso);
-        String satelliteName = qso.getRecord().getSatName();
-        String id = String.format("%s %s", time, satelliteName);
-        return id.replaceAll(" ", "_");
     }
 
     public static String getSatelliteFolderName(Qso qso) {
