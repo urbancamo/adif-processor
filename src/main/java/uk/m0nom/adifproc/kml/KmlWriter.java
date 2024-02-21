@@ -71,7 +71,7 @@ public class KmlWriter {
         while (qsoIterator.hasNext()) {
             Qso qso = qsoIterator.next();
             if (!qso.getFrom().equals(myStation)) {
-                folder = contactsFolder.createAndAddFolder().withName(qso.getFrom().getCallsign()).withOpen(true);
+                folder = contactsFolder.createAndAddFolder().withName(String.format("%s Contacts", qso.getFrom().getCallsign())).withOpen(true);
 
                 String error = kmlStationUtils.addMyStationToMap(doc, folder, qso);
                 if (error != null) {

@@ -32,10 +32,11 @@ public class CallsignUtils {
             new CallsignRegexMap(CallsignVariant.G_ALT, Pattern.compile("^(2E|G|M)\\d", Pattern.CASE_INSENSITIVE)),
             new CallsignRegexMap(CallsignVariant.GQ_ALT, Pattern.compile("^(2Q|GQ|MQ)\\d", Pattern.CASE_INSENSITIVE)),
             new CallsignRegexMap(CallsignVariant.GR_ALT, Pattern.compile("^(2R|GR|MR)\\d", Pattern.CASE_INSENSITIVE)),
-            new CallsignRegexMap(CallsignVariant.GM_ALT, Pattern.compile("^[2GM]M\\d", Pattern.CASE_INSENSITIVE)),
-            new CallsignRegexMap(CallsignVariant.GG_ALT, Pattern.compile("^[2GM]G\\d", Pattern.CASE_INSENSITIVE)),
-            new CallsignRegexMap(CallsignVariant.GI_ALT, Pattern.compile("^[2GM]I\\d", Pattern.CASE_INSENSITIVE)),
-            new CallsignRegexMap(CallsignVariant.GW_ALT, Pattern.compile("^[2GM]W\\d", Pattern.CASE_INSENSITIVE))
+            new CallsignRegexMap(CallsignVariant.GM_ALT, Pattern.compile("^(2M|GM|MM)\\d", Pattern.CASE_INSENSITIVE)),
+            new CallsignRegexMap(CallsignVariant.GG_ALT, Pattern.compile("^(2G|GG|MG)\\d", Pattern.CASE_INSENSITIVE)),
+            new CallsignRegexMap(CallsignVariant.GI_ALT, Pattern.compile("^(2I|GI|MI)\\d", Pattern.CASE_INSENSITIVE)),
+            new CallsignRegexMap(CallsignVariant.GW_ALT, Pattern.compile("^(2W|GW|MW)\\d", Pattern.CASE_INSENSITIVE)),
+            new CallsignRegexMap(CallsignVariant.GE_ALT, Pattern.compile("^(GE|ME)\\d", Pattern.CASE_INSENSITIVE))
     ));
 
 
@@ -97,6 +98,18 @@ public class CallsignUtils {
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GI_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GM_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GW_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GE_ALT));
+                    break;
+                case GE_ALT:
+                    ukVariants.add(new Callsign(callsign, CallsignVariant.GE_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.G_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GQ_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GR_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GD_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GG_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GI_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GM_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GW_ALT));
                     break;
                 case GQ_ALT:
                     ukVariants.add(new Callsign(callsign, CallsignVariant.GQ_ALT));
@@ -107,6 +120,7 @@ public class CallsignUtils {
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GI_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GM_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GW_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GE_ALT));
                     break;
                 case GR_ALT:
                     ukVariants.add(new Callsign(callsign, CallsignVariant.GR_ALT));
@@ -117,6 +131,7 @@ public class CallsignUtils {
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GI_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GM_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GW_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GE_ALT));
                     break;
                 case GM_ALT:
                     ukVariants.add(new Callsign(callsign, CallsignVariant.GM_ALT));
@@ -127,6 +142,7 @@ public class CallsignUtils {
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GG_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GI_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GW_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GE_ALT));
                     break;
                 case GW_ALT:
                     ukVariants.add(new Callsign(callsign, CallsignVariant.GW_ALT));
@@ -137,6 +153,7 @@ public class CallsignUtils {
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GG_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GI_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GM_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GE_ALT));
                     break;
                 case GG_ALT:
                     ukVariants.add(new Callsign(callsign, CallsignVariant.GG_ALT));
@@ -147,6 +164,7 @@ public class CallsignUtils {
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GI_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GM_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GW_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GE_ALT));
                     break;
                 case GI_ALT:
                     ukVariants.add(new Callsign(callsign, CallsignVariant.GI_ALT));
@@ -157,6 +175,7 @@ public class CallsignUtils {
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GG_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GM_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GW_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GE_ALT));
                     break;
                 case GD_ALT:
                     ukVariants.add(new Callsign(callsign, CallsignVariant.GD_ALT));
@@ -167,6 +186,7 @@ public class CallsignUtils {
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GI_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GM_ALT));
                     ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GW_ALT));
+                    ukVariants.add(gToGxVariant(ukVariant, CallsignVariant.GE_ALT));
                     break;
             }
         }
