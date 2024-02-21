@@ -32,7 +32,7 @@ public class CallsignUtilsTest {
     @Test
     public void getUkCallsignVariantsforG() {
         List<Callsign> callsigns = getCallsignVariants("M0NOM");
-        Assertions.assertThat(callsigns).hasSize(8);
+        Assertions.assertThat(callsigns).hasSize(9);
         assertThat(callsigns.get(0).getCallsign()).isEqualTo("M0NOM");
         assertThat(callsigns.get(1).getCallsign()).isEqualTo("MQ0NOM");
         assertThat(callsigns.get(2).getCallsign()).isEqualTo("MR0NOM");
@@ -41,6 +41,7 @@ public class CallsignUtilsTest {
         assertThat(callsigns.get(5).getCallsign()).isEqualTo("MI0NOM");
         assertThat(callsigns.get(6).getCallsign()).isEqualTo("MM0NOM");
         assertThat(callsigns.get(7).getCallsign()).isEqualTo("MW0NOM");
+        assertThat(callsigns.get(8).getCallsign()).isEqualTo("ME0NOM");
     }
 
     @Test
@@ -74,7 +75,7 @@ public class CallsignUtilsTest {
     @Test
     public void getUkCallsignVariantsforGM() {
         List<Callsign> callsigns = getUkCallsignVariants("MM0NOM");
-        Assertions.assertThat(callsigns).hasSize(8);
+        Assertions.assertThat(callsigns).hasSize(9);
         assertThat(callsigns.get(0).getCallsign()).isEqualTo("MM0NOM");
         assertThat(callsigns.get(1).getCallsign()).isEqualTo("M0NOM");
         assertThat(callsigns.get(2).getCallsign()).isEqualTo("MQ0NOM");
@@ -83,6 +84,7 @@ public class CallsignUtilsTest {
         assertThat(callsigns.get(5).getCallsign()).isEqualTo("MG0NOM");
         assertThat(callsigns.get(6).getCallsign()).isEqualTo("MI0NOM");
         assertThat(callsigns.get(7).getCallsign()).isEqualTo("MW0NOM");
+        assertThat(callsigns.get(8).getCallsign()).isEqualTo("ME0NOM");
     }
 
     @Test
