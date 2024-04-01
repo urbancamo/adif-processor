@@ -5,7 +5,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -18,6 +21,10 @@ public class AwsInternalFileService implements InternalFileService {
 
     public AwsInternalFileService(AwsS3FileUtils awsS3FileUtils) {
         this.awsS3FileUtils = awsS3FileUtils;
+    }
+
+    public String getLogFilePath() {
+        return "/var/logs/user-access.log";
     }
 
     public Set<String> getFiles(String filePath) {
@@ -56,6 +63,15 @@ public class AwsInternalFileService implements InternalFileService {
                 }
             }
 
+        }
+    }
+
+    public void logUserAccess(String usernames) {
+        try (FileWriter fw = new FileWriter(getLogFilePath(), true)) {
+            String timestamp = DateTimeFormatter.ISO_ZONED_DATE_TIME.format(new Date().toInstant());
+            fw.write(String.format("%s: %s", timestamp, usernames) + System.lineSeparator());
+        } catch (IOException e) {
+            logger.warning(String.format("Error writing to user log %s: %s", getLogFilePath(), e.getMessage()));
         }
     }
 }

@@ -11,6 +11,7 @@ import org.marsik.ham.adif.enums.Submode;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.adif3.contacts.Qsos;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
+import uk.m0nom.adifproc.file.InternalFileService;
 import uk.m0nom.adifproc.adif3.transform.CommentParsingAdifRecordTransformer;
 import uk.m0nom.adifproc.adif3.transform.MyCallsignCheck;
 import uk.m0nom.adifproc.adif3.transform.MyCallsignCheckResults;
@@ -29,8 +30,11 @@ import java.util.Map;
 public class Adif3Transformer {
     private final CommentParsingAdifRecordTransformer transformer;
 
-    public Adif3Transformer(CommentParsingAdifRecordTransformer transformer) {
+    private final InternalFileService fileService;
+
+    public Adif3Transformer(CommentParsingAdifRecordTransformer transformer, InternalFileService fileService) {
         this.transformer = transformer;
+        this.fileService = fileService;
     }
 
     public Qsos transform(Adif3 log, TransformControl control, TransformResults results, ProgressFeedbackHandlerCallback progressFeedbackHandlerCallback, String sessionId) throws UnsupportedHeaderException {
@@ -43,6 +47,7 @@ public class Adif3Transformer {
         int theirCallsignIssues = 0;
 
         MyCallsignCheckResults callsigns = MyCallsignCheck.checkForSingleMyCallsign(log);
+        fileService.logUserAccess(callsigns.getCallsignsForUserLog());
 
         // LOTW export can contain a single APP field that needs stripping as the record isn't valid for processing
         log.setRecords(stripLotwEofRecordIfPresent(log.getRecords()));

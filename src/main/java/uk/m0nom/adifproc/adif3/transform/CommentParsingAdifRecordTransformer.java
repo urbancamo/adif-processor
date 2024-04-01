@@ -182,6 +182,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             }
             if (StringUtils.isNotBlank(control.getSatelliteName())) {
                 rec.setSatName(control.getSatelliteName().toUpperCase());
+            }
+            if (StringUtils.isNotBlank(rec.getSatName())) {
                 // Set Propagation Mode Automagically
                 rec.setPropMode(Propagation.SATELLITE);
             }
