@@ -8,4 +8,5 @@ public interface InternalFileService {
 
     String readFile(String folder, String filePath);
 
+    void logUserAccess(String usernames);
 }

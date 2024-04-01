@@ -30,4 +30,8 @@ public class MyCallsignCheckResults {
         return stationCallsign;
     }
 
+    public String getCallsignsForUserLog() {
+        return String.join(", ",operators)
+                .concat(String.join(", ", stationCallsigns));
+    }
 }
