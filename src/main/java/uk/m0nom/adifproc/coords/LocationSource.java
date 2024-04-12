@@ -10,6 +10,7 @@ public enum LocationSource {
     QRZ("QRZ.COM"),
     GEOCODING("Geocoding"),
     OSGB36_CONVERTER("OSGB36 Grid Reference"),
+    WAB("Worked All Britain Square"),
     IRISH_GRID_REF_CONVERTER("Irish Grid Reference"),
     UNDEFINED("Undefined"),
     SATELLITE("Satellite");

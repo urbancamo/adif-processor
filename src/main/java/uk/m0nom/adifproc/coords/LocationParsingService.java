@@ -36,9 +36,8 @@ public class LocationParsingService {
         parsers.add(new Maidenhead10CharLocatorParser());
         parsers.add(new Maidenhead8CharLocatorParser());
         parsers.add(new Maidenhead6CharLocatorParser());
-        // Doesn't work due to WAB references clashing
-        // TODO Check This comment!
-        parsers.add(new Maidenhead4CharLocatorParser());
+        // Swapped to WAB Parser instead of 4 character Maidenhead
+        parsers.add(new WabParser());
         parsers.add(new OsGb36Parser6Digit());
         parsers.add(new OsGb36Parser5Digit());
         parsers.add(new OsGb36Parser4Digit());
