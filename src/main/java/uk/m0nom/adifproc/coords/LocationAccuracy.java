@@ -22,7 +22,8 @@ public enum LocationAccuracy {
     GEOLOCATION_GOOD("Geolocation - Good"),
     GEOLOCATION_POOR("Geolocation - Poor"),
     GEOLOCATION_VERY_POOR("Geolocation - Very Poor"),
-    IRISH_GRID_REF_5DIGIT("5 Digit Irish Locator");
+    IRISH_GRID_REF_5DIGIT("5 Digit Irish Locator"),
+    WAB("Worked All Britain Square");
 
     private final String description;
 
