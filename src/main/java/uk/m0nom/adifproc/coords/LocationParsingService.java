@@ -23,6 +23,7 @@ public class LocationParsingService {
         parsers.add(new CommaSeparatedDecimalLatLongParser());
         parsers.add(new DegreesDecimalWithNsewLatLongParser());
         parsers.add(new CommaSeparatedDecimalWithNsewLatLongParser());
+        parsers.add(new CommaSeparatedDegreesDecimalMinutesWithNsewLatLongParser());
         parsers.add(new DegreesDecimalMinutesLatLongParser());
         parsers.add(new DegreesDecimalMinutesWithNsewLatLongParser());
         parsers.add(new CommaSeparatedDecimalLatLongWithAltitudeParser());
