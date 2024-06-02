@@ -1,0 +1,53 @@
+### QLog ADIF Export
+<ADIF_VER:5>3.1.4
+<PROGRAMID:4>QLog
+<PROGRAMVERSION:6>0.34.0
+<CREATED_TIMESTAMP:15>20240515 003039
+<EOH>
+
+<call:5>LU7HF
+<rst_sent:3>599
+<rst_rcvd:3>599
+<freq:6:N>24.895
+<band:3>12m
+<mode:2>CW
+<name:15>MARCELO GABRIEL
+<qth:23>SAN FRANCISCO - CORDOBA
+<gridsquare:6>FF88XS
+<dxcc:3>100
+<country:9>Argentina
+<cont:2>SA
+<cqz:2>13
+<ituz:2>14
+<pfx:3>LU7
+<state:2>Se
+<qsl_rcvd:1>N
+<qsl_sent:1>Q
+<lotw_qsl_rcvd:1>N
+<lotw_qsl_sent:1>Y
+<lotw_qslsdate:8>20240510
+<tx_pwr:3>100
+<a_index:1>7
+<band_rx:3>12m
+<distance:17>7002.559901983147
+<eqsl_qslsdate:8>20240511
+<eqsl_qsl_rcvd:1>N
+<eqsl_qsl_sent:1>Y
+<freq_rx:6>24.895
+<k_index:1>2
+<my_antenna:7>doublet
+<my_city:11>Bushnell FL
+<my_country:13>United States
+<my_cq_zone:1>5
+<my_dxcc:3>291
+<my_gridsquare:4>EL88
+<my_itu_zone:1>8
+<my_name:4>Dave
+<my_rig:5>FT710
+<sfi:3>233
+<station_callsign:4>KZ1O
+<qso_date:8:D>20240509
+<time_on:6:T>213531
+<qso_date_off:8:D>20240509
+<time_off:6:T>213639
+<eor>

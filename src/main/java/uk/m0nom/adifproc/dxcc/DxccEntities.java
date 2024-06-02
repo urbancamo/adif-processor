@@ -3,6 +3,9 @@ package uk.m0nom.adifproc.dxcc;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.marsik.ham.adif.Adif3Record;
+import uk.m0nom.adifproc.adif3.contacts.Qso;
+import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.callsign.CallsignUtils;
 
 import java.text.ParseException;
@@ -47,13 +50,11 @@ public class DxccEntities {
     private DxccEntity tryFindEntitiesForSuffix(String callsign, ZonedDateTime qsoDate) {
         String swappedCallsign = CallsignUtils.swapSuffixToPrefix(callsign);
         Collection<DxccEntity> matches = findEntitiesFromPrefix(swappedCallsign, qsoDate);
-        switch (matches.size()) {
-            case 1:
-                return matches.iterator().next();
-            case 2:
-                return bestMatch(swappedCallsign, matches);
-        }
-        return null;
+        return switch (matches.size()) {
+            case 1 -> matches.iterator().next();
+            case 2 -> bestMatch(swappedCallsign, matches);
+            default -> null;
+        };
     }
 
     public DxccEntity findDxccEntityFromCallsign(String callsign, ZonedDateTime qsoDate) {
@@ -64,14 +65,11 @@ public class DxccEntities {
             matches = findEntitiesFromPrefix(callsign, qsoDate);
         }
 
-        switch (matches.size()) {
-            case 0:
-                return null;
-            case 1:
-                return matches.iterator().next();
-            default:
-                return bestMatch(callsign, matches);
-        }
+        return switch (matches.size()) {
+            case 0 -> null;
+            case 1 -> matches.iterator().next();
+            default -> bestMatch(callsign, matches);
+        };
     }
 
     public Collection<String> getPrefixesForDxccEntity(DxccEntity entity) {
@@ -160,4 +158,24 @@ public class DxccEntities {
         }
         return prefixesToCheck.get(longestPrefix);
     }
+
+    public void setFromDxccEntity(Qso qso, TransformControl control) {
+        Adif3Record rec = qso.getRecord();
+        if (rec.getDxcc() != null) {
+            qso.getFrom().setDxccEntity(control.getDxccEntities().getDxccEntity(rec.getMyDxcc()));
+        } else {
+            qso.getFrom().setDxccEntity(control.getDxccEntities().findDxccEntityFromCallsign(qso.getFrom().getCallsign(), qso.getRecord().getQsoDate()));
+        }
+    }
+
+    public void setToDxccEntity(Qso qso, TransformControl control) {
+        Adif3Record rec = qso.getRecord();
+        if (rec.getMyDxcc() != null) {
+            qso.getTo().setDxccEntity(control.getDxccEntities().getDxccEntity(rec.getDxcc()));
+        } else {
+            qso.getTo().setDxccEntity(control.getDxccEntities().findDxccEntityFromCallsign(qso.getTo().getCallsign(), qso.getRecord().getQsoDate()));
+        }
+    }
+
+
 }

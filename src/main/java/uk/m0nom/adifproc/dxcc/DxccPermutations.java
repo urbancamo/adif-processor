@@ -1,7 +1,6 @@
 package uk.m0nom.adifproc.dxcc;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +16,7 @@ public final class DxccPermutations {
             i--;
         }
         int suffixStart = i+1;
-        String suffix = begin.substring(suffixStart, begin.length());
+        String suffix = begin.substring(suffixStart);
 
         // String suffix off begin and end and generate variants
         List<String> variants = generateInternal(begin.substring(0, suffixStart), end.substring(0, suffixStart));
