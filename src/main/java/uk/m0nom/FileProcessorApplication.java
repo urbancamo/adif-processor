@@ -47,7 +47,7 @@ public class FileProcessorApplication implements CommandLineRunner, ProgressFeed
     private final Adif3FileReader reader;
     private final Adif3FileWriter writer;
 
-    private final ActivityDatabaseService summits;
+    private final ActivityDatabaseService activityDatabaseService;
 
     private final Adif3PrintFormatter formatter;
     private final KmlWriter kmlWriter;
@@ -73,12 +73,12 @@ public class FileProcessorApplication implements CommandLineRunner, ProgressFeed
     }
 
     public FileProcessorApplication(Adif3Transformer transformer, Adif3FileReader reader, Adif3FileWriter writer,
-                                    ActivityDatabaseService summits, Adif3PrintFormatter formatter, KmlWriter kmlWriter,
+                                    ActivityDatabaseService activityDatabaseService, Adif3PrintFormatter formatter, KmlWriter kmlWriter,
                                     CachingQrzXmlService qrzXmlService) {
         this.transformer = transformer;
         this.reader = reader;
         this.writer = writer;
-        this.summits = summits;
+        this.activityDatabaseService = activityDatabaseService;
         this.formatter = formatter;
         this.kmlWriter = kmlWriter;
         this.qrzXmlService = qrzXmlService;
@@ -120,7 +120,7 @@ public class FileProcessorApplication implements CommandLineRunner, ProgressFeed
         String markdown = String.format("%s%s-%s.%s", outPath, inBasename, "fta", "md");
         logger.info(String.format("Running from: %s", new File(".").getAbsolutePath()));
         try {
-            summits.loadData();
+            activityDatabaseService.loadData();
             JsonDxccEntities jsonDxccEntities = new DxccJsonReader().read();
             DxccEntities dxccEntities = new DxccEntities();
             try {
@@ -145,13 +145,13 @@ public class FileProcessorApplication implements CommandLineRunner, ProgressFeed
             qsos = transformer.transform(log, control, results, this, null);
             logger.info(String.format("Writing output file %s with encoding %s", out, control.getEncoding()));
             if (control.getGenerateKml()) {
-                kmlWriter.write(control, kml, inBasename, summits, qsos, results);
+                kmlWriter.write(control, kml, inBasename, activityDatabaseService, qsos, results);
                 if (StringUtils.isNotEmpty(results.getError())) {
                     logger.severe(results.getError());
                 }
             }
             // Contest Calculations
-            log.getHeader().setPreamble(new ContestResultsCalculator(summits).calculateResults(log));
+            log.getHeader().setPreamble(new ContestResultsCalculator(activityDatabaseService).calculateResults(log));
 
             writer.write(out, control.getEncoding(), log);
             if (control.isFormattedOutput()) {

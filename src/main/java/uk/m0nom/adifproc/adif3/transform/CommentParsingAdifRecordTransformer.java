@@ -362,8 +362,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         // Set DXCC Entities
         ZonedDateTime date = qso.getRecord().getQsoDate();
         if (date != null) {
-            qso.getFrom().setDxccEntity(control.getDxccEntities().findDxccEntityFromCallsign(qso.getFrom().getCallsign(), qso.getRecord().getQsoDate()));
-            qso.getTo().setDxccEntity(control.getDxccEntities().findDxccEntityFromCallsign(qso.getTo().getCallsign(), qso.getRecord().getQsoDate()));
+            control.getDxccEntities().setFromDxccEntity(qso, control);
+            control.getDxccEntities().setToDxccEntity(qso, control);
         } else {
             results.addWarning(String.format("Record %d with station %s has no date", index, qso.getTo().getCallsign()));
         }
