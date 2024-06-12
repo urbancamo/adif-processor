@@ -161,7 +161,7 @@ public class DxccEntities {
 
     public void setFromDxccEntity(Qso qso, TransformControl control) {
         Adif3Record rec = qso.getRecord();
-        if (rec.getDxcc() != null) {
+        if (rec.getMyDxcc() != null) {
             qso.getFrom().setDxccEntity(control.getDxccEntities().getDxccEntity(rec.getMyDxcc()));
         } else {
             qso.getFrom().setDxccEntity(control.getDxccEntities().findDxccEntityFromCallsign(qso.getFrom().getCallsign(), qso.getRecord().getQsoDate()));
@@ -170,7 +170,7 @@ public class DxccEntities {
 
     public void setToDxccEntity(Qso qso, TransformControl control) {
         Adif3Record rec = qso.getRecord();
-        if (rec.getMyDxcc() != null) {
+        if (rec.getDxcc() != null) {
             qso.getTo().setDxccEntity(control.getDxccEntities().getDxccEntity(rec.getDxcc()));
         } else {
             qso.getTo().setDxccEntity(control.getDxccEntities().findDxccEntityFromCallsign(qso.getTo().getCallsign(), qso.getRecord().getQsoDate()));
