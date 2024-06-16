@@ -13,5 +13,23 @@ To configure the new environment:
  - Configure service access: set existing service role: `aws-elasticbeanstalk-service-role`, EC2 key pair: `aws-eb` and EC2 instance profile: `aws-elasticbeanstalk-ec2-role`
 
 Additional environment variables most be set:
- - QRZ_USERNAME
- - QRZ_PASSWORD
+ - `QRZ_USERNAME`
+ - `QRZ_PASSWORD`
+
+## Load Balancer
+    
+If you deploy a new application environment to Elastic Beanstalk, you will need to add a load balancer to the environment. This is done by going to the Elastic Beanstalk console, selecting the environment, and then clicking on the "Load Balancer" tab. You will need to create a new load balancer.
+
+When you define the listener, ensure that you assign the adif.uk certificate to the listener.
+
+NOTE: when registering a target group with the load balancer, you must ensure you set the port number is 80 througout.
+
+You may need to create a new security group for the load balancer that allows traffic from the internet, with default rule IP access from 0.0.0.0/0.
+
+The security group should have a Custom TCP rule for inbound traffic on port 443.
+
+## DNS Configuration
+
+Update DNS management via the cPanel Zone editor on CloudAbove to point to the load balancer DNS name A record.
+
+Ensure the certificate CNAME records defined in the AWS certificate are setup correctly as CNAME records against the domain adif.uk and www.adif.uk in CloudAbove.
