@@ -1,7 +1,9 @@
 package uk.m0nom.adifproc.adif3.transform;
 
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
+import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LocationAccuracy;
@@ -15,14 +17,12 @@ import java.util.logging.Logger;
 /**
  * Populate our output ADIF record wih information obtained from QRZ.COM
  */
+@Service
+@AllArgsConstructor
 public class AdifQrzEnricher {
     private static final Logger logger = Logger.getLogger(AdifQrzEnricher.class.getName());
 
-    private final QrzService qrzService;
-
-    public AdifQrzEnricher(QrzService qrzService) {
-        this.qrzService = qrzService;
-    }
+    private final QrzService cachingQrzXmlService;
 
     public static String getNameFromQrzData(QrzCallsign qrzData) {
         String name = "";
@@ -51,7 +51,7 @@ public class AdifQrzEnricher {
         }
     }
 
-    public void enrichAdifForThem(TransformResults results, Adif3Record rec, QrzCallsign qrzData) {
+    public void enrichAdifForThem(Adif3Record rec, QrzCallsign qrzData) {
         if (qrzData == null) {
             return;
         }
@@ -89,7 +89,7 @@ public class AdifQrzEnricher {
         String callsign = rec.getCall();
 
         if (callsignData == null) {
-            callsignData = qrzService.getCallsignData(callsign);
+            callsignData = cachingQrzXmlService.getCallsignData(callsign);
             qso.getTo().setQrzInfo(callsignData);
         }
 
@@ -99,7 +99,7 @@ public class AdifQrzEnricher {
         } else if (CallsignUtils.isPortable(callsign)) {
             // Try stripping off any portable callsign information and querying that as a last resort
             String fixedCallsign = callsign.substring(0, StringUtils.lastIndexOf(callsign, "/"));
-            callsignData = qrzService.getCallsignData(fixedCallsign);
+            callsignData = cachingQrzXmlService.getCallsignData(fixedCallsign);
             if (callsignData != null) {
                 logger.info(String.format("Retrieved %s from QRZ.COM using FIXED station callsign %s", callsign, fixedCallsign));
                 qso.getTo().setQrzInfo(callsignData);

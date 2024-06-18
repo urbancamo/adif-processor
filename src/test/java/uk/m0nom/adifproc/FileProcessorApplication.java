@@ -1,4 +1,4 @@
-package uk.m0nom;
+package uk.m0nom.adifproc;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -62,12 +62,12 @@ public class FileProcessorApplication implements CommandLineRunner, ProgressFeed
             LogManager.getLogManager().readConfiguration(stream);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warning(e.getMessage());
         } finally {
             try {
                 Objects.requireNonNull(stream).close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.warning(e.getMessage());
             }
         }
     }

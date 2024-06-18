@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.m0nom.FileProcessorApplication;
+import uk.m0nom.adifproc.FileProcessorApplication;
 import uk.m0nom.adifproc.FileProcessorApplicationConfig;
 import uk.m0nom.adifproc.activity.ActivityDatabaseService;
 import uk.m0nom.adifproc.adif3.io.Adif3FileReader;

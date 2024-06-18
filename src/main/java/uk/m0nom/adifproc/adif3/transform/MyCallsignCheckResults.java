@@ -3,6 +3,8 @@ package uk.m0nom.adifproc.adif3.transform;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -31,7 +33,9 @@ public class MyCallsignCheckResults {
     }
 
     public String getCallsignsForUserLog() {
-        return String.join(", ",operators)
-                .concat(String.join(", ", stationCallsigns));
+        List<String> callsigns = new ArrayList<>();
+        callsigns.addAll(operators);
+        callsigns.addAll(stationCallsigns);
+        return String.join(", ",callsigns);
     }
 }

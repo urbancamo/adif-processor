@@ -1,5 +1,6 @@
 package uk.m0nom.adifproc.adif3.transform;
 
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
@@ -18,14 +19,11 @@ import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.contacts.Qsos;
 import uk.m0nom.adifproc.adif3.control.TransformControl;
 import uk.m0nom.adifproc.adif3.transform.comment.CommentTransformer;
-import uk.m0nom.adifproc.adif3.transform.comment.FieldParserCommentTransformer;
-import uk.m0nom.adifproc.adif3.transform.comment.SchemaBasedCommentTransformer;
 import uk.m0nom.adifproc.coords.GlobalCoords3D;
 import uk.m0nom.adifproc.coords.LocationAccuracy;
 import uk.m0nom.adifproc.coords.LocationSource;
 import uk.m0nom.adifproc.geocoding.GeocodingProvider;
 import uk.m0nom.adifproc.geocoding.GeocodingResult;
-import uk.m0nom.adifproc.geocoding.NominatimGeocodingProvider;
 import uk.m0nom.adifproc.location.FromLocationDeterminer;
 import uk.m0nom.adifproc.location.ToLocationDeterminer;
 import uk.m0nom.adifproc.maidenheadlocator.MaidenheadLocatorConversion;
@@ -43,6 +41,7 @@ import java.util.logging.Logger;
 import static uk.m0nom.adifproc.adif3.transform.AdifQrzEnricher.getNameFromQrzData;
 
 @Service
+@AllArgsConstructor
 public class CommentParsingAdifRecordTransformer implements Adif3RecordTransformer {
     private static final Logger logger = Logger.getLogger(CommentParsingAdifRecordTransformer.class.getName());
 
@@ -56,28 +55,6 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
     private final CommentTransformer fieldParserCommentTransformer;
     private final CommentTransformer schemaBasedCommentTransformer;
     private final ApSatelliteService apSatelliteService;
-
-
-    public CommentParsingAdifRecordTransformer(ActivityDatabaseService activities,
-                                               CachingQrzXmlService qrzXmlService,
-                                               SchemaBasedCommentTransformer schemaBasedCommentTransformer,
-                                               FieldParserCommentTransformer fieldParserCommentTransformer,
-                                               FromLocationDeterminer fromLocationDeterminer,
-                                               ToLocationDeterminer toLocationDeterminer,
-                                               ActivityProcessor activityProcessor,
-                                               NominatimGeocodingProvider geocodingProvider,
-                                               ApSatelliteService apSatelliteService) {
-        this.activities = activities;
-        this.qrzXmlService = qrzXmlService;
-        this.enricher = new AdifQrzEnricher(qrzXmlService);
-        this.apSatelliteService = apSatelliteService;
-        this.fromLocationDeterminer = fromLocationDeterminer;
-        this.toLocationDeterminer = toLocationDeterminer;
-        this.activityProcessor = activityProcessor;
-        this.geocodingProvider = geocodingProvider;
-        this.fieldParserCommentTransformer = fieldParserCommentTransformer;
-        this.schemaBasedCommentTransformer = schemaBasedCommentTransformer;
-    }
 
     private void processSotaRef(Qso qso, TransformResults results) {
         Adif3Record rec = qso.getRecord();
@@ -166,11 +143,11 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         enricher.enrichAdifForMe(qso.getRecord(), myQrzData);
     }
 
-    private QrzCallsign setTheirInfoFromQrz(TransformResults transformResults, Qso qso) {
+    private QrzCallsign setTheirInfoFromQrz(Qso qso) {
         /* Load QRZ.COM info for the worked station as a fixed station, for information */
         QrzCallsign theirQrzData = qrzXmlService.getCallsignData(qso.getTo().getCallsign());
         qso.getTo().setQrzInfo(theirQrzData);
-        enricher.enrichAdifForThem(transformResults, qso.getRecord(), theirQrzData);
+        enricher.enrichAdifForThem(qso.getRecord(), theirQrzData);
         return theirQrzData;
     }
 
@@ -272,7 +249,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
         qso.getFrom().setAntenna(control.getAntenna());
         setMyInfoFromQrz(control, qso);
-        QrzCallsign theirQrzData = setTheirInfoFromQrz(results, qso);
+        QrzCallsign theirQrzData = setTheirInfoFromQrz(qso);
 
         // We first use the schema based transformer...
         schemaBasedCommentTransformer.transformComment(qso, rec.getComment(), unmapped, results);
