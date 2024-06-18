@@ -5,15 +5,17 @@ import org.apache.commons.lang3.StringUtils;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.activity.CsvActivityReader;
+import uk.m0nom.adifproc.activity.RemoteActivitySource;
 
 /**
  * Reader for the Parks on the Air CSV extract
  */
-public class PotaCsvReader extends CsvActivityReader {
+public class PotaCsvReader extends CsvActivityReader implements RemoteActivitySource {
 
     public PotaCsvReader(String sourceFile) {
         super(ActivityType.POTA, sourceFile);
     }
+
 
     @Override
     protected Activity readRecord(CSVRecord record) throws IllegalArgumentException {
@@ -30,5 +32,10 @@ public class PotaCsvReader extends CsvActivityReader {
         info.setCoords(readCoords(record, "latitude", "longitude"));
         info.setGrid(record.get("grid"));
         return info;
+    }
+
+    @Override
+    public String getRemoteUrl() {
+        return "https://pota.app/all_parks_ext.csv";
     }
 }
