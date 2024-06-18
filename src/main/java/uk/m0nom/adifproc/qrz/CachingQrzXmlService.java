@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+@Service("cachingQrzXmlService")
 public class CachingQrzXmlService implements QrzService {
     private final Map<String, QrzCallsign> cache;
     private final QrzXmlService service;

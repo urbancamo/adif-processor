@@ -1,14 +1,11 @@
 package uk.m0nom.adifproc.qrz;
 
-import fr.dudie.nominatim.client.JsonNominatimClient;
-import fr.dudie.nominatim.model.Address;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.callsign.Callsign;
@@ -25,8 +22,9 @@ import java.util.logging.Logger;
 /**
  * <a href="https://www.qrz.com/XML/current_spec.html">QRZ XML Spec</a>
  */
-@Service
-public class QrzXmlService implements QrzService {
+@Service("qrzXmlService")
+public class
+QrzXmlService implements QrzService {
     private static final Logger logger = Logger.getLogger(QrzXmlService.class.getName());
 
     private final static String QRZ_XML_SERVICE_BASE_URL = " https://xmldata.qrz.com/xml";
@@ -78,7 +76,6 @@ public class QrzXmlService implements QrzService {
                     Thread.sleep(pause);
                 } catch (Exception e) {
                     // discard
-                    ;
                 }
             }
             QrzCallsign data = getCallsignDataInternal(alternative.getCallsign());
