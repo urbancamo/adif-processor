@@ -65,7 +65,7 @@ public class PreferAdifDxccEntityOverCalculatedDxccEntityFromCallsignTest {
             Adif3 input = reader.read("./target/test-classes/adif/LU7HF.adi", "windows-1251", false);
             assert input != null;
             assert input.getRecords().size() == 1;
-            Adif3Record record = input.getRecords().get(0);
+            Adif3Record record = input.getRecords().getFirst();
             assert record.getCall().equals("LU7HF");
             assert record.getCountry().equals("Argentina");
             assert record.getDxcc().equals(100);
