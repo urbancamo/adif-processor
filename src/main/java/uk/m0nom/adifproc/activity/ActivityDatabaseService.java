@@ -57,34 +57,35 @@ public class ActivityDatabaseService {
      */
     public void loadData() {
         readers.values().forEach(reader -> {
-                boolean readFromRemote = false;
-
+                boolean readingFromRemote = false;
+                InputStream inputStream = null;
                 if (reader instanceof RemoteActivitySource remoteActivitySource) {
                     // Attempt to download the file from the remote source
                     try {
-                        InputStream inputStream = URI.create(remoteActivitySource.getRemoteUrl()).toURL().openStream();
+                        inputStream = URI.create(remoteActivitySource.getRemoteUrl()).toURL().openStream();
                         if (inputStream != null) {
-                            reader.read(inputStream);
-                            logger.info(String.format("Loaded %s from %s", reader.getType().getActivityName(), remoteActivitySource.getRemoteUrl()));
-                            readFromRemote = true;
+                            logger.info(String.format("Loading %s from %s", reader.getType().getActivityName(), remoteActivitySource.getRemoteUrl()));
+                            readingFromRemote = true;
                         }
                     } catch (IOException e) {
                         // problem downloading the file, so load the local copy instead
                         logger.warning(String.format("Problem downloading %s from %s", reader.getType().getActivityName(), remoteActivitySource.getRemoteUrl()));
                     }
                 }
-                if (!readFromRemote) {
-                    InputStream inputStream = getClass().getClassLoader().getResourceAsStream(reader.getSourceFile());
+                if (!readingFromRemote) {
+                    inputStream = getClass().getClassLoader().getResourceAsStream(reader.getSourceFile());
                     if (inputStream == null) {
                         logger.severe(String.format("Can't load %s using classloader %s", reader.getSourceFile(), getClass().getClassLoader().toString()));
                     }
-                    try {
-                        ActivityDatabase database = reader.read(inputStream);
-                        databases.put(reader.getType().getActivityName(), database);
-                    } catch (IOException e) {
-                        logger.severe(String.format("Exception thrown reading activity databases: %s", e.getMessage()));
-                    }
                 }
+
+                try {
+                    ActivityDatabase database = reader.read(inputStream);
+                    databases.put(reader.getType().getActivityName(), database);
+                } catch (IOException e) {
+                    logger.severe(String.format("Exception thrown reading activity databases: %s", e.getMessage()));
+                }
+
                 //logger.info(String.format("%d %s records loaded", database.size(), reader.getType().getActivityDescription()));
             });
     }
