@@ -33,3 +33,7 @@ The security group should have a Custom TCP rule for inbound traffic on port 443
 Update DNS management via the cPanel Zone editor on CloudAbove to point to the load balancer DNS name A record.
 
 Ensure the certificate CNAME records defined in the AWS certificate are setup correctly as CNAME records against the domain adif.uk and www.adif.uk in CloudAbove.
+
+## RDS Postgres Configuration
+
+Need to modify the RDS Postgres configuration to add a security group to allow access via the internet.
