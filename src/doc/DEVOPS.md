@@ -37,3 +37,14 @@ Ensure the certificate CNAME records defined in the AWS certificate are setup co
 ## RDS Postgres Configuration
 
 Need to modify the RDS Postgres configuration to add a security group to allow access via the internet.
+
+Ensure the security group associated with the RDS Postgres instance allows access to the internet.
+
+Add the following environment variables to the Elastic Beanstalk environment:
+
+- `POSTGRES_USERNAME`
+- `POSTGRES_PASSWORD`
+- `POSTGRES_DB`
+- `POSTGRES_HOST`
+- `SPRING_PROFILES_ACTIVE` = `prod`
+
