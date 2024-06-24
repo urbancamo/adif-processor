@@ -6,9 +6,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
 import lombok.Getter;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,8 +16,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.logging.Logger;
 
 @Service
@@ -43,30 +39,8 @@ public class AwsS3FileUtils {
         if (configured) {
             AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
             s3client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials)).withRegion(Regions.EU_WEST_2).build();
+            logger.info("AWS S3 file utilities configured");
         }
-    }
-
-    public void archiveFile(String folder, String file, String content) {
-        if (isConfigured()) {
-            String path = String.format("%s/%s", folder, file);
-            try {
-                s3client.putObject(ADIF_PROC_BUCKET, path, content);
-            } catch (Exception e) {
-                logger.severe(String.format("Exception archiving file %s into bucket %s: %s", path, ADIF_PROC_BUCKET, e.getMessage()));
-            }
-        }
-    }
-
-    public Set<String> getFiles(String filePath) {
-        if (isConfigured()) {
-            Set<String> inputFiles = new TreeSet<>();
-            ObjectListing objectListing = s3client.listObjects(ADIF_PROC_BUCKET, filePath);
-            for (S3ObjectSummary os : objectListing.getObjectSummaries()) {
-                inputFiles.add(os.getKey());
-            }
-            return inputFiles;
-        }
-        return null;
     }
 
     public String readFile(String folder, String inputFile) {
