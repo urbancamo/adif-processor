@@ -12,9 +12,17 @@ To configure the new environment:
 
  - Configure service access: set existing service role: `aws-elasticbeanstalk-service-role`, EC2 key pair: `aws-eb` and EC2 instance profile: `aws-elasticbeanstalk-ec2-role`
 
-Additional environment variables most be set:
+Additional environment variables must be set:
  - `QRZ_USERNAME`
  - `QRZ_PASSWORD`
+ - `AWS_ACCESS_KEY`
+ - `AWS_SECRET_KEY`
+
+## Access Keys
+
+Ensure in the IAM console that there is an access key for the user `adif_processor` with permissions `AmazonS3FullAccess` originating from the group `adif-s3-group`.
+
+The current working access key has the name `ADIF Processor Access to S3 Storage`.
 
 ## Load Balancer
     

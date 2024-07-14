@@ -106,7 +106,7 @@ public class KmlStationUtils {
         String callsign = qso.getFrom().getCallsign();
         Folder myFolder = folder.createAndAddFolder().withName(callsign).withOpen(false);
 
-        IconResource icon = IconResource.getIconFromStation(control, qso.getFrom());
+        IconResource icon = IconResource.getMyIconFromStation(control, qso.getFrom());
         if (!iconStyles.contains(icon.getName())) {
             Icon kmlIcon = new Icon().withHref(icon.getUrl());
             Style style = document.createAndAddStyle()

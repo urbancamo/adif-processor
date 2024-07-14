@@ -118,7 +118,7 @@ public class KmlWriter {
 
         if (!results.hasErrors()) {
             if (results.getSatelliteActivity().hasActivity()) {
-                GlobalCoordinates coords = qsos.getQsos().get(0).getRecord().getMyCoordinates();
+                GlobalCoordinates coords = qsos.getQsos().getFirst().getRecord().getMyCoordinates();
                 GlobalCoords3D coordinatesWithSourceAccuracy = new GlobalCoords3D(coords, 0.0);
                 kmlSatelliteTrack.addSatelliteTracks(control, doc, results.getSatelliteActivity(), coordinatesWithSourceAccuracy);
             }
