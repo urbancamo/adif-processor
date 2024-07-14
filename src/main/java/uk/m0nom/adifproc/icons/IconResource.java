@@ -40,7 +40,11 @@ public class IconResource {
     public final static String ROTA_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/rail.png";
     public final static String IOTA_DEFAULT_ICON_URL = "https://maps.google.com/mapfiles/kml/shapes/info.png";
     public final static String BOTA_DEFAULT_ICON_URL = "http://maps.google.com/mapfiles/kml/shapes/caution.png";
+
+
     public static final String CW_DEFAULT_ICON_URL = "";
+
+    private final static PortableIcons portableIcons = new PortableIcons();
 
     private final String name;
     private final String url;
@@ -56,6 +60,15 @@ public class IconResource {
 
     public static IconResource getSatelliteResource(TransformControl control) {
         return new IconResource(SATELLITE_ICON_NAME, control.getIcon(SATELLITE_ICON_NAME));
+    }
+
+    public static IconResource getMyIconFromStation(TransformControl control, Station station) {
+        String cs = station.getCallsign();
+
+        if (cs.endsWith("/P") && !PortableIcon.DEFAULT_ICON_NAME.equals(control.getPortableIcon())) {
+            return new IconResource(control.getPortableIcon(), portableIcons.getIcon(control.getPortableIcon()).getIconUrl());
+        }
+        return getIconFromStation(control, station);
     }
 
     public static IconResource getIconFromStation(TransformControl control, Station station) {

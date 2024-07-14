@@ -133,6 +133,8 @@ public class TransformControl {
 
     private boolean compactQsoTemplate;
 
+    private String portableIcon;
+
     public String getActivityRef(ActivityType type) {
         return activityRefs.get(type);
     }
