@@ -14,6 +14,7 @@ Install the following packages:
 sudo apt-get install -y default-jre
 sudo apt-get install -y maven
 ```
+Install github cli: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
 
 ## Installing Java
 
@@ -81,4 +82,46 @@ Instructions here: https://www.docker.com/blog/how-to-use-the-postgres-docker-of
 ```bash
 docker pull postgres
 docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+```
+
+## SSL Certificate
+
+Following these instructions: https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal
+As superuser:
+
+```bash
+apt install nginx
+apt install snapd
+snap install --classic certbot
+```
+
+### Nginx Configuration for reverse proxy to java application
+
+```bash
+sudo vim /etc/nginx/sites-available/adif-processor
+```
+
+Add the following contents:
+
+```
+server {
+    listen 80;
+    server_name adif-processor.example.com;
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
+
+```bash
+sudo service nginx restart
+```
+
+### Certbot Configuration
+
+```bash
+sudo certbot --nginx
 ```
