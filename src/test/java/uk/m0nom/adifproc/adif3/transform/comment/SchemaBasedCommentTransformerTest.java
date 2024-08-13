@@ -36,19 +36,66 @@ public class SchemaBasedCommentTransformerTest {
         assertThat(results.getWarnings()).isEmpty();
         assertThat(rec.getAltitude()).isEqualTo(1000.0);
 
-        comment= "altitude: -1";
+        comment = "altitude: -1";
         transformer.transformComment(qso, comment, unmapped, results);
         assertThat(results.getWarnings()).isEmpty();
         assertThat(rec.getAltitude()).isEqualTo(-1);
+    }
 
-        comment = "ant_az: 450";
+    @Test
+    public void testAntAz() {
+        Qso qso = new Qso();
+        Adif3Record rec = new Adif3Record();
+        qso.setRecord(rec);
+
+        TransformResults results = new TransformResults();
+        Map<String, String> unmapped = new HashMap<>();
+        String comment = "ant_az: 450";
         transformer.transformComment(qso, comment, unmapped, results);
         assertThat(results.getWarnings()).contains("Validation of comment field 'ANT_AZ:450' failed because value is too high");
         assertThat(unmapped.containsKey("ANT_AZ")).isTrue();
         assertThat(unmapped.containsValue("450")).isTrue();
+    }
 
-        comment = "POTA_REF: EA-2120,EA-0825,EA-0050 WWFF: EAFF-0265";
+    @Test
+    public void testPotaRef() {
+        TransformResults results = new TransformResults();
+        Map<String, String> unmapped = new HashMap<>();
+
+        Qso qso = new Qso();
+        Adif3Record rec = new Adif3Record();
+        qso.setRecord(rec);
+        String comment = "POTA_REF: EA-2120,EA-0825,EA-0050 WWFF: EAFF-0265";
         transformer.transformComment(qso, comment, unmapped, results);
+    }
+
+    @Test
+    public void testFreeTextNoColons1() {
+        Qso qso = new Qso();
+        Adif3Record rec = new Adif3Record();
+        qso.setRecord(rec);
+
+        TransformResults results = new TransformResults();
+        Map<String, String> unmapped = new HashMap<>();
+        String comment = "Marco, 200w 3-elem";
+        transformer.transformComment(qso, comment, unmapped, results);
+
+        assertThat(unmapped.containsKey("MARCO, 200W 3-ELEM")).isTrue();
+        assertThat(unmapped.containsValue("Marco, 200w 3-elem")).isTrue();
+    }
+
+    @Test
+    public void testFreeTextNoColons2() {
+        Qso qso = new Qso();
+        Adif3Record rec = new Adif3Record();
+        qso.setRecord(rec);
+
+        TransformResults results = new TransformResults();
+        Map<String, String> unmapped = new HashMap<>();
+        String comment = "\"Stef\", France";
+        transformer.transformComment(qso, comment, unmapped, results);
+        assertThat(unmapped.containsKey("\"STEF\", FRANCE")).isTrue();
+        assertThat(unmapped.containsValue("\"Stef\", France")).isTrue();
     }
 
 }
