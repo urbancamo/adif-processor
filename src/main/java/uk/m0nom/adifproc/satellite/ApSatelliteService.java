@@ -1,13 +1,12 @@
 package uk.m0nom.adifproc.satellite;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.satellite.norad.NoradSatellite;
 import uk.m0nom.adifproc.satellite.norad.NoradSatelliteOrbitReader;
-import uk.m0nom.adifproc.satellite.satellites.QO100;
 import uk.m0nom.adifproc.satellite.satellites.SatelliteNameAliases;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -18,6 +17,7 @@ import java.util.Collection;
  * Satellites can be identified either by their name or a code
  */
 @Service
+@RequiredArgsConstructor
 public class ApSatelliteService {
 
     private final NoradSatelliteOrbitReader noradSatelliteOrbitReader;
@@ -29,16 +29,8 @@ public class ApSatelliteService {
     @Getter
     private final ZonedDateTime earliestDataAvailable = ZonedDateTime.of(LocalDateTime.of(2022, 2, 23, 0, 0), ZoneId.of("UTC"));
 
-    public ApSatelliteService(NoradSatelliteOrbitReader noradSatelliteOrbitReader, SatelliteNameAliases satelliteNameAliases) {
-        satellites = new ApSatellites();
-        this.satelliteNameAliases = satelliteNameAliases;
-
-        this.noradSatelliteOrbitReader = noradSatelliteOrbitReader;
-        satellites.addOrReplace(new QO100(), null);
-    }
-
     private void loadCurrentNoradSatelliteTleDataIfRequired() {
-        if (!satellites.hasDataFor(ZonedDateTime.now())) {
+        if (satellites.noDataFor(ZonedDateTime.now())) {
             noradSatelliteOrbitReader.loadCurrentSatelliteTleDataFromCelestrak(satellites);
         }
     }
@@ -48,7 +40,7 @@ public class ApSatelliteService {
         if (satellite == null || satellite instanceof NoradSatellite) {
             if (ZonedDateTime.now().isEqual(date)) {
                 loadCurrentNoradSatelliteTleDataIfRequired();
-            } else if (!satellites.hasDataFor(date)) {
+            } else if (satellites.noDataFor(date)) {
                 noradSatelliteOrbitReader.loadTleDataFromArchive(satellites, date);
             }
             satellite = getSatellite(id);

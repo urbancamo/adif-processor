@@ -3,7 +3,7 @@ package uk.m0nom.adifproc.adif3.io;
 import org.marsik.ham.adif.AdiReader;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import uk.m0nom.adifproc.qsofile.QsoFileReader;
 
 import java.io.BufferedReader;
@@ -16,7 +16,7 @@ import java.util.*;
 /**
  * Wrapper to the Adif3 library for reading ADIF format files
  */
-@Service
+@Component
 public class Adif3FileReader implements QsoFileReader {
 
     public Adif3 read(String filename, String encoding, boolean sort) throws IOException {

@@ -3,23 +3,25 @@ package uk.m0nom.adifproc.satellite.norad;
 import com.github.amsacode.predict4java.Satellite;
 import com.github.amsacode.predict4java.SatelliteFactory;
 import com.github.amsacode.predict4java.TLE;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.file.InternalFileService;
 import uk.m0nom.adifproc.satellite.ApSatellites;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
 /**
  * Reads a set of TLE definitions of satellite orbits from a NASA format TLE file.
- * See http://www.celestrak.com for more info on this format.
- *
+ * See <a href="http://www.celestrak.com">http://www.celestrak.com</a> for more info on this format.
+ * <p>
  * DECODE 2-LINE ELSETS WITH THE FOLLOWING KEY:
  * 1 AAAAAU 00  0  0 BBBBB.BBBBBBBB  .CCCCCCCC  00000-0  00000-0 0  DDDZ
  * 2 AAAAA EEE.EEEE FFF.FFFF GGGGGGG HHH.HHHH III.IIII JJ.JJJJJJJJKKKKKZ
@@ -29,7 +31,7 @@ import java.util.logging.Logger;
 @Service
 public class NoradSatelliteOrbitReader {
     public final static String NORAD_TLE_FILE_LOCATION = "http://www.celestrak.com/NORAD/elements/amateur.txt";
-    private final static String NORAD_S3_FOLDER = "norad";
+    private final static String NORAD_FOLDER = "norad";
 
     private static final Logger logger = Logger.getLogger(NoradSatelliteOrbitReader.class.getName());
 
@@ -37,18 +39,16 @@ public class NoradSatelliteOrbitReader {
 
     private final InternalFileService internalFileService;
 
-    public NoradSatelliteOrbitReader(InternalFileService internalFileService) {
+    public NoradSatelliteOrbitReader(@Qualifier("localInternalFileService") InternalFileService internalFileService) {
         this.internalFileService = internalFileService;
     }
 
-    public boolean loadTleDataFromArchive(ApSatellites satellites, ZonedDateTime date) {
+    public void loadTleDataFromArchive(ApSatellites satellites, ZonedDateTime date) {
         String filename = String.format("%s-amateur.txt", dateFormatter.format(date));
-        String tleDefinitions = internalFileService.readFile(NORAD_S3_FOLDER, filename);
+        String tleDefinitions = internalFileService.readFile(NORAD_FOLDER, filename);
         if (tleDefinitions != null) {
             parseTleData(satellites, tleDefinitions, date);
-            return true;
         }
-        return false;
     }
 
     public void loadCurrentSatelliteTleDataFromCelestrak(ApSatellites satellites) {
@@ -56,7 +56,7 @@ public class NoradSatelliteOrbitReader {
         try {
             String tleDefinitions = readTleDataFromCelestrak();
             parseTleData(satellites, tleDefinitions, ZonedDateTime.now());
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.severe(String.format("Unable to read TLE definition file: %s", NORAD_TLE_FILE_LOCATION));
         }
     }
@@ -88,8 +88,8 @@ public class NoradSatelliteOrbitReader {
         logger.info(String.format("Read %d satellite definitions", i));
    }
 
-    private String readTleDataFromCelestrak() throws IOException {
-        URL u = new URL(NoradSatelliteOrbitReader.NORAD_TLE_FILE_LOCATION);
+    private String readTleDataFromCelestrak() throws IOException, URISyntaxException {
+        URL u = new URI(NoradSatelliteOrbitReader.NORAD_TLE_FILE_LOCATION).toURL();
         try (InputStream in = u.openStream()) {
             return new String(in.readAllBytes(), StandardCharsets.US_ASCII);
         }

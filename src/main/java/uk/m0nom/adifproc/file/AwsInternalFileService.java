@@ -1,10 +1,8 @@
 package uk.m0nom.adifproc.file;
 
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-@Profile("!dev")
-@Service
+@Service("awsInternalFileService")
 public class AwsInternalFileService implements InternalFileService {
     private final AwsS3FileUtils awsS3FileUtils;
 

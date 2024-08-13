@@ -2,12 +2,10 @@ package uk.m0nom.adifproc.adif3;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import uk.m0nom.adifproc.FileProcessorApplication;
-import uk.m0nom.adifproc.FileProcessorApplicationConfig;
 import uk.m0nom.adifproc.activity.ActivityDatabaseService;
 import uk.m0nom.adifproc.adif3.io.Adif3FileReader;
 import uk.m0nom.adifproc.adif3.io.Adif3FileWriter;
@@ -15,8 +13,8 @@ import uk.m0nom.adifproc.adif3.print.Adif3PrintFormatter;
 import uk.m0nom.adifproc.kml.KmlWriter;
 import uk.m0nom.adifproc.qrz.CachingQrzXmlService;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = FileProcessorApplicationConfig.class)
+@SpringBootTest
+@ActiveProfiles("test")
 public class BadGridTest
 {
     @Autowired

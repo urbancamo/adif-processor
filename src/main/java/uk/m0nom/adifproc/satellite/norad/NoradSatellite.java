@@ -14,7 +14,8 @@ import uk.m0nom.adifproc.coords.LocationSource;
 import uk.m0nom.adifproc.satellite.ApSatellite;
 
 import java.sql.Date;
-import java.time.*;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,7 +55,7 @@ public class NoradSatellite implements ApSatellite {
     }
 
     public void addTleData(ZonedDateTime date, Satellite satellite) {
-        satelliteTleDataForDate.put(date, satellite);
+        satelliteTleDataForDate.put(date.truncatedTo(ChronoUnit.DAYS), satellite);
     }
 
     @Override
@@ -66,7 +67,7 @@ public class NoradSatellite implements ApSatellite {
     }
 
     public Satellite getSatelliteTleDataForDate(ZonedDateTime date) {
-        Satellite satellite = satelliteTleDataForDate.get(date);
+        Satellite satellite = satelliteTleDataForDate.get(date.truncatedTo(ChronoUnit.DAYS));
         if (satellite == null) {
             satellite = satelliteTleDataForDate.get(ZonedDateTime.now());
         }

@@ -29,11 +29,7 @@ public class SatelliteActivity {
     private void addOrUpdateSatellitePass(Qso qso) {
         Adif3Record rec = qso.getRecord();
         SatellitePassId id = new SatellitePassId(rec.getSatName(), rec.getQsoDate());
-        SatellitePass pass = satellitePasses.get(id);
-        if (pass == null) {
-            pass = new SatellitePass(id);
-            satellitePasses.put(id, pass);
-        }
+        SatellitePass pass = satellitePasses.computeIfAbsent(id, SatellitePass::new);
         pass.addContact(qso);
     }
 

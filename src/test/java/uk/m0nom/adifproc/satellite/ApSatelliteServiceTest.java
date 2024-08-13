@@ -1,24 +1,19 @@
 package uk.m0nom.adifproc.satellite;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.m0nom.adifproc.FileProcessorApplicationConfig;
 import uk.m0nom.adifproc.satellite.norad.NoradSatellite;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("dev")
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = FileProcessorApplicationConfig.class)
+@SpringBootTest
+@ActiveProfiles("test")
 public class ApSatelliteServiceTest {
     @Autowired
     ApSatelliteService apSatelliteService;
