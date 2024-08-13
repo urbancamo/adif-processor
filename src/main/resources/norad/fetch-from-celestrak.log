@@ -1,0 +1,712 @@
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-02-23 08:11:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-02-23 08:11:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-02-24 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-02-24 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-02-25 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-02-25 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-02-26 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  107K=0.1s
+
+2022-02-26 08:00:01 (107 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-02-27 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-02-27 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-02-28 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-02-28 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-03-01 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  107K=0.1s
+
+2022-03-01 08:00:02 (107 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-03-02 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  107K=0.1s
+
+2022-03-02 08:00:01 (107 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-03-03 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-03 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-03-04 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-04 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-03-05 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-05 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-03-06 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  107K=0.1s
+
+2022-03-06 08:00:01 (107 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-03-07 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  107K=0.1s
+
+2022-03-07 08:00:02 (107 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-03-08 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  117K=0.1s
+
+2022-03-08 08:00:02 (117 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-03-09 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  114K=0.1s
+
+2022-03-09 08:00:01 (114 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-03-10 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100% 81.2K=0.2s
+
+2022-03-10 08:00:02 (81.2 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-03-11 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  122K=0.1s
+
+2022-03-11 08:00:01 (122 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-03-12 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  107K=0.1s
+
+2022-03-12 08:00:01 (107 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+/mediaraid/backups/norad/fetch-from-celestrak.sh: line 5: cd: /mediaraid/norad: No such file or directory
+--2022-03-13 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-13 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-14 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-14 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-15 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-15 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-16 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-16 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-17 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-17 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-18 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-18 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-19 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  127K=0.1s
+
+2022-03-19 08:00:01 (127 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-20 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  107K=0.1s
+
+2022-03-20 08:00:02 (107 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-21 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-21 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-22 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-22 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-23 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  104K=0.1s
+
+2022-03-23 08:00:01 (104 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-24 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  127K=0.1s
+
+2022-03-24 08:00:02 (127 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-25 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-25 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-26 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  105K=0.1s
+
+2022-03-26 08:00:02 (105 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-27 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-27 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-28 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-28 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-29 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  105K=0.1s
+
+2022-03-29 08:00:02 (105 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-30 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-03-30 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-03-31 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100% 88.4K=0.2s
+
+2022-03-31 08:00:01 (88.4 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-01 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-01 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-02 08:00:02--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  107K=0.1s
+
+2022-04-02 08:00:02 (107 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-03 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100% 52.8K=0.3s
+
+2022-04-03 08:00:01 (52.8 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-04 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-04 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-05 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-05 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-06 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-06 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-07 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-07 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-08 08:00:02--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  130K=0.1s
+
+2022-04-08 08:00:02 (130 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-09 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-09 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-09 08:00:02--  http://www.celestrak.com/NORAD/elements/gp.php?GROUP=amateur
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘gp.php?GROUP=amateur.1’
+
+     0K .......... ....                                       100%  107K=0.1s
+
+2022-04-09 08:00:02 (107 KB/s) - ‘gp.php?GROUP=amateur.1’ saved [15120/15120]
+
+--2022-04-10 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-10 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-10 08:00:01--  http://www.celestrak.com/NORAD/elements/gp.php?GROUP=amateur
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘gp.php?GROUP=amateur.2’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-10 08:00:02 (106 KB/s) - ‘gp.php?GROUP=amateur.2’ saved [15120/15120]
+
+--2022-04-11 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-11 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-11 08:00:01--  http://www.celestrak.com/NORAD/elements/gp.php?GROUP=amateur
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘gp.php?GROUP=amateur.3’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-11 08:00:02 (106 KB/s) - ‘gp.php?GROUP=amateur.3’ saved [15120/15120]
+
+--2022-04-12 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-12 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-12 08:00:02--  http://www.celestrak.com/NORAD/elements/gp.php?GROUP=amateur
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘20220412-amateur.xml’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-12 08:00:02 (106 KB/s) - ‘20220412-amateur.xml’ saved [15120/15120]
+
+--2022-04-13 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  129K=0.1s
+
+2022-04-13 08:00:01 (129 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-13 08:00:01--  http://www.celestrak.com/NORAD/elements/gp.php?GROUP=amateur
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘20220413-amateur.xml’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-13 08:00:02 (106 KB/s) - ‘20220413-amateur.xml’ saved [15120/15120]
+
+--2022-04-14 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-14 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-14 08:00:01--  http://www.celestrak.com/NORAD/elements/gp.php?GROUP=amateur
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘20220414-amateur.xml’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-14 08:00:02 (106 KB/s) - ‘20220414-amateur.xml’ saved [15120/15120]
+
+--2022-04-15 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-15 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-16 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-16 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-17 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-17 08:00:01 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-18 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-18 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-19 08:00:01--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-19 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+
+--2022-04-20 08:00:02--  http://www.celestrak.com/NORAD/elements/amateur.txt
+Resolving www.celestrak.com (www.celestrak.com)... 104.168.149.178
+Connecting to www.celestrak.com (www.celestrak.com)|104.168.149.178|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15120 (15K) [text/plain]
+Saving to: ‘amateur.txt’
+
+     0K .......... ....                                       100%  106K=0.1s
+
+2022-04-20 08:00:02 (106 KB/s) - ‘amateur.txt’ saved [15120/15120]
+

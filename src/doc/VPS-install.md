@@ -73,12 +73,13 @@ cd $WORKDIR
 mvn -Pprod spring-boot:run >> $LOGDIR/adifproc.log 2>&1 &
 ```
 
-Create a systemd unit file `adifproc.service` in `/etc/systemd/system` with the following contents:
+Create a systemd unit file `adifproc.service` in `/etc/systemd/system` with the following contents
+(we have docker.service in the list so that the postgres container is started on boot before the adifproc application):
 
 ```
 [Unit]
 Description=ADIF Processor
-After=syslog.target network.target
+After=syslog.target network.target docker.service
 [Service]
 SuccessExitStatus=143
 User=adifproc
@@ -107,7 +108,6 @@ Instructions here: https://www.docker.com/blog/how-to-use-the-postgres-docker-of
 
 ```bash
 docker pull postgres
-#docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 docker container create --name postgres-container -e POSTGRES_PASSWORD=<password> -p 5432:5432 postgres
 docker update --restart=always postgres-container
 ```
@@ -122,7 +122,7 @@ psql -h localhost -U postgres -p 5432 -d
 select * from log;
 ```
 
-Open the port 5432 in the firewall:
+Open port 5432 in the firewall for remote access to the database:
 
 ```bash
 sudo ufw allow from any to any port 5432 proto tcp
@@ -193,3 +193,15 @@ server {
 ```bash
 sudo service nginx restart
 ```
+
+# Control Options
+
+```bash
+sudo service adifproc start
+sudo service adifproc stop
+sudo service adifproc restart
+docker container ls
+docker container stop postgres-container
+docker container start postgres-container
+```
+
