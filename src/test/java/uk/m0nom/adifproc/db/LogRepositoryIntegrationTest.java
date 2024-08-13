@@ -1,15 +1,13 @@
 package uk.m0nom.adifproc.db;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.m0nom.adifproc.FileProcessorApplicationConfig;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import uk.m0nom.adifproc.domain.Log;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = FileProcessorApplicationConfig.class)
+@SpringBootTest
+@ActiveProfiles("test")
 public class LogRepositoryIntegrationTest {
     @Autowired
     private LogRepository logRepository;

@@ -68,7 +68,7 @@ public class KmlSatelliteTrack {
                 // Calculate position of satellite at the time
                 GlobalCoords3D currentPosition = satellite.getPosition(groundStation, currentContact);
                 if (lastPosition == null) {
-                    addSatelliteMarker(control, passFolder, satName, passDate, currentPosition, shadow);
+                    addSatelliteMarker(control, passFolder, satName, currentContact, currentPosition, shadow);
                 } else {
                     drawSatelliteTrack(passFolder, currentContact, lastPosition, currentPosition, styleUrl, shadow);
                 }

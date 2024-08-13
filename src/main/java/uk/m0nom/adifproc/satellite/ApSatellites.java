@@ -1,9 +1,12 @@
 package uk.m0nom.adifproc.satellite;
 
-import java.time.LocalDate;
+import org.springframework.stereotype.Component;
+import uk.m0nom.adifproc.satellite.satellites.QO100;
+
 import java.time.ZonedDateTime;
 import java.util.*;
 
+@Component
 public class ApSatellites {
     private final Map<String, ApSatellite> satelliteMap;
     private final Map<String, String> satelliteDesignatorToNameMap;
@@ -14,6 +17,7 @@ public class ApSatellites {
         satelliteMap = new HashMap<>();
         satelliteDesignatorToNameMap = new HashMap<>();
         datesLoaded = new TreeSet<>();
+        addOrReplace(new QO100(), null);
     }
 
     public void addOrReplace(ApSatellite satellite, ZonedDateTime date) {
@@ -30,8 +34,8 @@ public class ApSatellites {
         }
     }
 
-    public boolean hasDataFor(ZonedDateTime date) {
-        return date == null || datesLoaded.contains(date);
+    public boolean noDataFor(ZonedDateTime date) {
+        return date != null && !datesLoaded.contains(date);
     }
 
     /**
