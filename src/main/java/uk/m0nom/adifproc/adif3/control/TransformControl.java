@@ -99,7 +99,6 @@ public class TransformControl {
     private Boolean generateKml;
     private Integer kmlContactWidth;
     private Integer kmlContactTransparency;
-    private boolean kmlContactColourByBand;
     private boolean kmlS2s;
     private String kmlS2sContactLineStyle;
     private String kmlInternetContactLineStyle;
@@ -134,6 +133,8 @@ public class TransformControl {
     private boolean compactQsoTemplate;
 
     private String portableIcon;
+
+    private boolean colourContactsByBand;
 
     public String getActivityRef(ActivityType type) {
         return activityRefs.get(type);

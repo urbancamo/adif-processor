@@ -1,5 +1,6 @@
 package uk.m0nom.adifproc;
 
+import lombok.Setter;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -41,6 +42,9 @@ public class FileProcessorApplication implements CommandLineRunner, ProgressFeed
     private static final String MARKDOWN_CONTROL_FILE = "adif-printer-132-md.yaml";
 
     private static final Logger logger = Logger.getLogger(FileProcessorApplication.class.getName());
+
+    @Setter
+    private String[] args;
 
     private final CommandLineArgs cli;
     private final Adif3Transformer transformer;
@@ -96,7 +100,11 @@ public class FileProcessorApplication implements CommandLineRunner, ProgressFeed
     @Override
     public void run(String... args) {
         logger.info("EXECUTING : command line runner");
+        this.args = args;
+        internalRun();
+    }
 
+    public void internalRun() {
         TransformResults results = new TransformResults();
         TransformControl control = cli.parseArgs(args);
         qrzXmlService.setCredentials(control.getQrzUsername(), control.getQrzPassword());
@@ -194,6 +202,6 @@ public class FileProcessorApplication implements CommandLineRunner, ProgressFeed
 
     @Override
     public void sendProgressUpdate(String sessionId, String message) {
-        System.out.println(message);
+        logger.info(message);
     }
 }
