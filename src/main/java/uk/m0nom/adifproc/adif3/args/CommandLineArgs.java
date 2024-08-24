@@ -129,7 +129,7 @@ public class CommandLineArgs {
             }
             control.setKmlContactTransparency(100-ns.getInt("kml_contact_transparency"));
             control.setKmlContactWidth(ns.getInt("kml_contact_width"));
-            control.setKmlContactColourByBand(ns.getBoolean("kml_contact_colour_band"));
+            control.setColourContactsByBand(ns.getBoolean("kml_contact_colour_band"));
 
             control.setFormattedOutput(ns.getBoolean("markdown"));
             control.setQslLabels(ns.getBoolean("qsl_labels"));

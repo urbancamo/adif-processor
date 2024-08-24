@@ -10,7 +10,7 @@ public class KmlLineStyle extends KmlColour {
     private Integer width;
 
     public KmlLineStyle(String name, int red, int green, int blue, int transparency, int width) {
-        super(name, red, green, blue, transparency);
+        super(name, name, getHtmlColor(red, green, blue), red, green, blue, transparency);
         this.width = width;
     }
 
@@ -21,5 +21,9 @@ public class KmlLineStyle extends KmlColour {
         setRed(colour.getRed());
         setTransparency(colour.getTransparency());
         setWidth(width);
+    }
+
+    private static String getHtmlColor(int red, int green, int blue) {
+        return String.format("ff%02X%02X%02X", red, green, blue);
     }
 }
