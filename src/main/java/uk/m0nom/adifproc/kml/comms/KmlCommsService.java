@@ -76,14 +76,14 @@ public class KmlCommsService {
         String lineStyleId = commsStyleMap.get(id);
 
         if (control.isColourContactsByBand()) {
-            lineStyleId = bandLineStyles.getLineStyle(rec.getBand()).getName();
+            lineStyleId = KmlUtils.getStyleUrl(bandLineStyles.getLineStyle(rec.getBand()).getName());
         }
 
         Placemark placemark = folder.createAndAddPlacemark();
         // use the style for each line type
         placemark.withName(commsLinkName)
                 .withId(commsLinkId)
-                .withStyleUrl(KmlUtils.getStyleUrl(lineStyleId));
+                .withStyleUrl(lineStyleId);
 
         LineString commsLine = placemark.createAndSetLineString();
 
