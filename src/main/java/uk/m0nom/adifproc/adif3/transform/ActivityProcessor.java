@@ -84,7 +84,7 @@ public class ActivityProcessor {
         if (type == ActivityType.POTA) {
             // POTA can be a list
             PotaList potaList = PotaList.valueOf(ref);
-            for (Pota pota: potaList.getPotaList()) {
+            for (Pota pota: potaList.getPotaList().reversed()) {
                 station.addActivity(activities.getDatabase(ActivityType.POTA).get(pota.getValue()));
             }
         } else {

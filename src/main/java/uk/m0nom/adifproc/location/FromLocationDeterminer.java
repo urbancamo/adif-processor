@@ -77,12 +77,11 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
     }
 
     private boolean setMyLocationFromActivities(Qso qso) {
-        boolean locationSetFromActivity = false;
         for (Activity activity : qso.getFrom().getActivities()) {
             setMyLocationFromActivity(qso.getFrom(), qso.getRecord(), activity);
-            locationSetFromActivity = true;
+            return true;
         }
-        return locationSetFromActivity;
+        return false;
     }
 
     private void setMyGridFromCoords(Station station, Adif3Record rec, GlobalCoordinates coords) {
@@ -110,7 +109,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
         }
     }
 
-    private boolean setMyLocationFromRecGridsquare(Qso qso) {
+    private void setMyLocationFromRecGridsquare(Qso qso) {
         Adif3Record rec = qso.getRecord();
         if (rec.getMyGridSquare() != null && !MaidenheadLocatorConversion.isADubiousGridSquare(rec.getMyGridSquare())) {
             // Less Accurate from a Gridsquare, but better than nothing
@@ -118,9 +117,7 @@ public class FromLocationDeterminer extends BaseLocationDeterminer {
             rec.setMyCoordinates(myLoc);
             qso.getFrom().setGrid(rec.getMyGridSquare());
             qso.getFrom().setCoordinates(new GlobalCoords3D(myLoc, rec.getMyAltitude() != null ? rec.getMyAltitude() : 0.0));
-            return true;
         }
-        return false;
     }
 
     private boolean setMyLocationFromQrzLatLong(Qso qso, QrzCallsign callsignData) {
