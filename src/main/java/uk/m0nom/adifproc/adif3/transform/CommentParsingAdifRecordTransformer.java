@@ -406,8 +406,8 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
 
     private void processSig(Qso qso) {
         Adif3Record rec = qso.getRecord();
-        String activityType = rec.getSig().toUpperCase();
-        String activityLocation = rec.getSigInfo().toUpperCase();
+        String activityType = rec.getSig() != null ? rec.getSig().toUpperCase(): "";
+        String activityLocation = rec.getSigInfo() != null ? rec.getSigInfo().toUpperCase() : "";
 
         if (StringUtils.isNotBlank(activityType)) {
             // See if it is an activity we support

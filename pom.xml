@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.3.5</version>
+    <version>3.3.6</version>
   </parent>
 
   <description>
@@ -22,7 +22,7 @@
 
     <groupId>uk.m0nom</groupId>
     <artifactId>adif-processor</artifactId>
-    <version>1.4.17</version>
+    <version>1.4.18</version>
 
   <name>ADIF Processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
@@ -221,8 +221,8 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.30</version>
-      <scope>compile</scope>
+      <version>1.18.36</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -401,6 +401,13 @@
         <configuration>
           <source>11</source>
           <target>11</target>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>1.18.36</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
     </plugins>
