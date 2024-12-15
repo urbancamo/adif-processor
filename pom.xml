@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.3.5</version>
+    <version>3.3.6</version>
   </parent>
 
   <description>
@@ -22,7 +22,7 @@
 
     <groupId>uk.m0nom</groupId>
     <artifactId>adif-processor</artifactId>
-    <version>1.4.18-SNAPSHOT</version>
+    <version>1.4.18</version>
 
   <name>ADIF Processor</name>
   <url>https://github.com/urbancamo/adif-processor</url>
