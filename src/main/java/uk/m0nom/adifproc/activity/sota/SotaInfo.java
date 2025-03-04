@@ -5,7 +5,6 @@ import lombok.Setter;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityType;
 
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 /**
