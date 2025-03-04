@@ -4,7 +4,7 @@ Written by Mark Wickens [mark@wickensonline.co.uk](mailto:"mark@wickensonline.co
 
 ## What is this?
 
-The [ADIF Processor](http://adifweb-env.eba-saseumwd.eu-west-2.elasticbeanstalk.com/) is an online application
+The [ADIF Processor](https://www.adif.uk) is an online application
 that visualizes amateur radio contacts from an ADIF log file using [Google Earth](https://earth.google.com).
 [SOTA](https://www.sotadata.org.uk/en/) CSV log files are also supported.
 
