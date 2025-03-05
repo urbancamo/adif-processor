@@ -16,6 +16,9 @@ The post-processor generates three types of output:
   - Google Earth KML files  
   - Customizable Contact listing files
 
+The application also contains a very flexible [coordinate conversion tool](https://www.adif.uk/coord) 
+which can be used to convert between all sorts of different coordinate systems.
+
 ## Documentation
 
 Here is the [documentation for the ADIF Processor](https://urbancamo.github.io/adif-processor/adif-processor).
