@@ -11,6 +11,7 @@ import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.contacts.Station;
 import uk.m0nom.adifproc.adif3.transform.TransformResults;
 import uk.m0nom.adifproc.adif3.transform.tokenizer.ColonTokenizer;
+import uk.m0nom.adifproc.adif3.xsdquery.Adif3SchemaLoader;
 import uk.m0nom.adifproc.location.ToLocationDeterminer;
 import uk.m0nom.adifproc.satellite.ApSatelliteService;
 
@@ -38,7 +39,8 @@ public class LatLonMigrateToCoordTest {
         TransformerConfig config = new TransformerConfig();
         classicTransformer = new ClassicCommentTransformer(config, activities, toLocationDeterminer, apSatelliteService);
         ColonTokenizer tokenizer = new ColonTokenizer();
-        schemaTransformer = new SchemaBasedCommentTransformer(tokenizer);
+        Adif3SchemaLoader loader = new Adif3SchemaLoader();
+        schemaTransformer = new SchemaBasedCommentTransformer(tokenizer, loader);
     }
 
     @Test

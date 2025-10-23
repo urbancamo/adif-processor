@@ -7,7 +7,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class Adif3FieldHashedDictionaryTest {
     @Test
     public void testDictionaryCreation() {
-        Adif3ElementHashedDictionary dictionary = new Adif3ElementHashedDictionary();
+        Adif3SchemaLoader loader = new Adif3SchemaLoader();
+        Adif3ElementHashedDictionary dictionary = new Adif3ElementHashedDictionary(loader);
         Adif3Field opElement = dictionary.getField("OP");
         assertThat(opElement.getName()).isEqualTo("OPERATOR");
 

@@ -1,7 +1,7 @@
 package uk.m0nom.adifproc.adif3.transform.comment;
 
 import com.google.common.base.Strings;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3Record;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
@@ -21,10 +21,10 @@ public class SchemaBasedCommentTransformer implements CommentTransformer {
     private final Adif3Schema schema;
     private final CommentTokenizer tokenizer;
 
-    public SchemaBasedCommentTransformer(ColonTokenizer tokenizer) {
+    public SchemaBasedCommentTransformer(ColonTokenizer tokenizer, Adif3SchemaLoader loader) {
         this.tokenizer = tokenizer;
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("adif/adx314.xsd");
-        schema = Adif3SchemaLoader.loadAdif3Schema(inputStream);
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("adif/adx316.xsd");
+        schema = loader.loadAdif3Schema(inputStream);
     }
 
     @Override

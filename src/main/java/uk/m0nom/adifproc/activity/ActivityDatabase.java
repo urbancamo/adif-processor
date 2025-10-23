@@ -2,10 +2,10 @@ package uk.m0nom.adifproc.activity;
 
 import lombok.Getter;
 
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -64,7 +64,7 @@ public class ActivityDatabase {
                     .filter(Activity::hasCoords)
                     .filter(match -> match.isValid(onDate)) // only return valid activities
                     .filter(match -> match.inRadius(centre, radius * 1000.0))
-                    .collect(Collectors.toUnmodifiableList());
+                    .toList();
         }
         return new ArrayList<>();
     }

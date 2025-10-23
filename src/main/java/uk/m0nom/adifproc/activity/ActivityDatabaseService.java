@@ -16,8 +16,7 @@ import uk.m0nom.adifproc.activity.wwff.WwffCsvReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -122,5 +121,13 @@ public class ActivityDatabaseService {
      */
     public ActivityDatabase getDatabase(String requested) {
        return databases.get(requested);
+    }
+
+    public Collection<Activity> findAllActivities() {
+        List<Activity> allActivities = new ArrayList<>();
+        for (ActivityDatabase database : databases.values()) {
+            allActivities.addAll(database.getValues());
+        }
+        return allActivities;
     }
 }

@@ -11,7 +11,7 @@ public enum Continent implements AdifEnumCode {
     SOUTH_AMERICA("SA"),
     EUROPE("EU"),
     AFRICA("AF"),
-    OCEANA("OC"),
+    OCEANIA("OC"),
     ASIA("AS"),
     ANTARCTICA("AN");
 

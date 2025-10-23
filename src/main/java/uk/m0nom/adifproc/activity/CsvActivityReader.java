@@ -25,8 +25,8 @@ public abstract class CsvActivityReader extends ActivityReader {
     public Map<String, Activity> readRecords(InputStream inputStream) throws IOException {
         Map<String, Activity> activityMap = new HashMap<>();
         line = 0;
-        final Reader reader = new InputStreamReader(new BOMInputStream(inputStream), StandardCharsets.UTF_8);
-        Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(reader);
+        final Reader reader = new InputStreamReader(new BOMInputStream.Builder().setInputStream(inputStream).get(), StandardCharsets.UTF_8);
+        Iterable<CSVRecord> records = CSVFormat.EXCEL.builder().setHeader().get().parse(reader);
 
         try {
             records.forEach(record -> {

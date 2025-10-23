@@ -1,6 +1,6 @@
 package uk.m0nom.adifproc.callsign;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -157,7 +157,7 @@ public class CallsignUtilsTest {
     private int indexOfCallsignInList(List<Callsign> variants, String callsign) {
          for (int i = 0; i < variants.size(); i++) {
              Callsign op = variants.get(i);
-            if (StringUtils.equals(op.getCallsign(), callsign)) {
+            if (Strings.CI.equals(op.getCallsign(), callsign)) {
                 return i;
             }
         }

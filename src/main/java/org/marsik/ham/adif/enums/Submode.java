@@ -39,6 +39,8 @@ public enum Submode implements AdifEnumCode {
     FMHELL("FMHELL", Mode.HELL),
     FREEDV("FREEDV", Mode.DIGITALVOICE),
     FSK31("FSK31", Mode.PSK),
+    FSKH105("FSKH105", Mode.HELL),
+    FSKH245("FSKH245", Mode.HELL),
     FSKHELL("FSKHELL", Mode.HELL),
     FSQCALL("FSQCALL", Mode.MFSK),
     FST4("FST4", Mode.MFSK),

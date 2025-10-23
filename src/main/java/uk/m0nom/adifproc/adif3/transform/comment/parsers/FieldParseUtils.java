@@ -1,6 +1,7 @@
 package uk.m0nom.adifproc.adif3.transform.comment.parsers;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 public class FieldParseUtils {
 
@@ -10,16 +11,16 @@ public class FieldParseUtils {
     public static double parsePwr(String value) throws NumberFormatException {
         String pwr = value.toLowerCase().trim();
         if (pwr.endsWith("w")) {
-            pwr = StringUtils.replace(pwr, "w", "");
+            pwr = Strings.CI.replace(pwr, "w", "");
         } else if (pwr.endsWith(" w")) {
-            pwr = StringUtils.replace(pwr, " w", "");
+            pwr = Strings.CI.replace(pwr, " w", "");
         } else if (pwr.endsWith(" watt")) {
-            pwr = StringUtils.replace(pwr, " watt", "");
+            pwr = Strings.CI.replace(pwr, " watt", "");
         } else if (pwr.endsWith(" watts")) {
-            pwr = StringUtils.replace(pwr, " watts", "");
+            pwr = Strings.CI.replace(pwr, " watts", "");
         }
         if (pwr.endsWith("k")) {
-            pwr = StringUtils.replace(pwr, "k", "000");
+            pwr = Strings.CI.replace(pwr, "k", "000");
         }
         return Double.parseDouble(pwr);
     }
@@ -34,9 +35,9 @@ public class FieldParseUtils {
 
         if (alt.endsWith("ft")) {
             multiplier = 1.0/3.28084;
-            alt = StringUtils.replace(alt, "ft", "").trim();
+            alt = Strings.CI.replace(alt, "ft", "").trim();
         } else if (alt.endsWith("m")) {
-            alt = StringUtils.replace(alt, "m", "").trim();
+            alt = Strings.CI.replace(alt, "m", "").trim();
         }
         return Double.parseDouble(alt) * multiplier;
     }

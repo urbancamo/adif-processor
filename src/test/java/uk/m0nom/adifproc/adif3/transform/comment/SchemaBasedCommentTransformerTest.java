@@ -6,6 +6,7 @@ import org.marsik.ham.adif.Adif3Record;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
 import uk.m0nom.adifproc.adif3.transform.TransformResults;
 import uk.m0nom.adifproc.adif3.transform.tokenizer.ColonTokenizer;
+import uk.m0nom.adifproc.adif3.xsdquery.Adif3SchemaLoader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,8 @@ public class SchemaBasedCommentTransformerTest {
     @BeforeAll
     public static void setup() {
         ColonTokenizer tokenizer = new ColonTokenizer();
-        transformer = new SchemaBasedCommentTransformer(tokenizer);
+        Adif3SchemaLoader loader = new Adif3SchemaLoader();
+        transformer = new SchemaBasedCommentTransformer(tokenizer, loader);
     }
 
     @Test

@@ -3,6 +3,7 @@ package uk.m0nom.adifproc;
 import lombok.Setter;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.marsik.ham.adif.Adif3;
 import org.springframework.boot.CommandLineRunner;
@@ -114,7 +115,7 @@ public class FileProcessorApplication implements CommandLineRunner, ProgressFeed
         String outPath = control.getOutputPath();
         // If we have an output path prepend that to the calculated output filenames
         if (StringUtils.isNotEmpty(outPath)) {
-            if (!StringUtils.endsWith(outPath, File.separator) && !StringUtils.endsWith(outPath, "/")) {
+            if (!Strings.CI.endsWith(outPath, File.separator) && !Strings.CI.endsWith(outPath, "/")) {
                 // ensure it ends in a path separator
                 outPath = outPath + File.separator;
             }

@@ -1,6 +1,6 @@
 package uk.m0nom.adifproc.adif3.xsdquery;
 
-
+import org.springframework.stereotype.Service;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -22,57 +22,52 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-/**
- * Not currently used but potentially this will allow loading of the entire Adif3 schema for use when parsing comments
- * TODO
- */
+@Service
 public class Adif3SchemaLoader {
     private static final Logger logger = Logger.getLogger(Adif3SchemaLoader.class.getName());
 
 
-    public static Adif3Schema loadFromFile(String filename) throws FileNotFoundException {
+    public Adif3Schema loadFromFile(String filename) throws FileNotFoundException {
         FileInputStream fileIS = new FileInputStream(filename);
         return loadAdif3Schema(fileIS);
     }
 
-    public static Adif3Schema loadAdif3Schema(InputStream stream) {
+    public Adif3Schema loadAdif3Schema(InputStream stream) {
         Adif3Schema schema = new Adif3Schema();
-        try {
-            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = builderFactory.newDocumentBuilder();
-            Document xmlDocument = builder.parse(stream);
-            parseTypes(schema, xmlDocument);
-            parseFields(schema, xmlDocument);
-        } catch (SAXException | IOException | ParserConfigurationException | XPathExpressionException e) {
-            logger.severe(String.format("Exception %s generated loading schema", e.getMessage()));
-            return null;
-        } finally {
+        try (stream) {
             try {
-                stream.close();
-            } catch (IOException e) {
-                logger.severe(String.format("Exception %s generated on schema close", e.getMessage()));
+                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = builderFactory.newDocumentBuilder();
+                Document xmlDocument = builder.parse(stream);
+                parseTypes(schema, xmlDocument);
+                parseFields(schema, xmlDocument);
+            } catch (SAXException | IOException | ParserConfigurationException | XPathExpressionException e) {
+                logger.severe(String.format("Exception %s generated loading schema", e.getMessage()));
+                return null;
             }
+        } catch (IOException e) {
+            logger.severe(String.format("Exception %s generated on schema close", e.getMessage()));
         }
         return schema;
     }
 
-    private static void parseTypes(Adif3Schema schema, Document xmlDocument) throws XPathExpressionException {
+    private void parseTypes(Adif3Schema schema, Document xmlDocument) throws XPathExpressionException {
         XPath xPath = XPathFactory.newInstance().newXPath();
         String expression = "/schema/simpleType";
         NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
         schema.setTypes(getTypesFromNodeList(nodeList));
     }
 
-    private static void parseFields(Adif3Schema schema, Document xmlDocument) throws XPathExpressionException {
+    private void parseFields(Adif3Schema schema, Document xmlDocument) throws XPathExpressionException {
         XPath xPath = XPathFactory.newInstance().newXPath();
         String expression = "/schema/element[@name='ADX']/complexType/sequence/element[@name='RECORDS']/complexType/sequence/element[@name='RECORD']/complexType/choice/element";
         NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
         setFieldsFromNodeList(schema, nodeList);
     }
 
-    private static final List<String> UNSUPPORTED_FIELDS = Arrays.asList("APP", "USERDEF");
+    private final List<String> UNSUPPORTED_FIELDS = Arrays.asList("APP", "USERDEF");
 
-    private static void setFieldsFromNodeList(Adif3Schema schema, NodeList nodes) {
+    private void setFieldsFromNodeList(Adif3Schema schema, NodeList nodes) {
         Set<Adif3Field> elements = new HashSet<>();
 
         for (int n = nodes.getLength() - 1; n >= 0; n--) {
@@ -87,14 +82,11 @@ public class Adif3SchemaLoader {
                 String type = e.getAttribute("type");
                 Boolean nillable = null;
                 String nillableAttr = e.getAttribute("nillable");
-                switch (nillableAttr) {
-                    case "true":
-                        nillable = Boolean.TRUE;
-                        break;
-                    case "false":
-                        nillable = Boolean.FALSE;
-                        break;
-                }
+                nillable = switch (nillableAttr) {
+                    case "true" -> Boolean.TRUE;
+                    case "false" -> Boolean.FALSE;
+                    default -> nillable;
+                };
                 Adif3Field field = new Adif3Field(name, schema.getType(type), nillable);
                 elements.add(field);
 
@@ -107,7 +99,7 @@ public class Adif3SchemaLoader {
         schema.setFields(elements);
     }
 
-    private static void setFieldSpecificType(Adif3Schema schema, Adif3Field field, NodeList nodes) {
+    private void setFieldSpecificType(Adif3Schema schema, Adif3Field field, NodeList nodes) {
         for (int n = nodes.getLength() - 1; n >= 0; n--) {
             Node child = nodes.item(n);
             if ("xs:simpleType".equals(child.getNodeName())) {
@@ -119,7 +111,7 @@ public class Adif3SchemaLoader {
         }
     }
 
-    private static Set<Adif3Type> getTypesFromNodeList(NodeList nodes) {
+    private Set<Adif3Type> getTypesFromNodeList(NodeList nodes) {
         Set<Adif3Type> types = new HashSet<>();
 
         //  <xs:simpleType name="Number">
@@ -138,7 +130,7 @@ public class Adif3SchemaLoader {
         return types;
     }
 
-    private static Adif3Type parseTypeNode(Node typeNode) {
+    private Adif3Type parseTypeNode(Node typeNode) {
         Adif3Type type = new Adif3Type();
 
         if (typeNode.getAttributes().getNamedItem("name") != null) {
@@ -155,7 +147,7 @@ public class Adif3SchemaLoader {
         return type;
     }
 
-    private static void parseTypeNodeRestriction(Adif3Type type, Node node) {
+    private void parseTypeNodeRestriction(Adif3Type type, Node node) {
         NamedNodeMap attributes = node.getAttributes();
         Node baseType = attributes.getNamedItem("base");
         if (baseType != null) {
@@ -166,7 +158,7 @@ public class Adif3SchemaLoader {
         }
     }
 
-    private static void parseTypeNodeRestrictionOptions(Adif3Type type, NodeList options) {
+    private void parseTypeNodeRestrictionOptions(Adif3Type type, NodeList options) {
         for (int i = 0; i < options.getLength(); i++) {
             Node child = options.item(i);
             switch (child.getNodeName()) {
@@ -186,7 +178,7 @@ public class Adif3SchemaLoader {
         }
     }
 
-    private static String getAttributeValue(Node node) {
+    private String getAttributeValue(Node node) {
         return node.getAttributes().getNamedItem("value").getNodeValue();
     }
 }

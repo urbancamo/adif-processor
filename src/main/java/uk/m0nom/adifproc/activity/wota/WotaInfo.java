@@ -2,7 +2,7 @@ package uk.m0nom.adifproc.activity.wota;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityType;
 
@@ -29,7 +29,7 @@ public class WotaInfo extends Activity {
     @Override
     public String getUrl() {
         String lookupRef = getRef();
-        if (StringUtils.equals(getBook(), "OF")) {
+        if (Strings.CI.equals(getBook(), "OF")) {
             // need to compensate for LDO weird numbering
             lookupRef = String.format("LDO-%03d", getInternalId());
         }

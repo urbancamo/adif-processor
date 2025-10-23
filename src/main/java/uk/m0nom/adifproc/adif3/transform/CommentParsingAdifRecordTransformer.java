@@ -2,6 +2,7 @@ package uk.m0nom.adifproc.adif3.transform;
 
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.gavaghan.geodesy.GlobalCoordinates;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.enums.Band;
@@ -354,9 +355,9 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
         if (qrzInfo != null) {
             if (rec.getName() != null && qrzInfo.getName() != null) {
                 String displayQrzName = getNameFromQrzData(qrzInfo);
-                if (!StringUtils.equalsIgnoreCase(rec.getName(), displayQrzName)) {
+                if (!Strings.CI.contains(rec.getName(), displayQrzName)) {
                     // Warn if other station's name isn't contained in qrz data
-                    if (!StringUtils.containsIgnoreCase(displayQrzName, rec.getName())) {
+                    if (!Strings.CI.contains(displayQrzName, rec.getName())) {
                         results.addWarning(String.format("Check name for %s: provided is '%s', QRZ has '%s'",
                                 rec.getCall(), rec.getName(), displayQrzName));
                     }
@@ -365,7 +366,7 @@ public class CommentParsingAdifRecordTransformer implements Adif3RecordTransform
             if (rec.getState() != null && qrzInfo.getState() != null) {
                 // Warn if state specified explicitly doesn't match qrz data and they're not doing an activity
                 if (!qso.getTo().hasActivity()) {
-                    if (!StringUtils.equalsIgnoreCase(rec.getState(), qrzInfo.getState())) {
+                    if (!Strings.CI.contains(rec.getState(), qrzInfo.getState())) {
                         results.addWarning(String.format("Check state for %s: provided is %s, QRZ has %s", rec.getCall(),
                                 rec.getState().toUpperCase(), qrzInfo.getState().toUpperCase()));
                     }

@@ -2,6 +2,7 @@ package uk.m0nom.adifproc.adif3.transform;
 
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.marsik.ham.adif.Adif3Record;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.adif3.contacts.Qso;
@@ -98,7 +99,7 @@ public class AdifQrzEnricher {
             logger.info(String.format("Retrieved %s from QRZ.COM", callsign));
         } else if (CallsignUtils.isPortable(callsign)) {
             // Try stripping off any portable callsign information and querying that as a last resort
-            String fixedCallsign = callsign.substring(0, StringUtils.lastIndexOf(callsign, "/"));
+            String fixedCallsign = callsign.substring(0, callsign.lastIndexOf("/"));
             callsignData = cachingQrzXmlService.getCallsignData(fixedCallsign);
             if (callsignData != null) {
                 logger.info(String.format("Retrieved %s from QRZ.COM using FIXED station callsign %s", callsign, fixedCallsign));
@@ -118,9 +119,9 @@ public class AdifQrzEnricher {
         if (callsignData != null) {
             Adif3Record rec = qso.getRecord();
             if (rec.getCoordinates() == null) {
-                boolean geocodeBasedGeoLocation = StringUtils.equalsIgnoreCase("geocode", callsignData.getGeoloc());
-                boolean gridBasedGeoLocation = StringUtils.equalsIgnoreCase("grid", callsignData.getGeoloc());
-                boolean userGeoLocation = StringUtils.equalsIgnoreCase("user", callsignData.getGeoloc());
+                boolean geocodeBasedGeoLocation = Strings.CI.equals("geocode", callsignData.getGeoloc());
+                boolean gridBasedGeoLocation = Strings.CI.equals("grid", callsignData.getGeoloc());
+                boolean userGeoLocation = Strings.CI.equals("user", callsignData.getGeoloc());
 
                 String qrzGridSquare = callsignData.getGrid();
                 boolean isAValidGridBasedLocation = (gridBasedGeoLocation || userGeoLocation) &&

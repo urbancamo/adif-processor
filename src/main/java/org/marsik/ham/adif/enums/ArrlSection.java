@@ -1,5 +1,7 @@
 package org.marsik.ham.adif.enums;
 
+import lombok.Getter;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -8,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+@Getter
 public enum ArrlSection implements AdifEnumCode {
 
     AL("AL", "Alabama",  291),
@@ -25,7 +28,8 @@ public enum ArrlSection implements AdifEnumCode {
     EPA("EPA", "Eastern Pennsylvania",  291),
     EWA("EWA", "Eastern Washington",  291),
     GA("GA", "Georgia",  291),
-    GTA("GTA", "Greater Toronto Area",  1, "2012/09/01"),
+    GH("GH", "Golden Horseshoe",  1, "2023/01/01"),
+    GTA("GTA", "Greater Toronto Area",  1, "2012/09/01", "2023/01/01"),
     ID("ID", "Idaho",  291),
     IL("IL", "Illinois",  291),
     IN("IN", "Indiana",  291),
@@ -36,7 +40,7 @@ public enum ArrlSection implements AdifEnumCode {
     LA("LA", "Louisiana",  291),
     ME("ME", "Maine",  291),
     MB("MB", "Manitoba",  1),
-    MAR("MAR", "Maritime",  1),
+    MAR("MAR", "Maritime",  1, null, "2023/01/01"),
     MDC("MDC", "Maryland-DC",  291),
     MI("MI", "Michigan",  291),
     MN("MN", "Minnesota",  291),
@@ -45,6 +49,7 @@ public enum ArrlSection implements AdifEnumCode {
     MT("MT", "Montana",  291),
     NE("NE", "Nebraska",  291),
     NV("NV", "Nevada",  291),
+    NB("NB", "New Brunswick",  1, "2023/01/01"),
     NH("NH", "New Hampshire",  291),
     NM("NM", "New Mexico",  291),
     NLI("NLI", "New York City-Long Island",  291),
@@ -55,8 +60,9 @@ public enum ArrlSection implements AdifEnumCode {
     NFL("NFL", "Northern Florida",  291),
     NNJ("NNJ", "Northern New Jersey",  291),
     NNY("NNY", "Northern New York",  291),
-    NT("NT", "Northwest Territories/Yukon/Nunavut",  1, "2003/11/01"),
+    NT("NT", "Northwest Territories/Yukon/Nunavut",  1, "2003/11/01", "2023/01/01"),
     NWT("NWT", "Northwest Territories/Yukon/Nunavut (replaced by NT)", 1, "2003/11/01"),
+    NS("NS", "Nova Scotia",  1, "2023/01/01"),
     OH("OH", "Ohio",  291),
     OK("OK", "Oklahoma",  291),
     ON("ON", "Ontario (replaced by GTA, ONE, ONN, and ONS)",  1, "2012/09/01"),
@@ -65,7 +71,7 @@ public enum ArrlSection implements AdifEnumCode {
     ONS("ONS", "Ontario South",  1, 	"2012/09/01"),
     ORG("ORG", "Orange",  291),
     OR("OR", "Oregon",  291),
-    PAC("PAC", "Pacific",  new Integer[]{9, 20, 103, 110, 123, 134, 138, 166, 174, 197, 297, 515}),
+    PAC("PAC", "Pacific",  new Integer[]{9, 20, 103, 110, 123, 138, 166, 174, 197, 297, 515}),
     PR("PR", "Puerto Rico",  new Integer[]{43, 202}),
     QC("QC", "Quebec",  1),
     RI("RI", "Rhode Island",  291),
@@ -81,6 +87,7 @@ public enum ArrlSection implements AdifEnumCode {
     STX("STX", "South Texas",  291),
     SFL("SFL", "Southern Florida",  291),
     SNJ("SNJ", "Southern New Jersey",  291),
+    TER("TER", "Territories",  291),
     TN("TN", "Tennessee",  291),
     VI("VI", "US Virgin Islands",  new Integer[]{105, 182, 285}),
     UT("UT", "Utah",  291),
@@ -127,29 +134,17 @@ public enum ArrlSection implements AdifEnumCode {
         this.deletedDate = null;
     }
 
+    ArrlSection(String code, String sectionName, Integer dxccEntityCode, String fromDate, String deletedDate) {
+        this.code = code;
+        this.sectionName = sectionName;
+        this.dxccEntityCodes = new Integer[] {dxccEntityCode};
+        this.fromDate = parseDate(fromDate);
+        this.deletedDate = parseDate(deletedDate);
+    }
+
     @Override
     public String adifCode() {
         return code;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getSectionName() {
-        return sectionName;
-    }
-
-    public Integer[] getDxccEntityCodes() {
-        return dxccEntityCodes;
-    }
-
-    public ZonedDateTime getFromDate() {
-        return fromDate;
-    }
-
-    public ZonedDateTime getDeletedDate() {
-        return deletedDate;
     }
 
     private final static Map<String, ArrlSection> reverse = new HashMap<>();
@@ -163,6 +158,9 @@ public enum ArrlSection implements AdifEnumCode {
     }
 
     private ZonedDateTime parseDate(String s) {
+        if (s == null) {
+            return null;
+        }
         return LocalDate.parse(s, DateTimeFormatter.ofPattern("yyyy/MM/dd")).atStartOfDay(ZoneId.of("UTC"));
     }
 }
