@@ -45,7 +45,7 @@ public class ThymleafKmlStationInfoPanelTest {
         Qso qso = mock(Qso.class);
         Adif3Record record = mock(Adif3Record.class);
         when(qso.getRecord()).thenReturn(record);
-        ArrayList qsos = new ArrayList<Qso>();
+        ArrayList<Qso> qsos = new ArrayList<>();
         qsos.add(qso);
         when(station.getQsos()).thenReturn(qsos);
 

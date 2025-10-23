@@ -1,16 +1,21 @@
 package uk.m0nom.adifproc.adif3.xsdquery;
 
+import lombok.Getter;
+import org.springframework.stereotype.Service;
+
 import java.io.InputStream;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
+@Service
 public class Adif3ElementHashedDictionary implements Adif3ElementDictionary {
     private Map<String, Adif3Field> dictionary;
 
-    public Adif3ElementHashedDictionary() {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("adif/adx314.xsd");
-        Adif3Schema schema = Adif3SchemaLoader.loadAdif3Schema(inputStream);
+    public Adif3ElementHashedDictionary(Adif3SchemaLoader loader) {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("adif/adx316.xsd");
+        Adif3Schema schema = loader.loadAdif3Schema(inputStream);
 
         // Now need to find the shortest form for each element name that is unique
         dictionary = new HashMap<>();
@@ -72,5 +77,4 @@ public class Adif3ElementHashedDictionary implements Adif3ElementDictionary {
         return null;
     }
 
-    public Map<String, Adif3Field> getDictionary() { return dictionary; }
 }

@@ -47,8 +47,8 @@ public class CotaCsvWriter {
                 Files.createDirectories(Paths.get(outPath));
                 File outFile = new File(String.format("%s/%s.csv", outPath, country.toUpperCase()));
                 out = new BufferedWriter(new FileWriter(outFile, StandardCharsets.ISO_8859_1));
-                try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT
-                        .withHeader(HEADERS))) {
+                try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.builder()
+                        .setHeader(HEADERS).get())) {
                     int record = 1;
                     for (CotaInfo info : cotaBasedOnCountry.get(country)) {
                         String coordsString ="";

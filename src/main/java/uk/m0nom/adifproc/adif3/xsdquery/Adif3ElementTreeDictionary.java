@@ -1,16 +1,20 @@
 package uk.m0nom.adifproc.adif3.xsdquery;
 
+import org.springframework.stereotype.Component;
+
 import java.io.InputStream;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class Adif3ElementTreeDictionary implements  Adif3ElementDictionary {
     private final DictionaryTreeNode root;
 
     public Adif3ElementTreeDictionary() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("adif/adx312generic.xsd");
-        Adif3Schema schema = Adif3SchemaLoader.loadAdif3Schema(inputStream);
+        Adif3SchemaLoader loader = new Adif3SchemaLoader();
+        Adif3Schema schema = loader.loadAdif3Schema(inputStream);
         Map<String, Adif3Field> dictionary = new HashMap<>();
 
         assert schema != null;

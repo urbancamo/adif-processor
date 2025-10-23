@@ -1,7 +1,7 @@
 package uk.m0nom.adifproc.activity.wota;
 
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityDatabase;
 import uk.m0nom.adifproc.activity.ActivityType;
@@ -46,7 +46,7 @@ public class WotaCsvReader extends CsvActivityReader {
         info.setInternalId(wotaid);
 
         String sotaId = record.get("sotaid");
-        if (!StringUtils.equals(sotaId, "NULL")) {
+        if (!Strings.CI.equals(sotaId, "NULL")) {
             info.setSotaId(String.format("G/LD-%03d", Integer.parseInt(sotaId)));
         }
 
@@ -56,7 +56,7 @@ public class WotaCsvReader extends CsvActivityReader {
         info.setReference(record.get("reference"));
 
         String humpId = record.get("humpid");
-        if (!StringUtils.equals(humpId, "NULL")) {
+        if (!Strings.CI.equals(humpId, "NULL")) {
             info.setHemaId(String.format("G/HLD-%03d", Integer.parseInt(humpId)));
         }
         info.setGridId(record.get("gridid"));

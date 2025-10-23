@@ -1,6 +1,7 @@
 package uk.m0nom.adifproc.adif3.transform;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.types.Pota;
 import org.marsik.ham.adif.types.PotaList;
@@ -120,7 +121,7 @@ public class ActivityProcessor {
             sigInfo = rec.getMySigInfoIntl();
         }
 
-        if (StringUtils.equalsIgnoreCase(type.getActivityName(), sig) && StringUtils.isNotBlank(sigInfo)) {
+        if (Strings.CI.equals(type.getActivityName(), sig) && StringUtils.isNotBlank(sigInfo)) {
             processActivity(type, station, sigInfo);
         }
     }

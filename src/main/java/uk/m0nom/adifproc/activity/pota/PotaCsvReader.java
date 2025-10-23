@@ -2,6 +2,7 @@ package uk.m0nom.adifproc.activity.pota;
 
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.activity.CsvActivityReader;
@@ -22,7 +23,7 @@ public class PotaCsvReader extends CsvActivityReader implements RemoteActivitySo
         PotaInfo info = new PotaInfo();
         info.setRef(record.get("reference"));
         info.setName(record.get("name"));
-        info.setActive(StringUtils.equals(record.get("active"), "1"));
+        info.setActive(Strings.CI.equals(record.get("active"), "1"));
         String entityId = record.get("entityId");
         if (StringUtils.isNotBlank(entityId)) {
             info.setEntityId(Integer.parseInt(entityId));

@@ -2,7 +2,7 @@ package uk.m0nom.adifproc.adif3;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.marsik.ham.adif.Adif3;
 import org.marsik.ham.adif.Adif3Record;
 import org.marsik.ham.adif.AdifHeader;

@@ -1,7 +1,7 @@
 package uk.m0nom.adifproc.activity.hema;
 
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.activity.CsvActivityReader;
@@ -25,7 +25,7 @@ public class HemaCsvReader extends CsvActivityReader {
 
         info.setCoords(readCoords(record, "hLatitude", "hLongitude"));
 
-        info.setActive(StringUtils.equals(record.get("hActive"), "Y"));
+        info.setActive(Strings.CI.equals(record.get("hActive"), "Y"));
         info.setName(record.get("hName"));
 
         return info;

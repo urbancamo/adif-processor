@@ -1,8 +1,8 @@
 package uk.m0nom.adifproc.satellite.norad;
 
-import com.github.amsacode.predict4java.GroundStationPosition;
-import com.github.amsacode.predict4java.SatPos;
-import com.github.amsacode.predict4java.Satellite;
+import uk.me.g4dpz.satellite.GroundStationPosition;
+import uk.me.g4dpz.satellite.SatPos;
+import uk.me.g4dpz.satellite.Satellite;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;

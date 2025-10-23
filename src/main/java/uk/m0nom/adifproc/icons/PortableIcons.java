@@ -1,14 +1,14 @@
 package uk.m0nom.adifproc.icons;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static uk.m0nom.adifproc.icons.PortableIcon.DEFAULT_ICON_NAME;
 
+@Getter
 public class PortableIcons {
-    private static final Logger logger = Logger.getLogger(PortableIcons.class.getName());
-
     private final List<PortableIcon> icons;
 
     public PortableIcons() {
@@ -34,10 +34,6 @@ public class PortableIcons {
     private void addIcon(String filename, String description) {
         var icon = new PortableIcon(filename, description);
         icons.add(icon);
-    }
-
-    public List<PortableIcon> getIcons() {
-        return icons;
     }
 
     public List<String> getIconNames() {

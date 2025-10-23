@@ -1,8 +1,8 @@
 package uk.m0nom.adifproc.satellite.norad;
 
-import com.github.amsacode.predict4java.Satellite;
-import com.github.amsacode.predict4java.SatelliteFactory;
-import com.github.amsacode.predict4java.TLE;
+import uk.me.g4dpz.satellite.Satellite;
+import uk.me.g4dpz.satellite.SatelliteFactory;
+import uk.me.g4dpz.satellite.TLE;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import uk.m0nom.adifproc.file.InternalFileService;

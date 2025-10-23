@@ -158,6 +158,9 @@ public enum ArrlSection implements AdifEnumCode {
     }
 
     private ZonedDateTime parseDate(String s) {
+        if (s == null) {
+            return null;
+        }
         return LocalDate.parse(s, DateTimeFormatter.ofPattern("yyyy/MM/dd")).atStartOfDay(ZoneId.of("UTC"));
     }
 }

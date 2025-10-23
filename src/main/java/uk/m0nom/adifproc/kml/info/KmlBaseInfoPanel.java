@@ -1,6 +1,6 @@
 package uk.m0nom.adifproc.kml.info;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.marsik.ham.adif.Adif3Record;
 import org.thymeleaf.context.Context;
 import uk.m0nom.adifproc.comms.CommsLinkResult;
@@ -39,10 +39,10 @@ public class KmlBaseInfoPanel {
         }
         if (rec.getBand() != null) {
             if (rec.getBandRx() != null) {
-                context.setVariable("uplinkBand", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase());
-                context.setVariable("downlinkBand", StringUtils.replace(rec.getBandRx().name(), "BAND_", "").toLowerCase());
+                context.setVariable("uplinkBand", Strings.CI.replace(rec.getBand().name(), "BAND_", "").toLowerCase());
+                context.setVariable("downlinkBand", Strings.CI.replace(rec.getBandRx().name(), "BAND_", "").toLowerCase());
             } else {
-                context.setVariable("band", StringUtils.replace(rec.getBand().name(), "BAND_", "").toLowerCase());
+                context.setVariable("band", Strings.CI.replace(rec.getBand().name(), "BAND_", "").toLowerCase());
             }
         }
         if (commsLink != null) {

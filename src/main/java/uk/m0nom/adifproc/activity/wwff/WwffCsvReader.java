@@ -2,6 +2,7 @@ package uk.m0nom.adifproc.activity.wwff;
 
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import uk.m0nom.adifproc.activity.Activity;
 import uk.m0nom.adifproc.activity.ActivityType;
 import uk.m0nom.adifproc.activity.CsvActivityReader;
@@ -29,7 +30,7 @@ public class WwffCsvReader extends CsvActivityReader {
 
         info.setRef(record.get("reference"));
         info.setName(record.get("name"));
-        info.setActive(StringUtils.equals(record.get("status"), "active"));
+        info.setActive(Strings.CI.equals(record.get("status"), "active"));
         info.setCoords(readCoords(record, "latitude", "longitude"));
 
         info.setProgram(record.get("program"));
@@ -73,6 +74,6 @@ public class WwffCsvReader extends CsvActivityReader {
     private boolean isValidDate(String dateString) {
         return StringUtils.isNotEmpty(dateString) &&
                 dateString.length() == EMPTY_DATE.length() &&
-                !StringUtils.equals(dateString, EMPTY_DATE);
+                !Strings.CI.equals(dateString, EMPTY_DATE);
     }
 }

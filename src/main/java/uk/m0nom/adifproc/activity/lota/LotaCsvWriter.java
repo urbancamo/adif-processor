@@ -35,8 +35,8 @@ public class LotaCsvWriter {
             outFile = new File(filePath);
             out = new BufferedWriter(new FileWriter(outFile, StandardCharsets.UTF_8));
 
-            try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT
-                    .withHeader(HEADERS))) {
+            try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.builder()
+                    .setHeader(HEADERS).get())) {
                 int record = 1;
                 for (Activity activity : activities) {
                     LotaInfo info = (LotaInfo) activity;
