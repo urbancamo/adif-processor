@@ -16,6 +16,8 @@ public class BotaInfo extends Activity {
     private String osgr;
     private String wab;
     private String nearestPostcode;
+    private String w3w;
+    private String note;
 
     public BotaInfo() {
         super(ActivityType.BOTA);
@@ -23,6 +25,6 @@ public class BotaInfo extends Activity {
 
     @Override
     public String getUrl() {
-        return "https://bunkerbase.org/bunkers/";
+        return "https://ukbota.net/";
     }
 }
