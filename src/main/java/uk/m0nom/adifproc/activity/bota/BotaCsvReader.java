@@ -18,15 +18,17 @@ public class BotaCsvReader extends CsvActivityReader {
     protected Activity readRecord(CSVRecord record) throws IllegalArgumentException {
         BotaInfo info = new BotaInfo();
 
-        info.setRef(record.get("UKBOTA Reference"));
-        info.setName(record.get("Bunker Name"));
+        info.setRef(record.get("Ref"));
+        info.setName(record.get("Name"));
         info.setBunkerType(record.get("Type"));
         info.setArea(record.get("Area"));
-        info.setCoords(readCoords(record,"Latitude", "Longitude"));
-        info.setOsgr(record.get("OSGR"));
+        info.setCoords(readCoords(record,"Lat", "Long"));
+        info.setOsgr(record.get("Grid"));
         info.setWab(record.get("WAB"));
-        info.setNearestPostcode(record.get("Nearest Postcode"));
-        info.setGrid(record.get("Maidenhead"));
+        info.setNearestPostcode(record.get("Near Pcode"));
+        info.setGrid(record.get("Locator"));
+        info.setW3w(record.get("W3W"));
+        info.setNote(record.get("Note"));
 
         return info;
     }
