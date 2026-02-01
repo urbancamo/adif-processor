@@ -49,8 +49,9 @@ public class Adif3Transformer {
         // LOTW export can contain a single APP field that needs stripping as the record isn't valid for processing
         log.setRecords(stripLotwEofRecordIfPresent(log.getRecords()));
 
+        int totalRecords = log.getRecords().size();
         for (Adif3Record rec : log.getRecords()) {
-            progressFeedbackHandlerCallback.sendProgressUpdate(sessionId, String.format("Processing contact %s", rec.getCall()));
+            progressFeedbackHandlerCallback.sendProgressUpdate(sessionId, String.format("%d/%d Processing %s", index, totalRecords, rec.getCall()));
             migrateAdifImportOnlyFields(rec);
             if (StringUtils.isBlank(rec.getOperator()) && callsigns.isOneOperator()) {
                 rec.setOperator(callsigns.getSingleOperator());
