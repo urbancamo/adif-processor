@@ -94,7 +94,7 @@ public class Adif3Transformer {
 
         AdifHeader header = new AdifHeader();
         header.setProgramId("M0NOM ADIF Processor");
-        header.setProgramVersion("1.2");
+        header.setProgramVersion("1.4.22");
         log.setHeader(header);
 
         return qsos;
