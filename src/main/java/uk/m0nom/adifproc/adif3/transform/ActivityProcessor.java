@@ -35,9 +35,10 @@ public class ActivityProcessor {
      */
     protected void setHemaOrSotaFromWota(Station station, String wotaId) {
         WotaInfo wotaInfo = (WotaInfo) activities.getDatabase(ActivityType.WOTA).get(wotaId);
-
-        station.addActivity(activities.getDatabase(ActivityType.HEMA).get(wotaInfo.getHemaId()));
-        station.addActivity(activities.getDatabase(ActivityType.SOTA).get(wotaInfo.getSotaId()));
+        if (wotaInfo != null) {
+            station.addActivity(activities.getDatabase(ActivityType.HEMA).get(wotaInfo.getHemaId()));
+            station.addActivity(activities.getDatabase(ActivityType.SOTA).get(wotaInfo.getSotaId()));
+        }
     }
 
     /**
