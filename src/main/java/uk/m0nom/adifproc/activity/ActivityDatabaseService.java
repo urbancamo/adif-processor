@@ -47,7 +47,7 @@ public class ActivityDatabaseService {
         readers.put(ActivityType.LOTA, new LotaCsvReader("lota/lighthouses.csv"));
         readers.put(ActivityType.ROTA, new RotaCsvReader("rota/2022-rota.csv"));
         readers.put(ActivityType.IOTA, new IotaJsonReader("iota/iota-full-list.json"));
-        readers.put(ActivityType.BOTA, new BotaCsvReader("bota/UKBOTA_9_00.csv"));
+        readers.put(ActivityType.BOTA, new BotaCsvReader("bota/BB2 Bunker List.csv"));
     }
 
     /**
