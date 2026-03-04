@@ -89,7 +89,7 @@ public class NominatimGeocodingProvider implements GeocodingProvider {
             if (coords == null) {
                 String newSubstring = StringUtils.trim(substring.substring(substring.indexOf(',') + 1));
                 // Make sure we don't get caught in an endless loop.
-                if (StringUtils.equals(newSubstring, substring)) {
+                if (newSubstring != null && newSubstring.equals(substring)) {
                     logger.debug("No location found after exhausting address substrings, last tried: {}", substring);
                     return new GeocodingResult(null, substring, "No location found");
                 } else {
