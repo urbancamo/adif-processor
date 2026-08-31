@@ -47,7 +47,7 @@ public class KmlLocalActivities {
             // set the stylename to use this style from the placemark
             style.createAndSetIconStyle().withScale(1.0).withIcon(icon); // set size and icon
             style.createAndSetLabelStyle().withColor("ffffffff").withScale(0.75); // set color and size of the station marker
-            style.createAndSetLineStyle().withColor("000000ff").withWidth(3);
+            style.createAndSetLineStyle().withColor("000000ff").withWidth(3.0);
 
             String htmlPanelContent = new KmlActivityInfoPanel().getPanelContentForActivity(control, activity);
             Placemark placemark = folder.createAndAddPlacemark();

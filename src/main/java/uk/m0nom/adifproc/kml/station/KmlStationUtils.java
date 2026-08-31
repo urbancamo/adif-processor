@@ -202,7 +202,7 @@ public class KmlStationUtils {
             // set the stylename to use this style from the placemark
             style.createAndSetIconStyle().withScale(1.0).withIcon(kmlIcon); // set size and icon
             style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0); // set color and size of the station marker
-            style.createAndSetLineStyle().withColor("ffb343ff").withWidth(5);
+            style.createAndSetLineStyle().withColor("ffb343ff").withWidth(5.0);
 
             iconStyles.add(icon.getName());
         }
@@ -247,7 +247,7 @@ public class KmlStationUtils {
                         .withScale(1.0)
                         .withIcon(modeIcon);
                 modeStyle.createAndSetLabelStyle().withColor("ff43b3ff").withScale(0.75); // set color and size of the station marker
-                modeStyle.createAndSetLineStyle().withColor("ffb343ff").withWidth(3);
+                modeStyle.createAndSetLineStyle().withColor("ffb343ff").withWidth(3.0);
                 iconStyles.add(modeId);
             }
             Placemark modePlaceMark = folder.createAndAddPlacemark();
@@ -272,7 +272,7 @@ public class KmlStationUtils {
                     .withScale(1.0)
                     .withIcon(modeIcon);
             activityStyle.createAndSetLabelStyle().withColor("ff43b3ff").withScale(0.75); // set color and size of the station marker
-            activityStyle.createAndSetLineStyle().withColor("ffb343ff").withWidth(3);
+            activityStyle.createAndSetLineStyle().withColor("ffb343ff").withWidth(3.0);
             iconStyles.add(icon.getName());
         }
         Placemark activityPlaceMark = folder.createAndAddPlacemark();
