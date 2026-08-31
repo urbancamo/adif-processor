@@ -30,9 +30,10 @@ public class ApSatelliteService {
     private final ZonedDateTime earliestDataAvailable = ZonedDateTime.of(LocalDateTime.of(2022, 2, 23, 0, 0), ZoneId.of("UTC"));
 
     private void loadCurrentNoradSatelliteTleDataIfRequired() {
-        if (satellites.noDataFor(ZonedDateTime.now())) {
-            noradSatelliteOrbitReader.loadCurrentSatelliteTleDataFromCelestrak(satellites);
-        }
+        // TODO satellite data URL is no longer resolving correctly
+        //if (satellites.noDataFor(ZonedDateTime.now())) {
+        //    noradSatelliteOrbitReader.loadCurrentSatelliteTleDataFromCelestrak(satellites);
+        //}
     }
 
     public ApSatellite getSatellite(String id, ZonedDateTime date) {

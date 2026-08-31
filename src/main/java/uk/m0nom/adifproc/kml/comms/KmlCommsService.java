@@ -184,7 +184,7 @@ public class KmlCommsService {
                 Style style = document.createAndAddStyle()
                         .withId(KmlUtils.getStyleId(S2S_LINE));
                 assert styling != null;
-                style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
+                style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(Double.valueOf(styling.getWidth()));
                 commsStyleMap.put(S2S_LINE, KmlUtils.getStyleUrl(S2S_LINE));
             }
         } else if (qso.getRecord().getPropMode() == Propagation.INTERNET) {
@@ -193,7 +193,7 @@ public class KmlCommsService {
                 Style style = document.createAndAddStyle()
                         .withId(KmlUtils.getStyleId(INTERNET_LINE));
                 assert styling != null;
-                style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
+                style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(Double.valueOf(styling.getWidth()));
                 commsStyleMap.put(INTERNET_LINE, KmlUtils.getStyleUrl(INTERNET_LINE));
             }
         } else if (control.isColourContactsByBand()) {
@@ -202,7 +202,7 @@ public class KmlCommsService {
             if (!commsStyleMap.containsKey(styling.getStringSpecifier())) {
                 Style style = document.createAndAddStyle()
                         .withId(KmlUtils.getStyleId(styleId));
-                style.createAndSetLineStyle().withColor(styling.getHtmlColor()).withWidth(styling.getWidth());
+                style.createAndSetLineStyle().withColor(styling.getHtmlColor()).withWidth(Double.valueOf(styling.getWidth()));
                 commsStyleMap.put(styling.getStringSpecifier(), KmlUtils.getStyleUrl(styling.getStringSpecifier()));
             }
         } else {
@@ -211,7 +211,7 @@ public class KmlCommsService {
                 Style style = document.createAndAddStyle()
                         .withId(KmlUtils.getStyleId(COMM_LINE));
                 assert styling != null;
-                style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(styling.getWidth());
+                style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(Double.valueOf(styling.getWidth()));
                 commsStyleMap.put(COMM_LINE, KmlUtils.getStyleUrl(COMM_LINE));
             }
         }
@@ -219,7 +219,7 @@ public class KmlCommsService {
             if (!commsStyleMap.containsKey(SHADOW_LINE)) {
                 Style style = document.createAndAddStyle()
                         .withId(KmlUtils.getStyleId(SHADOW_LINE));
-                style.createAndSetLineStyle().withColor("40000000").withWidth(3);
+                style.createAndSetLineStyle().withColor("40000000").withWidth(3.0);
                 commsStyleMap.put(SHADOW_LINE, KmlUtils.getStyleUrl(SHADOW_LINE));
             }
         }

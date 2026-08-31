@@ -38,7 +38,7 @@ public class KmlSatelliteTrack {
         style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0);
 
         Style shadowStyle = doc.createAndAddStyle().withId(KmlUtils.getStyleId(EMPTY_SHADOW_MARKER));
-        shadowStyle.createAndSetIconStyle().withScale(0).withIcon(kmlIcon);
+        shadowStyle.createAndSetIconStyle().withScale(0.0).withIcon(kmlIcon);
         shadowStyle.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.0);
 
         Folder folder = doc.createAndAddFolder();
@@ -131,7 +131,7 @@ public class KmlSatelliteTrack {
         Style style = doc.createAndAddStyle()
                 .withId(styleId);
         assert styling != null;
-        style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(5);
+        style.createAndSetLineStyle().withColor(styling.getStringSpecifier()).withWidth(5.0);
         return KmlUtils.getStyleUrl(SATELLITE_TRACK_LINE_ID);
     }
 }
