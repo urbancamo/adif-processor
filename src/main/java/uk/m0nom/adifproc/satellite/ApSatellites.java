@@ -34,8 +34,12 @@ public class ApSatellites {
         }
     }
 
-    public boolean noDataFor(ZonedDateTime date) {
-        return date != null && !datesLoaded.contains(date);
+    public boolean noDataForSuppliedDate(ZonedDateTime date) {
+        if (date == null) {
+            return true;
+        }
+        return datesLoaded.stream()
+                .noneMatch(loadedDate -> loadedDate.toLocalDate().isEqual(date.toLocalDate()));
     }
 
     /**

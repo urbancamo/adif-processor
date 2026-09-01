@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,7 +31,7 @@ import java.util.logging.Logger;
  */
 @Service
 public class NoradSatelliteOrbitReader {
-    public final static String NORAD_TLE_FILE_LOCATION = "http://www.celestrak.com/NORAD/elements/amateur.txt";
+    public final static String NORAD_TLE_FILE_LOCATION = "http://celestrak.org/NORAD/elements/gp.php?GROUP=AMATEUR&FORMAT=TLE";
     private final static String NORAD_FOLDER = "norad";
 
     private static final Logger logger = Logger.getLogger(NoradSatelliteOrbitReader.class.getName());
@@ -88,9 +89,14 @@ public class NoradSatelliteOrbitReader {
         logger.info(String.format("Read %d satellite definitions", i));
    }
 
+    private static final int CELESTRAK_TIMEOUT_MILLIS = 5000;
+
     private String readTleDataFromCelestrak() throws IOException, URISyntaxException {
         URL u = new URI(NoradSatelliteOrbitReader.NORAD_TLE_FILE_LOCATION).toURL();
-        try (InputStream in = u.openStream()) {
+        URLConnection connection = u.openConnection();
+        connection.setConnectTimeout(CELESTRAK_TIMEOUT_MILLIS);
+        connection.setReadTimeout(CELESTRAK_TIMEOUT_MILLIS);
+        try (InputStream in = connection.getInputStream()) {
             return new String(in.readAllBytes(), StandardCharsets.US_ASCII);
         }
     }
