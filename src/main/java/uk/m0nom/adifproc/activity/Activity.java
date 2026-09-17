@@ -60,8 +60,8 @@ public abstract class Activity implements Comparable<Activity> {
 
     @Override
     public int compareTo(Activity other) {
-        String ref = getRef() != null ? getRef() : "";
-        String otherRef = other.getRef() != null ? other.getRef() : "";
+        String ref = getRef() != null ? getRef().toUpperCase() : "";
+        String otherRef = other.getRef() != null ? other.getRef().toUpperCase() : "";
         return ref.compareTo(otherRef);
     }
 
