@@ -24,9 +24,10 @@ public class MySotaRefFieldParser implements CommentFieldParser {
         FieldParseResult result;
 
         // Strip off any S2s reference
-        String sotaRef = StringUtils.split(value, ' ')[0];
+        // Database keys are upper case, so normalise (comments may contain e.g. w7u/to-070)
+        String sotaRef = StringUtils.split(value, ' ')[0].toUpperCase();
         try {
-            Sota sota = Sota.valueOf(sotaRef.toUpperCase());
+            Sota sota = Sota.valueOf(sotaRef);
             rec.setMySotaRef(sota);
             String invalidCallsign = fromLocationDeterminer.setMyLocationFromSotaId(qso, sotaRef);
             result = new FieldParseResult(invalidCallsign, false);
